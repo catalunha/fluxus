@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:fluxus/core/models/agreement_model.dart';
+import 'package:fluxus/core/models/expertise_model.dart';
 import 'package:fluxus/core/models/office_model.dart';
+import 'package:fluxus/core/models/plan_model.dart';
 import 'package:fluxus/core/models/user_model.dart';
 
 class UserProfileModel {
@@ -15,11 +18,15 @@ class UserProfileModel {
   final bool? isMale;
   final DateTime? birthday;
   final String? description;
-  final String? register;
-  final List<String>? routes;
+  final String? register; // conselho de saude
   final bool? isActive;
   final UserModel? parent;
-  final OfficeModel? office;
+  final List<String>? routes;
+  final List<ExpertiseModel>? expertise; // setor
+  final List<OfficeModel>? office; // cargo
+  final List<AgreementModel>? agreement; // convenio
+  final List<PlanModel>? plan; // plano
+  final String? status; // plano
   UserProfileModel({
     this.id,
     this.name,
@@ -31,10 +38,14 @@ class UserProfileModel {
     this.birthday,
     this.description,
     this.register,
-    this.routes,
     this.isActive,
     this.parent,
+    this.routes,
+    this.expertise,
     this.office,
+    this.agreement,
+    this.plan,
+    this.status,
   });
 
   UserProfileModel copyWith({
@@ -48,10 +59,14 @@ class UserProfileModel {
     DateTime? birthday,
     String? description,
     String? register,
-    List<String>? routes,
     bool? isActive,
     UserModel? parent,
-    OfficeModel? office,
+    List<String>? routes,
+    List<ExpertiseModel>? expertise,
+    List<OfficeModel>? office,
+    List<AgreementModel>? agreement,
+    List<PlanModel>? plan,
+    String? status,
   }) {
     return UserProfileModel(
       id: id ?? this.id,
@@ -64,10 +79,14 @@ class UserProfileModel {
       birthday: birthday ?? this.birthday,
       description: description ?? this.description,
       register: register ?? this.register,
-      routes: routes ?? this.routes,
       isActive: isActive ?? this.isActive,
       parent: parent ?? this.parent,
+      routes: routes ?? this.routes,
+      expertise: expertise ?? this.expertise,
       office: office ?? this.office,
+      agreement: agreement ?? this.agreement,
+      plan: plan ?? this.plan,
+      status: status ?? this.status,
     );
   }
 
@@ -104,17 +123,29 @@ class UserProfileModel {
     if (register != null) {
       result.addAll({'register': register});
     }
-    if (routes != null) {
-      result.addAll({'routes': routes});
-    }
     if (isActive != null) {
       result.addAll({'isActive': isActive});
     }
     if (parent != null) {
       result.addAll({'parent': parent!.toMap()});
     }
+    if (routes != null) {
+      result.addAll({'routes': routes});
+    }
+    if (expertise != null) {
+      result.addAll({'expertise': expertise!.map((x) => x?.toMap()).toList()});
+    }
     if (office != null) {
-      result.addAll({'office': office!.toMap()});
+      result.addAll({'office': office!.map((x) => x?.toMap()).toList()});
+    }
+    if (agreement != null) {
+      result.addAll({'agreement': agreement!.map((x) => x?.toMap()).toList()});
+    }
+    if (plan != null) {
+      result.addAll({'plan': plan!.map((x) => x?.toMap()).toList()});
+    }
+    if (status != null) {
+      result.addAll({'status': status});
     }
 
     return result;
@@ -134,10 +165,25 @@ class UserProfileModel {
           : null,
       description: map['description'],
       register: map['register'],
-      routes: List<String>.from(map['routes']),
       isActive: map['isActive'],
       parent: map['parent'] != null ? UserModel.fromMap(map['parent']) : null,
-      office: map['office'] != null ? OfficeModel.fromMap(map['office']) : null,
+      routes: List<String>.from(map['routes']),
+      expertise: map['expertise'] != null
+          ? List<ExpertiseModel>.from(
+              map['expertise']?.map((x) => ExpertiseModel.fromMap(x)))
+          : null,
+      office: map['office'] != null
+          ? List<OfficeModel>.from(
+              map['office']?.map((x) => OfficeModel.fromMap(x)))
+          : null,
+      agreement: map['agreement'] != null
+          ? List<AgreementModel>.from(
+              map['agreement']?.map((x) => AgreementModel.fromMap(x)))
+          : null,
+      plan: map['plan'] != null
+          ? List<PlanModel>.from(map['plan']?.map((x) => PlanModel.fromMap(x)))
+          : null,
+      status: map['status'],
     );
   }
 
@@ -148,7 +194,7 @@ class UserProfileModel {
 
   @override
   String toString() {
-    return 'UserProfileModel(id: $id, name: $name, phone: $phone, address: $address, photo: $photo, cpf: $cpf, isMale: $isMale, birthday: $birthday, description: $description, register: $register, routes: $routes, isActive: $isActive, parent: $parent, office: $office)';
+    return 'UserProfileModel(id: $id, name: $name, phone: $phone, address: $address, photo: $photo, cpf: $cpf, isMale: $isMale, birthday: $birthday, description: $description, register: $register, isActive: $isActive, parent: $parent, routes: $routes, expertise: $expertise, office: $office, agreement: $agreement, plan: $plan, status: $status)';
   }
 
   @override
@@ -166,10 +212,14 @@ class UserProfileModel {
         other.birthday == birthday &&
         other.description == description &&
         other.register == register &&
-        listEquals(other.routes, routes) &&
         other.isActive == isActive &&
         other.parent == parent &&
-        other.office == office;
+        listEquals(other.routes, routes) &&
+        listEquals(other.expertise, expertise) &&
+        listEquals(other.office, office) &&
+        listEquals(other.agreement, agreement) &&
+        listEquals(other.plan, plan) &&
+        other.status == status;
   }
 
   @override
@@ -184,9 +234,13 @@ class UserProfileModel {
         birthday.hashCode ^
         description.hashCode ^
         register.hashCode ^
-        routes.hashCode ^
         isActive.hashCode ^
         parent.hashCode ^
-        office.hashCode;
+        routes.hashCode ^
+        expertise.hashCode ^
+        office.hashCode ^
+        agreement.hashCode ^
+        plan.hashCode ^
+        status.hashCode;
   }
 }

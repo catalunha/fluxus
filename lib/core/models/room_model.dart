@@ -3,42 +3,26 @@ import 'dart:convert';
 class RoomModel {
   final String? id;
   final String? name;
-  final int? length;
-  final int? width;
-  final int? height;
   final bool? isActive;
   final String? description;
-  final String? occupation;
   RoomModel({
     this.id,
     this.name,
-    this.length,
-    this.width,
-    this.height,
     this.isActive,
     this.description,
-    this.occupation,
   });
 
   RoomModel copyWith({
     String? id,
     String? name,
-    int? length,
-    int? width,
-    int? height,
     bool? isActive,
     String? description,
-    String? occupation,
   }) {
     return RoomModel(
       id: id ?? this.id,
       name: name ?? this.name,
-      length: length ?? this.length,
-      width: width ?? this.width,
-      height: height ?? this.height,
       isActive: isActive ?? this.isActive,
       description: description ?? this.description,
-      occupation: occupation ?? this.occupation,
     );
   }
 
@@ -51,23 +35,11 @@ class RoomModel {
     if (name != null) {
       result.addAll({'name': name});
     }
-    if (length != null) {
-      result.addAll({'length': length});
-    }
-    if (width != null) {
-      result.addAll({'width': width});
-    }
-    if (height != null) {
-      result.addAll({'height': height});
-    }
     if (isActive != null) {
       result.addAll({'isActive': isActive});
     }
     if (description != null) {
       result.addAll({'description': description});
-    }
-    if (occupation != null) {
-      result.addAll({'occupation': occupation});
     }
 
     return result;
@@ -77,12 +49,8 @@ class RoomModel {
     return RoomModel(
       id: map['id'],
       name: map['name'],
-      length: map['length']?.toInt(),
-      width: map['width']?.toInt(),
-      height: map['height']?.toInt(),
       isActive: map['isActive'],
       description: map['description'],
-      occupation: map['occupation'],
     );
   }
 
@@ -93,7 +61,7 @@ class RoomModel {
 
   @override
   String toString() {
-    return 'RoomModel(id: $id, name: $name, length: $length, width: $width, height: $height, isActive: $isActive, description: $description, occupation: $occupation)';
+    return 'RoomModel(id: $id, name: $name, isActive: $isActive, description: $description)';
   }
 
   @override
@@ -103,23 +71,15 @@ class RoomModel {
     return other is RoomModel &&
         other.id == id &&
         other.name == name &&
-        other.length == length &&
-        other.width == width &&
-        other.height == height &&
         other.isActive == isActive &&
-        other.description == description &&
-        other.occupation == occupation;
+        other.description == description;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
         name.hashCode ^
-        length.hashCode ^
-        width.hashCode ^
-        height.hashCode ^
         isActive.hashCode ^
-        description.hashCode ^
-        occupation.hashCode;
+        description.hashCode;
   }
 }

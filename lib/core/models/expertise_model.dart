@@ -1,21 +1,21 @@
 import 'dart:convert';
 
-class OfficeModel {
+class ExpertiseModel {
   final String? id;
   final String? name;
   final String? description;
-  OfficeModel({
+  ExpertiseModel({
     this.id,
     this.name,
     this.description,
   });
 
-  OfficeModel copyWith({
+  ExpertiseModel copyWith({
     String? id,
     String? name,
     String? description,
   }) {
-    return OfficeModel(
+    return ExpertiseModel(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
@@ -38,8 +38,8 @@ class OfficeModel {
     return result;
   }
 
-  factory OfficeModel.fromMap(Map<String, dynamic> map) {
-    return OfficeModel(
+  factory ExpertiseModel.fromMap(Map<String, dynamic> map) {
+    return ExpertiseModel(
       id: map['id'],
       name: map['name'],
       description: map['description'],
@@ -48,18 +48,18 @@ class OfficeModel {
 
   String toJson() => json.encode(toMap());
 
-  factory OfficeModel.fromJson(String source) =>
-      OfficeModel.fromMap(json.decode(source));
+  factory ExpertiseModel.fromJson(String source) =>
+      ExpertiseModel.fromMap(json.decode(source));
 
   @override
   String toString() =>
-      'OfficeModel(id: $id, name: $name, description: $description)';
+      'SectorModel(id: $id, name: $name, description: $description)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is OfficeModel &&
+    return other is ExpertiseModel &&
         other.id == id &&
         other.name == name &&
         other.description == description;

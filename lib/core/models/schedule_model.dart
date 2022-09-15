@@ -1,54 +1,35 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
+import 'package:fluxus/core/models/event_model.dart';
 import 'package:fluxus/core/models/room_model.dart';
-import 'package:fluxus/core/models/schedule_status_model.dart';
-import 'package:fluxus/core/models/user_model.dart';
 
 class ScheduleModel {
   final String? id;
-  final List<UserModel>? professional;
-  final List<UserModel>? patient;
+  final EventModel? event;
   final RoomModel? room;
   final DateTime? start;
   final DateTime? end;
-  final ScheduleStatusModel? status;
-  final String? description;
-  final String? observation;
   ScheduleModel({
     this.id,
-    this.professional,
-    this.patient,
+    this.event,
     this.room,
     this.start,
     this.end,
-    this.status,
-    this.description,
-    this.observation,
   });
 
   ScheduleModel copyWith({
     String? id,
-    List<UserModel>? professional,
-    List<UserModel>? patient,
+    EventModel? event,
     RoomModel? room,
     DateTime? start,
     DateTime? end,
-    ScheduleStatusModel? status,
-    String? description,
-    String? observation,
   }) {
     return ScheduleModel(
       id: id ?? this.id,
-      professional: professional ?? this.professional,
-      patient: patient ?? this.patient,
+      event: event ?? this.event,
       room: room ?? this.room,
       start: start ?? this.start,
       end: end ?? this.end,
-      status: status ?? this.status,
-      description: description ?? this.description,
-      observation: observation ?? this.observation,
     );
   }
 
@@ -58,12 +39,8 @@ class ScheduleModel {
     if (id != null) {
       result.addAll({'id': id});
     }
-    if (professional != null) {
-      result.addAll(
-          {'professional': professional!.map((x) => x.toMap()).toList()});
-    }
-    if (patient != null) {
-      result.addAll({'patient': patient!.map((x) => x.toMap()).toList()});
+    if (event != null) {
+      result.addAll({'event': event!.toMap()});
     }
     if (room != null) {
       result.addAll({'room': room!.toMap()});
@@ -74,15 +51,6 @@ class ScheduleModel {
     if (end != null) {
       result.addAll({'end': end!.millisecondsSinceEpoch});
     }
-    if (status != null) {
-      result.addAll({'status': status!.toMap()});
-    }
-    if (description != null) {
-      result.addAll({'description': description});
-    }
-    if (observation != null) {
-      result.addAll({'observation': observation});
-    }
 
     return result;
   }
@@ -90,14 +58,7 @@ class ScheduleModel {
   factory ScheduleModel.fromMap(Map<String, dynamic> map) {
     return ScheduleModel(
       id: map['id'],
-      professional: map['professional'] != null
-          ? List<UserModel>.from(
-              map['professional']?.map((x) => UserModel.fromMap(x)))
-          : null,
-      patient: map['patient'] != null
-          ? List<UserModel>.from(
-              map['patient']?.map((x) => UserModel.fromMap(x)))
-          : null,
+      event: map['event'] != null ? EventModel.fromMap(map['event']) : null,
       room: map['room'] != null ? RoomModel.fromMap(map['room']) : null,
       start: map['start'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['start'])
@@ -105,11 +66,6 @@ class ScheduleModel {
       end: map['end'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['end'])
           : null,
-      status: map['status'] != null
-          ? ScheduleStatusModel.fromMap(map['status'])
-          : null,
-      description: map['description'],
-      observation: map['observation'],
     );
   }
 
@@ -120,7 +76,7 @@ class ScheduleModel {
 
   @override
   String toString() {
-    return 'ScheduleModel(id: $id, professional: $professional, patient: $patient, room: $room, start: $start, end: $end, status: $status, description: $description, observation: $observation)';
+    return 'ScheduleModel(id: $id, event: $event, room: $room, start: $start, end: $end)';
   }
 
   @override
@@ -129,26 +85,18 @@ class ScheduleModel {
 
     return other is ScheduleModel &&
         other.id == id &&
-        listEquals(other.professional, professional) &&
-        listEquals(other.patient, patient) &&
+        other.event == event &&
         other.room == room &&
         other.start == start &&
-        other.end == end &&
-        other.status == status &&
-        other.description == description &&
-        other.observation == observation;
+        other.end == end;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-        professional.hashCode ^
-        patient.hashCode ^
+        event.hashCode ^
         room.hashCode ^
         start.hashCode ^
-        end.hashCode ^
-        status.hashCode ^
-        description.hashCode ^
-        observation.hashCode;
+        end.hashCode;
   }
 }
