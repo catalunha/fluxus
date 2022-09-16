@@ -57,6 +57,4 @@ Descrição: Encaminho pela Avaliadora X
 Descrição: Encerrar tratamento
 Status: Finalizado.
 
-
-
 */

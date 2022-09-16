@@ -55,10 +55,10 @@ class EventModel {
     }
     if (professionals != null) {
       result.addAll(
-          {'professionals': professionals!.map((x) => x?.toMap()).toList()});
+          {'professionals': professionals!.map((x) => x.toMap()).toList()});
     }
     if (patients != null) {
-      result.addAll({'patients': patients!.map((x) => x?.toMap()).toList()});
+      result.addAll({'patients': patients!.map((x) => x.toMap()).toList()});
     }
     if (room != null) {
       result.addAll({'room': room!.toMap()});

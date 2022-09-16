@@ -133,16 +133,16 @@ class UserProfileModel {
       result.addAll({'routes': routes});
     }
     if (expertise != null) {
-      result.addAll({'expertise': expertise!.map((x) => x?.toMap()).toList()});
+      result.addAll({'expertise': expertise!.map((x) => x.toMap()).toList()});
     }
     if (office != null) {
-      result.addAll({'office': office!.map((x) => x?.toMap()).toList()});
+      result.addAll({'office': office!.map((x) => x.toMap()).toList()});
     }
     if (agreement != null) {
-      result.addAll({'agreement': agreement!.map((x) => x?.toMap()).toList()});
+      result.addAll({'agreement': agreement!.map((x) => x.toMap()).toList()});
     }
     if (plan != null) {
-      result.addAll({'plan': plan!.map((x) => x?.toMap()).toList()});
+      result.addAll({'plan': plan!.map((x) => x.toMap()).toList()});
     }
     if (status != null) {
       result.addAll({'status': status});
