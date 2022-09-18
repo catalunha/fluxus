@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:fluxus/core/models/event_model.dart';
-import 'package:fluxus/core/models/user_model.dart';
+import 'package:fluxus/core/models/profile_model.dart';
 
 class PersonBookModel {
   final String? id;
   final EventModel? event;
-  final UserModel? professional;
-  final UserModel? patient;
+  final ProfileModel? professional;
+  final ProfileModel? patient;
   final String? description;
   final String? file;
   PersonBookModel({
@@ -22,8 +22,8 @@ class PersonBookModel {
   PersonBookModel copyWith({
     String? id,
     EventModel? event,
-    UserModel? professional,
-    UserModel? patient,
+    ProfileModel? professional,
+    ProfileModel? patient,
     String? description,
     String? file,
   }) {
@@ -67,10 +67,10 @@ class PersonBookModel {
       id: map['id'],
       event: map['event'] != null ? EventModel.fromMap(map['event']) : null,
       professional: map['professional'] != null
-          ? UserModel.fromMap(map['professional'])
+          ? ProfileModel.fromMap(map['professional'])
           : null,
       patient:
-          map['patient'] != null ? UserModel.fromMap(map['patient']) : null,
+          map['patient'] != null ? ProfileModel.fromMap(map['patient']) : null,
       description: map['description'],
       file: map['file'],
     );

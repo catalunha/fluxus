@@ -8,11 +8,14 @@ import 'package:fluxus/core/models/office_model.dart';
 import 'package:fluxus/core/models/plan_model.dart';
 import 'package:fluxus/core/models/user_model.dart';
 
-class UserProfileModel {
+class ProfileModel {
   final String? id;
+  final String? email;
   final String? name;
   final String? phone;
   final String? address;
+  final String? cep;
+  final String? pluscode;
   final String? photo;
   final String? cpf;
   final bool? isMale;
@@ -22,16 +25,18 @@ class UserProfileModel {
   final bool? isActive;
   final UserModel? parent;
   final List<String>? routes;
-  final List<ExpertiseModel>? expertise; // setor
-  final List<OfficeModel>? office; // cargo
+  final List<ExpertiseModel>? expertise; // especialidade
+  final List<OfficeModel>? office; // cargo: Adm, Sec, Aval, Prof, Paciente
   final List<AgreementModel>? agreement; // convenio
   final List<PlanModel>? plan; // plano
-  final String? status; // plano
-  UserProfileModel({
+  ProfileModel({
     this.id,
+    this.email,
     this.name,
     this.phone,
     this.address,
+    this.cep,
+    this.pluscode,
     this.photo,
     this.cpf,
     this.isMale,
@@ -45,14 +50,16 @@ class UserProfileModel {
     this.office,
     this.agreement,
     this.plan,
-    this.status,
   });
 
-  UserProfileModel copyWith({
+  ProfileModel copyWith({
     String? id,
+    String? email,
     String? name,
     String? phone,
     String? address,
+    String? cep,
+    String? pluscode,
     String? photo,
     String? cpf,
     bool? isMale,
@@ -66,13 +73,15 @@ class UserProfileModel {
     List<OfficeModel>? office,
     List<AgreementModel>? agreement,
     List<PlanModel>? plan,
-    String? status,
   }) {
-    return UserProfileModel(
+    return ProfileModel(
       id: id ?? this.id,
+      email: email ?? this.email,
       name: name ?? this.name,
       phone: phone ?? this.phone,
       address: address ?? this.address,
+      cep: cep ?? this.cep,
+      pluscode: pluscode ?? this.pluscode,
       photo: photo ?? this.photo,
       cpf: cpf ?? this.cpf,
       isMale: isMale ?? this.isMale,
@@ -86,7 +95,6 @@ class UserProfileModel {
       office: office ?? this.office,
       agreement: agreement ?? this.agreement,
       plan: plan ?? this.plan,
-      status: status ?? this.status,
     );
   }
 
@@ -96,6 +104,9 @@ class UserProfileModel {
     if (id != null) {
       result.addAll({'id': id});
     }
+    if (email != null) {
+      result.addAll({'email': email});
+    }
     if (name != null) {
       result.addAll({'name': name});
     }
@@ -104,6 +115,12 @@ class UserProfileModel {
     }
     if (address != null) {
       result.addAll({'address': address});
+    }
+    if (cep != null) {
+      result.addAll({'cep': cep});
+    }
+    if (pluscode != null) {
+      result.addAll({'pluscode': pluscode});
     }
     if (photo != null) {
       result.addAll({'photo': photo});
@@ -144,19 +161,19 @@ class UserProfileModel {
     if (plan != null) {
       result.addAll({'plan': plan!.map((x) => x.toMap()).toList()});
     }
-    if (status != null) {
-      result.addAll({'status': status});
-    }
 
     return result;
   }
 
-  factory UserProfileModel.fromMap(Map<String, dynamic> map) {
-    return UserProfileModel(
+  factory ProfileModel.fromMap(Map<String, dynamic> map) {
+    return ProfileModel(
       id: map['id'],
+      email: map['email'],
       name: map['name'],
       phone: map['phone'],
       address: map['address'],
+      cep: map['cep'],
+      pluscode: map['pluscode'],
       photo: map['photo'],
       cpf: map['cpf'],
       isMale: map['isMale'],
@@ -183,29 +200,31 @@ class UserProfileModel {
       plan: map['plan'] != null
           ? List<PlanModel>.from(map['plan']?.map((x) => PlanModel.fromMap(x)))
           : null,
-      status: map['status'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UserProfileModel.fromJson(String source) =>
-      UserProfileModel.fromMap(json.decode(source));
+  factory ProfileModel.fromJson(String source) =>
+      ProfileModel.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'UserProfileModel(id: $id, name: $name, phone: $phone, address: $address, photo: $photo, cpf: $cpf, isMale: $isMale, birthday: $birthday, description: $description, register: $register, isActive: $isActive, parent: $parent, routes: $routes, expertise: $expertise, office: $office, agreement: $agreement, plan: $plan, status: $status)';
+    return 'ProfileModel(id: $id, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isMale: $isMale, birthday: $birthday, description: $description, register: $register, isActive: $isActive, parent: $parent, routes: $routes, expertise: $expertise, office: $office, agreement: $agreement, plan: $plan)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is UserProfileModel &&
+    return other is ProfileModel &&
         other.id == id &&
+        other.email == email &&
         other.name == name &&
         other.phone == phone &&
         other.address == address &&
+        other.cep == cep &&
+        other.pluscode == pluscode &&
         other.photo == photo &&
         other.cpf == cpf &&
         other.isMale == isMale &&
@@ -218,16 +237,18 @@ class UserProfileModel {
         listEquals(other.expertise, expertise) &&
         listEquals(other.office, office) &&
         listEquals(other.agreement, agreement) &&
-        listEquals(other.plan, plan) &&
-        other.status == status;
+        listEquals(other.plan, plan);
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
+        email.hashCode ^
         name.hashCode ^
         phone.hashCode ^
         address.hashCode ^
+        cep.hashCode ^
+        pluscode.hashCode ^
         photo.hashCode ^
         cpf.hashCode ^
         isMale.hashCode ^
@@ -240,7 +261,6 @@ class UserProfileModel {
         expertise.hashCode ^
         office.hashCode ^
         agreement.hashCode ^
-        plan.hashCode ^
-        status.hashCode;
+        plan.hashCode;
   }
 }

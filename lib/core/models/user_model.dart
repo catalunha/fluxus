@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:fluxus/core/models/user_profile_model.dart';
+import 'package:fluxus/core/models/profile_model.dart';
 
 class UserModel {
   final String id;
   final String email;
-  UserProfileModel? profile;
+  ProfileModel? profile;
   UserModel({
     required this.id,
     required this.email,
@@ -16,7 +16,7 @@ class UserModel {
     String? id,
     String? email,
     String? phone,
-    UserProfileModel? profile,
+    ProfileModel? profile,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -37,7 +37,7 @@ class UserModel {
     return UserModel(
       id: map['id'] ?? '',
       email: map['email'] ?? '',
-      profile: UserProfileModel?.fromMap(map['profile']),
+      profile: ProfileModel?.fromMap(map['profile']),
     );
   }
 

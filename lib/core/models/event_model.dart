@@ -2,48 +2,73 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:fluxus/core/models/agreement_model.dart';
+import 'package:fluxus/core/models/event_status_model.dart';
+import 'package:fluxus/core/models/expertise_model.dart';
+import 'package:fluxus/core/models/plan_model.dart';
+import 'package:fluxus/core/models/profile_model.dart';
 import 'package:fluxus/core/models/room_model.dart';
 import 'package:fluxus/core/models/user_model.dart';
 
 class EventModel {
   final String? id;
-  final List<UserModel>? professionals;
-  final List<UserModel>? patients;
+  final List<UserModel>? user;
+  final List<ProfileModel>? professionals;
+  final List<ExpertiseModel>? expertise; // especialidade
+  final List<ProfileModel>? patients;
+  final List<AgreementModel>? agreement; // convenio
+  final List<PlanModel>? plan; // plano
   final RoomModel? room;
   final DateTime? start;
   final DateTime? end;
-  final String? status;
+  final EventStatusModel? status;
   final String? description;
+  final String? history;
   EventModel({
     this.id,
+    this.user,
     this.professionals,
+    this.expertise,
     this.patients,
+    this.agreement,
+    this.plan,
     this.room,
     this.start,
     this.end,
     this.status,
     this.description,
+    this.history,
   });
 
   EventModel copyWith({
     String? id,
-    List<UserModel>? professionals,
-    List<UserModel>? patients,
+    List<UserModel>? user,
+    List<ProfileModel>? professionals,
+    List<ExpertiseModel>? expertise,
+    List<ProfileModel>? patients,
+    List<AgreementModel>? agreement,
+    List<PlanModel>? plan,
     RoomModel? room,
     DateTime? start,
     DateTime? end,
-    String? status,
+    EventStatusModel? status,
     String? description,
+    String? history,
   }) {
     return EventModel(
       id: id ?? this.id,
+      user: user ?? this.user,
       professionals: professionals ?? this.professionals,
+      expertise: expertise ?? this.expertise,
       patients: patients ?? this.patients,
+      agreement: agreement ?? this.agreement,
+      plan: plan ?? this.plan,
       room: room ?? this.room,
       start: start ?? this.start,
       end: end ?? this.end,
       status: status ?? this.status,
       description: description ?? this.description,
+      history: history ?? this.history,
     );
   }
 
@@ -53,12 +78,24 @@ class EventModel {
     if (id != null) {
       result.addAll({'id': id});
     }
+    if (user != null) {
+      result.addAll({'user': user!.map((x) => x.toMap()).toList()});
+    }
     if (professionals != null) {
       result.addAll(
           {'professionals': professionals!.map((x) => x.toMap()).toList()});
     }
+    if (expertise != null) {
+      result.addAll({'expertise': expertise!.map((x) => x.toMap()).toList()});
+    }
     if (patients != null) {
       result.addAll({'patients': patients!.map((x) => x.toMap()).toList()});
+    }
+    if (agreement != null) {
+      result.addAll({'agreement': agreement!.map((x) => x.toMap()).toList()});
+    }
+    if (plan != null) {
+      result.addAll({'plan': plan!.map((x) => x.toMap()).toList()});
     }
     if (room != null) {
       result.addAll({'room': room!.toMap()});
@@ -70,10 +107,13 @@ class EventModel {
       result.addAll({'end': end!.millisecondsSinceEpoch});
     }
     if (status != null) {
-      result.addAll({'status': status});
+      result.addAll({'status': status!.toMap()});
     }
     if (description != null) {
       result.addAll({'description': description});
+    }
+    if (history != null) {
+      result.addAll({'history': history});
     }
 
     return result;
@@ -82,13 +122,27 @@ class EventModel {
   factory EventModel.fromMap(Map<String, dynamic> map) {
     return EventModel(
       id: map['id'],
+      user: map['user'] != null
+          ? List<UserModel>.from(map['user']?.map((x) => UserModel.fromMap(x)))
+          : null,
       professionals: map['professionals'] != null
-          ? List<UserModel>.from(
-              map['professionals']?.map((x) => UserModel.fromMap(x)))
+          ? List<ProfileModel>.from(
+              map['professionals']?.map((x) => ProfileModel.fromMap(x)))
+          : null,
+      expertise: map['expertise'] != null
+          ? List<ExpertiseModel>.from(
+              map['expertise']?.map((x) => ExpertiseModel.fromMap(x)))
           : null,
       patients: map['patients'] != null
-          ? List<UserModel>.from(
-              map['patients']?.map((x) => UserModel.fromMap(x)))
+          ? List<ProfileModel>.from(
+              map['patients']?.map((x) => ProfileModel.fromMap(x)))
+          : null,
+      agreement: map['agreement'] != null
+          ? List<AgreementModel>.from(
+              map['agreement']?.map((x) => AgreementModel.fromMap(x)))
+          : null,
+      plan: map['plan'] != null
+          ? List<PlanModel>.from(map['plan']?.map((x) => PlanModel.fromMap(x)))
           : null,
       room: map['room'] != null ? RoomModel.fromMap(map['room']) : null,
       start: map['start'] != null
@@ -97,8 +151,11 @@ class EventModel {
       end: map['end'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['end'])
           : null,
-      status: map['status'],
+      status: map['status'] != null
+          ? EventStatusModel.fromMap(map['status'])
+          : null,
       description: map['description'],
+      history: map['history'],
     );
   }
 
@@ -109,7 +166,7 @@ class EventModel {
 
   @override
   String toString() {
-    return 'EventModel(id: $id, professionals: $professionals, patients: $patients, room: $room, start: $start, end: $end, status: $status, description: $description)';
+    return 'EventModel(id: $id, user: $user, professionals: $professionals, expertise: $expertise, patients: $patients, agreement: $agreement, plan: $plan, room: $room, start: $start, end: $end, status: $status, description: $description, history: $history)';
   }
 
   @override
@@ -118,24 +175,34 @@ class EventModel {
 
     return other is EventModel &&
         other.id == id &&
+        listEquals(other.user, user) &&
         listEquals(other.professionals, professionals) &&
+        listEquals(other.expertise, expertise) &&
         listEquals(other.patients, patients) &&
+        listEquals(other.agreement, agreement) &&
+        listEquals(other.plan, plan) &&
         other.room == room &&
         other.start == start &&
         other.end == end &&
         other.status == status &&
-        other.description == description;
+        other.description == description &&
+        other.history == history;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
+        user.hashCode ^
         professionals.hashCode ^
+        expertise.hashCode ^
         patients.hashCode ^
+        agreement.hashCode ^
+        plan.hashCode ^
         room.hashCode ^
         start.hashCode ^
         end.hashCode ^
         status.hashCode ^
-        description.hashCode;
+        description.hashCode ^
+        history.hashCode;
   }
 }
