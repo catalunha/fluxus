@@ -137,41 +137,50 @@ Status: Agendado
 
 3.1 Profissional atende. Fim Evento 2
 Descrição: Encaminho pela Avaliadora X
-Descrição: Paciente precisa, quer, pode nova seção.
+Descrição: Paciente em atendimento precisa, quer, pode nova seção.
 Status: Nova seção
 @ Secretaria criará novo evento
 @ profissional recebe.
 
 3.2 Profissional atendendo. Fim Evento 2
 Descrição: Encaminho pela Avaliadora X
-Descrição: Paciente precisa mas não quer ( nem pode ) nova seção. Paciente para tratamento.
-Status: Aguardar
+Descrição: Paciente em atendimento. precisa mas não quer ( nem pode ) nova seção. Paciente para tratamento.
+Status: Pausar tratamento
 @ profissional recebe.
 
 3.3 Profissional faltou. Fim Evento 2
 Descrição: Encaminho pela Avaliadora X
-Descrição: Paciente no atendimento e profissional nao pode vir
-Status: Desmarcado Pelo Profissional
+Descrição: profissional nao pode vir
+Status: Desmarcado pelo Profissional
+@ Secretaria criará novo evento
+// ao criar evento copia para agendamento o app registra a origem do pedido que é o evento 1
+
+3.4 Profissional atende. Fim Evento 2
+Descrição: Encaminho pela Avaliadora X
+Descrição: Paciente pede para desmarcar o agendamento.
+Status: Desmarcado pelo paciente
 @ Secretaria criará novo evento
 
-// 3.4 Profissional atende. Fim Evento 2
-// Descrição: Encaminho pela Avaliadora X
-// Descrição: Paciente pede para cancelar agendamento
-// Status: Desmarcado pelo paciente
-
-3.5 Profissional atende. Fim Evento 2
+3.5 Profissional atendendo. Fim Evento 2
 Descrição: Encaminho pela Avaliadora X
-Descrição: Profissional na sala e paciente nao pode vir
+Descrição: Paciente pede para desmarcar o agendamento. adiando para depois
+Status: Adiar
+
+3.6 Profissional atende. Fim Evento 2
+Descrição: Encaminho pela Avaliadora X
+Descrição: Profissional na sala e paciente cancela
 Status: Cancelado Pelo Paciente
+@ profissional recebe.
 
 3.7 Profissional atende. Fim Evento 2
 Descrição: Encaminho pela Avaliadora X
-Descrição: Profissional pede para cancelar agendamento
-Status: Desmarcado pelo Profissional
+Descrição: Paciente na sala de espera e profissional cancela.
+Status: Cancelado pelo Profissional
 
 3.8 Profissional atende. Fim Evento 2
 Descrição: Encaminho pela Avaliadora X
-Descrição: Encerrar tratamento
+Descrição: Encerrar tratamento.
 Status: Finalizado.
-
+@ profissional recebe.
 */
+
