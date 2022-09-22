@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fluxus/core/models/agreement_model.dart';
 import 'package:fluxus/core/models/event_status_model.dart';
 import 'package:fluxus/core/models/expertise_model.dart';
+import 'package:fluxus/core/models/modality_model.dart';
 import 'package:fluxus/core/models/plan_model.dart';
 import 'package:fluxus/core/models/profile_model.dart';
 import 'package:fluxus/core/models/room_model.dart';
@@ -18,6 +19,7 @@ class EventModel {
   final List<ProfileModel>? patients;
   final List<AgreementModel>? agreement; // convenio
   final List<PlanModel>? plan; // plano
+  final List<ModalityModel>? modality; // plano
   final RoomModel? room;
   final DateTime? start;
   final DateTime? end;
@@ -32,6 +34,7 @@ class EventModel {
     this.patients,
     this.agreement,
     this.plan,
+    this.modality,
     this.room,
     this.start,
     this.end,
@@ -48,6 +51,7 @@ class EventModel {
     List<ProfileModel>? patients,
     List<AgreementModel>? agreement,
     List<PlanModel>? plan,
+    List<ModalityModel>? modality,
     RoomModel? room,
     DateTime? start,
     DateTime? end,
@@ -63,6 +67,7 @@ class EventModel {
       patients: patients ?? this.patients,
       agreement: agreement ?? this.agreement,
       plan: plan ?? this.plan,
+      modality: modality ?? this.modality,
       room: room ?? this.room,
       start: start ?? this.start,
       end: end ?? this.end,
@@ -96,6 +101,9 @@ class EventModel {
     }
     if (plan != null) {
       result.addAll({'plan': plan!.map((x) => x.toMap()).toList()});
+    }
+    if (modality != null) {
+      result.addAll({'modality': modality!.map((x) => x.toMap()).toList()});
     }
     if (room != null) {
       result.addAll({'room': room!.toMap()});
@@ -144,6 +152,10 @@ class EventModel {
       plan: map['plan'] != null
           ? List<PlanModel>.from(map['plan']?.map((x) => PlanModel.fromMap(x)))
           : null,
+      modality: map['modality'] != null
+          ? List<ModalityModel>.from(
+              map['modality']?.map((x) => ModalityModel.fromMap(x)))
+          : null,
       room: map['room'] != null ? RoomModel.fromMap(map['room']) : null,
       start: map['start'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['start'])
@@ -166,7 +178,7 @@ class EventModel {
 
   @override
   String toString() {
-    return 'EventModel(id: $id, user: $user, professionals: $professionals, expertise: $expertise, patients: $patients, agreement: $agreement, plan: $plan, room: $room, start: $start, end: $end, status: $status, description: $description, history: $history)';
+    return 'EventModel(id: $id, user: $user, professionals: $professionals, expertise: $expertise, patients: $patients, agreement: $agreement, plan: $plan, modality: $modality, room: $room, start: $start, end: $end, status: $status, description: $description, history: $history)';
   }
 
   @override
@@ -181,6 +193,7 @@ class EventModel {
         listEquals(other.patients, patients) &&
         listEquals(other.agreement, agreement) &&
         listEquals(other.plan, plan) &&
+        listEquals(other.modality, modality) &&
         other.room == room &&
         other.start == start &&
         other.end == end &&
@@ -198,6 +211,7 @@ class EventModel {
         patients.hashCode ^
         agreement.hashCode ^
         plan.hashCode ^
+        modality.hashCode ^
         room.hashCode ^
         start.hashCode ^
         end.hashCode ^
