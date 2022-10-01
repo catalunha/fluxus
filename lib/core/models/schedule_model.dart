@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:fluxus/core/models/event_model.dart';
 import 'package:fluxus/core/models/room_model.dart';
 
+/// Agenda dos eventos
 class ScheduleModel {
   final String? id;
   final EventModel? event;

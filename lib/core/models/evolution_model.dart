@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'package:fluxus/core/models/event_model.dart';
 import 'package:fluxus/core/models/expertise_model.dart';
 import 'package:fluxus/core/models/profile_model.dart';
+import 'package:fluxus/core/models/user_model.dart';
 
 ///Evolução do paciente.
 class EvolutionModel {
   final String? id;
   final EventModel? event;
   final ExpertiseModel? expertiseModel;
-  final ProfileModel? professional;
+  final UserModel? professional;
   final ProfileModel? patient;
   final String? description;
   final String? file;
@@ -30,7 +31,7 @@ class EvolutionModel {
     String? id,
     EventModel? event,
     ExpertiseModel? expertiseModel,
-    ProfileModel? professional,
+    UserModel? professional,
     ProfileModel? patient,
     String? description,
     String? file,
@@ -87,7 +88,7 @@ class EvolutionModel {
           ? ExpertiseModel.fromMap(map['expertiseModel'])
           : null,
       professional: map['professional'] != null
-          ? ProfileModel.fromMap(map['professional'])
+          ? UserModel.fromMap(map['professional'])
           : null,
       patient:
           map['patient'] != null ? ProfileModel.fromMap(map['patient']) : null,

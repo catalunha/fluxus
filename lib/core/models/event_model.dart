@@ -11,6 +11,7 @@ import 'package:fluxus/core/models/profile_model.dart';
 import 'package:fluxus/core/models/room_model.dart';
 import 'package:fluxus/core/models/user_model.dart';
 
+/// Evento
 class EventModel {
   final String? id;
   final List<UserModel>? user;
