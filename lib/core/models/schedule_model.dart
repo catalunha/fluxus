@@ -9,12 +9,15 @@ class ScheduleModel {
   final RoomModel? room;
   final DateTime? start;
   final DateTime? end;
+  final bool? isDeleted;
+
   ScheduleModel({
     this.id,
     this.event,
     this.room,
     this.start,
     this.end,
+    this.isDeleted,
   });
 
   ScheduleModel copyWith({
@@ -23,6 +26,7 @@ class ScheduleModel {
     RoomModel? room,
     DateTime? start,
     DateTime? end,
+    bool? isDeleted,
   }) {
     return ScheduleModel(
       id: id ?? this.id,
@@ -30,6 +34,7 @@ class ScheduleModel {
       room: room ?? this.room,
       start: start ?? this.start,
       end: end ?? this.end,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
@@ -51,6 +56,9 @@ class ScheduleModel {
     if (end != null) {
       result.addAll({'end': end!.millisecondsSinceEpoch});
     }
+    if (isDeleted != null) {
+      result.addAll({'isDeleted': isDeleted});
+    }
 
     return result;
   }
@@ -66,6 +74,7 @@ class ScheduleModel {
       end: map['end'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['end'])
           : null,
+      isDeleted: map['isDeleted'],
     );
   }
 
@@ -76,7 +85,7 @@ class ScheduleModel {
 
   @override
   String toString() {
-    return 'ScheduleModel(id: $id, event: $event, room: $room, start: $start, end: $end)';
+    return 'ScheduleModel(id: $id, event: $event, room: $room, start: $start, end: $end, isDeleted: $isDeleted)';
   }
 
   @override
@@ -88,7 +97,8 @@ class ScheduleModel {
         other.event == event &&
         other.room == room &&
         other.start == start &&
-        other.end == end;
+        other.end == end &&
+        other.isDeleted == isDeleted;
   }
 
   @override
@@ -97,6 +107,7 @@ class ScheduleModel {
         event.hashCode ^
         room.hashCode ^
         start.hashCode ^
-        end.hashCode;
+        end.hashCode ^
+        isDeleted.hashCode;
   }
 }

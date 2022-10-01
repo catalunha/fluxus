@@ -1,39 +1,48 @@
 import 'dart:convert';
 
-import 'package:fluxus/core/models/event_model.dart';
 import 'package:fluxus/core/models/profile_model.dart';
 
-class PersonBookModel {
+/// Avaliação do paciente.
+/// Ficha padrão com.
+///
+/// Pergunta 1: Bla bla bla..
+///
+/// pa pa pa ...
+///
+/// Opção 2:  Bla bla bla..
+///
+/// ( x ) A (  ) B
+///
+/// Escolha 3:  Bla bla bla..
+///
+/// [ x ] A [ x ] B [  ] C
+class EvaluationModel {
   final String? id;
-  final EventModel? event;
   final ProfileModel? professional;
-  final ProfileModel? patient;
+  final String? name;
   final String? description;
-  final String? file;
-  PersonBookModel({
+  final bool? isDeleted;
+  EvaluationModel({
     this.id,
-    this.event,
     this.professional,
-    this.patient,
+    this.name,
     this.description,
-    this.file,
+    this.isDeleted,
   });
 
-  PersonBookModel copyWith({
+  EvaluationModel copyWith({
     String? id,
-    EventModel? event,
     ProfileModel? professional,
-    ProfileModel? patient,
+    String? name,
     String? description,
-    String? file,
+    bool? isDeleted,
   }) {
-    return PersonBookModel(
+    return EvaluationModel(
       id: id ?? this.id,
-      event: event ?? this.event,
       professional: professional ?? this.professional,
-      patient: patient ?? this.patient,
+      name: name ?? this.name,
       description: description ?? this.description,
-      file: file ?? this.file,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
@@ -43,69 +52,62 @@ class PersonBookModel {
     if (id != null) {
       result.addAll({'id': id});
     }
-    if (event != null) {
-      result.addAll({'event': event!.toMap()});
-    }
     if (professional != null) {
       result.addAll({'professional': professional!.toMap()});
     }
-    if (patient != null) {
-      result.addAll({'patient': patient!.toMap()});
+    if (name != null) {
+      result.addAll({'name': name});
     }
     if (description != null) {
       result.addAll({'description': description});
     }
-    if (file != null) {
-      result.addAll({'file': file});
+    if (isDeleted != null) {
+      result.addAll({'isDeleted': isDeleted});
     }
 
     return result;
   }
 
-  factory PersonBookModel.fromMap(Map<String, dynamic> map) {
-    return PersonBookModel(
+  factory EvaluationModel.fromMap(Map<String, dynamic> map) {
+    return EvaluationModel(
       id: map['id'],
-      event: map['event'] != null ? EventModel.fromMap(map['event']) : null,
       professional: map['professional'] != null
           ? ProfileModel.fromMap(map['professional'])
           : null,
-      patient:
-          map['patient'] != null ? ProfileModel.fromMap(map['patient']) : null,
+      name: map['name'],
       description: map['description'],
-      file: map['file'],
+      isDeleted: map['isDeleted'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory PersonBookModel.fromJson(String source) =>
-      PersonBookModel.fromMap(json.decode(source));
+  factory EvaluationModel.fromJson(String source) =>
+      EvaluationModel.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'PersonBookModel(id: $id, event: $event, professional: $professional, patient: $patient, description: $description, file: $file)';
+    return 'EvaluationModel(id: $id, professional: $professional, name: $name, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is PersonBookModel &&
+    return other is EvaluationModel &&
         other.id == id &&
-        other.event == event &&
         other.professional == professional &&
-        other.patient == patient &&
+        other.name == name &&
         other.description == description &&
-        other.file == file;
+        other.isDeleted == isDeleted;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-        event.hashCode ^
         professional.hashCode ^
-        patient.hashCode ^
+        name.hashCode ^
         description.hashCode ^
-        file.hashCode;
+        isDeleted.hashCode;
   }
 }

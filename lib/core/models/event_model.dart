@@ -14,7 +14,7 @@ import 'package:fluxus/core/models/user_model.dart';
 class EventModel {
   final String? id;
   final List<UserModel>? user;
-  final List<ProfileModel>? professionals;
+  final List<UserModel>? professionals;
   final List<ExpertiseModel>? expertise; // especialidade
   final List<ProfileModel>? patients;
   final List<AgreementModel>? agreement; // convenio
@@ -24,8 +24,10 @@ class EventModel {
   final DateTime? start;
   final DateTime? end;
   final EventStatusModel? status;
+  final String? log;
   final String? description;
-  final String? history;
+  final bool? isDeleted;
+
   EventModel({
     this.id,
     this.user,
@@ -39,14 +41,15 @@ class EventModel {
     this.start,
     this.end,
     this.status,
+    this.log,
     this.description,
-    this.history,
+    this.isDeleted,
   });
 
   EventModel copyWith({
     String? id,
     List<UserModel>? user,
-    List<ProfileModel>? professionals,
+    List<UserModel>? professionals,
     List<ExpertiseModel>? expertise,
     List<ProfileModel>? patients,
     List<AgreementModel>? agreement,
@@ -56,8 +59,9 @@ class EventModel {
     DateTime? start,
     DateTime? end,
     EventStatusModel? status,
+    String? log,
     String? description,
-    String? history,
+    bool? isDeleted,
   }) {
     return EventModel(
       id: id ?? this.id,
@@ -72,8 +76,9 @@ class EventModel {
       start: start ?? this.start,
       end: end ?? this.end,
       status: status ?? this.status,
+      log: log ?? this.log,
       description: description ?? this.description,
-      history: history ?? this.history,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
@@ -117,11 +122,14 @@ class EventModel {
     if (status != null) {
       result.addAll({'status': status!.toMap()});
     }
+    if (log != null) {
+      result.addAll({'log': log});
+    }
     if (description != null) {
       result.addAll({'description': description});
     }
-    if (history != null) {
-      result.addAll({'history': history});
+    if (isDeleted != null) {
+      result.addAll({'isDeleted': isDeleted});
     }
 
     return result;
@@ -134,8 +142,8 @@ class EventModel {
           ? List<UserModel>.from(map['user']?.map((x) => UserModel.fromMap(x)))
           : null,
       professionals: map['professionals'] != null
-          ? List<ProfileModel>.from(
-              map['professionals']?.map((x) => ProfileModel.fromMap(x)))
+          ? List<UserModel>.from(
+              map['professionals']?.map((x) => UserModel.fromMap(x)))
           : null,
       expertise: map['expertise'] != null
           ? List<ExpertiseModel>.from(
@@ -166,8 +174,9 @@ class EventModel {
       status: map['status'] != null
           ? EventStatusModel.fromMap(map['status'])
           : null,
+      log: map['log'],
       description: map['description'],
-      history: map['history'],
+      isDeleted: map['isDeleted'],
     );
   }
 
@@ -178,7 +187,7 @@ class EventModel {
 
   @override
   String toString() {
-    return 'EventModel(id: $id, user: $user, professionals: $professionals, expertise: $expertise, patients: $patients, agreement: $agreement, plan: $plan, modality: $modality, room: $room, start: $start, end: $end, status: $status, description: $description, history: $history)';
+    return 'EventModel(id: $id, user: $user, professionals: $professionals, expertise: $expertise, patients: $patients, agreement: $agreement, plan: $plan, modality: $modality, room: $room, start: $start, end: $end, status: $status, log: $log, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
@@ -198,8 +207,9 @@ class EventModel {
         other.start == start &&
         other.end == end &&
         other.status == status &&
+        other.log == log &&
         other.description == description &&
-        other.history == history;
+        other.isDeleted == isDeleted;
   }
 
   @override
@@ -216,7 +226,8 @@ class EventModel {
         start.hashCode ^
         end.hashCode ^
         status.hashCode ^
+        log.hashCode ^
         description.hashCode ^
-        history.hashCode;
+        isDeleted.hashCode;
   }
 }

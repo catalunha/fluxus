@@ -1,17 +1,20 @@
 import 'dart:convert';
 
+/// Plano do paciente dentro da clinica
 class PlanModel {
   final String? id;
   final String? name;
   final String? code;
   final DateTime? due;
   final bool? isActive;
+  final bool? isDeleted;
   PlanModel({
     this.id,
     this.name,
     this.code,
     this.due,
     this.isActive,
+    this.isDeleted,
   });
 
   PlanModel copyWith({
@@ -20,6 +23,7 @@ class PlanModel {
     String? code,
     DateTime? due,
     bool? isActive,
+    bool? isDeleted,
   }) {
     return PlanModel(
       id: id ?? this.id,
@@ -27,6 +31,7 @@ class PlanModel {
       code: code ?? this.code,
       due: due ?? this.due,
       isActive: isActive ?? this.isActive,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
@@ -48,6 +53,9 @@ class PlanModel {
     if (isActive != null) {
       result.addAll({'isActive': isActive});
     }
+    if (isDeleted != null) {
+      result.addAll({'isDeleted': isDeleted});
+    }
 
     return result;
   }
@@ -61,6 +69,7 @@ class PlanModel {
           ? DateTime.fromMillisecondsSinceEpoch(map['due'])
           : null,
       isActive: map['isActive'],
+      isDeleted: map['isDeleted'],
     );
   }
 
@@ -71,7 +80,7 @@ class PlanModel {
 
   @override
   String toString() {
-    return 'PlanModel(id: $id, name: $name, code: $code, due: $due, isActive: $isActive)';
+    return 'PlanModel(id: $id, name: $name, code: $code, due: $due, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -83,7 +92,8 @@ class PlanModel {
         other.name == name &&
         other.code == code &&
         other.due == due &&
-        other.isActive == isActive;
+        other.isActive == isActive &&
+        other.isDeleted == isDeleted;
   }
 
   @override
@@ -92,6 +102,7 @@ class PlanModel {
         name.hashCode ^
         code.hashCode ^
         due.hashCode ^
-        isActive.hashCode;
+        isActive.hashCode ^
+        isDeleted.hashCode;
   }
 }

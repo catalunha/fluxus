@@ -1,17 +1,21 @@
 import 'dart:convert';
 
+/// Convenio do paciente
 class AgreementModel {
   final String? id;
   final String? name;
   final String? code;
   final DateTime? due;
   final bool? isActive;
+  final bool? isDeleted;
+
   AgreementModel({
     this.id,
     this.name,
     this.code,
     this.due,
     this.isActive,
+    this.isDeleted,
   });
 
   AgreementModel copyWith({
@@ -20,6 +24,7 @@ class AgreementModel {
     String? code,
     DateTime? due,
     bool? isActive,
+    bool? isDeleted,
   }) {
     return AgreementModel(
       id: id ?? this.id,
@@ -27,6 +32,7 @@ class AgreementModel {
       code: code ?? this.code,
       due: due ?? this.due,
       isActive: isActive ?? this.isActive,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
@@ -48,6 +54,9 @@ class AgreementModel {
     if (isActive != null) {
       result.addAll({'isActive': isActive});
     }
+    if (isDeleted != null) {
+      result.addAll({'isDeleted': isDeleted});
+    }
 
     return result;
   }
@@ -61,6 +70,7 @@ class AgreementModel {
           ? DateTime.fromMillisecondsSinceEpoch(map['due'])
           : null,
       isActive: map['isActive'],
+      isDeleted: map['isDeleted'],
     );
   }
 
@@ -71,7 +81,7 @@ class AgreementModel {
 
   @override
   String toString() {
-    return 'AgreementModel(id: $id, name: $name, code: $code, due: $due, isActive: $isActive)';
+    return 'AgreementModel(id: $id, name: $name, code: $code, due: $due, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -83,7 +93,8 @@ class AgreementModel {
         other.name == name &&
         other.code == code &&
         other.due == due &&
-        other.isActive == isActive;
+        other.isActive == isActive &&
+        other.isDeleted == isDeleted;
   }
 
   @override
@@ -92,6 +103,7 @@ class AgreementModel {
         name.hashCode ^
         code.hashCode ^
         due.hashCode ^
-        isActive.hashCode;
+        isActive.hashCode ^
+        isDeleted.hashCode;
   }
 }

@@ -1,24 +1,30 @@
 import 'dart:convert';
 
+/// Cargo: Adm, Sec, Aval, Prof, Paciente
 class OfficeModel {
   final String? id;
   final String? name;
   final String? description;
+  final bool? isDeleted;
+
   OfficeModel({
     this.id,
     this.name,
     this.description,
+    this.isDeleted,
   });
 
   OfficeModel copyWith({
     String? id,
     String? name,
     String? description,
+    bool? isDeleted,
   }) {
     return OfficeModel(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
@@ -34,6 +40,9 @@ class OfficeModel {
     if (description != null) {
       result.addAll({'description': description});
     }
+    if (isDeleted != null) {
+      result.addAll({'isDeleted': isDeleted});
+    }
 
     return result;
   }
@@ -43,6 +52,7 @@ class OfficeModel {
       id: map['id'],
       name: map['name'],
       description: map['description'],
+      isDeleted: map['isDeleted'],
     );
   }
 
@@ -52,8 +62,9 @@ class OfficeModel {
       OfficeModel.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'OfficeModel(id: $id, name: $name, description: $description)';
+  String toString() {
+    return 'OfficeModel(id: $id, name: $name, description: $description, isDeleted: $isDeleted)';
+  }
 
   @override
   bool operator ==(Object other) {
@@ -62,9 +73,15 @@ class OfficeModel {
     return other is OfficeModel &&
         other.id == id &&
         other.name == name &&
-        other.description == description;
+        other.description == description &&
+        other.isDeleted == isDeleted;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ description.hashCode;
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        description.hashCode ^
+        isDeleted.hashCode;
+  }
 }

@@ -1,24 +1,30 @@
 import 'dart:convert';
 
+/// Especialidade
 class ExpertiseModel {
   final String? id;
   final String? name;
   final String? description;
+  final bool? isDeleted;
+
   ExpertiseModel({
     this.id,
     this.name,
     this.description,
+    this.isDeleted,
   });
 
   ExpertiseModel copyWith({
     String? id,
     String? name,
     String? description,
+    bool? isDeleted,
   }) {
     return ExpertiseModel(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
@@ -34,6 +40,9 @@ class ExpertiseModel {
     if (description != null) {
       result.addAll({'description': description});
     }
+    if (isDeleted != null) {
+      result.addAll({'isDeleted': isDeleted});
+    }
 
     return result;
   }
@@ -43,6 +52,7 @@ class ExpertiseModel {
       id: map['id'],
       name: map['name'],
       description: map['description'],
+      isDeleted: map['isDeleted'],
     );
   }
 
@@ -52,8 +62,9 @@ class ExpertiseModel {
       ExpertiseModel.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'SectorModel(id: $id, name: $name, description: $description)';
+  String toString() {
+    return 'ExpertiseModel(id: $id, name: $name, description: $description, isDeleted: $isDeleted)';
+  }
 
   @override
   bool operator ==(Object other) {
@@ -62,9 +73,15 @@ class ExpertiseModel {
     return other is ExpertiseModel &&
         other.id == id &&
         other.name == name &&
-        other.description == description;
+        other.description == description &&
+        other.isDeleted == isDeleted;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ description.hashCode;
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        description.hashCode ^
+        isDeleted.hashCode;
+  }
 }

@@ -1,28 +1,33 @@
 import 'dart:convert';
 
+/// Sala de atendimento
 class RoomModel {
   final String? id;
   final String? name;
-  final bool? isActive;
   final String? description;
+  final bool? isActive;
+  final bool? isDeleted;
   RoomModel({
     this.id,
     this.name,
-    this.isActive,
     this.description,
+    this.isActive,
+    this.isDeleted,
   });
 
   RoomModel copyWith({
     String? id,
     String? name,
-    bool? isActive,
     String? description,
+    bool? isActive,
+    bool? isDeleted,
   }) {
     return RoomModel(
       id: id ?? this.id,
       name: name ?? this.name,
-      isActive: isActive ?? this.isActive,
       description: description ?? this.description,
+      isActive: isActive ?? this.isActive,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
@@ -35,11 +40,14 @@ class RoomModel {
     if (name != null) {
       result.addAll({'name': name});
     }
+    if (description != null) {
+      result.addAll({'description': description});
+    }
     if (isActive != null) {
       result.addAll({'isActive': isActive});
     }
-    if (description != null) {
-      result.addAll({'description': description});
+    if (isDeleted != null) {
+      result.addAll({'isDeleted': isDeleted});
     }
 
     return result;
@@ -49,8 +57,9 @@ class RoomModel {
     return RoomModel(
       id: map['id'],
       name: map['name'],
-      isActive: map['isActive'],
       description: map['description'],
+      isActive: map['isActive'],
+      isDeleted: map['isDeleted'],
     );
   }
 
@@ -61,7 +70,7 @@ class RoomModel {
 
   @override
   String toString() {
-    return 'RoomModel(id: $id, name: $name, isActive: $isActive, description: $description)';
+    return 'RoomModel(id: $id, name: $name, description: $description, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -71,15 +80,17 @@ class RoomModel {
     return other is RoomModel &&
         other.id == id &&
         other.name == name &&
+        other.description == description &&
         other.isActive == isActive &&
-        other.description == description;
+        other.isDeleted == isDeleted;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
         name.hashCode ^
+        description.hashCode ^
         isActive.hashCode ^
-        description.hashCode;
+        isDeleted.hashCode;
   }
 }

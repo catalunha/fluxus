@@ -8,6 +8,7 @@ import 'package:fluxus/core/models/office_model.dart';
 import 'package:fluxus/core/models/plan_model.dart';
 import 'package:fluxus/core/models/user_model.dart';
 
+// Perfil de usuario ou pessoa
 class ProfileModel {
   final String? id;
   final String? email;
@@ -18,7 +19,7 @@ class ProfileModel {
   final String? pluscode;
   final String? photo;
   final String? cpf;
-  final bool? isMale;
+  final bool? isFemale;
   final DateTime? birthday;
   final String? description;
   final String? register; // conselho de saude
@@ -39,7 +40,7 @@ class ProfileModel {
     this.pluscode,
     this.photo,
     this.cpf,
-    this.isMale,
+    this.isFemale,
     this.birthday,
     this.description,
     this.register,
@@ -62,7 +63,7 @@ class ProfileModel {
     String? pluscode,
     String? photo,
     String? cpf,
-    bool? isMale,
+    bool? isFemale,
     DateTime? birthday,
     String? description,
     String? register,
@@ -84,7 +85,7 @@ class ProfileModel {
       pluscode: pluscode ?? this.pluscode,
       photo: photo ?? this.photo,
       cpf: cpf ?? this.cpf,
-      isMale: isMale ?? this.isMale,
+      isFemale: isFemale ?? this.isFemale,
       birthday: birthday ?? this.birthday,
       description: description ?? this.description,
       register: register ?? this.register,
@@ -128,8 +129,8 @@ class ProfileModel {
     if (cpf != null) {
       result.addAll({'cpf': cpf});
     }
-    if (isMale != null) {
-      result.addAll({'isMale': isMale});
+    if (isFemale != null) {
+      result.addAll({'isFemale': isFemale});
     }
     if (birthday != null) {
       result.addAll({'birthday': birthday!.millisecondsSinceEpoch});
@@ -176,7 +177,7 @@ class ProfileModel {
       pluscode: map['pluscode'],
       photo: map['photo'],
       cpf: map['cpf'],
-      isMale: map['isMale'],
+      isFemale: map['isFemale'],
       birthday: map['birthday'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['birthday'])
           : null,
@@ -210,7 +211,7 @@ class ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isMale: $isMale, birthday: $birthday, description: $description, register: $register, isActive: $isActive, parent: $parent, routes: $routes, expertise: $expertise, office: $office, agreement: $agreement, plan: $plan)';
+    return 'ProfileModel(id: $id, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, register: $register, isActive: $isActive, parent: $parent, routes: $routes, expertise: $expertise, office: $office, agreement: $agreement, plan: $plan)';
   }
 
   @override
@@ -227,7 +228,7 @@ class ProfileModel {
         other.pluscode == pluscode &&
         other.photo == photo &&
         other.cpf == cpf &&
-        other.isMale == isMale &&
+        other.isFemale == isFemale &&
         other.birthday == birthday &&
         other.description == description &&
         other.register == register &&
@@ -251,7 +252,7 @@ class ProfileModel {
         pluscode.hashCode ^
         photo.hashCode ^
         cpf.hashCode ^
-        isMale.hashCode ^
+        isFemale.hashCode ^
         birthday.hashCode ^
         description.hashCode ^
         register.hashCode ^
