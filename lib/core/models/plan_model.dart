@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-/// Plano do paciente dentro da clinica
+/// Plano na clinica
 class PlanModel {
   final String? id;
   final String? name;

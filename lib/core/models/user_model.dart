@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:fluxus/core/models/profile_model.dart';
 
-/// usuarios do sistema
+/// Usuarios do sistema
 class UserModel {
   final String id;
   final String email;

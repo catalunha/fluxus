@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fluxus/core/models/profile_model.dart';
+import 'package:fluxus/core/models/user_model.dart';
 
 /// Avaliação do paciente.
 /// Ficha padrão com.
@@ -16,9 +16,10 @@ import 'package:fluxus/core/models/profile_model.dart';
 /// Escolha 3:  Bla bla bla..
 ///
 /// [ x ] A [ x ] B [  ] C
+///
 class EvaluationModel {
   final String? id;
-  final ProfileModel? professional;
+  final UserModel? professional;
   final String? name;
   final String? description;
   final bool? isDeleted;
@@ -32,7 +33,7 @@ class EvaluationModel {
 
   EvaluationModel copyWith({
     String? id,
-    ProfileModel? professional,
+    UserModel? professional,
     String? name,
     String? description,
     bool? isDeleted,
@@ -72,7 +73,7 @@ class EvaluationModel {
     return EvaluationModel(
       id: map['id'],
       professional: map['professional'] != null
-          ? ProfileModel.fromMap(map['professional'])
+          ? UserModel.fromMap(map['professional'])
           : null,
       name: map['name'],
       description: map['description'],

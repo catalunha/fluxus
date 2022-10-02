@@ -16,11 +16,11 @@ class EventModel {
   final String? id;
   final List<UserModel>? user;
   final List<UserModel>? professionals;
-  final List<ExpertiseModel>? expertise; // especialidade
+  final List<ExpertiseModel>? expertise; // Especialidade
   final List<ProfileModel>? patients;
-  final List<AgreementModel>? agreement; // convenio
-  final List<PlanModel>? plan; // plano
-  final List<ModalityModel>? modality; // plano
+  final List<AgreementModel>? agreement; // Convenio
+  final List<PlanModel>? plan; // Plano
+  final List<ModalityModel>? modality; // Modalidade
   final RoomModel? room;
   final DateTime? start;
   final DateTime? end;
