@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:fluxus/core/models/agreement_model.dart';
-import 'package:fluxus/core/models/event_status_model.dart';
-import 'package:fluxus/core/models/expertise_model.dart';
-import 'package:fluxus/core/models/profile_model.dart';
-import 'package:fluxus/core/models/room_model.dart';
-import 'package:fluxus/core/models/user_model.dart';
+import 'package:fluxus/app/core/models/agreement_model.dart';
+import 'package:fluxus/app/core/models/event_status_model.dart';
+import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/models/profile_model.dart';
+import 'package:fluxus/app/core/models/room_model.dart';
+import 'package:fluxus/app/core/models/user_model.dart';
 
 /// Evento
 class EventModel {

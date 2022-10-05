@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:fluxus/core/models/expertise_model.dart';
-import 'package:fluxus/core/models/user_model.dart';
+import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/models/user_model.dart';
 
 /// Avaliação do paciente.
 /// Ficha padrão com.

@@ -1,0 +1,23 @@
+
+Parse.Cloud.beforeSave(Parse.User,async(req)=>{
+  let user = req.object;
+  console.log(`beforeSave User with ${user.email}. Create profile.`);
+
+  if(user.get('profile')===undefined){
+    const profile = new Parse.Object("Profile");
+    profile.set('email',user.get('email'));
+    let profileResult = await profile.save(null,{ useMasterKey: true });
+    user.set('profile',profileResult);
+  }
+});
+
+Parse.Cloud.afterDelete(Parse.User,async(req)=>{
+  let user = req.object;
+
+  console.log(`afterDelete user ${user.id}`);
+  let profileId = user.get('profile').id;
+  console.log(`deleting profile ${profileId}`);
+  const profile = new Parse.Object("profile");
+  profile.id = profileId;
+  await profile.destroy({ useMasterKey: true });
+});

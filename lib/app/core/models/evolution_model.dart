@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:fluxus/core/models/cid_model.dart';
-import 'package:fluxus/core/models/event_model.dart';
-import 'package:fluxus/core/models/expertise_model.dart';
-import 'package:fluxus/core/models/profile_model.dart';
-import 'package:fluxus/core/models/user_model.dart';
+import 'package:fluxus/app/core/models/cid_model.dart';
+import 'package:fluxus/app/core/models/event_model.dart';
+import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/models/profile_model.dart';
+import 'package:fluxus/app/core/models/user_model.dart';
 
 ///Evolução do paciente.
 class EvolutionModel {

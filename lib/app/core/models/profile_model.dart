@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:fluxus/core/models/agreement_model.dart';
-import 'package:fluxus/core/models/expertise_model.dart';
-import 'package:fluxus/core/models/office_model.dart';
+import 'package:fluxus/app/core/models/agreement_model.dart';
+import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/models/office_model.dart';
 
 // Perfil de usuario ou pessoa
 class ProfileModel {
@@ -28,7 +28,7 @@ class ProfileModel {
   final List<OfficeModel>? office; // cargo: Adm, Sec, Aval, Prof, Paciente
 
   final List<String>? routes;
-  final bool? isDeleted;
+  final bool? isActive;
   ProfileModel({
     this.id,
     this.email,
@@ -49,7 +49,7 @@ class ProfileModel {
     this.expertise,
     this.office,
     this.routes,
-    this.isDeleted,
+    this.isActive,
   });
 
   ProfileModel copyWith({
@@ -72,7 +72,7 @@ class ProfileModel {
     List<ExpertiseModel>? expertise,
     List<OfficeModel>? office,
     List<String>? routes,
-    bool? isDeleted,
+    bool? isActive,
   }) {
     return ProfileModel(
       id: id ?? this.id,
@@ -94,7 +94,7 @@ class ProfileModel {
       expertise: expertise ?? this.expertise,
       office: office ?? this.office,
       routes: routes ?? this.routes,
-      isDeleted: isDeleted ?? this.isDeleted,
+      isActive: isActive ?? this.isActive,
     );
   }
 
@@ -158,8 +158,8 @@ class ProfileModel {
     if (routes != null) {
       result.addAll({'routes': routes});
     }
-    if (isDeleted != null) {
-      result.addAll({'isDeleted': isDeleted});
+    if (isActive != null) {
+      result.addAll({'isActive': isActive});
     }
 
     return result;
@@ -201,7 +201,7 @@ class ProfileModel {
               map['office']?.map((x) => OfficeModel.fromMap(x)))
           : null,
       routes: List<String>.from(map['routes']),
-      isDeleted: map['isDeleted'],
+      isActive: map['isActive'],
     );
   }
 
@@ -212,7 +212,7 @@ class ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, parent: $parent, children: $children, agreement: $agreement, register: $register, expertise: $expertise, office: $office, routes: $routes, isDeleted: $isDeleted)';
+    return 'ProfileModel(id: $id, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, parent: $parent, children: $children, agreement: $agreement, register: $register, expertise: $expertise, office: $office, routes: $routes, isActive: $isActive)';
   }
 
   @override
@@ -239,7 +239,7 @@ class ProfileModel {
         listEquals(other.expertise, expertise) &&
         listEquals(other.office, office) &&
         listEquals(other.routes, routes) &&
-        other.isDeleted == isDeleted;
+        other.isActive == isActive;
   }
 
   @override
@@ -263,6 +263,6 @@ class ProfileModel {
         expertise.hashCode ^
         office.hashCode ^
         routes.hashCode ^
-        isDeleted.hashCode;
+        isActive.hashCode;
   }
 }

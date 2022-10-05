@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fluxus/core/models/profile_model.dart';
+import 'package:fluxus/app/core/models/profile_model.dart';
 
 /// Usuarios do sistema
 class UserModel {
