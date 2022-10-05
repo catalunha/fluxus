@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fluxus/core/models/expertise_model.dart';
 import 'package:fluxus/core/models/user_model.dart';
 
 /// Avaliação do paciente.
@@ -20,12 +21,14 @@ import 'package:fluxus/core/models/user_model.dart';
 class EvaluationModel {
   final String? id;
   final UserModel? professional;
+  final ExpertiseModel? expertise;
   final String? name;
   final String? description;
   final bool? isDeleted;
   EvaluationModel({
     this.id,
     this.professional,
+    this.expertise,
     this.name,
     this.description,
     this.isDeleted,
@@ -34,6 +37,7 @@ class EvaluationModel {
   EvaluationModel copyWith({
     String? id,
     UserModel? professional,
+    ExpertiseModel? expertise,
     String? name,
     String? description,
     bool? isDeleted,
@@ -41,6 +45,7 @@ class EvaluationModel {
     return EvaluationModel(
       id: id ?? this.id,
       professional: professional ?? this.professional,
+      expertise: expertise ?? this.expertise,
       name: name ?? this.name,
       description: description ?? this.description,
       isDeleted: isDeleted ?? this.isDeleted,
@@ -55,6 +60,9 @@ class EvaluationModel {
     }
     if (professional != null) {
       result.addAll({'professional': professional!.toMap()});
+    }
+    if (expertise != null) {
+      result.addAll({'expertise': expertise!.toMap()});
     }
     if (name != null) {
       result.addAll({'name': name});
@@ -75,6 +83,9 @@ class EvaluationModel {
       professional: map['professional'] != null
           ? UserModel.fromMap(map['professional'])
           : null,
+      expertise: map['expertise'] != null
+          ? ExpertiseModel.fromMap(map['expertise'])
+          : null,
       name: map['name'],
       description: map['description'],
       isDeleted: map['isDeleted'],
@@ -88,7 +99,7 @@ class EvaluationModel {
 
   @override
   String toString() {
-    return 'EvaluationModel(id: $id, professional: $professional, name: $name, description: $description, isDeleted: $isDeleted)';
+    return 'EvaluationModel(id: $id, professional: $professional, expertise: $expertise, name: $name, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
@@ -98,6 +109,7 @@ class EvaluationModel {
     return other is EvaluationModel &&
         other.id == id &&
         other.professional == professional &&
+        other.expertise == expertise &&
         other.name == name &&
         other.description == description &&
         other.isDeleted == isDeleted;
@@ -107,6 +119,7 @@ class EvaluationModel {
   int get hashCode {
     return id.hashCode ^
         professional.hashCode ^
+        expertise.hashCode ^
         name.hashCode ^
         description.hashCode ^
         isDeleted.hashCode;

@@ -6,7 +6,7 @@ class AgreementModel {
   final String? name;
   final String? code;
   final DateTime? due;
-  final bool? isActive;
+  final String? description;
   final bool? isDeleted;
 
   AgreementModel({
@@ -14,7 +14,7 @@ class AgreementModel {
     this.name,
     this.code,
     this.due,
-    this.isActive,
+    this.description,
     this.isDeleted,
   });
 
@@ -23,7 +23,7 @@ class AgreementModel {
     String? name,
     String? code,
     DateTime? due,
-    bool? isActive,
+    String? description,
     bool? isDeleted,
   }) {
     return AgreementModel(
@@ -31,7 +31,7 @@ class AgreementModel {
       name: name ?? this.name,
       code: code ?? this.code,
       due: due ?? this.due,
-      isActive: isActive ?? this.isActive,
+      description: description ?? this.description,
       isDeleted: isDeleted ?? this.isDeleted,
     );
   }
@@ -51,8 +51,8 @@ class AgreementModel {
     if (due != null) {
       result.addAll({'due': due!.millisecondsSinceEpoch});
     }
-    if (isActive != null) {
-      result.addAll({'isActive': isActive});
+    if (description != null) {
+      result.addAll({'description': description});
     }
     if (isDeleted != null) {
       result.addAll({'isDeleted': isDeleted});
@@ -69,7 +69,7 @@ class AgreementModel {
       due: map['due'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['due'])
           : null,
-      isActive: map['isActive'],
+      description: map['description'],
       isDeleted: map['isDeleted'],
     );
   }
@@ -81,7 +81,7 @@ class AgreementModel {
 
   @override
   String toString() {
-    return 'AgreementModel(id: $id, name: $name, code: $code, due: $due, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'AgreementModel(id: $id, name: $name, code: $code, due: $due, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
@@ -93,7 +93,7 @@ class AgreementModel {
         other.name == name &&
         other.code == code &&
         other.due == due &&
-        other.isActive == isActive &&
+        other.description == description &&
         other.isDeleted == isDeleted;
   }
 
@@ -103,7 +103,7 @@ class AgreementModel {
         name.hashCode ^
         code.hashCode ^
         due.hashCode ^
-        isActive.hashCode ^
+        description.hashCode ^
         isDeleted.hashCode;
   }
 }

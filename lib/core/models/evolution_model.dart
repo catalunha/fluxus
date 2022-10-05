@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
+import 'package:fluxus/core/models/cid_model.dart';
 import 'package:fluxus/core/models/event_model.dart';
 import 'package:fluxus/core/models/expertise_model.dart';
 import 'package:fluxus/core/models/profile_model.dart';
@@ -9,9 +12,10 @@ import 'package:fluxus/core/models/user_model.dart';
 class EvolutionModel {
   final String? id;
   final EventModel? event;
-  final ExpertiseModel? expertiseModel;
+  final ExpertiseModel? expertise;
   final UserModel? professional;
   final ProfileModel? patient;
+  final List<CidModel>? cid;
   final String? description;
   final String? file;
   final bool? isDeleted;
@@ -19,9 +23,10 @@ class EvolutionModel {
   EvolutionModel({
     this.id,
     this.event,
-    this.expertiseModel,
+    this.expertise,
     this.professional,
     this.patient,
+    this.cid,
     this.description,
     this.file,
     this.isDeleted,
@@ -30,9 +35,10 @@ class EvolutionModel {
   EvolutionModel copyWith({
     String? id,
     EventModel? event,
-    ExpertiseModel? expertiseModel,
+    ExpertiseModel? expertise,
     UserModel? professional,
     ProfileModel? patient,
+    List<CidModel>? cid,
     String? description,
     String? file,
     bool? isDeleted,
@@ -40,9 +46,10 @@ class EvolutionModel {
     return EvolutionModel(
       id: id ?? this.id,
       event: event ?? this.event,
-      expertiseModel: expertiseModel ?? this.expertiseModel,
+      expertise: expertise ?? this.expertise,
       professional: professional ?? this.professional,
       patient: patient ?? this.patient,
+      cid: cid ?? this.cid,
       description: description ?? this.description,
       file: file ?? this.file,
       isDeleted: isDeleted ?? this.isDeleted,
@@ -58,14 +65,17 @@ class EvolutionModel {
     if (event != null) {
       result.addAll({'event': event!.toMap()});
     }
-    if (expertiseModel != null) {
-      result.addAll({'expertiseModel': expertiseModel!.toMap()});
+    if (expertise != null) {
+      result.addAll({'expertise': expertise!.toMap()});
     }
     if (professional != null) {
       result.addAll({'professional': professional!.toMap()});
     }
     if (patient != null) {
       result.addAll({'patient': patient!.toMap()});
+    }
+    if (cid != null) {
+      result.addAll({'cid': cid!.map((x) => x.toMap()).toList()});
     }
     if (description != null) {
       result.addAll({'description': description});
@@ -84,14 +94,17 @@ class EvolutionModel {
     return EvolutionModel(
       id: map['id'],
       event: map['event'] != null ? EventModel.fromMap(map['event']) : null,
-      expertiseModel: map['expertiseModel'] != null
-          ? ExpertiseModel.fromMap(map['expertiseModel'])
+      expertise: map['expertise'] != null
+          ? ExpertiseModel.fromMap(map['expertise'])
           : null,
       professional: map['professional'] != null
           ? UserModel.fromMap(map['professional'])
           : null,
       patient:
           map['patient'] != null ? ProfileModel.fromMap(map['patient']) : null,
+      cid: map['cid'] != null
+          ? List<CidModel>.from(map['cid']?.map((x) => CidModel.fromMap(x)))
+          : null,
       description: map['description'],
       file: map['file'],
       isDeleted: map['isDeleted'],
@@ -105,7 +118,7 @@ class EvolutionModel {
 
   @override
   String toString() {
-    return 'EvolutionModel(id: $id, event: $event, expertiseModel: $expertiseModel, professional: $professional, patient: $patient, description: $description, file: $file, isDeleted: $isDeleted)';
+    return 'EvolutionModel(id: $id, event: $event, expertise: $expertise, professional: $professional, patient: $patient, cid: $cid, description: $description, file: $file, isDeleted: $isDeleted)';
   }
 
   @override
@@ -115,9 +128,10 @@ class EvolutionModel {
     return other is EvolutionModel &&
         other.id == id &&
         other.event == event &&
-        other.expertiseModel == expertiseModel &&
+        other.expertise == expertise &&
         other.professional == professional &&
         other.patient == patient &&
+        listEquals(other.cid, cid) &&
         other.description == description &&
         other.file == file &&
         other.isDeleted == isDeleted;
@@ -127,9 +141,10 @@ class EvolutionModel {
   int get hashCode {
     return id.hashCode ^
         event.hashCode ^
-        expertiseModel.hashCode ^
+        expertise.hashCode ^
         professional.hashCode ^
         patient.hashCode ^
+        cid.hashCode ^
         description.hashCode ^
         file.hashCode ^
         isDeleted.hashCode;

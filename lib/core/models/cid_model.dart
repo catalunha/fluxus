@@ -1,27 +1,29 @@
 import 'dart:convert';
 
-/// Modalidade do evento
-///
-/// Ainda não entendi pra que.
-class ModalityModel {
+/// Especialidade
+class CidModel {
   final String? id;
   final String? name;
+  final String? description;
   final bool? isDeleted;
 
-  ModalityModel({
+  CidModel({
     this.id,
     this.name,
+    this.description,
     this.isDeleted,
   });
 
-  ModalityModel copyWith({
+  CidModel copyWith({
     String? id,
     String? name,
+    String? description,
     bool? isDeleted,
   }) {
-    return ModalityModel(
+    return CidModel(
       id: id ?? this.id,
       name: name ?? this.name,
+      description: description ?? this.description,
       isDeleted: isDeleted ?? this.isDeleted,
     );
   }
@@ -35,6 +37,9 @@ class ModalityModel {
     if (name != null) {
       result.addAll({'name': name});
     }
+    if (description != null) {
+      result.addAll({'description': description});
+    }
     if (isDeleted != null) {
       result.addAll({'isDeleted': isDeleted});
     }
@@ -42,33 +47,41 @@ class ModalityModel {
     return result;
   }
 
-  factory ModalityModel.fromMap(Map<String, dynamic> map) {
-    return ModalityModel(
+  factory CidModel.fromMap(Map<String, dynamic> map) {
+    return CidModel(
       id: map['id'],
       name: map['name'],
+      description: map['description'],
       isDeleted: map['isDeleted'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ModalityModel.fromJson(String source) =>
-      ModalityModel.fromMap(json.decode(source));
+  factory CidModel.fromJson(String source) =>
+      CidModel.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'ModalityModel(id: $id, name: $name, isDeleted: $isDeleted)';
+  String toString() {
+    return 'CidModel(id: $id, name: $name, description: $description, isDeleted: $isDeleted)';
+  }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ModalityModel &&
+    return other is CidModel &&
         other.id == id &&
         other.name == name &&
+        other.description == description &&
         other.isDeleted == isDeleted;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ isDeleted.hashCode;
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        description.hashCode ^
+        isDeleted.hashCode;
+  }
 }

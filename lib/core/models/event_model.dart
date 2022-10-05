@@ -5,8 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:fluxus/core/models/agreement_model.dart';
 import 'package:fluxus/core/models/event_status_model.dart';
 import 'package:fluxus/core/models/expertise_model.dart';
-import 'package:fluxus/core/models/modality_model.dart';
-import 'package:fluxus/core/models/plan_model.dart';
 import 'package:fluxus/core/models/profile_model.dart';
 import 'package:fluxus/core/models/room_model.dart';
 import 'package:fluxus/core/models/user_model.dart';
@@ -19,8 +17,8 @@ class EventModel {
   final List<ExpertiseModel>? expertise; // Especialidade
   final List<ProfileModel>? patients;
   final List<AgreementModel>? agreement; // Convenio
-  final List<PlanModel>? plan; // Plano
-  final List<ModalityModel>? modality; // Modalidade
+  final String autorization;
+  final String fatura;
   final RoomModel? room;
   final DateTime? start;
   final DateTime? end;
@@ -36,8 +34,8 @@ class EventModel {
     this.expertise,
     this.patients,
     this.agreement,
-    this.plan,
-    this.modality,
+    required this.autorization,
+    required this.fatura,
     this.room,
     this.start,
     this.end,
@@ -54,8 +52,8 @@ class EventModel {
     List<ExpertiseModel>? expertise,
     List<ProfileModel>? patients,
     List<AgreementModel>? agreement,
-    List<PlanModel>? plan,
-    List<ModalityModel>? modality,
+    String? autorization,
+    String? fatura,
     RoomModel? room,
     DateTime? start,
     DateTime? end,
@@ -71,8 +69,8 @@ class EventModel {
       expertise: expertise ?? this.expertise,
       patients: patients ?? this.patients,
       agreement: agreement ?? this.agreement,
-      plan: plan ?? this.plan,
-      modality: modality ?? this.modality,
+      autorization: autorization ?? this.autorization,
+      fatura: fatura ?? this.fatura,
       room: room ?? this.room,
       start: start ?? this.start,
       end: end ?? this.end,
@@ -105,12 +103,8 @@ class EventModel {
     if (agreement != null) {
       result.addAll({'agreement': agreement!.map((x) => x.toMap()).toList()});
     }
-    if (plan != null) {
-      result.addAll({'plan': plan!.map((x) => x.toMap()).toList()});
-    }
-    if (modality != null) {
-      result.addAll({'modality': modality!.map((x) => x.toMap()).toList()});
-    }
+    result.addAll({'autorization': autorization});
+    result.addAll({'fatura': fatura});
     if (room != null) {
       result.addAll({'room': room!.toMap()});
     }
@@ -158,13 +152,8 @@ class EventModel {
           ? List<AgreementModel>.from(
               map['agreement']?.map((x) => AgreementModel.fromMap(x)))
           : null,
-      plan: map['plan'] != null
-          ? List<PlanModel>.from(map['plan']?.map((x) => PlanModel.fromMap(x)))
-          : null,
-      modality: map['modality'] != null
-          ? List<ModalityModel>.from(
-              map['modality']?.map((x) => ModalityModel.fromMap(x)))
-          : null,
+      autorization: map['autorization'] ?? '',
+      fatura: map['fatura'] ?? '',
       room: map['room'] != null ? RoomModel.fromMap(map['room']) : null,
       start: map['start'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['start'])
@@ -188,7 +177,7 @@ class EventModel {
 
   @override
   String toString() {
-    return 'EventModel(id: $id, user: $user, professionals: $professionals, expertise: $expertise, patients: $patients, agreement: $agreement, plan: $plan, modality: $modality, room: $room, start: $start, end: $end, status: $status, log: $log, description: $description, isDeleted: $isDeleted)';
+    return 'EventModel(id: $id, user: $user, professionals: $professionals, expertise: $expertise, patients: $patients, agreement: $agreement, autorization: $autorization, fatura: $fatura, room: $room, start: $start, end: $end, status: $status, log: $log, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
@@ -202,8 +191,8 @@ class EventModel {
         listEquals(other.expertise, expertise) &&
         listEquals(other.patients, patients) &&
         listEquals(other.agreement, agreement) &&
-        listEquals(other.plan, plan) &&
-        listEquals(other.modality, modality) &&
+        other.autorization == autorization &&
+        other.fatura == fatura &&
         other.room == room &&
         other.start == start &&
         other.end == end &&
@@ -221,8 +210,8 @@ class EventModel {
         expertise.hashCode ^
         patients.hashCode ^
         agreement.hashCode ^
-        plan.hashCode ^
-        modality.hashCode ^
+        autorization.hashCode ^
+        fatura.hashCode ^
         room.hashCode ^
         start.hashCode ^
         end.hashCode ^
