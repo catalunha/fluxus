@@ -49,7 +49,8 @@ class _AuthRegisterEmailPageState extends State<AuthRegisterEmailPage> {
                     child: Form(
                       key: _formKey,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'Cadastro',

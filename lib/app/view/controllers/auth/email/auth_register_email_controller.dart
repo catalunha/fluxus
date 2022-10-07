@@ -26,11 +26,11 @@ class AuthRegisterEmailController extends GetxController
     required String password,
   }) async {
     try {
+      _loading(true);
       final user = await _authRepository.registerEmail(
         email: email,
         password: password,
       );
-      _loading(true);
       //print('após registerEmail ');
       if (user != null) {
         //print('Success register');
@@ -44,12 +44,13 @@ class AuthRegisterEmailController extends GetxController
           isError: true,
         );
       }
-    } on AuthRepositoryException {
+    } on AuthRepositoryException catch (e) {
       //print('error em  registerEmail');
-      _authRepository.logout();
+      // _authRepository.logout();
+      _loading(false);
       _message.value = MessageModel(
-        title: 'AuthRepositoryException',
-        message: 'Em registrar usuário',
+        title: e.code,
+        message: e.message,
         isError: true,
       );
     } finally {

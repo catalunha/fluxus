@@ -10,6 +10,7 @@ mixin MessageMixin on GetxController {
           model.message,
           backgroundColor: model.isError ? Colors.red : Colors.blue,
           margin: const EdgeInsets.all(10),
+          duration: const Duration(seconds: 5),
         );
       }
     });

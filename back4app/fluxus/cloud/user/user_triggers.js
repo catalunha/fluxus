@@ -1,17 +1,18 @@
 
-Parse.Cloud.beforeSave(Parse.User,async(req)=>{
+Parse.Cloud.afterSave(Parse.User, async (req) => {
   let user = req.object;
-  console.log(`beforeSave User with ${user.email}. Create profile.`);
+  console.log(`afterSave User with ${user.email}. Create profile.`);
 
-  if(user.get('profile')===undefined){
+  if (user.get('profile') === undefined) {
     const profile = new Parse.Object("Profile");
-    profile.set('email',user.get('email'));
-    let profileResult = await profile.save(null,{ useMasterKey: true });
-    user.set('profile',profileResult);
+    profile.set('email', user.get('email'));
+    let profileResult = await profile.save(null, { useMasterKey: true });
+    user.set('profile', profileResult);
+    await user.save(null, { useMasterKey: true });
   }
 });
 
-Parse.Cloud.afterDelete(Parse.User,async(req)=>{
+Parse.Cloud.afterDelete(Parse.User, async (req) => {
   let user = req.object;
 
   console.log(`afterDelete user ${user.id}`);

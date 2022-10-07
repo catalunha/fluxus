@@ -33,19 +33,19 @@ class LoginController extends GetxController with LoaderMixin, MessageMixin {
         splashController.userModel = user;
         final parseUser = await ParseUser.currentUser() as ParseUser;
         splashController.parseUser = parseUser;
-        // if (user.profile!.isActive == true) {
-        //   print('logado com isActive=true');
-        //   Get.offAllNamed(Routes.home);
-        // } else {
-        //   print('logado com isActive=false');
-        //   _loading(false);
-        //   _message.value = MessageModel(
-        //     title: 'Atenção',
-        //     message: 'Seu cadastro esta em análise.',
-        //     isError: true,
-        //   );
-        // }
-        Get.offAllNamed(Routes.home);
+        if (user.profile!.isActive == true) {
+          print('logado com isActive=true');
+          Get.offAllNamed(Routes.home);
+        } else {
+          print('logado com isActive=false');
+          _loading(false);
+          _message.value = MessageModel(
+            title: 'Atenção',
+            message: 'Seu cadastro esta em análise.',
+            isError: true,
+          );
+        }
+        // Get.offAllNamed(Routes.home);
       } else {
         _message.value = MessageModel(
           title: 'Erro',
@@ -53,12 +53,12 @@ class LoginController extends GetxController with LoaderMixin, MessageMixin {
           isError: true,
         );
       }
-    } on AuthRepositoryException {
+    } on AuthRepositoryException catch (e) {
       _loading(false);
+
       _message.value = MessageModel(
-        title: 'Oops',
-        message: 'Conecte-se a internet ou Email/Senha inválidos.',
-        // message: '${e.code} ${e.message}',
+        title: e.code,
+        message: e.message,
         isError: true,
       );
     } finally {
