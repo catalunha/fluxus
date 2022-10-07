@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-class ErrorCodes {
+class ParseErrorCodes {
   final ParseError parseError;
-  ErrorCodes(
+  ParseErrorCodes(
     this.parseError,
   ) {
     decode();
@@ -24,7 +24,7 @@ class ErrorCodes {
   }
 
   final Map<int, String> _appCodes = {
-    101: 'Email ou senha inválidos.',
+    101: 'Email ou senha inválidos ou não cadastrados.',
     202: 'Já existe uma conta para este email.',
     205: 'Veja seu email para validar seu cadastro.',
   };

@@ -1,4 +1,4 @@
-import 'package:fluxus/app/data/b4a/auth/auth_repository_exception.dart';
+import 'package:fluxus/app/data/b4a/databases/auth/auth_repository_exception.dart';
 import 'package:fluxus/app/data/repositories/auth_repository.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
@@ -31,13 +31,9 @@ class AuthRegisterEmailController extends GetxController
         email: email,
         password: password,
       );
-      //print('após registerEmail ');
       if (user != null) {
-        //print('Success register');
         Get.offAllNamed(Routes.authLogin);
       } else {
-        //print('user==null in register');
-        // _authUseCase.logout();
         _message.value = MessageModel(
           title: 'Erro',
           message: 'Em registrar usuário',
@@ -45,8 +41,6 @@ class AuthRegisterEmailController extends GetxController
         );
       }
     } on AuthRepositoryException catch (e) {
-      //print('error em  registerEmail');
-      // _authRepository.logout();
       _loading(false);
       _message.value = MessageModel(
         title: e.code,

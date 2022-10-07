@@ -2,7 +2,7 @@ import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/core/models/user_model.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/b4a/init_back4app.dart';
-import 'package:fluxus/app/data/b4a/profile/profile_repository_exception.dart';
+import 'package:fluxus/app/data/b4a/databases/profile/profile_repository_exception.dart';
 import 'package:fluxus/app/data/repositories/auth_repository.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
@@ -26,8 +26,6 @@ class SplashController extends GetxController with MessageMixin {
     _userModel(userModel);
     _userModel.update((val) {
       val?.profile = userModel?.profile;
-      // if (userModel?.profile != null) {
-      // }
     });
   }
 
@@ -38,16 +36,10 @@ class SplashController extends GetxController with MessageMixin {
     messageListener(_message);
 
     super.onInit();
-    await Future.delayed(const Duration(seconds: 1), () {
-      // deleayed code here
-      //print('delayed execution');
-    });
+    await Future.delayed(const Duration(seconds: 1), () {});
 
-    //print('+++ initParse');
     InitBack4app initBack4app = InitBack4app();
     bool initParse = await initBack4app.init();
-    //print('initParse: $initParse');
-    //print('--- initParse');
 
     final isLogged = await _hasUserLogged();
     if (isLogged) {
@@ -63,18 +55,13 @@ class SplashController extends GetxController with MessageMixin {
           isError: true,
         );
       }
-      // Get.offAllNamed(Routes.home);
     } else {
-      //print('NAO tem user indo para LOGIN');
-      //print(userModel);
       Get.offAllNamed(Routes.authLogin);
     }
   }
 
   Future<bool> _hasUserLogged() async {
-    //print('===> _hasUserLogged');
     parseUser = await ParseUser.currentUser() as ParseUser?;
-    // ParseUser? currentUser = await ParseUser.currentUser() as ParseUser?;
     if (parseUser == null) {
       return false;
     }
@@ -87,90 +74,21 @@ class SplashController extends GetxController with MessageMixin {
       await parseUser!.logout();
       return false;
     } else {
-      // QueryBuilder<ParseUser> queryUser =
-      //     QueryBuilder<ParseUser>(ParseUser.forQuery());
-      // queryUser.object = parseUser!;
-      // queryUser.includeObject(['profile']);
-      // ParseUser? parseUser2 = await queryUser.first();
-
-      // //print('===> profile');
-      // userModel = UserModel.fromParse(parseUser2!);
-      // //print(userModel);
-      // var profileField = parseUser!.get('profile');
-      // //print('===> profile');
-      // //print(profileField);
-      // var profileObj = ParseObject('Profile');
-      // var profileData = await profileObj.getObject(profileField.objectId);
-      // UserProfileEntity? userProfileEntity;
-      // if (profileData.success) {
-      //   (profileData.result as ParseObject).get('fullName');
-      //   userProfileEntity =
-      //       UserProfileEntity.fromParse(profileData.result as ParseObject);
-      // } else {
-      //   //print('nao foi');
-      // }
       userModel = UserModel(
         id: parseUser!.objectId!,
         email: parseUser!.emailAddress!,
         profile: await getProfile(),
-        // profile: userProfileEntity,
       );
-      // _userModel(UserModel(
-      //   id: parseUser!.objectId!,
-      //   email: parseUser!.emailAddress!,
-      //   phone: parseUser!.username!,
-      //   profile: userProfileEntity,
-      // ));
-      // updateUserModel(UserModel(
-      //   id: parseUser!.objectId!,
-      //   email: parseUser!.emailAddress!,
-      //   phone: parseUser!.username!,
-      //   profile: userProfileEntity,
-      // ));
-      //print('===> _hasUserLogged. userModel');
-      //print(userModel);
-      //print('===> isActive');
-      //print(userModel!.profile!.isActive);
       return true;
     }
   }
 
   Future<void> updateUserProfile() async {
-    //print('entrando no updateUserProfile');
-    // parseUser = await ParseUser.currentUser() as ParseUser;
-    // var profileField = parseUser!.get('profile');
-    // //print('===> profile');
-    // //print(profileField);
-    // var profileObj = ParseObject('Profile');
-    // var profileData = await profileObj.getObject(profileField.objectId);
-    // UserProfileEntity? userProfileEntity;
-    // if (profileData.success) {
-    //   (profileData.result as ParseObject).get('fullName');
-    //   userProfileEntity =
-    //       UserProfileEntity.fromParse(profileData.result as ParseObject);
-    // } else {
-    //   //print('nao foi');
-    // }
     userModel = UserModel(
       id: parseUser!.objectId!,
       email: parseUser!.emailAddress!,
       profile: await getProfile(),
-      // profile: userProfileEntity,
     );
-    // _userModel(UserModel(
-    //   id: parseUser!.objectId!,
-    //   email: parseUser!.emailAddress!,
-    //   phone: parseUser!.username!,
-    //   profile: userProfileEntity,
-    // ));
-    // updateUserModel(UserModel(
-    //   id: parseUser!.objectId!,
-    //   email: parseUser!.emailAddress!,
-    //   phone: parseUser!.username!,
-    //   profile: userProfileEntity,
-    // ));
-    //print('===> user');
-    //print(userModel);
   }
 
   Future<ProfileModel?> getProfile() async {
@@ -178,7 +96,7 @@ class SplashController extends GetxController with MessageMixin {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
     query.whereEqualTo('email', parseUser!.get('email'));
-    query.includeObject(['community']);
+    // query.includeObject(['community']);
     query.first();
     final ParseResponse response;
     try {
@@ -197,61 +115,12 @@ class SplashController extends GetxController with MessageMixin {
       print(temp);
       return temp;
     } else {
-      //print('nao encontrei este User...');
       return null;
     }
-    // var profileField = parseUser!.get('profile');
-    //print('===> profile');
-    //print(profileField);
-    // var profileObj = ParseObject(ProfileEntity.className);
-    // var profileData = await profileObj.getObject(profileField.objectId);
-    // ProfileModel? profileEntity;
-    // if (profileData.success) {
-    //   profileEntity =
-    //       ProfileEntity().fromParse(profileData.result as ParseObject);
-    // } else {
-    //   //print('nao foi');
-    // }
-    // return profileEntity;
   }
-  // Future<ProfileModel?> getProfile() async {
-  //   parseUser = await ParseUser.currentUser() as ParseUser;
-
-  //   var profileField = parseUser!.get('profile');
-  //   //print('===> profile');
-  //   //print(profileField);
-  //   var profileObj = ParseObject(ProfileEntity.className);
-  //   var profileData = await profileObj.getObject(profileField.objectId);
-  //   ProfileModel? profileEntity;
-  //   if (profileData.success) {
-  //     profileEntity =
-  //         ProfileEntity().fromParse(profileData.result as ParseObject);
-  //   } else {
-  //     //print('nao foi');
-  //   }
-  //   return profileEntity;
-  // }
 
   Future<void> logout() async {
     await _authRepository.logout();
     Get.offAllNamed(Routes.authLogin);
   }
-
-  //   Future<bool> hasUserLogged() async {
-  //   ParseUser? currentUser = await ParseUser.currentUser() as ParseUser?;
-  //   if (currentUser == null) {
-  //     return false;
-  //   }
-  //   //Checks whether the user's session token is valid
-  //   final ParseResponse? parseResponse =
-  //       await ParseUser.getCurrentUserFromServer(currentUser.sessionToken!);
-
-  //   if (parseResponse?.success == null || !parseResponse!.success) {
-  //     //Invalid session. Logout
-  //     await currentUser.logout();
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
 }

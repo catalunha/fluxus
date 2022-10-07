@@ -1,4 +1,4 @@
-import 'package:fluxus/app/data/b4a/auth/auth_repository_b4a.dart';
+import 'package:fluxus/app/data/b4a/databases/auth/auth_repository_b4a.dart';
 import 'package:fluxus/app/data/repositories/auth_repository.dart';
 import 'package:fluxus/app/view/controllers/auth/splash/splash_controller.dart';
 import 'package:get/get.dart';

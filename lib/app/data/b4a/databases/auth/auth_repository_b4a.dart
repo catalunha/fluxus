@@ -1,7 +1,7 @@
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/core/models/user_model.dart';
-import 'package:fluxus/app/core/utils/error_codes.dart';
-import 'package:fluxus/app/data/b4a/auth/auth_repository_exception.dart';
+import 'package:fluxus/app/data/b4a/utils/parseerror_codes.dart';
+import 'package:fluxus/app/data/b4a/databases/auth/auth_repository_exception.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/user_entity.dart';
 import 'package:fluxus/app/data/repositories/auth_repository.dart';
@@ -17,21 +17,17 @@ class AuthRepositoryB4a implements AuthRepository {
       final user = ParseUser.createUser(email, password, email);
       response = await user.signUp();
       if (response.success) {
-        //print('register success');
         UserModel userModel = UserEntity().fromParse(response.results!.first);
         return userModel;
       } else {
-        var errorCodes = ErrorCodes(response.error!);
+        var errorCodes = ParseErrorCodes(response.error!);
         throw AuthRepositoryException(
           code: '${errorCodes.code}',
           message: errorCodes.message,
         );
       }
     } catch (e) {
-      print(e);
-      print(
-          '${response?.error?.code} - ${response?.error?.message} - ${response?.error?.type}');
-      var errorCodes = ErrorCodes(response!.error!);
+      var errorCodes = ParseErrorCodes(response!.error!);
       throw AuthRepositoryException(
         code: '${errorCodes.code}',
         message: errorCodes.message,
@@ -56,32 +52,18 @@ class AuthRepositoryB4a implements AuthRepository {
           email: user.emailAddress!,
           profile: await getProfile(),
         );
-        //print(userModel);
         return userModel;
       } else {
         throw AuthRepositoryException(
             message: response.error!.message, code: '${response.error!.code}');
       }
     } catch (e) {
-      // } on AuthRepositoryException catch (e) {
-      //   if (e.message == '205') {
-      //     throw AuthRepositoryException(
-      //         code: '205',
-      //         message: 'Cadastro ainda não confirmado no email do usuário.');
-      //   } else {
-      //     rethrow;
-      //   }
-      print(e);
-      print(
-          '${response?.error?.code} - ${response?.error?.message} - ${response?.error?.type}');
-
-      var errorCodes = ErrorCodes(response!.error!);
+      var errorCodes = ParseErrorCodes(response!.error!);
       throw AuthRepositoryException(
         code: '${errorCodes.code}',
         message: errorCodes.message,
       );
     }
-    // return null;
   }
 
   @override
@@ -109,8 +91,6 @@ class AuthRepositoryB4a implements AuthRepository {
     var parseUser = await ParseUser.currentUser() as ParseUser;
 
     var profileField = parseUser.get('profile');
-    //print('===> profile');
-    //print(profileField);
     var profileObj = ParseObject(ProfileEntity.className);
     var profileData = await profileObj.getObject(profileField.objectId);
     ProfileModel? userProfileEntity;

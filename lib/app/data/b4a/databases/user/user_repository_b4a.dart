@@ -1,6 +1,6 @@
 import 'package:fluxus/app/core/models/user_model.dart';
 import 'package:fluxus/app/data/b4a/entity/user_entity.dart';
-import 'package:fluxus/app/data/b4a/user/user_repository_exception.dart';
+import 'package:fluxus/app/data/b4a/databases/user/user_repository_exception.dart';
 import 'package:fluxus/app/data/repositories/user_repository.dart';
 import 'package:get/get.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
