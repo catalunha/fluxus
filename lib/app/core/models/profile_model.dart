@@ -19,11 +19,11 @@ class ProfileModel {
   final String? cpf;
   final bool? isFemale;
   final DateTime? birthday;
-  final String? description;
   final ProfileModel? parent;
   final List<ProfileModel>? children;
-  final List<AgreementModel>? agreement; // convenio
+  final String? description;
   final String? register; // conselho de saude
+  final List<AgreementModel>? agreement; // convenio
   final List<ExpertiseModel>? expertise; // especialidade
   final List<OfficeModel>? office; // cargo: Adm, Sec, Aval, Prof, Paciente
 

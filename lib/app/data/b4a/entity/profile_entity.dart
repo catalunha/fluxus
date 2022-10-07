@@ -5,7 +5,7 @@ class ProfileEntity {
   static const String className = 'Profile';
 
   ProfileModel fromParse(ParseObject parseObject) {
-    ProfileModel ProfileEntity = ProfileModel(
+    ProfileModel profileEntity = ProfileModel(
       id: parseObject.objectId!,
       name: parseObject.get('name'),
       // description: parseObject.get('description'),
@@ -17,34 +17,34 @@ class ProfileEntity {
       //     ? CommunityEntity().fromParse(parseObject.get('community'))
       //     : null,
     );
-    return ProfileEntity;
+    return profileEntity;
   }
 
-  Future<ParseObject> toParse(ProfileModel ProfileModel) async {
+  Future<ParseObject> toParse(ProfileModel profileModel) async {
     final profileParse = ParseObject(ProfileEntity.className);
-    if (ProfileModel.id != null) {
-      profileParse.objectId = ProfileModel.id;
+    if (profileModel.id != null) {
+      profileParse.objectId = profileModel.id;
     }
-    if (ProfileModel.name != null) {
-      profileParse.set('name', ProfileModel.name);
+    if (profileModel.name != null) {
+      profileParse.set('name', profileModel.name);
     }
-    // if (ProfileModel.description != null) {
-    //   profileParse.set('description', ProfileModel.description);
+    // if (profileModel.description != null) {
+    //   profileParse.set('description', profileModel.description);
     // }
-    if (ProfileModel.phone != null) {
-      profileParse.set('phone', ProfileModel.phone);
+    if (profileModel.phone != null) {
+      profileParse.set('phone', profileModel.phone);
     }
-    // if (ProfileModel.unit != null) {
-    //   profileParse.set('unit', ProfileModel.unit);
+    // if (profileModel.unit != null) {
+    //   profileParse.set('unit', profileModel.unit);
     // }
-    // if (ProfileModel.photoParseFileBase != null) {
-    //   profileParse.set('photo', ProfileModel.photoParseFileBase);
+    // if (profileModel.photoParseFileBase != null) {
+    //   profileParse.set('photo', profileModel.photoParseFileBase);
     // }
-    if (ProfileModel.email != null) {
-      profileParse.set('email', ProfileModel.email);
+    if (profileModel.email != null) {
+      profileParse.set('email', profileModel.email);
     }
-    if (ProfileModel.isActive != null) {
-      profileParse.set('isActive', ProfileModel.isActive);
+    if (profileModel.isActive != null) {
+      profileParse.set('isActive', profileModel.isActive);
     }
     return profileParse;
   }

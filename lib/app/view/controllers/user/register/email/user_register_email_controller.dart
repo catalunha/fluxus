@@ -1,4 +1,4 @@
-import 'package:fluxus/app/data/b4a/databases/user/user_repository_exception.dart';
+import 'package:fluxus/app/data/b4a/table/user/user_repository_exception.dart';
 import 'package:fluxus/app/data/repositories/user_repository.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';

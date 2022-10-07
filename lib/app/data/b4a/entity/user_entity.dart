@@ -6,8 +6,6 @@ class UserEntity {
   static const String className = '_User';
 
   UserModel fromParse(ParseObject parseUser) {
-    print('parseUser: $parseUser');
-    print("parseUser.get('profile'): ${parseUser.get('profile')}");
     return UserModel(
       id: parseUser.objectId!,
       email: parseUser.get('username'),

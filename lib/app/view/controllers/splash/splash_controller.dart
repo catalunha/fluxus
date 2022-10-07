@@ -1,5 +1,6 @@
 import 'package:fluxus/app/core/models/user_model.dart';
-import 'package:fluxus/app/data/b4a/databases/profile/profile_repository_b4a.dart';
+import 'package:fluxus/app/core/utils/app_error_code.dart';
+import 'package:fluxus/app/data/b4a/table/profile/profile_repository_b4a.dart';
 import 'package:fluxus/app/data/b4a/init_back4app.dart';
 import 'package:fluxus/app/data/repositories/user_repository.dart';
 import 'package:fluxus/app/routes.dart';
@@ -21,14 +22,7 @@ class SplashController extends GetxController with MessageMixin {
   final _userModel = Rxn<UserModel>();
   UserModel? get userModel => _userModel.value;
   set userModel(UserModel? userModelNew) {
-    print('===========> update userModel');
-    // _userModel.value = userModel2;
-    // _userModel.value = userModel2?.copyWith(profile: userModel2.profile);
     _userModel(userModelNew);
-    // _userModel.refresh();
-    // _userModel.update((val) {
-    //   val = userModel2;
-    // });
   }
 
   final _message = Rxn<MessageModel>();
@@ -38,6 +32,10 @@ class SplashController extends GetxController with MessageMixin {
     messageListener(_message);
 
     super.onInit();
+    await startApp();
+  }
+
+  Future<void> startApp() async {
     await Future.delayed(const Duration(seconds: 1), () {});
 
     InitBack4app initBack4app = InitBack4app();
@@ -49,9 +47,10 @@ class SplashController extends GetxController with MessageMixin {
           Get.offAllNamed(Routes.home);
         } else {
           Get.offAllNamed(Routes.userLogin);
+          var appErrorCode = AppErrorCode(0);
           _message.value = MessageModel(
-            title: 'Oops.',
-            message: 'Estamos analisando seu cadastro...',
+            title: appErrorCode.code,
+            message: appErrorCode.message,
             isError: true,
           );
         }
@@ -59,9 +58,11 @@ class SplashController extends GetxController with MessageMixin {
         Get.offAllNamed(Routes.userLogin);
       }
     } else {
+      var appErrorCode = AppErrorCode(0);
+
       _message.value = MessageModel(
-        title: 'Oops.',
-        message: 'Não consegui iniciar banco de dados...',
+        title: appErrorCode.code,
+        message: appErrorCode.message,
         isError: true,
       );
     }
@@ -97,16 +98,13 @@ class SplashController extends GetxController with MessageMixin {
   }
 
   Future<void> updateUserProfile() async {
-    print('====> updateUserProfile');
     var profileField = parseUser!.get('profile');
     var profileRepositoryB4a = ProfileRepositoryB4a();
     var profileModel =
         await profileRepositoryB4a.readById(profileField.objectId);
-    print('profileModel new: ${profileModel?.name}');
-    // _userModel.update((val) async {
-    //   val?.profile = profileModel;
-    // });
-    userModel = userModel!.copyWith(profile: profileModel);
+    _userModel.update((val) {
+      val?.profile = profileModel;
+    });
   }
 
   Future<void> logout() async {

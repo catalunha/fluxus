@@ -1,8 +1,8 @@
 import 'package:fluxus/app/core/models/user_model.dart';
-import 'package:fluxus/app/data/b4a/databases/profile/profile_repository_b4a.dart';
+import 'package:fluxus/app/data/b4a/table/profile/profile_repository_b4a.dart';
 import 'package:fluxus/app/data/b4a/entity/user_entity.dart';
-import 'package:fluxus/app/data/b4a/databases/user/user_repository_exception.dart';
-import 'package:fluxus/app/data/b4a/utils/parseerror_codes.dart';
+import 'package:fluxus/app/data/b4a/table/user/user_repository_exception.dart';
+import 'package:fluxus/app/data/b4a/utils/parse_error_code.dart';
 import 'package:fluxus/app/data/repositories/user_repository.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -12,59 +12,44 @@ class UserRepositoryB4a implements UserRepository {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(UserEntity.className));
     query.whereEqualTo('email', email);
-    print('+++++++++++++++++');
-    print('+++++++++++++++++');
-    print('readByEmail');
-    print('+++++++++++++++++');
-    print('+++++++++++++++++');
-    query.includeObject(['profile', 'profile.community']);
+    query.includeObject(['profile']);
     query.first();
-    final ParseResponse response;
+    ParseResponse? parseResponse;
     try {
-      response = await query.query();
-    } catch (e) {
-      throw UserRepositoryException(
-          code: '123', message: 'Erro ao buscar user');
-    }
-    UserModel? temp;
-    if (response.success && response.results != null) {
-      for (var element in response.results!) {
-        print('readByEmail:');
-        print((element as ParseObject).objectId);
-        print(element);
-        temp = UserEntity().fromParse(element);
-        print(temp);
+      parseResponse = await query.query();
+      if (parseResponse.success && parseResponse.results != null) {
+        return UserEntity().fromParse(parseResponse.results!.first);
+      } else {
+        throw Exception();
       }
-      print(temp);
-      return temp;
-    } else {
-      //print('nao encontrei este User...');
-      return null;
+    } catch (e) {
+      var errorCodes = ParseErrorCode(parseResponse!.error!);
+      throw UserRepositoryException(
+        code: errorCodes.code,
+        message: errorCodes.message,
+      );
     }
   }
 
   @override
   Future<UserModel?> register(
       {required String email, required String password}) async {
-    ParseResponse? response;
+    ParseResponse? parseResponse;
 
     try {
       final user = ParseUser.createUser(email, password, email);
-      response = await user.signUp();
-      if (response.success) {
-        UserModel userModel = UserEntity().fromParse(response.results!.first);
+      parseResponse = await user.signUp();
+      if (parseResponse.success && parseResponse.results != null) {
+        UserModel userModel =
+            UserEntity().fromParse(parseResponse.results!.first);
         return userModel;
       } else {
-        var errorCodes = ParseErrorCodes(response.error!);
-        throw UserRepositoryException(
-          code: '${errorCodes.code}',
-          message: errorCodes.message,
-        );
+        throw Exception();
       }
     } catch (e) {
-      var errorCodes = ParseErrorCodes(response!.error!);
+      var errorCodes = ParseErrorCode(parseResponse!.error!);
       throw UserRepositoryException(
-        code: '${errorCodes.code}',
+        code: errorCodes.code,
         message: errorCodes.message,
       );
     }
@@ -74,13 +59,13 @@ class UserRepositoryB4a implements UserRepository {
   Future<UserModel?> login(
       {required String email, required String password}) async {
     UserModel userModel;
-    ParseResponse? response;
+    ParseResponse? parseResponse;
     try {
       final user = ParseUser(email, password, null);
 
-      response = await user.login();
-      if (response.success) {
-        ParseUser parseUser = response.results!.first;
+      parseResponse = await user.login();
+      if (parseResponse.success) {
+        ParseUser parseUser = parseResponse.results!.first;
         var profileField = parseUser.get('profile');
         var profileRepositoryB4a = ProfileRepositoryB4a();
 
@@ -91,13 +76,12 @@ class UserRepositoryB4a implements UserRepository {
         );
         return userModel;
       } else {
-        throw UserRepositoryException(
-            message: response.error!.message, code: '${response.error!.code}');
+        throw Exception();
       }
     } catch (e) {
-      var errorCodes = ParseErrorCodes(response!.error!);
+      var errorCodes = ParseErrorCode(parseResponse!.error!);
       throw UserRepositoryException(
-        code: '${errorCodes.code}',
+        code: errorCodes.code,
         message: errorCodes.message,
       );
     }
@@ -108,16 +92,19 @@ class UserRepositoryB4a implements UserRepository {
     final ParseUser user = ParseUser(null, null, email);
     final ParseResponse parseResponse = await user.requestPasswordReset();
     if (!parseResponse.success) {
+      var errorCodes = ParseErrorCode(parseResponse.error!);
       throw UserRepositoryException(
-          code: '000', message: 'Erro em recuperar senha');
+        code: errorCodes.code,
+        message: errorCodes.message,
+      );
     }
   }
 
   @override
   Future<bool> logout() async {
     final user = await ParseUser.currentUser() as ParseUser;
-    var response = await user.logout();
-    if (response.success) {
+    var parseResponse = await user.logout();
+    if (parseResponse.success) {
       return true;
     } else {
       return false;
