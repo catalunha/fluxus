@@ -1,18 +1,18 @@
-import 'package:fluxus/app/data/b4a/databases/auth/auth_repository_exception.dart';
-import 'package:fluxus/app/data/repositories/auth_repository.dart';
+import 'package:fluxus/app/data/b4a/databases/user/user_repository_exception.dart';
+import 'package:fluxus/app/data/repositories/user_repository.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
 
-class AuthRegisterEmailController extends GetxController
+class UserRegisterEmailController extends GetxController
     with LoaderMixin, MessageMixin {
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
 
-  final AuthRepository _authRepository;
-  AuthRegisterEmailController({required AuthRepository authRepository})
-      : _authRepository = authRepository;
+  final UserRepository _userRepository;
+  UserRegisterEmailController({required UserRepository userRepository})
+      : _userRepository = userRepository;
 
   @override
   void onInit() {
@@ -27,12 +27,12 @@ class AuthRegisterEmailController extends GetxController
   }) async {
     try {
       _loading(true);
-      final user = await _authRepository.registerEmail(
+      final user = await _userRepository.register(
         email: email,
         password: password,
       );
       if (user != null) {
-        Get.offAllNamed(Routes.authLogin);
+        Get.offAllNamed(Routes.userLogin);
       } else {
         _message.value = MessageModel(
           title: 'Erro',
@@ -40,7 +40,7 @@ class AuthRegisterEmailController extends GetxController
           isError: true,
         );
       }
-    } on AuthRepositoryException catch (e) {
+    } on UserRepositoryException catch (e) {
       _loading(false);
       _message.value = MessageModel(
         title: e.code,

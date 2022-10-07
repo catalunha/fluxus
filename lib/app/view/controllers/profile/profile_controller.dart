@@ -1,7 +1,7 @@
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/databases/profile/profile_repository_exception.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
-import 'package:fluxus/app/view/controllers/auth/splash/splash_controller.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';

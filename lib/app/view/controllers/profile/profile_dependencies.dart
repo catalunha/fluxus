@@ -6,14 +6,12 @@ import 'package:get/get.dart';
 class ProfileDependencies implements Bindings {
   @override
   void dependencies() {
-    Get.put<ProfileRepository>(
-      ProfileRepositoryB4a(),
+    Get.lazyPut<ProfileRepository>(
+      () => ProfileRepositoryB4a(),
     );
-    // Get.put<UserProfileUseCase>(
-    //   UserProfileUseCaseImpl(userProfileRepository: Get.find()),
-    // );
-    Get.lazyPut<ProfileController>(
-      () => ProfileController(
+
+    Get.put<ProfileController>(
+      ProfileController(
         profileRepository: Get.find(),
       ),
     );

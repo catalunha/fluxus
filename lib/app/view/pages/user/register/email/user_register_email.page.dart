@@ -1,13 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:fluxus/app/view/controllers/auth/email/auth_register_email_controller.dart';
+import 'package:fluxus/app/view/controllers/user/register/email/user_register_email_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
 import 'package:get/get.dart';
 import 'package:validatorless/validatorless.dart';
 
 class AuthRegisterEmailPage extends StatefulWidget {
-  final _authRegisterEmailController = Get.find<AuthRegisterEmailController>();
+  final _authRegisterEmailController = Get.find<UserRegisterEmailController>();
 
   AuthRegisterEmailPage({Key? key}) : super(key: key);
 

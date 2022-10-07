@@ -1,11 +1,11 @@
-import 'package:fluxus/app/view/controllers/auth/email/auth_register_email_dependencies.dart';
-import 'package:fluxus/app/view/controllers/auth/login/login_dependencies.dart';
-import 'package:fluxus/app/view/controllers/auth/splash/splash_dependencies.dart';
+import 'package:fluxus/app/view/controllers/user/register/email/user_register_email_dependencies.dart';
+import 'package:fluxus/app/view/controllers/user/login/login_dependencies.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_dependencies.dart';
 import 'package:fluxus/app/view/controllers/home/home_dependencies.dart';
 import 'package:fluxus/app/view/controllers/profile/profile_dependencies.dart';
-import 'package:fluxus/app/view/pages/auth/login/auth_login_page.dart';
-import 'package:fluxus/app/view/pages/auth/register/email/auth_register_email.page.dart';
-import 'package:fluxus/app/view/pages/auth/splash/splash_page.dart';
+import 'package:fluxus/app/view/pages/user/login/auth_login_page.dart';
+import 'package:fluxus/app/view/pages/user/register/email/user_register_email.page.dart';
+import 'package:fluxus/app/view/pages/splash/splash_page.dart';
 import 'package:fluxus/app/view/pages/home/home_page.dart';
 import 'package:fluxus/app/view/pages/profile/profile_page.dart';
 import 'package:get/get.dart';
@@ -13,9 +13,9 @@ import 'package:get/get.dart';
 class Routes {
   static const splash = '/';
 
-  static const authLogin = '/auth/login';
+  static const userLogin = '/user/login';
 
-  static const authRegisterEmail = '/auth/register/email';
+  static const userRegisterEmail = '/user/register/email';
 
   static const profile = '/user/profile';
 
@@ -28,13 +28,13 @@ class Routes {
       page: () => const SplashPage(),
     ),
     GetPage(
-      name: Routes.authLogin,
+      name: Routes.userLogin,
       binding: AuthLoginDependencies(),
       page: () => AuthLoginPage(),
     ),
     GetPage(
-      name: Routes.authRegisterEmail,
-      binding: AuthRegisterEmailDependencies(),
+      name: Routes.userRegisterEmail,
+      binding: UserRegisterEmailDependencies(),
       page: () => AuthRegisterEmailPage(),
     ),
     GetPage(

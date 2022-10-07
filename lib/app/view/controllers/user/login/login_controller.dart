@@ -1,7 +1,7 @@
-import 'package:fluxus/app/data/b4a/databases/auth/auth_repository_exception.dart';
-import 'package:fluxus/app/data/repositories/auth_repository.dart';
+import 'package:fluxus/app/data/b4a/databases/user/user_repository_exception.dart';
+import 'package:fluxus/app/data/repositories/user_repository.dart';
 import 'package:fluxus/app/routes.dart';
-import 'package:fluxus/app/view/controllers/auth/splash/splash_controller.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
@@ -11,10 +11,9 @@ class LoginController extends GetxController with LoaderMixin, MessageMixin {
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
 
-  final AuthRepository _authRepository;
-  LoginController({
-    required AuthRepository authRepository,
-  }) : _authRepository = authRepository;
+  final UserRepository _userRepository;
+  LoginController({required UserRepository userRepository})
+      : _userRepository = userRepository;
 
   @override
   void onInit() {
@@ -27,7 +26,7 @@ class LoginController extends GetxController with LoaderMixin, MessageMixin {
     try {
       _loading(true);
       final user =
-          await _authRepository.loginEmail(email: email, password: password);
+          await _userRepository.login(email: email, password: password);
       if (user != null) {
         final splashController = Get.find<SplashController>();
         splashController.userModel = user;
@@ -50,7 +49,7 @@ class LoginController extends GetxController with LoaderMixin, MessageMixin {
           isError: true,
         );
       }
-    } on AuthRepositoryException catch (e) {
+    } on UserRepositoryException catch (e) {
       _loading(false);
 
       _message.value = MessageModel(
@@ -65,15 +64,15 @@ class LoginController extends GetxController with LoaderMixin, MessageMixin {
 
   Future<void> forgotPassword(String email) async {
     try {
-      final user = await _authRepository.forgotPassword(email);
+      final user = await _userRepository.forgotPassword(email);
       _message.value = MessageModel(
         title: 'Veja seu email',
         message: 'Enviamos instruções de recuperação de senha nele.',
       );
-    } on AuthRepositoryException {
-      _authRepository.logout();
+    } on UserRepositoryException {
+      _userRepository.logout();
       _message.value = MessageModel(
-        title: 'AuthRepositoryException',
+        title: 'UserRepositoryException',
         message: 'Em recuperar senha',
         isError: true,
       );

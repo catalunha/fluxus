@@ -5,7 +5,7 @@ class HomeDependencies implements Bindings {
   @override
   void dependencies() {
     Get.put<HomeController>(
-      HomeController(authRepository: Get.find()),
+      HomeController(userRepository: Get.find()),
     );
   }
 }
