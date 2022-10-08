@@ -8,7 +8,7 @@ import 'package:validatorless/validatorless.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key? key}) : super(key: key);
-  final _userProfileController = Get.find<ProfileController>();
+  final _profileController = Get.find<ProfileController>();
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -30,15 +30,14 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _nameTec.text = widget._userProfileController.profile?.name ?? "";
-    _phoneTec.text = widget._userProfileController.profile?.phone ?? "";
-    _addressTec.text = widget._userProfileController.profile?.address ?? "";
-    _cepTec.text = widget._userProfileController.profile?.cep ?? "";
-    _pluscodeTec.text = widget._userProfileController.profile?.pluscode ?? "";
-    _cpfTec.text = widget._userProfileController.profile?.cpf ?? "";
-    _registerTec.text = widget._userProfileController.profile?.register ?? "";
-    _descriptionTec.text =
-        widget._userProfileController.profile?.description ?? "";
+    _nameTec.text = widget._profileController.profile?.name ?? "";
+    _phoneTec.text = widget._profileController.profile?.phone ?? "";
+    _addressTec.text = widget._profileController.profile?.address ?? "";
+    _cepTec.text = widget._profileController.profile?.cep ?? "";
+    _pluscodeTec.text = widget._profileController.profile?.pluscode ?? "";
+    _cpfTec.text = widget._profileController.profile?.cpf ?? "";
+    _registerTec.text = widget._profileController.profile?.register ?? "";
+    _descriptionTec.text = widget._profileController.profile?.description ?? "";
   }
 
   @override
@@ -54,8 +53,6 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: SingleChildScrollView(
               child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   AppTextFormField(
                     label: '* Seu nome.',
@@ -71,7 +68,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     value: _isFemale,
                   ),
-                  AppCalendarButton(),
+                  AppCalendarButton(
+                    title: "Data de nascimento.",
+                    getDate: () => widget._profileController.selectedDate,
+                    setDate: (value) =>
+                        widget._profileController.selectedDate = value,
+                  ),
                   const Divider(
                     color: Colors.green,
                     height: 5,
@@ -113,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       final formValid =
                           _formKey.currentState?.validate() ?? false;
                       if (formValid) {
-                        await widget._userProfileController.append(
+                        await widget._profileController.append(
                           name: _nameTec.text,
                           description: _descriptionTec.text,
                           phone: _phoneTec.text,

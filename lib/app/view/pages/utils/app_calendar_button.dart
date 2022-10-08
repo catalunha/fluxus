@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:fluxus/app/view/controllers/profile/profile_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AppCalendarButton extends StatelessWidget {
-  final ProfileController _controller = Get.find();
   final dateFormat = DateFormat('dd/MM/y');
+  final String title;
+  final DateTime? Function() getDate;
+  final Function(DateTime?) setDate;
 
-  AppCalendarButton({Key? key}) : super(key: key);
+  AppCalendarButton({
+    Key? key,
+    required this.title,
+    required this.getDate,
+    required this.setDate,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        var initialDate = _controller.selectedDate ?? DateTime.now();
+        var initialDate = getDate() ?? DateTime.now();
         final DateTime? selectedDate = await showDatePicker(
           context: context,
           initialDate: initialDate,
@@ -21,13 +27,12 @@ class AppCalendarButton extends StatelessWidget {
           lastDate: DateTime(DateTime.now().year + 1),
         );
         if (selectedDate != null) {
-          _controller.selectedDate =
-              DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
+          setDate(DateTime(
+              selectedDate.year, selectedDate.month, selectedDate.day));
         } else {
-          _controller.selectedDate = null;
+          setDate(null);
         }
       },
-      // borderRadius: BorderRadius.circular(10.0),
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -43,11 +48,10 @@ class AppCalendarButton extends StatelessWidget {
             const SizedBox(width: 10),
             Obx(
               () {
-                if (_controller.selectedDate != null) {
-                  return Text(
-                      'Nascimento:  ${dateFormat.format(_controller.selectedDate!)}');
+                if (getDate() != null) {
+                  return Text('$title:  ${dateFormat.format(getDate()!)}');
                 } else {
-                  return const Text('Nascimento: Selecione uma data');
+                  return Text('$title: Selecione uma data');
                 }
               },
             ),
