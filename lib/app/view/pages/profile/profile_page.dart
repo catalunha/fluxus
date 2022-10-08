@@ -98,6 +98,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     controller: _pluscodeTec,
                   ),
                   AppTextFormField(
+                    label: 'O número de registro em seu conselho.',
+                    controller: _registerTec,
+                  ),
+                  AppTextFormField(
                     label: 'Uma breve descrição sobre você.',
                     controller: _descriptionTec,
                   ),
@@ -117,6 +121,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           cep: _cepTec.text,
                           pluscode: _pluscodeTec.text,
                           cpf: _cpfTec.text,
+                          register: _registerTec.text,
                           isFemale: _isFemale,
                         );
                         Get.back();

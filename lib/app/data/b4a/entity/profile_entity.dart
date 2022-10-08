@@ -16,14 +16,11 @@ class ProfileEntity {
       pluscode: parseObject.get('pluscode'),
       cpf: parseObject.get('cpf'),
       description: parseObject.get('description'),
+      register: parseObject.get('register'),
       photo: parseObject.get('photo')?.get('url'),
-      isActive: parseObject.get('isActive'),
-      isDeleted: parseObject.get('isDeleted'),
-      isFemale: parseObject.get<bool>('isFemale') ?? false,
-
-      // community: parseObject.get('community') != null
-      //     ? CommunityEntity().fromParse(parseObject.get('community'))
-      //     : null,
+      isActive: parseObject.get('isActive') ?? false,
+      isDeleted: parseObject.get('isDeleted') ?? false,
+      isFemale: parseObject.get('isFemale') ?? false,
     );
     return profileEntity;
   }
