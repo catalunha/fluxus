@@ -37,9 +37,18 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
   void onInit() {
     loaderListener(_loading);
     messageListener(_message);
-    ProfileModel? model = Get.arguments;
-    _profile(model);
+    ProfileModel model = Get.arguments;
+    setProfile(model);
     super.onInit();
+  }
+
+  setProfile(ProfileModel model) {
+    _profile(model);
+    onSelectedDate();
+  }
+
+  void onSelectedDate() {
+    selectedDate = profile?.birthday;
   }
 
   Future<void> append({

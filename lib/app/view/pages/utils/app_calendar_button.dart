@@ -20,7 +20,12 @@ class AppCalendarButton extends StatelessWidget {
           firstDate: DateTime(DateTime.now().year),
           lastDate: DateTime(DateTime.now().year + 1),
         );
-        _controller.selectedDate = selectedDate;
+        if (selectedDate != null) {
+          _controller.selectedDate =
+              DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
+        } else {
+          _controller.selectedDate = null;
+        }
       },
       // borderRadius: BorderRadius.circular(10.0),
       child: Container(

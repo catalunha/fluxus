@@ -58,18 +58,32 @@ class _ProfilePageState extends State<ProfilePage> {
                 // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   AppTextFormField(
-                    label: 'Seu nome.',
+                    label: '* Seu nome.',
                     controller: _nameTec,
                     validator: Validatorless.required('Nome é obrigatório'),
                   ),
-                  AppTextFormField(
-                    label: 'Seu CPF. Apenas numeros.',
-                    controller: _pluscodeTec,
-                    validator: Validatorless.cpf('Número não é CPF válido'),
+                  CheckboxListTile(
+                    title: const Text("* É do sexo feminimo ?"),
+                    onChanged: (value) {
+                      setState(() {
+                        _isFemale = value!;
+                      });
+                    },
+                    value: _isFemale,
+                  ),
+                  AppCalendarButton(),
+                  const Divider(
+                    color: Colors.green,
+                    height: 5,
                   ),
                   AppTextFormField(
                     label: 'Seu telefone com DDD.',
                     controller: _phoneTec,
+                  ),
+                  AppTextFormField(
+                    label: 'Seu CPF. Apenas numeros.',
+                    controller: _cpfTec,
+                    validator: Validatorless.cpf('Número não é CPF válido'),
                   ),
                   AppTextFormField(
                     label: 'Seu endereço completo.',
@@ -87,16 +101,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     label: 'Uma breve descrição sobre você.',
                     controller: _descriptionTec,
                   ),
-                  CheckboxListTile(
-                    title: const Text("É do sexo feminimo ?"),
-                    onChanged: (value) {
-                      setState(() {
-                        _isFemale = value!;
-                      });
-                    },
-                    value: _isFemale,
-                  ),
-                  AppCalendarButton(),
                   const SizedBox(height: 20),
                   UserProfilePhoto(),
                   const SizedBox(height: 20),
@@ -107,9 +111,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       if (formValid) {
                         await widget._userProfileController.append(
                           name: _nameTec.text,
-                          // description: _descriptionTec.text,
+                          description: _descriptionTec.text,
                           phone: _phoneTec.text,
-                          // unit: _unitTec.text,
+                          address: _addressTec.text,
+                          cep: _cepTec.text,
+                          pluscode: _pluscodeTec.text,
+                          cpf: _cpfTec.text,
+                          isFemale: _isFemale,
                         );
                         Get.back();
                       }

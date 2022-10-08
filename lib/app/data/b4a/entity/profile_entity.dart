@@ -7,12 +7,20 @@ class ProfileEntity {
   ProfileModel fromParse(ParseObject parseObject) {
     ProfileModel profileEntity = ProfileModel(
       id: parseObject.objectId!,
-      name: parseObject.get('name'),
-      // description: parseObject.get('description'),
-      phone: parseObject.get('phone'),
-      // photo: parseObject.get('photo')?.get('url'),
       email: parseObject.get('email'),
+      name: parseObject.get('name'),
+      birthday: parseObject.get('birthday'),
+      phone: parseObject.get('phone'),
+      address: parseObject.get('address'),
+      cep: parseObject.get('cep'),
+      pluscode: parseObject.get('pluscode'),
+      cpf: parseObject.get('cpf'),
+      description: parseObject.get('description'),
+      photo: parseObject.get('photo')?.get('url'),
       isActive: parseObject.get('isActive'),
+      isDeleted: parseObject.get('isDeleted'),
+      isFemale: parseObject.get<bool>('isFemale') ?? false,
+
       // community: parseObject.get('community') != null
       //     ? CommunityEntity().fromParse(parseObject.get('community'))
       //     : null,
@@ -28,23 +36,41 @@ class ProfileEntity {
     if (profileModel.name != null) {
       profileParse.set('name', profileModel.name);
     }
-    // if (profileModel.description != null) {
-    //   profileParse.set('description', profileModel.description);
-    // }
+    if (profileModel.description != null) {
+      profileParse.set('description', profileModel.description);
+    }
     if (profileModel.phone != null) {
       profileParse.set('phone', profileModel.phone);
     }
-    // if (profileModel.unit != null) {
-    //   profileParse.set('unit', profileModel.unit);
-    // }
-    // if (profileModel.photoParseFileBase != null) {
-    //   profileParse.set('photo', profileModel.photoParseFileBase);
-    // }
     if (profileModel.email != null) {
       profileParse.set('email', profileModel.email);
     }
+    if (profileModel.address != null) {
+      profileParse.set('address', profileModel.address);
+    }
+    if (profileModel.cep != null) {
+      profileParse.set('cep', profileModel.cep);
+    }
+    if (profileModel.pluscode != null) {
+      profileParse.set('pluscode', profileModel.pluscode);
+    }
+    if (profileModel.cpf != null) {
+      profileParse.set('cpf', profileModel.cpf);
+    }
+    if (profileModel.register != null) {
+      profileParse.set('register', profileModel.register);
+    }
     if (profileModel.isActive != null) {
       profileParse.set('isActive', profileModel.isActive);
+    }
+    if (profileModel.isDeleted != null) {
+      profileParse.set('isDeleted', profileModel.isDeleted);
+    }
+    if (profileModel.isFemale != null) {
+      profileParse.set('isFemale', profileModel.isFemale);
+    }
+    if (profileModel.birthday != null) {
+      profileParse.set('birthday', profileModel.birthday);
     }
     return profileParse;
   }

@@ -19,16 +19,17 @@ class ProfileModel {
   final String? cpf;
   final bool? isFemale;
   final DateTime? birthday;
-  final ProfileModel? parent;
-  final List<ProfileModel>? children;
   final String? description;
   final String? register; // conselho de saude
+  final List<ProfileModel>? family; // familiares adultos que esta ligado
+  final List<ProfileModel>? children; // familiares crianças que esta ligada
   final List<AgreementModel>? agreement; // convenio
   final List<ExpertiseModel>? expertise; // especialidade
   final List<OfficeModel>? office; // cargo: Adm, Sec, Aval, Prof, Paciente
 
   final List<String>? routes;
   final bool? isActive;
+  final bool? isDeleted;
   ProfileModel({
     this.id,
     this.email,
@@ -42,14 +43,15 @@ class ProfileModel {
     this.isFemale,
     this.birthday,
     this.description,
-    this.parent,
+    this.family,
     this.children,
-    this.agreement,
     this.register,
+    this.agreement,
     this.expertise,
     this.office,
     this.routes,
     this.isActive,
+    this.isDeleted,
   });
 
   ProfileModel copyWith({
@@ -65,14 +67,15 @@ class ProfileModel {
     bool? isFemale,
     DateTime? birthday,
     String? description,
-    ProfileModel? parent,
+    List<ProfileModel>? family,
     List<ProfileModel>? children,
-    List<AgreementModel>? agreement,
     String? register,
+    List<AgreementModel>? agreement,
     List<ExpertiseModel>? expertise,
     List<OfficeModel>? office,
     List<String>? routes,
     bool? isActive,
+    bool? isDeleted,
   }) {
     return ProfileModel(
       id: id ?? this.id,
@@ -87,14 +90,15 @@ class ProfileModel {
       isFemale: isFemale ?? this.isFemale,
       birthday: birthday ?? this.birthday,
       description: description ?? this.description,
-      parent: parent ?? this.parent,
+      family: family ?? this.family,
       children: children ?? this.children,
-      agreement: agreement ?? this.agreement,
       register: register ?? this.register,
+      agreement: agreement ?? this.agreement,
       expertise: expertise ?? this.expertise,
       office: office ?? this.office,
       routes: routes ?? this.routes,
       isActive: isActive ?? this.isActive,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
@@ -137,17 +141,17 @@ class ProfileModel {
     if (description != null) {
       result.addAll({'description': description});
     }
-    if (parent != null) {
-      result.addAll({'parent': parent!.toMap()});
+    if (family != null) {
+      result.addAll({'family': family!.map((x) => x.toMap()).toList()});
     }
     if (children != null) {
       result.addAll({'children': children!.map((x) => x.toMap()).toList()});
     }
-    if (agreement != null) {
-      result.addAll({'agreement': agreement!.map((x) => x.toMap()).toList()});
-    }
     if (register != null) {
       result.addAll({'register': register});
+    }
+    if (agreement != null) {
+      result.addAll({'agreement': agreement!.map((x) => x.toMap()).toList()});
     }
     if (expertise != null) {
       result.addAll({'expertise': expertise!.map((x) => x.toMap()).toList()});
@@ -160,6 +164,9 @@ class ProfileModel {
     }
     if (isActive != null) {
       result.addAll({'isActive': isActive});
+    }
+    if (isDeleted != null) {
+      result.addAll({'isDeleted': isDeleted});
     }
 
     return result;
@@ -181,17 +188,19 @@ class ProfileModel {
           ? DateTime.fromMillisecondsSinceEpoch(map['birthday'])
           : null,
       description: map['description'],
-      parent:
-          map['parent'] != null ? ProfileModel.fromMap(map['parent']) : null,
+      family: map['family'] != null
+          ? List<ProfileModel>.from(
+              map['family']?.map((x) => ProfileModel.fromMap(x)))
+          : null,
       children: map['children'] != null
           ? List<ProfileModel>.from(
               map['children']?.map((x) => ProfileModel.fromMap(x)))
           : null,
+      register: map['register'],
       agreement: map['agreement'] != null
           ? List<AgreementModel>.from(
               map['agreement']?.map((x) => AgreementModel.fromMap(x)))
           : null,
-      register: map['register'],
       expertise: map['expertise'] != null
           ? List<ExpertiseModel>.from(
               map['expertise']?.map((x) => ExpertiseModel.fromMap(x)))
@@ -202,6 +211,7 @@ class ProfileModel {
           : null,
       routes: List<String>.from(map['routes']),
       isActive: map['isActive'],
+      isDeleted: map['isDeleted'],
     );
   }
 
@@ -212,7 +222,7 @@ class ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, parent: $parent, children: $children, agreement: $agreement, register: $register, expertise: $expertise, office: $office, routes: $routes, isActive: $isActive)';
+    return 'ProfileModel(id: $id, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, family: $family, children: $children, register: $register, agreement: $agreement, expertise: $expertise, office: $office, routes: $routes, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -232,14 +242,15 @@ class ProfileModel {
         other.isFemale == isFemale &&
         other.birthday == birthday &&
         other.description == description &&
-        other.parent == parent &&
+        listEquals(other.family, family) &&
         listEquals(other.children, children) &&
-        listEquals(other.agreement, agreement) &&
         other.register == register &&
+        listEquals(other.agreement, agreement) &&
         listEquals(other.expertise, expertise) &&
         listEquals(other.office, office) &&
         listEquals(other.routes, routes) &&
-        other.isActive == isActive;
+        other.isActive == isActive &&
+        other.isDeleted == isDeleted;
   }
 
   @override
@@ -256,13 +267,14 @@ class ProfileModel {
         isFemale.hashCode ^
         birthday.hashCode ^
         description.hashCode ^
-        parent.hashCode ^
+        family.hashCode ^
         children.hashCode ^
-        agreement.hashCode ^
         register.hashCode ^
+        agreement.hashCode ^
         expertise.hashCode ^
         office.hashCode ^
         routes.hashCode ^
-        isActive.hashCode;
+        isActive.hashCode ^
+        isDeleted.hashCode;
   }
 }
