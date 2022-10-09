@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:fluxus/app/core/models/agreement_model.dart';
+import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/expertise_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
@@ -16,7 +16,7 @@ class EventModel {
   final List<UserModel>? professionals;
   final List<ExpertiseModel>? expertise; // Especialidade
   final List<ProfileModel>? patients;
-  final List<AgreementModel>? agreement; // Convenio
+  final List<HealthPlanModel>? healthInsurance; // Convenio
   final String autorization;
   final String fatura;
   final RoomModel? room;
@@ -33,7 +33,7 @@ class EventModel {
     this.professionals,
     this.expertise,
     this.patients,
-    this.agreement,
+    this.healthInsurance,
     required this.autorization,
     required this.fatura,
     this.room,
@@ -51,7 +51,7 @@ class EventModel {
     List<UserModel>? professionals,
     List<ExpertiseModel>? expertise,
     List<ProfileModel>? patients,
-    List<AgreementModel>? agreement,
+    List<HealthPlanModel>? healthInsurance,
     String? autorization,
     String? fatura,
     RoomModel? room,
@@ -68,7 +68,7 @@ class EventModel {
       professionals: professionals ?? this.professionals,
       expertise: expertise ?? this.expertise,
       patients: patients ?? this.patients,
-      agreement: agreement ?? this.agreement,
+      healthInsurance: healthInsurance ?? this.healthInsurance,
       autorization: autorization ?? this.autorization,
       fatura: fatura ?? this.fatura,
       room: room ?? this.room,
@@ -100,8 +100,9 @@ class EventModel {
     if (patients != null) {
       result.addAll({'patients': patients!.map((x) => x.toMap()).toList()});
     }
-    if (agreement != null) {
-      result.addAll({'agreement': agreement!.map((x) => x.toMap()).toList()});
+    if (healthInsurance != null) {
+      result.addAll(
+          {'healthInsurance': healthInsurance!.map((x) => x.toMap()).toList()});
     }
     result.addAll({'autorization': autorization});
     result.addAll({'fatura': fatura});
@@ -148,9 +149,9 @@ class EventModel {
           ? List<ProfileModel>.from(
               map['patients']?.map((x) => ProfileModel.fromMap(x)))
           : null,
-      agreement: map['agreement'] != null
-          ? List<AgreementModel>.from(
-              map['agreement']?.map((x) => AgreementModel.fromMap(x)))
+      healthInsurance: map['healthInsurance'] != null
+          ? List<HealthPlanModel>.from(
+              map['healthInsurance']?.map((x) => HealthPlanModel.fromMap(x)))
           : null,
       autorization: map['autorization'] ?? '',
       fatura: map['fatura'] ?? '',
@@ -177,7 +178,7 @@ class EventModel {
 
   @override
   String toString() {
-    return 'EventModel(id: $id, user: $user, professionals: $professionals, expertise: $expertise, patients: $patients, agreement: $agreement, autorization: $autorization, fatura: $fatura, room: $room, start: $start, end: $end, status: $status, log: $log, description: $description, isDeleted: $isDeleted)';
+    return 'EventModel(id: $id, user: $user, professionals: $professionals, expertise: $expertise, patients: $patients, healthInsurance: $healthInsurance, autorization: $autorization, fatura: $fatura, room: $room, start: $start, end: $end, status: $status, log: $log, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
@@ -190,7 +191,7 @@ class EventModel {
         listEquals(other.professionals, professionals) &&
         listEquals(other.expertise, expertise) &&
         listEquals(other.patients, patients) &&
-        listEquals(other.agreement, agreement) &&
+        listEquals(other.healthInsurance, healthInsurance) &&
         other.autorization == autorization &&
         other.fatura == fatura &&
         other.room == room &&
@@ -209,7 +210,7 @@ class EventModel {
         professionals.hashCode ^
         expertise.hashCode ^
         patients.hashCode ^
-        agreement.hashCode ^
+        healthInsurance.hashCode ^
         autorization.hashCode ^
         fatura.hashCode ^
         room.hashCode ^

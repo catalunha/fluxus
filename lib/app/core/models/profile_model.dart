@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:fluxus/app/core/models/agreement_model.dart';
+import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/expertise_model.dart';
 import 'package:fluxus/app/core/models/office_model.dart';
 
 // Perfil de usuario ou pessoa
 class ProfileModel {
   final String? id;
+  final String? userId;
   final String? email;
   final String? name;
   final String? phone;
@@ -21,10 +22,9 @@ class ProfileModel {
   final DateTime? birthday;
   final String? description;
   final String? register; // conselho de saude
-  final List<ProfileModel>?
-      family; // seus familiares adultos que estão ligados a vc
+  final List<ProfileModel>? family; // familiares adultos
   final List<ProfileModel>? children; // crianças que estão ligadas a vc
-  final List<AgreementModel>? agreement; // convenio
+  final List<HealthPlanModel>? healthPlan; // Convenio
   final List<ExpertiseModel>? expertise; // especialidade
   final List<OfficeModel>? office; // cargo: Adm, Sec, Aval, Prof, Paciente
 
@@ -33,6 +33,7 @@ class ProfileModel {
   final bool? isDeleted;
   ProfileModel({
     this.id,
+    this.userId,
     this.email,
     this.name,
     this.phone,
@@ -44,10 +45,10 @@ class ProfileModel {
     this.isFemale,
     this.birthday,
     this.description,
+    this.register,
     this.family,
     this.children,
-    this.register,
-    this.agreement,
+    this.healthPlan,
     this.expertise,
     this.office,
     this.routes,
@@ -57,6 +58,7 @@ class ProfileModel {
 
   ProfileModel copyWith({
     String? id,
+    String? userId,
     String? email,
     String? name,
     String? phone,
@@ -68,10 +70,10 @@ class ProfileModel {
     bool? isFemale,
     DateTime? birthday,
     String? description,
+    String? register,
     List<ProfileModel>? family,
     List<ProfileModel>? children,
-    String? register,
-    List<AgreementModel>? agreement,
+    List<HealthPlanModel>? healthInsurance,
     List<ExpertiseModel>? expertise,
     List<OfficeModel>? office,
     List<String>? routes,
@@ -80,6 +82,7 @@ class ProfileModel {
   }) {
     return ProfileModel(
       id: id ?? this.id,
+      userId: userId ?? this.userId,
       email: email ?? this.email,
       name: name ?? this.name,
       phone: phone ?? this.phone,
@@ -91,10 +94,10 @@ class ProfileModel {
       isFemale: isFemale ?? this.isFemale,
       birthday: birthday ?? this.birthday,
       description: description ?? this.description,
+      register: register ?? this.register,
       family: family ?? this.family,
       children: children ?? this.children,
-      register: register ?? this.register,
-      agreement: agreement ?? this.agreement,
+      healthPlan: healthInsurance ?? healthPlan,
       expertise: expertise ?? this.expertise,
       office: office ?? this.office,
       routes: routes ?? this.routes,
@@ -108,6 +111,9 @@ class ProfileModel {
 
     if (id != null) {
       result.addAll({'id': id});
+    }
+    if (userId != null) {
+      result.addAll({'userId': userId});
     }
     if (email != null) {
       result.addAll({'email': email});
@@ -142,17 +148,18 @@ class ProfileModel {
     if (description != null) {
       result.addAll({'description': description});
     }
+    if (register != null) {
+      result.addAll({'register': register});
+    }
     if (family != null) {
       result.addAll({'family': family!.map((x) => x.toMap()).toList()});
     }
     if (children != null) {
       result.addAll({'children': children!.map((x) => x.toMap()).toList()});
     }
-    if (register != null) {
-      result.addAll({'register': register});
-    }
-    if (agreement != null) {
-      result.addAll({'agreement': agreement!.map((x) => x.toMap()).toList()});
+    if (healthPlan != null) {
+      result.addAll(
+          {'healthInsurance': healthPlan!.map((x) => x.toMap()).toList()});
     }
     if (expertise != null) {
       result.addAll({'expertise': expertise!.map((x) => x.toMap()).toList()});
@@ -176,6 +183,7 @@ class ProfileModel {
   factory ProfileModel.fromMap(Map<String, dynamic> map) {
     return ProfileModel(
       id: map['id'],
+      userId: map['userId'],
       email: map['email'],
       name: map['name'],
       phone: map['phone'],
@@ -189,6 +197,7 @@ class ProfileModel {
           ? DateTime.fromMillisecondsSinceEpoch(map['birthday'])
           : null,
       description: map['description'],
+      register: map['register'],
       family: map['family'] != null
           ? List<ProfileModel>.from(
               map['family']?.map((x) => ProfileModel.fromMap(x)))
@@ -197,10 +206,9 @@ class ProfileModel {
           ? List<ProfileModel>.from(
               map['children']?.map((x) => ProfileModel.fromMap(x)))
           : null,
-      register: map['register'],
-      agreement: map['agreement'] != null
-          ? List<AgreementModel>.from(
-              map['agreement']?.map((x) => AgreementModel.fromMap(x)))
+      healthPlan: map['healthInsurance'] != null
+          ? List<HealthPlanModel>.from(
+              map['healthInsurance']?.map((x) => HealthPlanModel.fromMap(x)))
           : null,
       expertise: map['expertise'] != null
           ? List<ExpertiseModel>.from(
@@ -223,7 +231,7 @@ class ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, family: $family, children: $children, register: $register, agreement: $agreement, expertise: $expertise, office: $office, routes: $routes, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'ProfileModel(id: $id, userId: $userId, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, register: $register, family: $family, children: $children, healthInsurance: $healthPlan, expertise: $expertise, office: $office, routes: $routes, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -232,6 +240,7 @@ class ProfileModel {
 
     return other is ProfileModel &&
         other.id == id &&
+        other.userId == userId &&
         other.email == email &&
         other.name == name &&
         other.phone == phone &&
@@ -243,10 +252,10 @@ class ProfileModel {
         other.isFemale == isFemale &&
         other.birthday == birthday &&
         other.description == description &&
+        other.register == register &&
         listEquals(other.family, family) &&
         listEquals(other.children, children) &&
-        other.register == register &&
-        listEquals(other.agreement, agreement) &&
+        listEquals(other.healthPlan, healthPlan) &&
         listEquals(other.expertise, expertise) &&
         listEquals(other.office, office) &&
         listEquals(other.routes, routes) &&
@@ -257,6 +266,7 @@ class ProfileModel {
   @override
   int get hashCode {
     return id.hashCode ^
+        userId.hashCode ^
         email.hashCode ^
         name.hashCode ^
         phone.hashCode ^
@@ -268,10 +278,10 @@ class ProfileModel {
         isFemale.hashCode ^
         birthday.hashCode ^
         description.hashCode ^
+        register.hashCode ^
         family.hashCode ^
         children.hashCode ^
-        register.hashCode ^
-        agreement.hashCode ^
+        healthPlan.hashCode ^
         expertise.hashCode ^
         office.hashCode ^
         routes.hashCode ^

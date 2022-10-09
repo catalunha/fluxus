@@ -26,7 +26,7 @@ class ProfileEntity {
     }
     //--- get expertises
 
-    //+++ get expertises
+    //+++ get office
     List<OfficeModel> officeList = [];
     QueryBuilder<ParseObject> queryOffice =
         QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
@@ -39,7 +39,7 @@ class ProfileEntity {
             .toList()
       ];
     }
-    //--- get expertises
+    //--- get office
 
     ProfileModel profileModel = ProfileModel(
       id: parseObject.objectId!,

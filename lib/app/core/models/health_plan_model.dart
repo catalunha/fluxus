@@ -1,16 +1,18 @@
 import 'dart:convert';
 
 /// Convenio do paciente
-class AgreementModel {
+class HealthPlanModel {
   final String? id;
+  final String? profileId;
   final String? name;
   final String? code;
   final DateTime? due;
   final String? description;
   final bool? isDeleted;
 
-  AgreementModel({
+  HealthPlanModel({
     this.id,
+    this.profileId,
     this.name,
     this.code,
     this.due,
@@ -18,16 +20,18 @@ class AgreementModel {
     this.isDeleted,
   });
 
-  AgreementModel copyWith({
+  HealthPlanModel copyWith({
     String? id,
+    String? userId,
     String? name,
     String? code,
     DateTime? due,
     String? description,
     bool? isDeleted,
   }) {
-    return AgreementModel(
+    return HealthPlanModel(
       id: id ?? this.id,
+      profileId: userId ?? profileId,
       name: name ?? this.name,
       code: code ?? this.code,
       due: due ?? this.due,
@@ -41,6 +45,9 @@ class AgreementModel {
 
     if (id != null) {
       result.addAll({'id': id});
+    }
+    if (profileId != null) {
+      result.addAll({'userId': profileId});
     }
     if (name != null) {
       result.addAll({'name': name});
@@ -61,9 +68,10 @@ class AgreementModel {
     return result;
   }
 
-  factory AgreementModel.fromMap(Map<String, dynamic> map) {
-    return AgreementModel(
+  factory HealthPlanModel.fromMap(Map<String, dynamic> map) {
+    return HealthPlanModel(
       id: map['id'],
+      profileId: map['userId'],
       name: map['name'],
       code: map['code'],
       due: map['due'] != null
@@ -76,20 +84,21 @@ class AgreementModel {
 
   String toJson() => json.encode(toMap());
 
-  factory AgreementModel.fromJson(String source) =>
-      AgreementModel.fromMap(json.decode(source));
+  factory HealthPlanModel.fromJson(String source) =>
+      HealthPlanModel.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'AgreementModel(id: $id, name: $name, code: $code, due: $due, description: $description, isDeleted: $isDeleted)';
+    return 'HealthInsuranceModel(id: $id, userId: $profileId, name: $name, code: $code, due: $due, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is AgreementModel &&
+    return other is HealthPlanModel &&
         other.id == id &&
+        other.profileId == profileId &&
         other.name == name &&
         other.code == code &&
         other.due == due &&
@@ -100,6 +109,7 @@ class AgreementModel {
   @override
   int get hashCode {
     return id.hashCode ^
+        profileId.hashCode ^
         name.hashCode ^
         code.hashCode ^
         due.hashCode ^

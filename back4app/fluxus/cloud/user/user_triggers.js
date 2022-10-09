@@ -6,6 +6,7 @@ Parse.Cloud.afterSave(Parse.User, async (req) => {
   if (user.get('profile') === undefined) {
     const profile = new Parse.Object("Profile");
     profile.set('email', user.get('email'));
+    profile.set('userId', user.id);
     let profileResult = await profile.save(null, { useMasterKey: true });
     user.set('profile', profileResult);
     await user.save(null, { useMasterKey: true });
