@@ -1,11 +1,47 @@
+import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/models/office_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
+import 'package:fluxus/app/data/b4a/entity/expertise_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/office_entity.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class ProfileEntity {
   static const String className = 'Profile';
 
-  ProfileModel fromParse(ParseObject parseObject) {
-    ProfileModel profileEntity = ProfileModel(
+  Future<ProfileModel> fromParse(ParseObject parseObject) async {
+    //+++ get expertises
+    List<ExpertiseModel> expertiseList = [];
+    QueryBuilder<ParseObject> queryExpertise =
+        QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
+    queryExpertise.whereRelatedTo(
+        'expertise', 'Profile', parseObject.objectId!);
+    final ParseResponse responseExpertise = await queryExpertise.query();
+    if (responseExpertise.success && responseExpertise.results != null) {
+      expertiseList = [
+        ...responseExpertise.results!
+            .map<ExpertiseModel>(
+                (e) => ExpertiseEntity().fromParse(e as ParseObject))
+            .toList()
+      ];
+    }
+    //--- get expertises
+
+    //+++ get expertises
+    List<OfficeModel> officeList = [];
+    QueryBuilder<ParseObject> queryOffice =
+        QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
+    queryOffice.whereRelatedTo('office', 'Profile', parseObject.objectId!);
+    final ParseResponse responseOffice = await queryOffice.query();
+    if (responseOffice.success && responseOffice.results != null) {
+      officeList = [
+        ...responseOffice.results!
+            .map<OfficeModel>((e) => OfficeEntity().fromParse(e as ParseObject))
+            .toList()
+      ];
+    }
+    //--- get expertises
+
+    ProfileModel profileModel = ProfileModel(
       id: parseObject.objectId!,
       email: parseObject.get('email'),
       name: parseObject.get('name'),
@@ -21,54 +57,56 @@ class ProfileEntity {
       isActive: parseObject.get('isActive') ?? false,
       isDeleted: parseObject.get('isDeleted') ?? false,
       isFemale: parseObject.get('isFemale') ?? false,
+      expertise: expertiseList,
+      office: officeList,
     );
-    return profileEntity;
+    return profileModel;
   }
 
   Future<ParseObject> toParse(ProfileModel profileModel) async {
-    final profileParse = ParseObject(ProfileEntity.className);
+    final profileParseObject = ParseObject(ProfileEntity.className);
     if (profileModel.id != null) {
-      profileParse.objectId = profileModel.id;
+      profileParseObject.objectId = profileModel.id;
     }
     if (profileModel.name != null) {
-      profileParse.set('name', profileModel.name);
+      profileParseObject.set('name', profileModel.name);
     }
     if (profileModel.description != null) {
-      profileParse.set('description', profileModel.description);
+      profileParseObject.set('description', profileModel.description);
     }
     if (profileModel.phone != null) {
-      profileParse.set('phone', profileModel.phone);
+      profileParseObject.set('phone', profileModel.phone);
     }
     if (profileModel.email != null) {
-      profileParse.set('email', profileModel.email);
+      profileParseObject.set('email', profileModel.email);
     }
     if (profileModel.address != null) {
-      profileParse.set('address', profileModel.address);
+      profileParseObject.set('address', profileModel.address);
     }
     if (profileModel.cep != null) {
-      profileParse.set('cep', profileModel.cep);
+      profileParseObject.set('cep', profileModel.cep);
     }
     if (profileModel.pluscode != null) {
-      profileParse.set('pluscode', profileModel.pluscode);
+      profileParseObject.set('pluscode', profileModel.pluscode);
     }
     if (profileModel.cpf != null) {
-      profileParse.set('cpf', profileModel.cpf);
+      profileParseObject.set('cpf', profileModel.cpf);
     }
     if (profileModel.register != null) {
-      profileParse.set('register', profileModel.register);
+      profileParseObject.set('register', profileModel.register);
     }
     if (profileModel.isActive != null) {
-      profileParse.set('isActive', profileModel.isActive);
+      profileParseObject.set('isActive', profileModel.isActive);
     }
     if (profileModel.isDeleted != null) {
-      profileParse.set('isDeleted', profileModel.isDeleted);
+      profileParseObject.set('isDeleted', profileModel.isDeleted);
     }
     if (profileModel.isFemale != null) {
-      profileParse.set('isFemale', profileModel.isFemale);
+      profileParseObject.set('isFemale', profileModel.isFemale);
     }
     if (profileModel.birthday != null) {
-      profileParse.set('birthday', profileModel.birthday);
+      profileParseObject.set('birthday', profileModel.birthday);
     }
-    return profileParse;
+    return profileParseObject;
   }
 }

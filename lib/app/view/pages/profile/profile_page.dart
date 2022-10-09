@@ -110,6 +110,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 20),
                   UserProfilePhoto(),
                   const SizedBox(height: 20),
+                  const Text('Suas especialidades'),
+                  expertiseList(),
+                  const SizedBox(height: 20),
+                  const Text('Suas funcões'),
+                  officeList(),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {
                       final formValid =
@@ -138,5 +144,50 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  Widget expertiseList() {
+    if (widget._profileController.profile?.expertise != null) {
+      return Column(
+        children: [
+          ...widget._profileController.profile!.expertise!
+              .map((e) => Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(children: [
+                        Text(e.name ?? '...'),
+                        Text(e.code ?? '...'),
+                        Text(e.description ?? '...'),
+                      ]),
+                    ),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget officeList() {
+    if (widget._profileController.profile?.office != null) {
+      return Column(
+        children: [
+          ...widget._profileController.profile!.office!
+              .map((e) => Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(children: [
+                        Text(e.name ?? '...'),
+                        Text(e.description ?? '...'),
+                      ]),
+                    ),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 }

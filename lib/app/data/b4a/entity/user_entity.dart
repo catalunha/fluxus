@@ -5,12 +5,12 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class UserEntity {
   static const String className = '_User';
 
-  UserModel fromParse(ParseObject parseUser) {
+  Future<UserModel> fromParse(ParseObject parseUser) async {
     return UserModel(
       id: parseUser.objectId!,
       email: parseUser.get('username'),
       profile: parseUser.get('profile') != null
-          ? ProfileEntity().fromParse(parseUser.get('profile'))
+          ? await ProfileEntity().fromParse(parseUser.get('profile'))
           : null,
     );
   }

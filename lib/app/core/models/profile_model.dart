@@ -22,8 +22,8 @@ class ProfileModel {
   final String? description;
   final String? register; // conselho de saude
   final List<ProfileModel>?
-      family; // seus familiates adultos que esta ligados a vc
-  final List<ProfileModel>? children; // crianças que esta ligadas a vc
+      family; // seus familiares adultos que estão ligados a vc
+  final List<ProfileModel>? children; // crianças que estão ligadas a vc
   final List<AgreementModel>? agreement; // convenio
   final List<ExpertiseModel>? expertise; // especialidade
   final List<OfficeModel>? office; // cargo: Adm, Sec, Aval, Prof, Paciente

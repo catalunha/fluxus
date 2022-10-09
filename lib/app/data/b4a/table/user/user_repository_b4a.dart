@@ -41,7 +41,7 @@ class UserRepositoryB4a implements UserRepository {
       parseResponse = await user.signUp();
       if (parseResponse.success && parseResponse.results != null) {
         UserModel userModel =
-            UserEntity().fromParse(parseResponse.results!.first);
+            await UserEntity().fromParse(parseResponse.results!.first);
         return userModel;
       } else {
         throw Exception();
