@@ -8,7 +8,6 @@ class ExpertiseEntity {
     ExpertiseModel expertiseModel = ExpertiseModel(
       id: parseObject.objectId!,
       name: parseObject.get('name'),
-      code: parseObject.get('code'),
       description: parseObject.get('description'),
       isDeleted: parseObject.get('isDeleted') ?? false,
     );

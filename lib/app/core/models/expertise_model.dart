@@ -4,14 +4,12 @@ import 'dart:convert';
 class ExpertiseModel {
   final String? id;
   final String? name;
-  final String? code;
   final String? description;
   final bool? isDeleted;
 
   ExpertiseModel({
     this.id,
     this.name,
-    this.code,
     this.description,
     this.isDeleted,
   });
@@ -19,14 +17,12 @@ class ExpertiseModel {
   ExpertiseModel copyWith({
     String? id,
     String? name,
-    String? code,
     String? description,
     bool? isDeleted,
   }) {
     return ExpertiseModel(
       id: id ?? this.id,
       name: name ?? this.name,
-      code: code ?? this.code,
       description: description ?? this.description,
       isDeleted: isDeleted ?? this.isDeleted,
     );
@@ -40,9 +36,6 @@ class ExpertiseModel {
     }
     if (name != null) {
       result.addAll({'name': name});
-    }
-    if (code != null) {
-      result.addAll({'code': code});
     }
     if (description != null) {
       result.addAll({'description': description});
@@ -58,7 +51,6 @@ class ExpertiseModel {
     return ExpertiseModel(
       id: map['id'],
       name: map['name'],
-      code: map['code'],
       description: map['description'],
       isDeleted: map['isDeleted'],
     );
@@ -71,7 +63,7 @@ class ExpertiseModel {
 
   @override
   String toString() {
-    return 'ExpertiseModel(id: $id, name: $name, code: $code, description: $description, isDeleted: $isDeleted)';
+    return 'ExpertiseModel(id: $id, name: $name, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
@@ -81,7 +73,6 @@ class ExpertiseModel {
     return other is ExpertiseModel &&
         other.id == id &&
         other.name == name &&
-        other.code == code &&
         other.description == description &&
         other.isDeleted == isDeleted;
   }
@@ -90,7 +81,6 @@ class ExpertiseModel {
   int get hashCode {
     return id.hashCode ^
         name.hashCode ^
-        code.hashCode ^
         description.hashCode ^
         isDeleted.hashCode;
   }

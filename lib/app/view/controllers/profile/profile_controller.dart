@@ -109,7 +109,6 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
           objectId: userProfileId,
           objectAttribute: 'photo',
         );
-
         profile = profile!.copyWith(photo: photoUrl);
       }
       final SplashController splashController = Get.find();
@@ -131,9 +130,8 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
   }
 
   Future<void> healthPlanAdd() async {
-    // healthPlan = null;
     onSelectedDateHealthPlan();
-    await Get.toNamed(Routes.profileHealthPlan, arguments: healthPlan);
+    await Get.toNamed(Routes.profileHealthPlan, arguments: null);
   }
 
   Future<void> healthPlanEdit(String healtPlanId) async {

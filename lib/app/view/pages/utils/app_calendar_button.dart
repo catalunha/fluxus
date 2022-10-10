@@ -49,9 +49,9 @@ class AppCalendarButton extends StatelessWidget {
             Obx(
               () {
                 if (getDate() != null) {
-                  return Text('$title:  ${dateFormat.format(getDate()!)}');
+                  return Text('$title  ${dateFormat.format(getDate()!)}');
                 } else {
-                  return Text('$title: Selecione uma data');
+                  return Text('$title Selecione uma data');
                 }
               },
             ),

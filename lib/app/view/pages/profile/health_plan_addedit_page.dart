@@ -54,22 +54,24 @@ class _HealthPlanAddEditPageState extends State<HealthPlanAddEditPage> {
                     validator:
                         Validatorless.required('É informação obrigatório'),
                   ),
+                  // AppTextFormField(
+                  //   label: '* Código do convênio de saúde.',
+                  //   controller: _codeTec,
+                  //   validator:
+                  //       Validatorless.required('É informação obrigatório'),
+                  // ),
                   AppTextFormField(
-                    label: '* Código do convênio de saúde.',
-                    controller: _codeTec,
+                    label: '* Outras informações.',
+                    controller: _descriptionTec,
                     validator:
                         Validatorless.required('É informação obrigatório'),
                   ),
                   AppCalendarButton(
-                    title: "* Vencimento.",
+                    title: "Vencimento:",
                     getDate: () =>
                         widget._profileController.selectedDateHealthPlan,
                     setDate: (value) => widget
                         ._profileController.selectedDateHealthPlan = value,
-                  ),
-                  AppTextFormField(
-                    label: 'Outras informações.',
-                    controller: _descriptionTec,
                   ),
                   const SizedBox(height: 20),
                   widget.healthPlanModel?.id == null
@@ -95,8 +97,8 @@ class _HealthPlanAddEditPageState extends State<HealthPlanAddEditPage> {
                           description: _descriptionTec.text,
                           isDeleted: _isDeleted,
                         );
+                        Get.back();
                       }
-                      Get.back();
                     },
                     child: const Text('Salvar convênio.'),
                   ),

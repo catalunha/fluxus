@@ -19,8 +19,19 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [Text('O começo de uma loooonga jornada...')],
+        children: [
+          const Card(
+            child: ListTile(
+              title: Text('Cadastrar Paciente'),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              title: const Text('Listar Pacientes'),
+              onTap: () {},
+            ),
+          ),
+        ],
       ),
     );
   }
