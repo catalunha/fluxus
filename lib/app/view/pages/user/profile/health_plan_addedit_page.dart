@@ -32,6 +32,7 @@ class _HealthPlanAddEditPageState extends State<HealthPlanAddEditPage> {
     super.initState();
     _codeTec.text = widget.healthPlanModel?.code ?? "";
     _descriptionTec.text = widget.healthPlanModel?.description ?? "";
+    healthPlanTypeSelected = widget.healthPlanModel?.healthPlanType;
   }
 
   @override
@@ -51,7 +52,7 @@ class _HealthPlanAddEditPageState extends State<HealthPlanAddEditPage> {
                   Card(
                     child: Column(
                       children: [
-                        const Text('* Defina o tipo do Convênio'),
+                        const Text('* Defina o gestor do Convênio'),
                         Row(
                           children: [
                             Expanded(

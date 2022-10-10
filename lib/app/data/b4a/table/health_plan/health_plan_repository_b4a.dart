@@ -11,7 +11,7 @@ class HealthPlanRepositoryB4a implements HealthPlanRepository {
         QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
     query.whereEqualTo('profileId', profileId);
     query.whereEqualTo('isDeleted', false);
-    query.orderByAscending('name');
+    query.includeObject(['healthPlanType']);
 
     return query;
   }
@@ -27,7 +27,6 @@ class HealthPlanRepositoryB4a implements HealthPlanRepository {
       List<HealthPlanModel> listTemp = <HealthPlanModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          //print((element as ParseObject).objectId);
           listTemp.add(HealthPlanEntity().fromParse(element));
         }
         return listTemp;

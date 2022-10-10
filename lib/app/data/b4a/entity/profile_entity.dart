@@ -50,6 +50,7 @@ class ProfileEntity {
         QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
     queryHealthPlan.whereRelatedTo(
         'healthPlan', 'Profile', parseObject.objectId!);
+    queryHealthPlan.includeObject(['healthPlanType']);
     final ParseResponse responseHealthPlan = await queryHealthPlan.query();
     if (responseHealthPlan.success && responseHealthPlan.results != null) {
       healthPlanList = [

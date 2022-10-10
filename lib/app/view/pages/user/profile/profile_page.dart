@@ -304,6 +304,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               AppTextTitleValue(
+                                title: 'Gestor: ',
+                                value: '${e.healthPlanType?.name}',
+                              ),
+                              AppTextTitleValue(
                                 title: 'Número: ',
                                 value: '${e.code}',
                               ),

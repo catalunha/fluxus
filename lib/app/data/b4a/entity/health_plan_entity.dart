@@ -6,11 +6,15 @@ class HealthPlanEntity {
   static const String className = 'HealthPlan';
 
   HealthPlanModel fromParse(ParseObject parseObject) {
+    print('-*-*-*-*-*-*-*-*');
+    print('${parseObject.get('healthPlanType')}');
+    print('-*-*-*-*-*-*-*-*');
     HealthPlanModel model = HealthPlanModel(
       id: parseObject.objectId!,
       profileId: parseObject.get('profileId'),
       healthPlanType: parseObject.get('healthPlanType') != null
-          ? HealthPlanTypeEntity().fromParse(parseObject.get('healthPlanType'))
+          ? HealthPlanTypeEntity()
+              .fromParse(parseObject.get('healthPlanType') as ParseObject)
           : null,
       code: parseObject.get('code'),
       due: parseObject.get('due'),

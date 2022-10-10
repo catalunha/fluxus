@@ -7,7 +7,7 @@ class HealthPlanTypeEntity {
   HealthPlanTypeModel fromParse(ParseObject parseObject) {
     HealthPlanTypeModel expertiseModel = HealthPlanTypeModel(
       id: parseObject.objectId!,
-      name: parseObject.get('name'),
+      name: parseObject.get('name') ?? 'jkl',
       isDeleted: parseObject.get('isDeleted') ?? false,
     );
     return expertiseModel;
