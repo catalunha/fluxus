@@ -6,9 +6,6 @@ class HealthPlanEntity {
   static const String className = 'HealthPlan';
 
   HealthPlanModel fromParse(ParseObject parseObject) {
-    print('-*-*-*-*-*-*-*-*');
-    print('${parseObject.get('healthPlanType')}');
-    print('-*-*-*-*-*-*-*-*');
     HealthPlanModel model = HealthPlanModel(
       id: parseObject.objectId!,
       profileId: parseObject.get('profileId'),
