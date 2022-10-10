@@ -1,10 +1,10 @@
-import 'package:fluxus/app/view/controllers/profile/profile_dependencies.dart';
+import 'package:fluxus/app/view/controllers/user/profile/user_profile_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/register/email/user_register_email_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/login/login_dependencies.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_dependencies.dart';
 import 'package:fluxus/app/view/controllers/home/home_dependencies.dart';
-import 'package:fluxus/app/view/pages/profile/health_plan_addedit_page.dart';
-import 'package:fluxus/app/view/pages/profile/profile_page.dart';
+import 'package:fluxus/app/view/pages/user/profile/health_plan_addedit_page.dart';
+import 'package:fluxus/app/view/pages/user/profile/profile_page.dart';
 import 'package:fluxus/app/view/pages/user/login/auth_login_page.dart';
 import 'package:fluxus/app/view/pages/user/register/email/user_register_email.page.dart';
 import 'package:fluxus/app/view/pages/splash/splash_page.dart';
@@ -20,6 +20,8 @@ class Routes {
 
   static const profile = '/user/profile';
   static const profileHealthPlan = '/user/profile/healthPlan';
+
+  static const profileList = '/profile/list';
 
   static const home = '/home';
 
@@ -47,7 +49,7 @@ class Routes {
     ),
     GetPage(
       name: Routes.profile,
-      binding: ProfileDependencies(),
+      binding: UserProfileDependencies(),
       page: () => ProfilePage(),
     ),
     GetPage(

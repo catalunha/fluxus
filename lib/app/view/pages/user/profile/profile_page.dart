@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 
-import 'package:fluxus/app/view/controllers/profile/profile_controller.dart';
-import 'package:fluxus/app/view/pages/profile/part/user_profile_photo.dart';
+import 'package:fluxus/app/view/controllers/user/profile/user_profile_controller.dart';
+import 'package:fluxus/app/view/pages/user/profile/part/user_profile_photo.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key? key}) : super(key: key);
-  final _profileController = Get.find<ProfileController>();
+  final _profileController = Get.find<UserProfileController>();
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -92,9 +92,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   AppCalendarButton(
                     title: "* Data de nascimento.",
-                    getDate: () => widget._profileController.selectedDate,
+                    getDate: () => widget._profileController.dateBirthday,
                     setDate: (value) =>
-                        widget._profileController.selectedDate = value,
+                        widget._profileController.dateBirthday = value,
                   ),
                   const SizedBox(height: 5),
                   const Divider(color: Colors.green, height: 5),
@@ -187,7 +187,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<bool> saveProfile() async {
-    if (widget._profileController.selectedDate == null) {
+    if (widget._profileController.dateBirthday == null) {
       return false;
     }
     final formValid = _formKey.currentState?.validate() ?? false;
@@ -304,8 +304,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               AppTextTitleValue(
-                                title: 'Nome: ',
-                                value: '${e.name}',
+                                title: 'Número: ',
+                                value: '${e.code}',
                               ),
                               AppTextTitleValue(
                                 title: 'Descrição: ',

@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluxus/app/view/controllers/profile/profile_controller.dart';
+import 'package:fluxus/app/view/controllers/user/profile/user_profile_controller.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserProfilePhoto extends StatefulWidget {
-  final ProfileController _profileController = Get.find();
+  final UserProfileController _profileController = Get.find();
 
   UserProfilePhoto({Key? key}) : super(key: key);
 

@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:fluxus/app/core/models/health_plan_model.dart';
+import 'package:fluxus/app/core/models/health_plan_type_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/b4a/table/profile/profile_repository_exception.dart';
 import 'package:fluxus/app/data/b4a/utils/xfile_to_parsefile.dart';
 import 'package:fluxus/app/data/repositories/health_plan_repository.dart';
+import 'package:fluxus/app/data/repositories/health_plan_type_repository.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
@@ -14,14 +16,18 @@ import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProfileController extends GetxController with LoaderMixin, MessageMixin {
+class UserProfileController extends GetxController
+    with LoaderMixin, MessageMixin {
   final ProfileRepository _profileRepository;
   final HealthPlanRepository _healthPlanRepository;
-  ProfileController({
+  final HealthPlanTypeRepository _healthPlanTypeRepository;
+  UserProfileController({
     required ProfileRepository profileRepository,
     required HealthPlanRepository healthPlanRepository,
+    required HealthPlanTypeRepository healthPlanTypeRepository,
   })  : _profileRepository = profileRepository,
-        _healthPlanRepository = healthPlanRepository;
+        _healthPlanRepository = healthPlanRepository,
+        _healthPlanTypeRepository = healthPlanTypeRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
@@ -41,20 +47,22 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
     _xfile = xfile;
   }
 
-  final Rxn<DateTime> _selectedDate = Rxn<DateTime>();
-  DateTime? get selectedDate => _selectedDate.value;
-  set selectedDate(DateTime? selectedDate1) {
+  final Rxn<DateTime> _dateBirthday = Rxn<DateTime>();
+  DateTime? get dateBirthday => _dateBirthday.value;
+  set dateBirthday(DateTime? selectedDate1) {
     if (selectedDate1 != null) {
-      _selectedDate.value =
+      _dateBirthday.value =
           DateTime(selectedDate1.year, selectedDate1.month, selectedDate1.day);
     }
   }
 
-  final Rxn<DateTime> _selectedDateHealthPlan = Rxn<DateTime>();
-  DateTime? get selectedDateHealthPlan => _selectedDateHealthPlan.value;
-  set selectedDateHealthPlan(DateTime? selectedDateHealthPlanNew) {
-    _selectedDateHealthPlan(selectedDateHealthPlanNew);
+  final Rxn<DateTime> _dateDueHealthPlan = Rxn<DateTime>();
+  DateTime? get dateDueHealthPlan => _dateDueHealthPlan.value;
+  set dateDueHealthPlan(DateTime? selectedDateHealthPlanNew) {
+    _dateDueHealthPlan(selectedDateHealthPlanNew);
   }
+
+  var healthPlanTypeList = <HealthPlanTypeModel>[].obs;
 
   @override
   void onInit() {
@@ -62,16 +70,22 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
     messageListener(_message);
     ProfileModel model = Get.arguments;
     setProfile(model);
+    getHealthPlanTypeList();
     super.onInit();
   }
 
   setProfile(ProfileModel model) {
     _profile(model);
-    onSelectedDate();
+    onSetDateBirthday();
   }
 
-  void onSelectedDate() {
-    selectedDate = profile?.birthday;
+  getHealthPlanTypeList() async {
+    List<HealthPlanTypeModel> all = await _healthPlanTypeRepository.list();
+    healthPlanTypeList(all);
+  }
+
+  void onSetDateBirthday() {
+    dateBirthday = profile?.birthday;
   }
 
   Future<void> append({
@@ -98,7 +112,7 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
         isFemale: isFemale,
         register: register,
         description: description,
-        birthday: selectedDate,
+        birthday: dateBirthday,
       );
 
       String userProfileId = await _profileRepository.update(profile!);
@@ -125,12 +139,12 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
   }
 
 // health Plan
-  void onSelectedDateHealthPlan() {
-    selectedDateHealthPlan = healthPlan?.due;
+  void onSetDateDueHealthPlan() {
+    dateDueHealthPlan = healthPlan?.due;
   }
 
   Future<void> healthPlanAdd() async {
-    onSelectedDateHealthPlan();
+    onSetDateDueHealthPlan();
     await Get.toNamed(Routes.profileHealthPlan, arguments: null);
   }
 
@@ -138,12 +152,12 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
     var healhPlanSelected =
         profile!.healthPlan!.firstWhere((element) => element.id == healtPlanId);
     healthPlan = healhPlanSelected;
-    selectedDateHealthPlan = healthPlan?.due;
+    dateDueHealthPlan = healthPlan?.due;
     await Get.toNamed(Routes.profileHealthPlan, arguments: healthPlan);
   }
 
   healthPlanUpdate({
-    required String name,
+    required HealthPlanTypeModel healthPlanType,
     required String code,
     required String description,
     required bool isDeleted,
@@ -152,10 +166,10 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
       _loading(true);
       healthPlan = HealthPlanModel(
         id: healthPlan?.id,
-        name: name,
         profileId: profile?.id,
+        healthPlanType: healthPlanType,
         code: code,
-        due: selectedDateHealthPlan,
+        due: dateDueHealthPlan,
         description: description,
         isDeleted: isDeleted,
       );

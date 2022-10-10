@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:fluxus/app/core/models/health_plan_type_model.dart';
+
 /// Convenio do paciente
 class HealthPlanModel {
   final String? id;
   final String? profileId;
-  final String? name;
+  final HealthPlanTypeModel? healthPlanType;
   final String? code;
   final DateTime? due;
   final String? description;
@@ -13,7 +15,7 @@ class HealthPlanModel {
   HealthPlanModel({
     this.id,
     this.profileId,
-    this.name,
+    this.healthPlanType,
     this.code,
     this.due,
     this.description,
@@ -22,8 +24,8 @@ class HealthPlanModel {
 
   HealthPlanModel copyWith({
     String? id,
-    String? userId,
-    String? name,
+    String? profileId,
+    HealthPlanTypeModel? healthPlanType,
     String? code,
     DateTime? due,
     String? description,
@@ -31,8 +33,8 @@ class HealthPlanModel {
   }) {
     return HealthPlanModel(
       id: id ?? this.id,
-      profileId: userId ?? profileId,
-      name: name ?? this.name,
+      profileId: profileId ?? this.profileId,
+      healthPlanType: healthPlanType ?? this.healthPlanType,
       code: code ?? this.code,
       due: due ?? this.due,
       description: description ?? this.description,
@@ -47,10 +49,10 @@ class HealthPlanModel {
       result.addAll({'id': id});
     }
     if (profileId != null) {
-      result.addAll({'userId': profileId});
+      result.addAll({'profileId': profileId});
     }
-    if (name != null) {
-      result.addAll({'name': name});
+    if (healthPlanType != null) {
+      result.addAll({'healthPlanType': healthPlanType!.toMap()});
     }
     if (code != null) {
       result.addAll({'code': code});
@@ -71,8 +73,10 @@ class HealthPlanModel {
   factory HealthPlanModel.fromMap(Map<String, dynamic> map) {
     return HealthPlanModel(
       id: map['id'],
-      profileId: map['userId'],
-      name: map['name'],
+      profileId: map['profileId'],
+      healthPlanType: map['healthPlanType'] != null
+          ? HealthPlanTypeModel.fromMap(map['healthPlanType'])
+          : null,
       code: map['code'],
       due: map['due'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['due'])
@@ -89,7 +93,7 @@ class HealthPlanModel {
 
   @override
   String toString() {
-    return 'HealthInsuranceModel(id: $id, userId: $profileId, name: $name, code: $code, due: $due, description: $description, isDeleted: $isDeleted)';
+    return 'HealthPlanModel(id: $id, profileId: $profileId, healthPlanType: $healthPlanType, code: $code, due: $due, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
@@ -99,7 +103,7 @@ class HealthPlanModel {
     return other is HealthPlanModel &&
         other.id == id &&
         other.profileId == profileId &&
-        other.name == name &&
+        other.healthPlanType == healthPlanType &&
         other.code == code &&
         other.due == due &&
         other.description == description &&
@@ -110,7 +114,7 @@ class HealthPlanModel {
   int get hashCode {
     return id.hashCode ^
         profileId.hashCode ^
-        name.hashCode ^
+        healthPlanType.hashCode ^
         code.hashCode ^
         due.hashCode ^
         description.hashCode ^
