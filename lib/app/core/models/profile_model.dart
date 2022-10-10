@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/office_model.dart';
 
 // Perfil de usuario ou pessoa
@@ -73,7 +73,7 @@ class ProfileModel {
     String? register,
     List<ProfileModel>? family,
     List<ProfileModel>? children,
-    List<HealthPlanModel>? healthInsurance,
+    List<HealthPlanModel>? healthPlan,
     List<ExpertiseModel>? expertise,
     List<OfficeModel>? office,
     List<String>? routes,
@@ -97,7 +97,7 @@ class ProfileModel {
       register: register ?? this.register,
       family: family ?? this.family,
       children: children ?? this.children,
-      healthPlan: healthInsurance ?? healthPlan,
+      healthPlan: healthPlan ?? this.healthPlan,
       expertise: expertise ?? this.expertise,
       office: office ?? this.office,
       routes: routes ?? this.routes,
@@ -158,8 +158,7 @@ class ProfileModel {
       result.addAll({'children': children!.map((x) => x.toMap()).toList()});
     }
     if (healthPlan != null) {
-      result.addAll(
-          {'healthInsurance': healthPlan!.map((x) => x.toMap()).toList()});
+      result.addAll({'healthPlan': healthPlan!.map((x) => x.toMap()).toList()});
     }
     if (expertise != null) {
       result.addAll({'expertise': expertise!.map((x) => x.toMap()).toList()});
@@ -206,9 +205,9 @@ class ProfileModel {
           ? List<ProfileModel>.from(
               map['children']?.map((x) => ProfileModel.fromMap(x)))
           : null,
-      healthPlan: map['healthInsurance'] != null
+      healthPlan: map['healthPlan'] != null
           ? List<HealthPlanModel>.from(
-              map['healthInsurance']?.map((x) => HealthPlanModel.fromMap(x)))
+              map['healthPlan']?.map((x) => HealthPlanModel.fromMap(x)))
           : null,
       expertise: map['expertise'] != null
           ? List<ExpertiseModel>.from(
@@ -231,7 +230,7 @@ class ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, userId: $userId, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, register: $register, family: $family, children: $children, healthInsurance: $healthPlan, expertise: $expertise, office: $office, routes: $routes, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'ProfileModel(id: $id, userId: $userId, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, register: $register, family: $family, children: $children, healthPlan: $healthPlan, expertise: $expertise, office: $office, routes: $routes, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override

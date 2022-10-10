@@ -1,3 +1,4 @@
+import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/core/models/user_model.dart';
 import 'package:fluxus/app/core/utils/app_error_code.dart';
 import 'package:fluxus/app/data/b4a/table/profile/profile_repository_b4a.dart';
@@ -97,7 +98,7 @@ class SplashController extends GetxController with MessageMixin {
     }
   }
 
-  Future<void> updateUserProfile() async {
+  Future<ProfileModel?> updateUserProfile() async {
     var profileField = parseUser!.get('profile');
     var profileRepositoryB4a = ProfileRepositoryB4a();
     var profileModel =
@@ -105,6 +106,7 @@ class SplashController extends GetxController with MessageMixin {
     _userModel.update((val) {
       val?.profile = profileModel;
     });
+    return profileModel;
   }
 
   Future<void> logout() async {

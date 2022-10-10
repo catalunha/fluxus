@@ -1,7 +1,9 @@
 import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/office_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/entity/expertise_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/health_plan_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/office_entity.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -41,6 +43,24 @@ class ProfileEntity {
     }
     //--- get office
 
+    //+++ get healthPlanList
+    List<HealthPlanModel> healthPlanList = [];
+
+    QueryBuilder<ParseObject> queryHealthPlan =
+        QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
+    queryHealthPlan.whereRelatedTo(
+        'healthPlan', 'Profile', parseObject.objectId!);
+    final ParseResponse responseHealthPlan = await queryHealthPlan.query();
+    if (responseHealthPlan.success && responseHealthPlan.results != null) {
+      healthPlanList = [
+        ...responseHealthPlan.results!
+            .map<HealthPlanModel>(
+                (e) => HealthPlanEntity().fromParse(e as ParseObject))
+            .toList()
+      ];
+    }
+    //--- get healthPlanList
+
     ProfileModel profileModel = ProfileModel(
       id: parseObject.objectId!,
       email: parseObject.get('email'),
@@ -59,6 +79,7 @@ class ProfileEntity {
       isFemale: parseObject.get('isFemale') ?? false,
       expertise: expertiseList,
       office: officeList,
+      healthPlan: healthPlanList,
     );
     return profileModel;
   }
@@ -108,5 +129,42 @@ class ProfileEntity {
       profileParseObject.set('birthday', profileModel.birthday);
     }
     return profileParseObject;
+  }
+
+  ParseObject? toParseUpdateRelationHealthPlan({
+    required String objectId,
+    required bool add,
+    required List<String> modelIdList,
+  }) {
+    print('objectId:$objectId, modelIdList:${modelIdList.join("|")},add:$add');
+    final parseObject = ParseObject(ProfileEntity.className);
+    parseObject.objectId = objectId;
+    if (add) {
+      if (modelIdList.isEmpty) {
+        parseObject.unset('healthPlan');
+      } else {
+        parseObject.addRelation(
+          'healthPlan',
+          modelIdList
+              .map(
+                (element) =>
+                    ParseObject(HealthPlanEntity.className)..objectId = element,
+              )
+              .toList(),
+        );
+      }
+    } else {
+      if (modelIdList.isEmpty) {
+        parseObject.unset('healthPlan');
+      } else {
+        parseObject.removeRelation(
+            'healthPlan',
+            modelIdList
+                .map((element) =>
+                    ParseObject(HealthPlanEntity.className)..objectId = element)
+                .toList());
+      }
+    }
+    return parseObject;
   }
 }

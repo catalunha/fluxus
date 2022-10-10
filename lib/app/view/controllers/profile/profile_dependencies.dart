@@ -1,4 +1,6 @@
+import 'package:fluxus/app/data/b4a/table/health_plan/health_plan_repository_b4a.dart';
 import 'package:fluxus/app/data/b4a/table/profile/profile_repository_b4a.dart';
+import 'package:fluxus/app/data/repositories/health_plan_repository.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
 import 'package:fluxus/app/view/controllers/profile/profile_controller.dart';
 import 'package:get/get.dart';
@@ -9,10 +11,14 @@ class ProfileDependencies implements Bindings {
     Get.lazyPut<ProfileRepository>(
       () => ProfileRepositoryB4a(),
     );
+    Get.lazyPut<HealthPlanRepository>(
+      () => HealthPlanRepositoryB4a(),
+    );
 
     Get.put<ProfileController>(
       ProfileController(
         profileRepository: Get.find(),
+        healthPlanRepository: Get.find(),
       ),
     );
   }

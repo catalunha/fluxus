@@ -28,7 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    print('+++ initState +++');
     super.initState();
     _nameTec.text = widget._profileController.profile?.name ?? "";
     _phoneTec.text = widget._profileController.profile?.phone ?? "";
@@ -115,25 +115,44 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 20),
                   const Text('Suas funcões'),
                   officeList(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Seus planos de saúde'),
+                      IconButton(
+                          onPressed: () async {
+                            await saveProfile();
+                            await widget._profileController.healthPlanAdd();
+                            // await Get.toNamed(Routes.profileHealthPlan);
+                            setState(() {});
+                          },
+                          icon: const Icon(Icons.add))
+                    ],
+                  ),
+                  healthPlanList(),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {
-                      final formValid =
-                          _formKey.currentState?.validate() ?? false;
-                      if (formValid) {
-                        await widget._profileController.append(
-                          name: _nameTec.text,
-                          description: _descriptionTec.text,
-                          phone: _phoneTec.text,
-                          address: _addressTec.text,
-                          cep: _cepTec.text,
-                          pluscode: _pluscodeTec.text,
-                          cpf: _cpfTec.text,
-                          register: _registerTec.text,
-                          isFemale: _isFemale,
-                        );
+                      var result = await saveProfile();
+                      if (result) {
                         Get.back();
                       }
+                      // final formValid =
+                      //     _formKey.currentState?.validate() ?? false;
+                      // if (formValid) {
+                      //   await widget._profileController.append(
+                      //     name: _nameTec.text,
+                      //     description: _descriptionTec.text,
+                      //     phone: _phoneTec.text,
+                      //     address: _addressTec.text,
+                      //     cep: _cepTec.text,
+                      //     pluscode: _pluscodeTec.text,
+                      //     cpf: _cpfTec.text,
+                      //     register: _registerTec.text,
+                      //     isFemale: _isFemale,
+                      //   );
+                      //   Get.back();
+                      // }
                     },
                     child: const Text('Salvar perfil.'),
                   ),
@@ -144,6 +163,25 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  Future<bool> saveProfile() async {
+    final formValid = _formKey.currentState?.validate() ?? false;
+    if (formValid) {
+      await widget._profileController.append(
+        name: _nameTec.text,
+        description: _descriptionTec.text,
+        phone: _phoneTec.text,
+        address: _addressTec.text,
+        cep: _cepTec.text,
+        pluscode: _pluscodeTec.text,
+        cpf: _cpfTec.text,
+        register: _registerTec.text,
+        isFemale: _isFemale,
+      );
+      return true;
+    }
+    return false;
   }
 
   Widget expertiseList() {
@@ -180,6 +218,39 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Column(children: [
                         Text(e.name ?? '...'),
                         Text(e.description ?? '...'),
+                      ]),
+                    ),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget healthPlanList() {
+    if (widget._profileController.profile?.healthPlan != null) {
+      return Column(
+        children: [
+          ...widget._profileController.profile!.healthPlan!
+              .map((e) => Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(children: [
+                        ListTile(
+                          title: Text(e.id ?? '...'),
+                          subtitle: Text(e.description ?? '...'),
+                          trailing: IconButton(
+                            onPressed: () async {
+                              await saveProfile();
+                              await widget._profileController
+                                  .healthPlanEdit(e.id!);
+                              setState(() {});
+                            },
+                            icon: const Icon(Icons.edit),
+                          ),
+                        ),
                       ]),
                     ),
                   ))

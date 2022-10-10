@@ -52,4 +52,14 @@ class ProfileRepositoryB4a implements ProfileRepository {
       );
     }
   }
+
+  @override
+  Future<void> updateRelationHealthPlan(
+      String objectId, List<String> modelIdList, bool add) async {
+    final parseObject = ProfileEntity().toParseUpdateRelationHealthPlan(
+        objectId: objectId, modelIdList: modelIdList, add: add);
+    if (parseObject != null) {
+      await parseObject.save();
+    }
+  }
 }

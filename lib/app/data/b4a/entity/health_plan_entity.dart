@@ -4,8 +4,8 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class HealthPlanEntity {
   static const String className = 'HealthPlan';
 
-  Future<HealthPlanModel> fromParse(ParseObject parseObject) async {
-    HealthPlanModel profileModel = HealthPlanModel(
+  HealthPlanModel fromParse(ParseObject parseObject) {
+    HealthPlanModel model = HealthPlanModel(
       id: parseObject.objectId!,
       profileId: parseObject.get('profileId'),
       name: parseObject.get('name'),
@@ -14,33 +14,33 @@ class HealthPlanEntity {
       description: parseObject.get('description'),
       isDeleted: parseObject.get('isDeleted') ?? false,
     );
-    return profileModel;
+    return model;
   }
 
-  Future<ParseObject> toParse(HealthPlanModel profileModel) async {
-    final profileParseObject = ParseObject(HealthPlanEntity.className);
-    if (profileModel.id != null) {
-      profileParseObject.objectId = profileModel.id;
+  ParseObject toParse(HealthPlanModel model) {
+    final parseObject = ParseObject(HealthPlanEntity.className);
+    if (model.id != null) {
+      parseObject.objectId = model.id;
     }
-    if (profileModel.profileId != null) {
-      profileParseObject.set('profileId', profileModel.profileId);
+    if (model.profileId != null) {
+      parseObject.set('profileId', model.profileId);
     }
-    if (profileModel.name != null) {
-      profileParseObject.set('name', profileModel.name);
+    if (model.name != null) {
+      parseObject.set('name', model.name);
     }
-    if (profileModel.code != null) {
-      profileParseObject.set('code', profileModel.code);
+    if (model.code != null) {
+      parseObject.set('code', model.code);
     }
-    if (profileModel.due != null) {
-      profileParseObject.set('due', profileModel.due);
+    if (model.due != null) {
+      parseObject.set('due', model.due);
     }
-    if (profileModel.description != null) {
-      profileParseObject.set('description', profileModel.description);
+    if (model.description != null) {
+      parseObject.set('description', model.description);
     }
-    if (profileModel.isDeleted != null) {
-      profileParseObject.set('isDeleted', profileModel.isDeleted);
+    if (model.isDeleted != null) {
+      parseObject.set('isDeleted', model.isDeleted);
     }
 
-    return profileParseObject;
+    return parseObject;
   }
 }

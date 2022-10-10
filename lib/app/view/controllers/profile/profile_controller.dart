@@ -1,8 +1,13 @@
+import 'dart:developer';
+
+import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/b4a/table/profile/profile_repository_exception.dart';
 import 'package:fluxus/app/data/b4a/utils/xfile_to_parsefile.dart';
+import 'package:fluxus/app/data/repositories/health_plan_repository.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
+import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
@@ -11,13 +16,25 @@ import 'package:image_picker/image_picker.dart';
 
 class ProfileController extends GetxController with LoaderMixin, MessageMixin {
   final ProfileRepository _profileRepository;
-  ProfileController({required ProfileRepository profileRepository})
-      : _profileRepository = profileRepository;
+  final HealthPlanRepository _healthPlanRepository;
+  ProfileController({
+    required ProfileRepository profileRepository,
+    required HealthPlanRepository healthPlanRepository,
+  })  : _profileRepository = profileRepository,
+        _healthPlanRepository = healthPlanRepository;
+
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
 
   final _profile = Rxn<ProfileModel>();
   ProfileModel? get profile => _profile.value;
+  set profile(ProfileModel? profileModelNew) => _profile(profileModelNew);
+
+  final healthPlanList = <HealthPlanModel>[].obs;
+
+  final _healthPlan = Rxn<HealthPlanModel>();
+  HealthPlanModel? get healthPlan => _healthPlan.value;
+  set healthPlan(HealthPlanModel? healthPlanNew) => _healthPlan(healthPlanNew);
 
   XFile? _xfile;
   set xfile(XFile? xfile) {
@@ -31,6 +48,12 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
       _selectedDate.value =
           DateTime(selectedDate1.year, selectedDate1.month, selectedDate1.day);
     }
+  }
+
+  final Rxn<DateTime> _selectedDateHealthPlan = Rxn<DateTime>();
+  DateTime? get selectedDateHealthPlan => _selectedDateHealthPlan.value;
+  set selectedDateHealthPlan(DateTime? selectedDateHealthPlanNew) {
+    _selectedDateHealthPlan(selectedDateHealthPlanNew);
   }
 
   @override
@@ -65,7 +88,7 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
   }) async {
     try {
       _loading(true);
-      var userProfile = _profile.value!.copyWith(
+      profile = profile!.copyWith(
         name: name,
         phone: phone,
         address: address,
@@ -77,17 +100,76 @@ class ProfileController extends GetxController with LoaderMixin, MessageMixin {
         description: description,
         birthday: selectedDate,
       );
-      String userProfileId = await _profileRepository.update(userProfile);
+
+      String userProfileId = await _profileRepository.update(profile!);
       if (_xfile != null) {
-        await XFileToParseFile.xFileToParseFile(
+        String? photoUrl = await XFileToParseFile.xFileToParseFile(
           xfile: _xfile!,
           className: ProfileEntity.className,
           objectId: userProfileId,
           objectAttribute: 'photo',
         );
+
+        profile = profile!.copyWith(photo: photoUrl);
       }
       final SplashController splashController = Get.find();
       await splashController.updateUserProfile();
+    } on ProfileRepositoryException {
+      _message.value = MessageModel(
+        title: 'Erro em ProfileController',
+        message: 'Não foi possivel salvar o perfil',
+        isError: true,
+      );
+    } finally {
+      _loading(false);
+    }
+  }
+
+// health Plan
+  void onSelectedDateHealthPlan() {
+    selectedDateHealthPlan = healthPlan?.due;
+  }
+
+  Future<void> healthPlanAdd() async {
+    // healthPlan = null;
+    onSelectedDateHealthPlan();
+    await Get.toNamed(Routes.profileHealthPlan, arguments: healthPlan);
+  }
+
+  Future<void> healthPlanEdit(String healtPlanId) async {
+    var healhPlanSelected =
+        profile!.healthPlan!.firstWhere((element) => element.id == healtPlanId);
+    healthPlan = healhPlanSelected;
+    selectedDateHealthPlan = healthPlan?.due;
+    await Get.toNamed(Routes.profileHealthPlan, arguments: healthPlan);
+  }
+
+  healthPlanUpdate({
+    required String name,
+    required String code,
+    required String description,
+    required bool isDeleted,
+  }) async {
+    try {
+      _loading(true);
+      healthPlan = HealthPlanModel(
+        id: healthPlan?.id,
+        name: name,
+        profileId: profile?.id,
+        code: code,
+        due: selectedDateHealthPlan,
+        description: description,
+        isDeleted: isDeleted,
+      );
+      log('${healthPlan!.id}', name: 'healthPlanUpdate');
+      log('$isDeleted', name: 'healthPlanUpdate');
+      String healthPlanId = await _healthPlanRepository.addEdit(healthPlan!);
+      await _profileRepository.updateRelationHealthPlan(
+          profile!.id!, [healthPlanId], !isDeleted);
+
+      final SplashController splashController = Get.find();
+      await splashController.updateUserProfile();
+      setProfile(splashController.userModel!.profile!);
     } on ProfileRepositoryException {
       _message.value = MessageModel(
         title: 'Erro em ProfileController',

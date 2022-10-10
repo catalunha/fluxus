@@ -33,9 +33,10 @@ class XFileToParseFile {
         final ParseResponse responseParseObject = await parseObject.save();
         if (responseParseObject.success &&
             responseParseObject.results != null) {
-          objectId =
-              (responseParseObject.results!.first as ParseObject).objectId!;
-          return objectId;
+          // objectId =
+          //     (responseParseObject.results!.first as ParseObject).objectId!;
+
+          return parseFileBase.url;
         } else {
           return null;
         }
