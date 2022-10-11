@@ -24,7 +24,19 @@ class HomePage extends StatelessWidget {
           Card(
             child: ListTile(
               leading: const Icon(Icons.search),
-              title: const Text('Buscar pacientes'),
+              title: const Text('Buscar paciente'),
+              subtitle:
+                  const Text('Por nome, CPF, Telefone, Data de Nascimento'),
+              onTap: () {
+                Get.toNamed(Routes.clientProfileSearch);
+              },
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.search),
+              title: const Text('Buscar paciente'),
+              subtitle: const Text('Por número do convênio'),
               onTap: () {
                 Get.toNamed(Routes.clientProfileSearch);
               },

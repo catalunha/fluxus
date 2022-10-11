@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:fluxus/app/view/controllers/client/client_profile_controller.dart';
+import 'package:fluxus/app/view/controllers/client/search/client_search_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_icon.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
 import 'package:get/get.dart';
 
-class ClientProfileSearchPage extends StatefulWidget {
-  final _clientProfileController = Get.find<ClientProfileController>();
-  ClientProfileSearchPage({Key? key}) : super(key: key);
+class ClientSearchPage extends StatefulWidget {
+  final _clientProfileController = Get.find<ClientSearchController>();
+  ClientSearchPage({Key? key}) : super(key: key);
 
   @override
-  State<ClientProfileSearchPage> createState() => _SearchPageState();
+  State<ClientSearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<ClientProfileSearchPage> {
+class _SearchPageState extends State<ClientSearchPage> {
   final _formKey = GlobalKey<FormState>();
   bool _nameContains = false;
   bool _cpfEqualTo = false;

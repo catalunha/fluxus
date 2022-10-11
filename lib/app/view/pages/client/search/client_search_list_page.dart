@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:fluxus/app/view/controllers/client/client_profile_controller.dart';
-import 'package:fluxus/app/view/pages/client/part/client_profile_list.dart';
+import 'package:fluxus/app/view/controllers/client/search/client_search_controller.dart';
+import 'package:fluxus/app/view/pages/client/part/client_list.dart';
 import 'package:get/get.dart';
 
-class ClientProfileListPage extends StatelessWidget {
-  final _clientProfileController = Get.find<ClientProfileController>();
+class ClientSearchListPage extends StatelessWidget {
+  final _clientProfileController = Get.find<ClientSearchController>();
 
-  ClientProfileListPage({Key? key}) : super(key: key);
+  ClientSearchListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista dos Pacientes'),
+        title: Obx(
+          () => Text(
+              'Pacientes encontrados: ${_clientProfileController.clientProfileList.length}'),
+        ),
       ),
       body: Column(
         children: [

@@ -8,18 +8,12 @@ import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-class ClientProfileController extends GetxController
+class ClientSearchController extends GetxController
     with LoaderMixin, MessageMixin {
   final ProfileRepository _profileRepository;
-  // final HealthPlanRepository _healthPlanRepository;
-  // final HealthPlanTypeRepository _healthPlanTypeRepository;
-  ClientProfileController({
+  ClientSearchController({
     required ProfileRepository profileRepository,
-    // required HealthPlanRepository healthPlanRepository,
-    // required HealthPlanTypeRepository healthPlanTypeRepository,
   }) : _profileRepository = profileRepository;
-  // _healthPlanRepository = healthPlanRepository,
-  // _healthPlanTypeRepository = healthPlanTypeRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();

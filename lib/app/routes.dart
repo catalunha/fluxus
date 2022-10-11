@@ -1,11 +1,11 @@
-import 'package:fluxus/app/view/controllers/client/client_profile_dependencies.dart';
+import 'package:fluxus/app/view/controllers/client/search/client_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/profile/user_profile_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/register/email/user_register_email_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/login/login_dependencies.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_dependencies.dart';
 import 'package:fluxus/app/view/controllers/home/home_dependencies.dart';
-import 'package:fluxus/app/view/pages/client/client_profile_list_page.dart';
-import 'package:fluxus/app/view/pages/client/client_profile_search_page.dart';
+import 'package:fluxus/app/view/pages/client/search/client_search_list_page.dart';
+import 'package:fluxus/app/view/pages/client/search/client_search_page.dart';
 import 'package:fluxus/app/view/pages/user/profile/health_plan_addedit_page.dart';
 import 'package:fluxus/app/view/pages/user/profile/profile_page.dart';
 import 'package:fluxus/app/view/pages/user/login/auth_login_page.dart';
@@ -62,12 +62,12 @@ class Routes {
     ),
     GetPage(
       name: Routes.clientProfileSearch,
-      binding: ClientProfileDependencies(),
-      page: () => ClientProfileSearchPage(),
+      binding: ClientSearchDependencies(),
+      page: () => ClientSearchPage(),
     ),
     GetPage(
       name: Routes.clientProfileList,
-      page: () => ClientProfileListPage(),
+      page: () => ClientSearchListPage(),
     ),
   ];
 }
