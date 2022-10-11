@@ -1,9 +1,11 @@
+import 'package:fluxus/app/view/controllers/client/addedit/client_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/client/search/client_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/profile/user_profile_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/register/email/user_register_email_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/login/login_dependencies.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_dependencies.dart';
 import 'package:fluxus/app/view/controllers/home/home_dependencies.dart';
+import 'package:fluxus/app/view/pages/client/addedit/client_addedit_page.dart';
 import 'package:fluxus/app/view/pages/client/search/client_search_list_page.dart';
 import 'package:fluxus/app/view/pages/client/search/client_search_page.dart';
 import 'package:fluxus/app/view/pages/user/profile/health_plan_addedit_page.dart';
@@ -26,6 +28,7 @@ class Routes {
 
   static const clientProfileSearch = '/client/profile/search';
   static const clientProfileList = '/client/profile/list';
+  static const clientProfileAddEdit = '/client/profile/addedit';
 
   static const home = '/home';
 
@@ -68,6 +71,11 @@ class Routes {
     GetPage(
       name: Routes.clientProfileList,
       page: () => ClientSearchListPage(),
+    ),
+    GetPage(
+      name: Routes.clientProfileAddEdit,
+      binding: ClientAddEditDependencies(),
+      page: () => ClientAddEditPage(),
     ),
   ];
 }

@@ -1,22 +1,14 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/view/controllers/user/profile/user_profile_controller.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:fluxus/app/view/controllers/user/profile/user_profile_controller.dart';
-
 class UserProfilePhoto extends StatefulWidget {
-  // final UserProfileController _profileController = Get.find();
-  final String? photoUrl;
-  final Function(XFile?) setXFile;
+  final UserProfileController _profileController = Get.find();
 
-  const UserProfilePhoto({
-    Key? key,
-    this.photoUrl,
-    required this.setXFile,
-  }) : super(key: key);
+  UserProfilePhoto({Key? key}) : super(key: key);
 
   @override
   State<UserProfilePhoto> createState() => _UserProfilePhotoState();
@@ -55,7 +47,7 @@ class _UserProfilePhotoState extends State<UserProfilePhoto> {
                       },
                     ),
             )
-          : widget.photoUrl == null
+          : widget._profileController.profile?.photo == null
               ? Container(
                   width: 100,
                   height: 100,
@@ -73,7 +65,7 @@ class _UserProfilePhotoState extends State<UserProfilePhoto> {
               : ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
                   child: Image.network(
-                    widget.photoUrl!,
+                    widget._profileController.profile!.photo!,
                     // loadingBuilder: (_, __, ___) {
                     //   return const Center(
                     //       child: CircularProgressIndicator());
@@ -93,7 +85,7 @@ class _UserProfilePhotoState extends State<UserProfilePhoto> {
             await _picker.pickImage(source: ImageSource.gallery);
 
         if (pickedFile != null) {
-          widget.setXFile(pickedFile);
+          widget._profileController.xfile = pickedFile;
           setState(() {
             _xfile = pickedFile;
           });

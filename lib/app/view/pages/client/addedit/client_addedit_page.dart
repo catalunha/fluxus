@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/view/controllers/client/addedit/client_addedit_controller.dart';
 import 'package:fluxus/app/view/pages/user/profile/part/add_family_children.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 
-import 'package:fluxus/app/view/controllers/user/profile/user_profile_controller.dart';
 import 'package:fluxus/app/view/pages/user/profile/part/user_profile_photo.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
 
-class ProfilePage extends StatefulWidget {
-  ProfilePage({Key? key}) : super(key: key);
-  final _profileController = Get.find<UserProfileController>();
+class ClientAddEditPage extends StatefulWidget {
+  ClientAddEditPage({Key? key}) : super(key: key);
+  final _clientAddEditController = Get.find<ClientAddEditController>();
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ClientAddEditPageState createState() => _ClientAddEditPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ClientAddEditPageState extends State<ClientAddEditPage> {
   final dateFormat = DateFormat('dd/MM/y');
 
   final _formKey = GlobalKey<FormState>();
@@ -36,15 +36,16 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     print('+++ initState +++');
     super.initState();
-    _nameTec.text = widget._profileController.profile?.name ?? "";
-    _phoneTec.text = widget._profileController.profile?.phone ?? "";
-    _addressTec.text = widget._profileController.profile?.address ?? "";
-    _cepTec.text = widget._profileController.profile?.cep ?? "";
-    _pluscodeTec.text = widget._profileController.profile?.pluscode ?? "";
-    _cpfTec.text = widget._profileController.profile?.cpf ?? "";
-    _registerTec.text = widget._profileController.profile?.register ?? "";
-    _descriptionTec.text = widget._profileController.profile?.description ?? "";
-    _isFemale = widget._profileController.profile?.isFemale ?? false;
+    _nameTec.text = widget._clientAddEditController.profile?.name ?? "";
+    _phoneTec.text = widget._clientAddEditController.profile?.phone ?? "";
+    _addressTec.text = widget._clientAddEditController.profile?.address ?? "";
+    _cepTec.text = widget._clientAddEditController.profile?.cep ?? "";
+    _pluscodeTec.text = widget._clientAddEditController.profile?.pluscode ?? "";
+    _cpfTec.text = widget._clientAddEditController.profile?.cpf ?? "";
+    _registerTec.text = widget._clientAddEditController.profile?.register ?? "";
+    _descriptionTec.text =
+        widget._clientAddEditController.profile?.description ?? "";
+    _isFemale = widget._clientAddEditController.profile?.isFemale ?? false;
   }
 
   @override
@@ -93,9 +94,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   AppCalendarButton(
                     title: "* Data de nascimento.",
-                    getDate: () => widget._profileController.dateBirthday,
+                    getDate: () => widget._clientAddEditController.dateBirthday,
                     setDate: (value) =>
-                        widget._profileController.dateBirthday = value,
+                        widget._clientAddEditController.dateBirthday = value,
                   ),
                   const SizedBox(height: 5),
                   const Divider(color: Colors.green, height: 5),
@@ -133,9 +134,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 5),
                   UserProfilePhoto(
-                    photoUrl: widget._profileController.profile!.photo,
+                    photoUrl: widget._clientAddEditController.profile?.photo,
                     setXFile: (value) =>
-                        widget._profileController.xfile = value,
+                        widget._clientAddEditController.xfile = value,
                   ),
                   const SizedBox(height: 5),
                   const Text('Suas especialidades'),
@@ -150,7 +151,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       IconButton(
                           onPressed: () async {
                             await saveProfile();
-                            await widget._profileController.healthPlanAdd();
+                            await widget._clientAddEditController
+                                .healthPlanAdd();
                             // await Get.toNamed(Routes.profileHealthPlan);
                             setState(() {});
                           },
@@ -204,7 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   //     // final formValid =
                   //     //     _formKey.currentState?.validate() ?? false;
                   //     // if (formValid) {
-                  //     //   await widget._profileController.append(
+                  //     //   await widget._clientAddEditController.append(
                   //     //     name: _nameTec.text,
                   //     //     description: _descriptionTec.text,
                   //     //     phone: _phoneTec.text,
@@ -230,12 +232,12 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<bool> saveProfile() async {
-    if (widget._profileController.dateBirthday == null) {
+    if (widget._clientAddEditController.dateBirthday == null) {
       return false;
     }
     final formValid = _formKey.currentState?.validate() ?? false;
     if (formValid) {
-      await widget._profileController.append(
+      await widget._clientAddEditController.append(
         name: _nameTec.text,
         description: _descriptionTec.text,
         phone: _phoneTec.text,
@@ -252,10 +254,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget expertiseList() {
-    if (widget._profileController.profile?.expertise != null) {
+    if (widget._clientAddEditController.profile?.expertise != null) {
       return Column(
         children: [
-          ...widget._profileController.profile!.expertise!
+          ...widget._clientAddEditController.profile!.expertise!
               .map((e) => SizedBox(
                     width: double.infinity,
                     child: Card(
@@ -289,10 +291,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget officeList() {
-    if (widget._profileController.profile?.office != null) {
+    if (widget._clientAddEditController.profile?.office != null) {
       return Column(
         children: [
-          ...widget._profileController.profile!.office!
+          ...widget._clientAddEditController.profile!.office!
               .map((e) => SizedBox(
                     width: double.infinity,
                     child: Card(
@@ -326,10 +328,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget healthPlanList() {
-    if (widget._profileController.profile?.healthPlan != null) {
+    if (widget._clientAddEditController.profile?.healthPlan != null) {
       return Column(
         children: [
-          ...widget._profileController.profile!.healthPlan!
+          ...widget._clientAddEditController.profile!.healthPlan!
               .map((e) => Card(
                     child: Column(children: [
                       Row(
@@ -337,7 +339,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           IconButton(
                             onPressed: () async {
                               await saveProfile();
-                              await widget._profileController
+                              await widget._clientAddEditController
                                   .healthPlanEdit(e.id!);
                               setState(() {});
                             },
@@ -378,7 +380,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       //   trailing: IconButton(
                       //     onPressed: () async {
                       //       await saveProfile();
-                      //       await widget._profileController
+                      //       await widget._clientAddEditController
                       //           .healthPlanEdit(e.id!);
                       //       setState(() {});
                       //     },
@@ -396,10 +398,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget familyList() {
-    if (widget._profileController.profile?.family != null) {
+    if (widget._clientAddEditController.profile?.family != null) {
       return Column(
         children: [
-          ...widget._profileController.profile!.family!
+          ...widget._clientAddEditController.profile!.family!
               .map((e) => Card(
                     child: Column(children: [
                       Row(
@@ -407,7 +409,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           IconButton(
                             onPressed: () async {
                               await saveProfile();
-                              await widget._profileController
+                              await widget._clientAddEditController
                                   .familyChildrenUpdate(
                                 id: e.id!,
                                 isChildren: false,
@@ -438,7 +440,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       //   trailing: IconButton(
                       //     onPressed: () async {
                       //       await saveProfile();
-                      //       await widget._profileController
+                      //       await widget._clientAddEditController
                       //           .healthPlanEdit(e.id!);
                       //       setState(() {});
                       //     },
@@ -456,10 +458,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget childrenList() {
-    if (widget._profileController.profile?.children != null) {
+    if (widget._clientAddEditController.profile?.children != null) {
       return Column(
         children: [
-          ...widget._profileController.profile!.children!
+          ...widget._clientAddEditController.profile!.children!
               .map((e) => Card(
                     child: Column(children: [
                       Row(
@@ -467,7 +469,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           IconButton(
                             onPressed: () async {
                               await saveProfile();
-                              await widget._profileController
+                              await widget._clientAddEditController
                                   .familyChildrenUpdate(
                                 id: e.id!,
                                 isChildren: true,
@@ -498,7 +500,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       //   trailing: IconButton(
                       //     onPressed: () async {
                       //       await saveProfile();
-                      //       await widget._profileController
+                      //       await widget._clientAddEditController
                       //           .healthPlanEdit(e.id!);
                       //       setState(() {});
                       //     },

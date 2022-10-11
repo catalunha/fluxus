@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
+import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -52,6 +53,11 @@ class ClientProfileCard extends StatelessWidget {
                     IconButton(
                       onPressed: () => copy(profile.id!),
                       icon: const Icon(Icons.copy),
+                    ),
+                    IconButton(
+                      onPressed: () => Get.toNamed(Routes.clientProfileAddEdit,
+                          arguments: profile.id),
+                      icon: const Icon(Icons.edit),
                     ),
                   ],
                 ),
