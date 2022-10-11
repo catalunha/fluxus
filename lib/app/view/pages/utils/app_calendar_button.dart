@@ -23,7 +23,7 @@ class AppCalendarButton extends StatelessWidget {
         final DateTime? selectedDate = await showDatePicker(
           context: context,
           initialDate: initialDate,
-          firstDate: DateTime(DateTime.now().year),
+          firstDate: DateTime(DateTime.now().year - 120),
           lastDate: DateTime(DateTime.now().year + 1),
         );
         if (selectedDate != null) {

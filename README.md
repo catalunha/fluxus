@@ -4,7 +4,10 @@ cd /home/catalunha/myapp/cemec.net.br/fluxus && flutter build web && cd /home/ca
 
 # Diary
 
-#
+isseus
+todo paciente tem convenio particular
+
+
 marciocatalunha@gmail.com
 123456
 

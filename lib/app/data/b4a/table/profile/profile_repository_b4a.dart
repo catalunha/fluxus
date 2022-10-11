@@ -3,9 +3,76 @@ import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/b4a/table/profile/profile_repository_exception.dart';
 import 'package:fluxus/app/data/b4a/utils/parse_error_code.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
+import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class ProfileRepositoryB4a implements ProfileRepository {
+  Future<QueryBuilder<ParseObject>> getQueryAll(
+      QueryBuilder<ParseObject> query, Pagination pagination) async {
+    // QueryBuilder<ParseObject> query =
+    //     QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+    query.whereEqualTo('isDeleted', false);
+    query.orderByDescending('updatedAt');
+
+    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+    query.setLimit(pagination.limit);
+
+    return query;
+  }
+
+  // @override
+  // Future<List<ProfileModel>> list(Pagination pagination) async {
+  //   QueryBuilder<ParseObject> query;
+  //   query = await getQueryAll(query,pagination);
+
+  //   ParseResponse? response;
+  //   try {
+  //     response = await query.query();
+  //     List<ProfileModel> listTemp = <ProfileModel>[];
+  //     if (response.success && response.results != null) {
+  //       for (var element in response.results!) {
+  //         listTemp.add(ProfileEntity().fromParseSimpleData(element));
+  //       }
+  //       return listTemp;
+  //     } else {
+  //       return [];
+  //     }
+  //   } on Exception {
+  //     var errorCodes = ParseErrorCode(response!.error!);
+  //     throw ProfileRepositoryException(
+  //       code: errorCodes.code,
+  //       message: errorCodes.message,
+  //     );
+  //   }
+  // }
+
+  @override
+  Future<List<ProfileModel>> softList(
+      QueryBuilder<ParseObject> query, Pagination pagination) async {
+    QueryBuilder<ParseObject> query2;
+    query2 = await getQueryAll(query, pagination);
+
+    ParseResponse? response;
+    try {
+      response = await query2.query();
+      List<ProfileModel> listTemp = <ProfileModel>[];
+      if (response.success && response.results != null) {
+        for (var element in response.results!) {
+          listTemp.add(ProfileEntity().fromParseSimpleData(element));
+        }
+        return listTemp;
+      } else {
+        return [];
+      }
+    } on Exception {
+      var errorCodes = ParseErrorCode(response!.error!);
+      throw ProfileRepositoryException(
+        code: errorCodes.code,
+        message: errorCodes.message,
+      );
+    }
+  }
+
   @override
   Future<String> update(ProfileModel profileModel) async {
     final userProfileParse = await ProfileEntity().toParse(profileModel);
@@ -33,7 +100,6 @@ class ProfileRepositoryB4a implements ProfileRepository {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
     query.whereEqualTo('objectId', id);
-    // query.includeObject(['community']);
     query.first();
     ParseResponse? response;
     try {
@@ -57,6 +123,26 @@ class ProfileRepositoryB4a implements ProfileRepository {
   Future<void> updateRelationHealthPlan(
       String objectId, List<String> modelIdList, bool add) async {
     final parseObject = ProfileEntity().toParseUpdateRelationHealthPlan(
+        objectId: objectId, modelIdList: modelIdList, add: add);
+    if (parseObject != null) {
+      await parseObject.save();
+    }
+  }
+
+  @override
+  Future<void> updateRelationChildren(
+      String objectId, List<String> modelIdList, bool add) async {
+    final parseObject = ProfileEntity().toParseUpdateRelationChildren(
+        objectId: objectId, modelIdList: modelIdList, add: add);
+    if (parseObject != null) {
+      await parseObject.save();
+    }
+  }
+
+  @override
+  Future<void> updateRelationFamily(
+      String objectId, List<String> modelIdList, bool add) async {
+    final parseObject = ProfileEntity().toParseUpdateRelationFamily(
         objectId: objectId, modelIdList: modelIdList, add: add);
     if (parseObject != null) {
       await parseObject.save();

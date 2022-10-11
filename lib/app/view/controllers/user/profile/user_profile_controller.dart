@@ -192,4 +192,33 @@ class UserProfileController extends GetxController
       _loading(false);
     }
   }
+
+  Future<void> familyChildrenUpdate({
+    required String id,
+    required bool isChildren,
+    required bool isAdd,
+  }) async {
+    try {
+      _loading(true);
+      if (isChildren) {
+        await _profileRepository.updateRelationChildren(
+            profile!.id!, [id], isAdd);
+      } else {
+        await _profileRepository.updateRelationFamily(
+            profile!.id!, [id], isAdd);
+      }
+
+      final SplashController splashController = Get.find();
+      await splashController.updateUserProfile();
+      setProfile(splashController.userModel!.profile!);
+    } on ProfileRepositoryException {
+      _message.value = MessageModel(
+        title: 'Erro em ProfileController',
+        message: 'Não foi possivel salvar o perfil',
+        isError: true,
+      );
+    } finally {
+      _loading(false);
+    }
+  }
 }

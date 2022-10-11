@@ -24,6 +24,7 @@ class ParseErrorCode {
   }
 
   final Map<int, String> _appCodes = {
+    //1 - Successful request, but no results found - No Results
     //101 - Invalid username/password. - ObjectNotFound
     101: 'Email ou senha inválidos ou não cadastrados.',
     202: 'Já existe uma conta para este email.',

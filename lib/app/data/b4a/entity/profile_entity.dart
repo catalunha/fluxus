@@ -62,6 +62,44 @@ class ProfileEntity {
     }
     //--- get healthPlanList
 
+    //+++ get family
+    List<ProfileModel> familyList = [];
+    QueryBuilder<ParseObject> queryFamily =
+        QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+    queryFamily.whereRelatedTo('family', 'Profile', parseObject.objectId!);
+    final ParseResponse responseFamily = await queryFamily.query();
+    if (responseFamily.success && responseFamily.results != null) {
+      for (var e in responseFamily.results!) {
+        familyList.add(ProfileEntity().fromParseSimpleData(e as ParseObject));
+      }
+
+      // familyList = [
+      //   ...responseFamily.results!
+      //       .map<ProfileModel>((e) async => await ProfileEntity().fromParse(e as ParseObject))
+      //       .toList()
+      // ];
+    }
+    //--- get family
+
+    //+++ get children
+    List<ProfileModel> childrenList = [];
+    QueryBuilder<ParseObject> queryChildren =
+        QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+    queryChildren.whereRelatedTo('children', 'Profile', parseObject.objectId!);
+    final ParseResponse responseChildren = await queryChildren.query();
+    if (responseChildren.success && responseChildren.results != null) {
+      for (var e in responseChildren.results!) {
+        childrenList.add(ProfileEntity().fromParseSimpleData(e));
+      }
+
+      // familyList = [
+      //   ...responseFamily.results!
+      //       .map<ProfileModel>((e) async => await ProfileEntity().fromParse(e as ParseObject))
+      //       .toList()
+      // ];
+    }
+    //--- get children
+
     ProfileModel profileModel = ProfileModel(
       id: parseObject.objectId!,
       email: parseObject.get('email'),
@@ -81,6 +119,29 @@ class ProfileEntity {
       expertise: expertiseList,
       office: officeList,
       healthPlan: healthPlanList,
+      family: familyList,
+      children: childrenList,
+    );
+    return profileModel;
+  }
+
+  ProfileModel fromParseSimpleData(ParseObject parseObject) {
+    ProfileModel profileModel = ProfileModel(
+      id: parseObject.objectId!,
+      email: parseObject.get('email'),
+      name: parseObject.get('name'),
+      birthday: parseObject.get('birthday'),
+      phone: parseObject.get('phone'),
+      address: parseObject.get('address'),
+      cep: parseObject.get('cep'),
+      pluscode: parseObject.get('pluscode'),
+      cpf: parseObject.get('cpf'),
+      description: parseObject.get('description'),
+      register: parseObject.get('register'),
+      photo: parseObject.get('photo')?.get('url'),
+      isActive: parseObject.get('isActive') ?? false,
+      isDeleted: parseObject.get('isDeleted') ?? false,
+      isFemale: parseObject.get('isFemale') ?? false,
     );
     return profileModel;
   }
@@ -164,6 +225,78 @@ class ProfileEntity {
             modelIdList
                 .map((element) =>
                     ParseObject(HealthPlanEntity.className)..objectId = element)
+                .toList());
+      }
+    }
+    return parseObject;
+  }
+
+  ParseObject? toParseUpdateRelationChildren({
+    required String objectId,
+    required bool add,
+    required List<String> modelIdList,
+  }) {
+    final parseObject = ParseObject(ProfileEntity.className);
+    parseObject.objectId = objectId;
+    if (add) {
+      if (modelIdList.isEmpty) {
+        parseObject.unset('children');
+      } else {
+        parseObject.addRelation(
+          'children',
+          modelIdList
+              .map(
+                (element) =>
+                    ParseObject(ProfileEntity.className)..objectId = element,
+              )
+              .toList(),
+        );
+      }
+    } else {
+      if (modelIdList.isEmpty) {
+        parseObject.unset('children');
+      } else {
+        parseObject.removeRelation(
+            'children',
+            modelIdList
+                .map((element) =>
+                    ParseObject(ProfileEntity.className)..objectId = element)
+                .toList());
+      }
+    }
+    return parseObject;
+  }
+
+  ParseObject? toParseUpdateRelationFamily({
+    required String objectId,
+    required bool add,
+    required List<String> modelIdList,
+  }) {
+    final parseObject = ParseObject(ProfileEntity.className);
+    parseObject.objectId = objectId;
+    if (add) {
+      if (modelIdList.isEmpty) {
+        parseObject.unset('family');
+      } else {
+        parseObject.addRelation(
+          'family',
+          modelIdList
+              .map(
+                (element) =>
+                    ParseObject(ProfileEntity.className)..objectId = element,
+              )
+              .toList(),
+        );
+      }
+    } else {
+      if (modelIdList.isEmpty) {
+        parseObject.unset('family');
+      } else {
+        parseObject.removeRelation(
+            'family',
+            modelIdList
+                .map((element) =>
+                    ParseObject(ProfileEntity.className)..objectId = element)
                 .toList());
       }
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/view/pages/user/profile/part/add_family_children.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -100,13 +101,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   const Divider(color: Colors.green, height: 5),
                   const SizedBox(height: 5),
                   AppTextFormField(
-                    label: 'Seu telefone com DDD.',
+                    label: 'Seu telefone. Formato DDDNÚMERO.',
                     controller: _phoneTec,
+                    validator: Validatorless.number('Informe apenas numeros'),
                   ),
                   AppTextFormField(
-                    label: 'Seu CPF. Apenas numeros.',
+                    label: 'Seu CPF. Apenas números.',
                     controller: _cpfTec,
-                    validator: Validatorless.cpf('Número não é CPF válido'),
+                    validator:
+                        Validatorless.cpf('Este número não é CPF válido'),
                   ),
                   AppTextFormField(
                     label: 'Seu endereço completo.',
@@ -139,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Seus planos de saúde'),
+                      const Text('Seus convênios'),
                       IconButton(
                           onPressed: () async {
                             await saveProfile();
@@ -151,6 +154,42 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                   healthPlanList(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Seus familiares'),
+                      IconButton(
+                          onPressed: () async {
+                            await saveProfile();
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  AddFamilyChildren(isChildren: false),
+                            );
+                            setState(() {});
+                          },
+                          icon: const Icon(Icons.add))
+                    ],
+                  ),
+                  familyList(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Crianças sob sua responsabilidade'),
+                      IconButton(
+                          onPressed: () async {
+                            await saveProfile();
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  AddFamilyChildren(isChildren: true),
+                            );
+                            setState(() {});
+                          },
+                          icon: const Icon(Icons.add))
+                    ],
+                  ),
+                  childrenList(),
                   const SizedBox(height: 70),
                   // ElevatedButton(
                   //   onPressed: () async {
@@ -320,6 +359,126 @@ class _ProfilePageState extends State<ProfilePage> {
                                 value: e.due != null
                                     ? dateFormat.format(e.due!)
                                     : "...",
+                              ),
+                              AppTextTitleValue(
+                                title: 'id: ',
+                                value: '${e.id}',
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      // ListTile(
+                      //   title: Text(e.id ?? '...'),
+                      //   subtitle: Text(e.description ?? '...'),
+                      //   trailing: IconButton(
+                      //     onPressed: () async {
+                      //       await saveProfile();
+                      //       await widget._profileController
+                      //           .healthPlanEdit(e.id!);
+                      //       setState(() {});
+                      //     },
+                      //     icon: const Icon(Icons.edit),
+                      //   ),
+                      // ),
+                    ]),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget familyList() {
+    if (widget._profileController.profile?.family != null) {
+      return Column(
+        children: [
+          ...widget._profileController.profile!.family!
+              .map((e) => Card(
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              await saveProfile();
+                              await widget._profileController
+                                  .familyChildrenUpdate(
+                                id: e.id!,
+                                isChildren: false,
+                                isAdd: false,
+                              );
+                              setState(() {});
+                            },
+                            icon: const Icon(Icons.delete_forever),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppTextTitleValue(
+                                title: 'Nome: ',
+                                value: '${e.name}',
+                              ),
+                              AppTextTitleValue(
+                                title: 'id: ',
+                                value: '${e.id}',
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      // ListTile(
+                      //   title: Text(e.id ?? '...'),
+                      //   subtitle: Text(e.description ?? '...'),
+                      //   trailing: IconButton(
+                      //     onPressed: () async {
+                      //       await saveProfile();
+                      //       await widget._profileController
+                      //           .healthPlanEdit(e.id!);
+                      //       setState(() {});
+                      //     },
+                      //     icon: const Icon(Icons.edit),
+                      //   ),
+                      // ),
+                    ]),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget childrenList() {
+    if (widget._profileController.profile?.children != null) {
+      return Column(
+        children: [
+          ...widget._profileController.profile!.children!
+              .map((e) => Card(
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              await saveProfile();
+                              await widget._profileController
+                                  .familyChildrenUpdate(
+                                id: e.id!,
+                                isChildren: true,
+                                isAdd: false,
+                              );
+                              setState(() {});
+                            },
+                            icon: const Icon(Icons.delete_forever),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppTextTitleValue(
+                                title: 'Nome: ',
+                                value: '${e.name}',
                               ),
                               AppTextTitleValue(
                                 title: 'id: ',
