@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/view/controllers/client/addedit/client_addedit_controller.dart';
-import 'package:fluxus/app/view/pages/user/profile/part/add_family_children.dart';
+import 'package:fluxus/app/view/pages/client/addedit/part/client_add_family_children.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -34,8 +34,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
   @override
   void initState() {
-    print('+++ initState +++');
+    WidgetsBinding.instance.addPostFrameCallback((_) => yourFunction(context));
     super.initState();
+  }
+
+  Future<void> yourFunction(BuildContext context) async {
+    await widget._clientAddEditController.getProfile();
     _nameTec.text = widget._clientAddEditController.profile?.name ?? "";
     _phoneTec.text = widget._clientAddEditController.profile?.phone ?? "";
     _addressTec.text = widget._clientAddEditController.profile?.address ?? "";
@@ -46,6 +50,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
     _descriptionTec.text =
         widget._clientAddEditController.profile?.description ?? "";
     _isFemale = widget._clientAddEditController.profile?.isFemale ?? false;
+    setState(() {});
   }
 
   @override
@@ -139,8 +144,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                         widget._clientAddEditController.xfile = value,
                   ),
                   const SizedBox(height: 5),
-                  const Text('Suas especialidades'),
-                  expertiseList(),
+                  // const Text('Suas especialidades'),
+                  // expertiseList(),
                   const SizedBox(height: 5),
                   const Text('Suas funcões'),
                   officeList(),
@@ -163,39 +168,40 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Seus familiares'),
+                      const Text('Seu grupo familiar'),
                       IconButton(
-                          onPressed: () async {
-                            await saveProfile();
-                            await showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  AddFamilyChildren(isChildren: false),
-                            );
-                            setState(() {});
-                          },
-                          icon: const Icon(Icons.add))
+                        onPressed: () async {
+                          await saveProfile();
+                          await showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                ClientAddFamilyChildren(isChildren: false),
+                          );
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.add),
+                      )
                     ],
                   ),
                   familyList(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Crianças sob sua responsabilidade'),
-                      IconButton(
-                          onPressed: () async {
-                            await saveProfile();
-                            await showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  AddFamilyChildren(isChildren: true),
-                            );
-                            setState(() {});
-                          },
-                          icon: const Icon(Icons.add))
-                    ],
-                  ),
-                  childrenList(),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     const Text('Crianças sob sua responsabilidade'),
+                  //     IconButton(
+                  //         onPressed: () async {
+                  //           await saveProfile();
+                  //           await showDialog(
+                  //             context: context,
+                  //             builder: (BuildContext context) =>
+                  //                 AddFamilyChildren(isChildren: true),
+                  //           );
+                  //           setState(() {});
+                  //         },
+                  //         icon: const Icon(Icons.add))
+                  //   ],
+                  // ),
+                  // childrenList(),
                   const SizedBox(height: 70),
                   // ElevatedButton(
                   //   onPressed: () async {

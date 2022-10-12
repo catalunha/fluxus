@@ -10,7 +10,6 @@ import 'package:fluxus/app/data/repositories/health_plan_repository.dart';
 import 'package:fluxus/app/data/repositories/health_plan_type_repository.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
 import 'package:fluxus/app/routes.dart';
-import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
@@ -63,29 +62,26 @@ class ClientAddEditController extends GetxController
   }
 
   var healthPlanTypeList = <HealthPlanTypeModel>[].obs;
-
-  @override
-  void onReady() async {
-    super.onReady();
-    String clientId = Get.arguments;
-    await setProfile(clientId);
-  }
+  String? clientId;
 
   @override
   void onInit() async {
+    log('+++> Controller onInit');
     loaderListener(_loading);
     messageListener(_message);
-    String clientId = Get.arguments;
-    await setProfile(clientId);
     getHealthPlanTypeList();
+    clientId = Get.arguments;
     super.onInit();
   }
 
-  Future<void> setProfile(String clientId) async {
+  Future<void> getProfile() async {
+    log('+++> Controller setProfile');
+    _loading(true);
     ProfileModel? profileModelTemp =
-        await _profileRepository.readById(clientId);
+        await _profileRepository.readById(clientId!);
     _profile(profileModelTemp);
     onSetDateBirthday();
+    _loading(false);
   }
 
   getHealthPlanTypeList() async {
@@ -125,6 +121,7 @@ class ClientAddEditController extends GetxController
       );
 
       String userProfileId = await _profileRepository.update(profile!);
+      clientId = userProfileId;
       if (_xfile != null) {
         String? photoUrl = await XFileToParseFile.xFileToParseFile(
           xfile: _xfile!,
@@ -134,8 +131,10 @@ class ClientAddEditController extends GetxController
         );
         profile = profile!.copyWith(photo: photoUrl);
       }
-      final SplashController splashController = Get.find();
-      await splashController.updateUserProfile();
+
+      // final SplashController splashController = Get.find();
+      // await splashController.updateUserProfile();
+      // await getProfile();
     } on ProfileRepositoryException {
       _message.value = MessageModel(
         title: 'Erro em ProfileController',
@@ -154,7 +153,7 @@ class ClientAddEditController extends GetxController
 
   Future<void> healthPlanAdd() async {
     onSetDateDueHealthPlan();
-    await Get.toNamed(Routes.profileHealthPlan, arguments: null);
+    await Get.toNamed(Routes.clientProfileHealthPlan, arguments: null);
   }
 
   Future<void> healthPlanEdit(String healtPlanId) async {
@@ -162,7 +161,7 @@ class ClientAddEditController extends GetxController
         profile!.healthPlan!.firstWhere((element) => element.id == healtPlanId);
     healthPlan = healhPlanSelected;
     dateDueHealthPlan = healthPlan?.due;
-    await Get.toNamed(Routes.profileHealthPlan, arguments: healthPlan);
+    await Get.toNamed(Routes.clientProfileHealthPlan, arguments: healthPlan);
   }
 
   healthPlanUpdate({
@@ -190,7 +189,7 @@ class ClientAddEditController extends GetxController
 
       // final SplashController splashController = Get.find();
       // await splashController.updateUserProfile();
-      // setProfile(splashController.userModel!.profile!);
+      await getProfile();
     } on ProfileRepositoryException {
       _message.value = MessageModel(
         title: 'Erro em ProfileController',
@@ -215,11 +214,13 @@ class ClientAddEditController extends GetxController
       } else {
         await _profileRepository.updateRelationFamily(
             profile!.id!, [id], isAdd);
+        await _profileRepository.updateRelationFamily(
+            id, [profile!.id!], isAdd);
       }
 
       // final SplashController splashController = Get.find();
       // await splashController.updateUserProfile();
-      // setProfile(splashController.userModel!.profile!);
+      await getProfile();
     } on ProfileRepositoryException {
       _message.value = MessageModel(
         title: 'Erro em ProfileController',

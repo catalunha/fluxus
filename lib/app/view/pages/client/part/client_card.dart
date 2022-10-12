@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
@@ -55,8 +57,11 @@ class ClientProfileCard extends StatelessWidget {
                       icon: const Icon(Icons.copy),
                     ),
                     IconButton(
-                      onPressed: () => Get.toNamed(Routes.clientProfileAddEdit,
-                          arguments: profile.id),
+                      onPressed: () {
+                        log('+++> Click Card com profileId');
+                        Get.toNamed(Routes.clientProfileAddEdit,
+                            arguments: profile.id);
+                      },
                       icon: const Icon(Icons.edit),
                     ),
                   ],

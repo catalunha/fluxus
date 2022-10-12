@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/view/controllers/client/addedit/client_addedit_controller.dart';
 import 'package:get/get.dart';
 import 'package:validatorless/validatorless.dart';
 
-import 'package:fluxus/app/view/controllers/user/profile/user_profile_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
 
-class AddFamilyChildren extends StatefulWidget {
-  final _profileController = Get.find<UserProfileController>();
+class ClientAddFamilyChildren extends StatefulWidget {
+  final _clientAddEditController = Get.find<ClientAddEditController>();
   final bool isChildren;
-  AddFamilyChildren({
+  ClientAddFamilyChildren({
     Key? key,
     required this.isChildren,
   }) : super(key: key);
 
   @override
-  State<AddFamilyChildren> createState() => _AddFamilyChildrenState();
+  State<ClientAddFamilyChildren> createState() =>
+      _ClientAddFamilyChildrenState();
 }
 
-class _AddFamilyChildrenState extends State<AddFamilyChildren> {
+class _ClientAddFamilyChildrenState extends State<ClientAddFamilyChildren> {
   final _formKey = GlobalKey<FormState>();
   final _objectIdTEC = TextEditingController();
   @override
@@ -61,7 +62,7 @@ class _AddFamilyChildrenState extends State<AddFamilyChildren> {
                           final formValid =
                               _formKey.currentState?.validate() ?? false;
                           if (formValid) {
-                            await widget._profileController
+                            await widget._clientAddEditController
                                 .familyChildrenUpdate(
                               id: _objectIdTEC.text,
                               isChildren: widget.isChildren,

@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/view/controllers/client/addedit/client_addedit_controller.dart';
+import 'package:get/get.dart';
+import 'package:validatorless/validatorless.dart';
+
+import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/health_plan_type_model.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
-import 'package:get/get.dart';
 
-import 'package:fluxus/app/core/models/health_plan_model.dart';
-import 'package:fluxus/app/view/controllers/user/profile/user_profile_controller.dart';
-import 'package:validatorless/validatorless.dart';
-
-class HealthPlanAddEditPage extends StatefulWidget {
+class ClientHealthPlanAddEditPage extends StatefulWidget {
   final HealthPlanModel? healthPlanModel = Get.arguments;
-  final _profileController = Get.find<UserProfileController>();
-  HealthPlanAddEditPage({
+  final _clientAddEditController = Get.find<ClientAddEditController>();
+  ClientHealthPlanAddEditPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  _HealthPlanAddEditPageState createState() => _HealthPlanAddEditPageState();
+  _ClientHealthPlanAddEditPageState createState() =>
+      _ClientHealthPlanAddEditPageState();
 }
 
-class _HealthPlanAddEditPageState extends State<HealthPlanAddEditPage> {
+class _ClientHealthPlanAddEditPageState
+    extends State<ClientHealthPlanAddEditPage> {
   final _formKey = GlobalKey<FormState>();
   final _codeTec = TextEditingController();
   final _descriptionTec = TextEditingController();
@@ -58,7 +60,7 @@ class _HealthPlanAddEditPageState extends State<HealthPlanAddEditPage> {
                             Expanded(
                               child: Obx(
                                   () => AppDropDownGeneric<HealthPlanTypeModel>(
-                                        options: widget._profileController
+                                        options: widget._clientAddEditController
                                             .healthPlanTypeList
                                             .toList(),
                                         selected: healthPlanTypeSelected,
@@ -86,9 +88,10 @@ class _HealthPlanAddEditPageState extends State<HealthPlanAddEditPage> {
                   ),
                   AppCalendarButton(
                     title: "Vencimento:",
-                    getDate: () => widget._profileController.dateDueHealthPlan,
-                    setDate: (value) =>
-                        widget._profileController.dateDueHealthPlan = value,
+                    getDate: () =>
+                        widget._clientAddEditController.dateDueHealthPlan,
+                    setDate: (value) => widget
+                        ._clientAddEditController.dateDueHealthPlan = value,
                   ),
                   const SizedBox(height: 20),
                   widget.healthPlanModel?.id == null
@@ -108,7 +111,7 @@ class _HealthPlanAddEditPageState extends State<HealthPlanAddEditPage> {
                       final formValid =
                           _formKey.currentState?.validate() ?? false;
                       if (formValid) {
-                        await widget._profileController.healthPlanUpdate(
+                        await widget._clientAddEditController.healthPlanUpdate(
                           healthPlanType: healthPlanTypeSelected!,
                           code: _codeTec.text,
                           description: _descriptionTec.text,
