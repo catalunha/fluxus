@@ -302,4 +302,40 @@ class ProfileEntity {
     }
     return parseObject;
   }
+
+  ParseObject? toParseUpdateRelationOffice({
+    required String objectId,
+    required bool add,
+    required List<String> modelIdList,
+  }) {
+    final parseObject = ParseObject(ProfileEntity.className);
+    parseObject.objectId = objectId;
+    if (add) {
+      if (modelIdList.isEmpty) {
+        parseObject.unset('office');
+      } else {
+        parseObject.addRelation(
+          'office',
+          modelIdList
+              .map(
+                (element) =>
+                    ParseObject(OfficeEntity.className)..objectId = element,
+              )
+              .toList(),
+        );
+      }
+    } else {
+      if (modelIdList.isEmpty) {
+        parseObject.unset('office');
+      } else {
+        parseObject.removeRelation(
+            'office',
+            modelIdList
+                .map((element) =>
+                    ParseObject(OfficeEntity.className)..objectId = element)
+                .toList());
+      }
+    }
+    return parseObject;
+  }
 }

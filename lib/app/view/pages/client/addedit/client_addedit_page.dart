@@ -49,7 +49,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
     _registerTec.text = widget._clientAddEditController.profile?.register ?? "";
     _descriptionTec.text =
         widget._clientAddEditController.profile?.description ?? "";
-    _isFemale = widget._clientAddEditController.profile?.isFemale ?? false;
+    _isFemale = widget._clientAddEditController.profile?.isFemale ?? true;
     setState(() {});
   }
 

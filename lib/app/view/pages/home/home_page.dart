@@ -23,6 +23,15 @@ class HomePage extends StatelessWidget {
         children: [
           Card(
             child: ListTile(
+              leading: const Icon(Icons.person_add),
+              title: const Text('Cadastrar paciente'),
+              onTap: () {
+                Get.toNamed(Routes.clientProfileAddEdit, arguments: null);
+              },
+            ),
+          ),
+          Card(
+            child: ListTile(
               leading: const Icon(Icons.search),
               title: const Text('Buscar paciente'),
               subtitle:

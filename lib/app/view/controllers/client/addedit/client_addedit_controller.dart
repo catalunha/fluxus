@@ -77,10 +77,12 @@ class ClientAddEditController extends GetxController
   Future<void> getProfile() async {
     log('+++> Controller setProfile');
     _loading(true);
-    ProfileModel? profileModelTemp =
-        await _profileRepository.readById(clientId!);
-    _profile(profileModelTemp);
-    onSetDateBirthday();
+    if (clientId != null) {
+      ProfileModel? profileModelTemp =
+          await _profileRepository.readById(clientId!);
+      _profile(profileModelTemp);
+      onSetDateBirthday();
+    }
     _loading(false);
   }
 
@@ -107,20 +109,38 @@ class ClientAddEditController extends GetxController
   }) async {
     try {
       _loading(true);
-      profile = profile!.copyWith(
-        name: name,
-        phone: phone,
-        address: address,
-        cep: cep,
-        pluscode: pluscode,
-        cpf: cpf,
-        isFemale: isFemale,
-        register: register,
-        description: description,
-        birthday: dateBirthday,
-      );
-
+      if (clientId == null) {
+        profile = ProfileModel(
+          name: name,
+          phone: phone,
+          address: address,
+          cep: cep,
+          pluscode: pluscode,
+          cpf: cpf,
+          isFemale: isFemale,
+          register: register,
+          description: description,
+          birthday: dateBirthday,
+        );
+      } else {
+        profile = profile!.copyWith(
+          name: name,
+          phone: phone,
+          address: address,
+          cep: cep,
+          pluscode: pluscode,
+          cpf: cpf,
+          isFemale: isFemale,
+          register: register,
+          description: description,
+          birthday: dateBirthday,
+        );
+      }
       String userProfileId = await _profileRepository.update(profile!);
+      if (clientId == null) {
+        await _profileRepository.updateRelationOffice(
+            userProfileId, ['RrrMr52QBM'], true);
+      }
       clientId = userProfileId;
       if (_xfile != null) {
         String? photoUrl = await XFileToParseFile.xFileToParseFile(

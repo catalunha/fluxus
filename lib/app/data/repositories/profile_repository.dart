@@ -14,4 +14,6 @@ abstract class ProfileRepository {
       String objectId, List<String> modelIdList, bool add);
   Future<void> updateRelationFamily(
       String objectId, List<String> modelIdList, bool add);
+  Future<void> updateRelationOffice(
+      String objectId, List<String> modelIdList, bool add);
 }

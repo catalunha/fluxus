@@ -148,4 +148,14 @@ class ProfileRepositoryB4a implements ProfileRepository {
       await parseObject.save();
     }
   }
+
+  @override
+  Future<void> updateRelationOffice(
+      String objectId, List<String> modelIdList, bool add) async {
+    final parseObject = ProfileEntity().toParseUpdateRelationOffice(
+        objectId: objectId, modelIdList: modelIdList, add: add);
+    if (parseObject != null) {
+      await parseObject.save();
+    }
+  }
 }
