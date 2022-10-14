@@ -10,48 +10,48 @@ import 'package:fluxus/app/view/pages/user/profile/part/user_profile_photo.dart'
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
 
-class ClientAddEditPage extends StatefulWidget {
+class ClientAddEditPage extends StatelessWidget {
   ClientAddEditPage({Key? key}) : super(key: key);
   final _clientAddEditController = Get.find<ClientAddEditController>();
 
-  @override
-  _ClientAddEditPageState createState() => _ClientAddEditPageState();
-}
+//   @override
+//   _ClientAddEditPageState createState() => _ClientAddEditPageState();
+// }
 
-class _ClientAddEditPageState extends State<ClientAddEditPage> {
+// class _ClientAddEditPageState extends State<ClientAddEditPage> {
   final dateFormat = DateFormat('dd/MM/y');
 
   final _formKey = GlobalKey<FormState>();
-  final _nameTec = TextEditingController();
-  final _phoneTec = TextEditingController();
-  final _addressTec = TextEditingController();
-  final _cepTec = TextEditingController();
-  final _pluscodeTec = TextEditingController();
-  final _cpfTec = TextEditingController();
-  final _registerTec = TextEditingController();
-  final _descriptionTec = TextEditingController();
-  bool _isFemale = true;
+  // final _nameTec = TextEditingController();
+  // final _phoneTec = TextEditingController();
+  // final _addressTec = TextEditingController();
+  // final _cepTec = TextEditingController();
+  // final _pluscodeTec = TextEditingController();
+  // final _cpfTec = TextEditingController();
+  // final _registerTec = TextEditingController();
+  // final _descriptionTec = TextEditingController();
+  // bool _isFemale = true;
 
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => yourFunction(context));
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) => yourFunction(context));
+  //   super.initState();
+  // }
 
-  Future<void> yourFunction(BuildContext context) async {
-    await widget._clientAddEditController.getProfile();
-    _nameTec.text = widget._clientAddEditController.profile?.name ?? "";
-    _phoneTec.text = widget._clientAddEditController.profile?.phone ?? "";
-    _addressTec.text = widget._clientAddEditController.profile?.address ?? "";
-    _cepTec.text = widget._clientAddEditController.profile?.cep ?? "";
-    _pluscodeTec.text = widget._clientAddEditController.profile?.pluscode ?? "";
-    _cpfTec.text = widget._clientAddEditController.profile?.cpf ?? "";
-    _registerTec.text = widget._clientAddEditController.profile?.register ?? "";
-    _descriptionTec.text =
-        widget._clientAddEditController.profile?.description ?? "";
-    _isFemale = widget._clientAddEditController.profile?.isFemale ?? true;
-    setState(() {});
-  }
+  // Future<void> yourFunction(BuildContext context) async {
+  //   await _clientAddEditController.getProfile();
+  //   _nameTec.text = _clientAddEditController.profile?.name ?? "";
+  //   _phoneTec.text = _clientAddEditController.profile?.phone ?? "";
+  //   _addressTec.text = _clientAddEditController.profile?.address ?? "";
+  //   _cepTec.text = _clientAddEditController.profile?.cep ?? "";
+  //   _pluscodeTec.text = _clientAddEditController.profile?.pluscode ?? "";
+  //   _cpfTec.text = _clientAddEditController.profile?.cpf ?? "";
+  //   _registerTec.text = _clientAddEditController.profile?.register ?? "";
+  //   _descriptionTec.text =
+  //       _clientAddEditController.profile?.description ?? "";
+  //   _isFemale = _clientAddEditController.profile?.isFemale ?? true;
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -74,185 +74,156 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
           }
         },
       ),
-      body: Form(
-        key: _formKey,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 400),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 5),
-                  AppTextFormField(
-                    label: '* Seu nome completo.',
-                    controller: _nameTec,
-                    validator: Validatorless.required('Nome é obrigatório'),
+      body: FutureBuilder<void>(
+          future: _clientAddEditController.getProfile(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return Form(
+                key: _formKey,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 400),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 5),
+                          AppTextFormField(
+                            label: '* Seu nome completo.',
+                            controller: _clientAddEditController.nameTec,
+                            validator:
+                                Validatorless.required('Nome é obrigatório'),
+                          ),
+                          CheckboxListTile(
+                            title: const Text("* É do sexo feminimo ?"),
+                            onChanged: (value) {
+                              // setState(() {
+                              //   _isFemale = value!;
+                              // });
+                              _clientAddEditController.isFemale =
+                                  value ?? false;
+                            },
+                            value: _clientAddEditController.isFemale,
+                          ),
+                          AppCalendarButton(
+                            title: "* Data de nascimento.",
+                            getDate: () =>
+                                _clientAddEditController.dateBirthday,
+                            setDate: (value) =>
+                                _clientAddEditController.dateBirthday = value,
+                          ),
+                          const SizedBox(height: 5),
+                          const Divider(color: Colors.green, height: 5),
+                          const SizedBox(height: 5),
+                          AppTextFormField(
+                            label: 'Seu telefone. Formato DDDNÚMERO.',
+                            controller: _clientAddEditController.phoneTec,
+                            validator:
+                                Validatorless.number('Informe apenas numeros'),
+                          ),
+                          AppTextFormField(
+                            label: 'Seu CPF. Apenas números.',
+                            controller: _clientAddEditController.cpfTec,
+                            validator: Validatorless.cpf(
+                                'Este número não é CPF válido'),
+                          ),
+                          AppTextFormField(
+                            label: 'Seu endereço completo.',
+                            controller: _clientAddEditController.addressTec,
+                          ),
+                          AppTextFormField(
+                            label: 'O CEP do seu endereço.',
+                            controller: _clientAddEditController.cepTec,
+                          ),
+                          AppTextFormField(
+                            label: 'O PLUSCODE do seu endereço.',
+                            controller: _clientAddEditController.pluscodeTec,
+                          ),
+                          AppTextFormField(
+                            label: 'O número de registro em seu conselho.',
+                            controller: _clientAddEditController.registerTec,
+                          ),
+                          AppTextFormField(
+                            label: 'Uma breve descrição sobre você.',
+                            controller: _clientAddEditController.descriptionTec,
+                          ),
+                          const SizedBox(height: 5),
+                          UserProfilePhoto(
+                            photoUrl: _clientAddEditController.profile?.photo,
+                            setXFile: (value) =>
+                                _clientAddEditController.xfile = value,
+                          ),
+                          const SizedBox(height: 5),
+                          // const Text('Suas especialidades'),
+                          // expertiseList(),
+                          const SizedBox(height: 5),
+                          const Text('Suas funcões'),
+                          officeList(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('Seus convênios'),
+                              IconButton(
+                                  onPressed: () async {
+                                    await saveProfile();
+                                    await _clientAddEditController
+                                        .healthPlanAdd();
+                                    // await Get.toNamed(Routes.profileHealthPlan);
+                                    // setState(() {});
+                                  },
+                                  icon: const Icon(Icons.add))
+                            ],
+                          ),
+                          healthPlanList(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('Seu grupo familiar'),
+                              IconButton(
+                                onPressed: () async {
+                                  await saveProfile();
+                                  await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        ClientAddFamilyChildren(
+                                            isChildren: false),
+                                  );
+                                  // setState(() {});
+                                },
+                                icon: const Icon(Icons.add),
+                              )
+                            ],
+                          ),
+                          familyList(),
+                          const SizedBox(height: 70),
+                        ],
+                      ),
+                    ),
                   ),
-                  CheckboxListTile(
-                    title: const Text("* É do sexo feminimo ?"),
-                    onChanged: (value) {
-                      setState(() {
-                        _isFemale = value!;
-                      });
-                    },
-                    value: _isFemale,
-                  ),
-                  AppCalendarButton(
-                    title: "* Data de nascimento.",
-                    getDate: () => widget._clientAddEditController.dateBirthday,
-                    setDate: (value) =>
-                        widget._clientAddEditController.dateBirthday = value,
-                  ),
-                  const SizedBox(height: 5),
-                  const Divider(color: Colors.green, height: 5),
-                  const SizedBox(height: 5),
-                  AppTextFormField(
-                    label: 'Seu telefone. Formato DDDNÚMERO.',
-                    controller: _phoneTec,
-                    validator: Validatorless.number('Informe apenas numeros'),
-                  ),
-                  AppTextFormField(
-                    label: 'Seu CPF. Apenas números.',
-                    controller: _cpfTec,
-                    validator:
-                        Validatorless.cpf('Este número não é CPF válido'),
-                  ),
-                  AppTextFormField(
-                    label: 'Seu endereço completo.',
-                    controller: _addressTec,
-                  ),
-                  AppTextFormField(
-                    label: 'O CEP do seu endereço.',
-                    controller: _cepTec,
-                  ),
-                  AppTextFormField(
-                    label: 'O PLUSCODE do seu endereço.',
-                    controller: _pluscodeTec,
-                  ),
-                  AppTextFormField(
-                    label: 'O número de registro em seu conselho.',
-                    controller: _registerTec,
-                  ),
-                  AppTextFormField(
-                    label: 'Uma breve descrição sobre você.',
-                    controller: _descriptionTec,
-                  ),
-                  const SizedBox(height: 5),
-                  UserProfilePhoto(
-                    photoUrl: widget._clientAddEditController.profile?.photo,
-                    setXFile: (value) =>
-                        widget._clientAddEditController.xfile = value,
-                  ),
-                  const SizedBox(height: 5),
-                  // const Text('Suas especialidades'),
-                  // expertiseList(),
-                  const SizedBox(height: 5),
-                  const Text('Suas funcões'),
-                  officeList(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Seus convênios'),
-                      IconButton(
-                          onPressed: () async {
-                            await saveProfile();
-                            await widget._clientAddEditController
-                                .healthPlanAdd();
-                            // await Get.toNamed(Routes.profileHealthPlan);
-                            setState(() {});
-                          },
-                          icon: const Icon(Icons.add))
-                    ],
-                  ),
-                  healthPlanList(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Seu grupo familiar'),
-                      IconButton(
-                        onPressed: () async {
-                          await saveProfile();
-                          await showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                ClientAddFamilyChildren(isChildren: false),
-                          );
-                          setState(() {});
-                        },
-                        icon: const Icon(Icons.add),
-                      )
-                    ],
-                  ),
-                  familyList(),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     const Text('Crianças sob sua responsabilidade'),
-                  //     IconButton(
-                  //         onPressed: () async {
-                  //           await saveProfile();
-                  //           await showDialog(
-                  //             context: context,
-                  //             builder: (BuildContext context) =>
-                  //                 AddFamilyChildren(isChildren: true),
-                  //           );
-                  //           setState(() {});
-                  //         },
-                  //         icon: const Icon(Icons.add))
-                  //   ],
-                  // ),
-                  // childrenList(),
-                  const SizedBox(height: 70),
-                  // ElevatedButton(
-                  //   onPressed: () async {
-                  //     var result = await saveProfile();
-                  //     if (result) {
-                  //       Get.back();
-                  //     }
-                  //     // final formValid =
-                  //     //     _formKey.currentState?.validate() ?? false;
-                  //     // if (formValid) {
-                  //     //   await widget._clientAddEditController.append(
-                  //     //     name: _nameTec.text,
-                  //     //     description: _descriptionTec.text,
-                  //     //     phone: _phoneTec.text,
-                  //     //     address: _addressTec.text,
-                  //     //     cep: _cepTec.text,
-                  //     //     pluscode: _pluscodeTec.text,
-                  //     //     cpf: _cpfTec.text,
-                  //     //     register: _registerTec.text,
-                  //     //     isFemale: _isFemale,
-                  //     //   );
-                  //     //   Get.back();
-                  //     // }
-                  //   },
-                  //   child: const Text('Salvar perfil.'),
-                  // ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+                ),
+              );
+            }
+          }),
     );
   }
 
   Future<bool> saveProfile() async {
-    if (widget._clientAddEditController.dateBirthday == null) {
+    if (_clientAddEditController.dateBirthday == null) {
       return false;
     }
     final formValid = _formKey.currentState?.validate() ?? false;
     if (formValid) {
-      await widget._clientAddEditController.append(
-        name: _nameTec.text,
-        description: _descriptionTec.text,
-        phone: _phoneTec.text,
-        address: _addressTec.text,
-        cep: _cepTec.text,
-        pluscode: _pluscodeTec.text,
-        cpf: _cpfTec.text,
-        register: _registerTec.text,
-        isFemale: _isFemale,
+      await _clientAddEditController.append(
+        name: _clientAddEditController.nameTec.text,
+        description: _clientAddEditController.descriptionTec.text,
+        phone: _clientAddEditController.phoneTec.text,
+        address: _clientAddEditController.addressTec.text,
+        cep: _clientAddEditController.cepTec.text,
+        pluscode: _clientAddEditController.pluscodeTec.text,
+        cpf: _clientAddEditController.cpfTec.text,
+        register: _clientAddEditController.registerTec.text,
+        isFemale: _clientAddEditController.isFemale,
       );
       return true;
     }
@@ -260,10 +231,10 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   }
 
   Widget expertiseList() {
-    if (widget._clientAddEditController.profile?.expertise != null) {
+    if (_clientAddEditController.profile?.expertise != null) {
       return Column(
         children: [
-          ...widget._clientAddEditController.profile!.expertise!
+          ..._clientAddEditController.profile!.expertise!
               .map((e) => SizedBox(
                     width: double.infinity,
                     child: Card(
@@ -297,10 +268,10 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   }
 
   Widget officeList() {
-    if (widget._clientAddEditController.profile?.office != null) {
+    if (_clientAddEditController.profile?.office != null) {
       return Column(
         children: [
-          ...widget._clientAddEditController.profile!.office!
+          ..._clientAddEditController.profile!.office!
               .map((e) => SizedBox(
                     width: double.infinity,
                     child: Card(
@@ -334,190 +305,104 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   }
 
   Widget healthPlanList() {
-    if (widget._clientAddEditController.profile?.healthPlan != null) {
-      return Column(
-        children: [
-          ...widget._clientAddEditController.profile!.healthPlan!
-              .map((e) => Card(
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              await saveProfile();
-                              await widget._clientAddEditController
-                                  .healthPlanEdit(e.id!);
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.edit),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+    if (_clientAddEditController.profile?.healthPlan != null) {
+      return Obx(() => Column(
+            children: [
+              ..._clientAddEditController.profile!.healthPlan!
+                  .map((e) => Card(
+                        child: Column(children: [
+                          Row(
                             children: [
-                              AppTextTitleValue(
-                                title: 'Gestor: ',
-                                value: '${e.healthPlanType?.name}',
+                              IconButton(
+                                onPressed: () async {
+                                  await saveProfile();
+                                  await _clientAddEditController
+                                      .healthPlanEdit(e.id!);
+                                  // setState(() {});
+                                },
+                                icon: const Icon(Icons.edit),
                               ),
-                              AppTextTitleValue(
-                                title: 'Número: ',
-                                value: '${e.code}',
-                              ),
-                              AppTextTitleValue(
-                                title: 'Descrição: ',
-                                value: '${e.description}',
-                              ),
-                              AppTextTitleValue(
-                                title: 'Vencimento: ',
-                                value: e.due != null
-                                    ? dateFormat.format(e.due!)
-                                    : "...",
-                              ),
-                              AppTextTitleValue(
-                                title: 'id: ',
-                                value: '${e.id}',
-                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppTextTitleValue(
+                                    title: 'Gestor: ',
+                                    value: '${e.healthPlanType?.name}',
+                                  ),
+                                  AppTextTitleValue(
+                                    title: 'Número: ',
+                                    value: '${e.code}',
+                                  ),
+                                  AppTextTitleValue(
+                                    title: 'Descrição: ',
+                                    value: '${e.description}',
+                                  ),
+                                  AppTextTitleValue(
+                                    title: 'Vencimento: ',
+                                    value: e.due != null
+                                        ? dateFormat.format(e.due!)
+                                        : "...",
+                                  ),
+                                  AppTextTitleValue(
+                                    title: 'id: ',
+                                    value: '${e.id}',
+                                  ),
+                                ],
+                              )
                             ],
-                          )
-                        ],
-                      ),
-                      // ListTile(
-                      //   title: Text(e.id ?? '...'),
-                      //   subtitle: Text(e.description ?? '...'),
-                      //   trailing: IconButton(
-                      //     onPressed: () async {
-                      //       await saveProfile();
-                      //       await widget._clientAddEditController
-                      //           .healthPlanEdit(e.id!);
-                      //       setState(() {});
-                      //     },
-                      //     icon: const Icon(Icons.edit),
-                      //   ),
-                      // ),
-                    ]),
-                  ))
-              .toList()
-        ],
-      );
+                          ),
+                        ]),
+                      ))
+                  .toList()
+            ],
+          ));
     } else {
       return Container();
     }
   }
 
   Widget familyList() {
-    if (widget._clientAddEditController.profile?.family != null) {
-      return Column(
-        children: [
-          ...widget._clientAddEditController.profile!.family!
-              .map((e) => Card(
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              await saveProfile();
-                              await widget._clientAddEditController
-                                  .familyChildrenUpdate(
-                                id: e.id!,
-                                isChildren: false,
-                                isAdd: false,
-                              );
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.delete_forever),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+    if (_clientAddEditController.profile?.family != null) {
+      return Obx(() => Column(
+            children: [
+              ..._clientAddEditController.profile!.family!
+                  .map((e) => Card(
+                        child: Column(children: [
+                          Row(
                             children: [
-                              AppTextTitleValue(
-                                title: 'Nome: ',
-                                value: '${e.name}',
+                              IconButton(
+                                onPressed: () async {
+                                  await saveProfile();
+                                  await _clientAddEditController
+                                      .familyChildrenUpdate(
+                                    id: e.id!,
+                                    isChildren: false,
+                                    isAdd: false,
+                                  );
+                                  // setState(() {});
+                                },
+                                icon: const Icon(Icons.delete_forever),
                               ),
-                              AppTextTitleValue(
-                                title: 'id: ',
-                                value: '${e.id}',
-                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppTextTitleValue(
+                                    title: 'Nome: ',
+                                    value: '${e.name}',
+                                  ),
+                                  AppTextTitleValue(
+                                    title: 'id: ',
+                                    value: '${e.id}',
+                                  ),
+                                ],
+                              )
                             ],
-                          )
-                        ],
-                      ),
-                      // ListTile(
-                      //   title: Text(e.id ?? '...'),
-                      //   subtitle: Text(e.description ?? '...'),
-                      //   trailing: IconButton(
-                      //     onPressed: () async {
-                      //       await saveProfile();
-                      //       await widget._clientAddEditController
-                      //           .healthPlanEdit(e.id!);
-                      //       setState(() {});
-                      //     },
-                      //     icon: const Icon(Icons.edit),
-                      //   ),
-                      // ),
-                    ]),
-                  ))
-              .toList()
-        ],
-      );
-    } else {
-      return Container();
-    }
-  }
-
-  Widget childrenList() {
-    if (widget._clientAddEditController.profile?.children != null) {
-      return Column(
-        children: [
-          ...widget._clientAddEditController.profile!.children!
-              .map((e) => Card(
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              await saveProfile();
-                              await widget._clientAddEditController
-                                  .familyChildrenUpdate(
-                                id: e.id!,
-                                isChildren: true,
-                                isAdd: false,
-                              );
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.delete_forever),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppTextTitleValue(
-                                title: 'Nome: ',
-                                value: '${e.name}',
-                              ),
-                              AppTextTitleValue(
-                                title: 'id: ',
-                                value: '${e.id}',
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      // ListTile(
-                      //   title: Text(e.id ?? '...'),
-                      //   subtitle: Text(e.description ?? '...'),
-                      //   trailing: IconButton(
-                      //     onPressed: () async {
-                      //       await saveProfile();
-                      //       await widget._clientAddEditController
-                      //           .healthPlanEdit(e.id!);
-                      //       setState(() {});
-                      //     },
-                      //     icon: const Icon(Icons.edit),
-                      //   ),
-                      // ),
-                    ]),
-                  ))
-              .toList()
-        ],
-      );
+                        ]),
+                      ))
+                  .toList()
+            ],
+          ));
     } else {
       return Container();
     }

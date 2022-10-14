@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/health_plan_type_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
@@ -64,6 +65,20 @@ class ClientAddEditController extends GetxController
   var healthPlanTypeList = <HealthPlanTypeModel>[].obs;
   String? clientId;
 
+//+++ forms
+  final nameTec = TextEditingController();
+  final phoneTec = TextEditingController();
+  final addressTec = TextEditingController();
+  final cepTec = TextEditingController();
+  final pluscodeTec = TextEditingController();
+  final cpfTec = TextEditingController();
+  final registerTec = TextEditingController();
+  final descriptionTec = TextEditingController();
+  final _isFemale = true.obs;
+  bool get isFemale => _isFemale.value;
+  set isFemale(bool temp) => _isFemale.value = temp;
+//--- forms
+
   @override
   void onInit() async {
     log('+++> Controller onInit');
@@ -76,14 +91,27 @@ class ClientAddEditController extends GetxController
 
   Future<void> getProfile() async {
     log('+++> Controller setProfile');
-    _loading(true);
+    // _loading(true);
     if (clientId != null) {
       ProfileModel? profileModelTemp =
           await _profileRepository.readById(clientId!);
       _profile(profileModelTemp);
       onSetDateBirthday();
     }
-    _loading(false);
+    setFormFieldControllers();
+    // _loading(false);
+  }
+
+  setFormFieldControllers() {
+    nameTec.text = profile?.name ?? "";
+    phoneTec.text = profile?.phone ?? "";
+    addressTec.text = profile?.address ?? "";
+    cepTec.text = profile?.cep ?? "";
+    pluscodeTec.text = profile?.pluscode ?? "";
+    cpfTec.text = profile?.cpf ?? "";
+    registerTec.text = profile?.register ?? "";
+    descriptionTec.text = profile?.description ?? "";
+    isFemale = profile?.isFemale ?? true;
   }
 
   getHealthPlanTypeList() async {
