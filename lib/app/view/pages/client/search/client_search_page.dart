@@ -45,7 +45,7 @@ class _SearchPageState extends State<ClientSearchPage> {
               Card(
                 child: Column(
                   children: [
-                    const Text('por NOME'),
+                    const Text('por Nome'),
                     Row(
                       children: [
                         Checkbox(

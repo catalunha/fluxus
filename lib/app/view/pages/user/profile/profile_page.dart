@@ -76,6 +76,10 @@ class _ProfilePageState extends State<ProfilePage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Text(
+                    'Id: ${widget._profileController.profile!.id}',
+                    style: const TextStyle(fontSize: 8),
+                  ),
                   const SizedBox(height: 5),
                   AppTextFormField(
                     label: '* Seu nome completo.',
@@ -137,6 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     setXFile: (value) =>
                         widget._profileController.xfile = value,
                   ),
+
                   const SizedBox(height: 5),
                   const Text('Suas especialidades'),
                   expertiseList(),

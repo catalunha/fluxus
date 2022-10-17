@@ -88,6 +88,10 @@ class ClientAddEditPage extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          Text(
+                            'Id: ${_clientAddEditController.profile?.id}',
+                            style: const TextStyle(fontSize: 8),
+                          ),
                           const SizedBox(height: 5),
                           AppTextFormField(
                             label: '* Seu nome completo.',
@@ -209,11 +213,11 @@ class ClientAddEditPage extends StatelessWidget {
   }
 
   Future<bool> saveProfile() async {
-    if (_clientAddEditController.dateBirthday == null) {
-      return false;
-    }
     final formValid = _formKey.currentState?.validate() ?? false;
     if (formValid) {
+      if (_clientAddEditController.dateBirthday == null) {
+        return false;
+      }
       await _clientAddEditController.append(
         name: _clientAddEditController.nameTec.text,
         description: _clientAddEditController.descriptionTec.text,
@@ -252,7 +256,7 @@ class ClientAddEditPage extends StatelessWidget {
                                 value: '${e.description}',
                               ),
                               AppTextTitleValue(
-                                title: 'id: ',
+                                title: 'Id: ',
                                 value: '${e.id}',
                               ),
                             ]),
@@ -289,7 +293,7 @@ class ClientAddEditPage extends StatelessWidget {
                                 value: '${e.description}',
                               ),
                               AppTextTitleValue(
-                                title: 'id: ',
+                                title: 'Id: ',
                                 value: '${e.id}',
                               ),
                             ]),
@@ -344,7 +348,7 @@ class ClientAddEditPage extends StatelessWidget {
                                         : "...",
                                   ),
                                   AppTextTitleValue(
-                                    title: 'id: ',
+                                    title: 'Id: ',
                                     value: '${e.id}',
                                   ),
                                 ],
@@ -391,7 +395,7 @@ class ClientAddEditPage extends StatelessWidget {
                                     value: '${e.name}',
                                   ),
                                   AppTextTitleValue(
-                                    title: 'id: ',
+                                    title: 'Id: ',
                                     value: '${e.id}',
                                   ),
                                 ],
