@@ -23,7 +23,7 @@ class ProfileModel {
   final String? description;
   final String? register; // conselho de saude
   final List<ProfileModel>? family; // familiares adultos
-  final List<ProfileModel>? children; // crianças que estão ligadas a vc
+  // final List<ProfileModel>? children; // crianças que estão ligadas a vc
   final List<HealthPlanModel>? healthPlan; // Convenio
   final List<ExpertiseModel>? expertise; // especialidade
   final List<OfficeModel>? office; // cargo: Adm, Sec, Aval, Prof, Paciente
@@ -47,7 +47,6 @@ class ProfileModel {
     this.description,
     this.register,
     this.family,
-    this.children,
     this.healthPlan,
     this.expertise,
     this.office,
@@ -72,7 +71,6 @@ class ProfileModel {
     String? description,
     String? register,
     List<ProfileModel>? family,
-    List<ProfileModel>? children,
     List<HealthPlanModel>? healthPlan,
     List<ExpertiseModel>? expertise,
     List<OfficeModel>? office,
@@ -96,7 +94,6 @@ class ProfileModel {
       description: description ?? this.description,
       register: register ?? this.register,
       family: family ?? this.family,
-      children: children ?? this.children,
       healthPlan: healthPlan ?? this.healthPlan,
       expertise: expertise ?? this.expertise,
       office: office ?? this.office,
@@ -154,9 +151,6 @@ class ProfileModel {
     if (family != null) {
       result.addAll({'family': family!.map((x) => x.toMap()).toList()});
     }
-    if (children != null) {
-      result.addAll({'children': children!.map((x) => x.toMap()).toList()});
-    }
     if (healthPlan != null) {
       result.addAll({'healthPlan': healthPlan!.map((x) => x.toMap()).toList()});
     }
@@ -201,10 +195,6 @@ class ProfileModel {
           ? List<ProfileModel>.from(
               map['family']?.map((x) => ProfileModel.fromMap(x)))
           : null,
-      children: map['children'] != null
-          ? List<ProfileModel>.from(
-              map['children']?.map((x) => ProfileModel.fromMap(x)))
-          : null,
       healthPlan: map['healthPlan'] != null
           ? List<HealthPlanModel>.from(
               map['healthPlan']?.map((x) => HealthPlanModel.fromMap(x)))
@@ -230,7 +220,7 @@ class ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, userId: $userId, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, register: $register, family: $family, children: $children, healthPlan: $healthPlan, expertise: $expertise, office: $office, routes: $routes, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'ProfileModel(id: $id, userId: $userId, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, register: $register, family: $family, healthPlan: $healthPlan, expertise: $expertise, office: $office, routes: $routes, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -253,7 +243,6 @@ class ProfileModel {
         other.description == description &&
         other.register == register &&
         listEquals(other.family, family) &&
-        listEquals(other.children, children) &&
         listEquals(other.healthPlan, healthPlan) &&
         listEquals(other.expertise, expertise) &&
         listEquals(other.office, office) &&
@@ -279,7 +268,6 @@ class ProfileModel {
         description.hashCode ^
         register.hashCode ^
         family.hashCode ^
-        children.hashCode ^
         healthPlan.hashCode ^
         expertise.hashCode ^
         office.hashCode ^

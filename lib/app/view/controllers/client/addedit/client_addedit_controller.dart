@@ -15,6 +15,7 @@ import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ClientAddEditController extends GetxController
     with LoaderMixin, MessageMixin {
@@ -77,6 +78,9 @@ class ClientAddEditController extends GetxController
   final _isFemale = true.obs;
   bool get isFemale => _isFemale.value;
   set isFemale(bool temp) => _isFemale.value = temp;
+  var maskPhone = MaskTextInputFormatter();
+  var maskCPF = MaskTextInputFormatter();
+  var maskCEP = MaskTextInputFormatter();
 //--- forms
 
   @override
@@ -90,12 +94,12 @@ class ClientAddEditController extends GetxController
   }
 
   Future<void> getProfile() async {
-    log('+++> Controller setProfile');
     // _loading(true);
     if (clientId != null) {
+      log('+++> getProfile $clientId', name: 'getProfile');
       ProfileModel? profileModelTemp =
           await _profileRepository.readById(clientId!);
-      _profile(profileModelTemp);
+      profile = profileModelTemp;
       onSetDateBirthday();
     }
     setFormFieldControllers();
@@ -104,14 +108,32 @@ class ClientAddEditController extends GetxController
 
   setFormFieldControllers() {
     nameTec.text = profile?.name ?? "";
-    phoneTec.text = profile?.phone ?? "";
+    // phoneTec.text = profile?.phone ?? "";
+    // cepTec.text = profile?.cep ?? "";
+    // cpfTec.text = profile?.cpf ?? "";
     addressTec.text = profile?.address ?? "";
-    cepTec.text = profile?.cep ?? "";
     pluscodeTec.text = profile?.pluscode ?? "";
-    cpfTec.text = profile?.cpf ?? "";
     registerTec.text = profile?.register ?? "";
     descriptionTec.text = profile?.description ?? "";
     isFemale = profile?.isFemale ?? true;
+    maskPhone = MaskTextInputFormatter(
+        initialText: profile?.phone ?? "",
+        mask: '(##) # ####-####',
+        filter: {"#": RegExp(r'[0-9]')},
+        type: MaskAutoCompletionType.lazy);
+    phoneTec.text = maskPhone.getMaskedText();
+    maskCPF = MaskTextInputFormatter(
+        initialText: profile?.cpf ?? "",
+        mask: '###.###.###-##',
+        filter: {"#": RegExp(r'[0-9]')},
+        type: MaskAutoCompletionType.lazy);
+    cpfTec.text = maskCPF.getMaskedText();
+    maskCEP = MaskTextInputFormatter(
+        initialText: profile?.cep ?? "",
+        mask: '#####-###',
+        filter: {"#": RegExp(r'[0-9]')},
+        type: MaskAutoCompletionType.lazy);
+    cepTec.text = maskCEP.getMaskedText();
   }
 
   getHealthPlanTypeList() async {
@@ -165,10 +187,12 @@ class ClientAddEditController extends GetxController
         );
       }
       String userProfileId = await _profileRepository.update(profile!);
+
       if (clientId == null) {
         await _profileRepository.updateRelationOffice(
             userProfileId, ['RrrMr52QBM'], true);
       }
+      profile = profile!.copyWith(id: userProfileId);
       clientId = userProfileId;
       if (_xfile != null) {
         String? photoUrl = await XFileToParseFile.xFileToParseFile(
@@ -220,9 +244,11 @@ class ClientAddEditController extends GetxController
   }) async {
     try {
       _loading(true);
+
       healthPlan = HealthPlanModel(
         id: healthPlan?.id,
-        profileId: profile?.id,
+        // profileId: profile?.id,
+        profile: profile,
         healthPlanType: healthPlanType,
         code: code,
         due: dateDueHealthPlan,
@@ -249,22 +275,15 @@ class ClientAddEditController extends GetxController
     }
   }
 
-  Future<void> familyChildrenUpdate({
+  Future<void> familyUpdate({
     required String id,
-    required bool isChildren,
     required bool isAdd,
   }) async {
     try {
       _loading(true);
-      if (isChildren) {
-        await _profileRepository.updateRelationChildren(
-            profile!.id!, [id], isAdd);
-      } else {
-        await _profileRepository.updateRelationFamily(
-            profile!.id!, [id], isAdd);
-        await _profileRepository.updateRelationFamily(
-            id, [profile!.id!], isAdd);
-      }
+
+      await _profileRepository.updateRelationFamily(profile!.id!, [id], isAdd);
+      await _profileRepository.updateRelationFamily(id, [profile!.id!], isAdd);
 
       // final SplashController splashController = Get.find();
       // await splashController.updateUserProfile();

@@ -3,6 +3,7 @@ import 'package:fluxus/app/view/pages/user/profile/part/add_family_children.dart
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:validatorless/validatorless.dart';
 
 import 'package:fluxus/app/view/controllers/user/profile/user_profile_controller.dart';
@@ -31,20 +32,40 @@ class _ProfilePageState extends State<ProfilePage> {
   final _registerTec = TextEditingController();
   final _descriptionTec = TextEditingController();
   bool _isFemale = true;
-
+  var maskPhone = MaskTextInputFormatter();
+  var maskCPF = MaskTextInputFormatter();
+  var maskCEP = MaskTextInputFormatter();
   @override
   void initState() {
     print('+++ initState +++');
     super.initState();
     _nameTec.text = widget._profileController.profile?.name ?? "";
-    _phoneTec.text = widget._profileController.profile?.phone ?? "";
+    // _phoneTec.text = widget._profileController.profile?.phone ?? "";
+    // _cpfTec.text = widget._profileController.profile?.cpf ?? "";
+    // _cepTec.text = widget._profileController.profile?.cep ?? "";
     _addressTec.text = widget._profileController.profile?.address ?? "";
-    _cepTec.text = widget._profileController.profile?.cep ?? "";
     _pluscodeTec.text = widget._profileController.profile?.pluscode ?? "";
-    _cpfTec.text = widget._profileController.profile?.cpf ?? "";
     _registerTec.text = widget._profileController.profile?.register ?? "";
     _descriptionTec.text = widget._profileController.profile?.description ?? "";
     _isFemale = widget._profileController.profile?.isFemale ?? false;
+    maskPhone = MaskTextInputFormatter(
+        initialText: widget._profileController.profile?.phone ?? "",
+        mask: '(##) # ####-####',
+        filter: {"#": RegExp(r'[0-9]')},
+        type: MaskAutoCompletionType.lazy);
+    _phoneTec.text = maskPhone.getMaskedText();
+    maskCPF = MaskTextInputFormatter(
+        initialText: widget._profileController.profile?.cpf ?? "",
+        mask: '###.###.###-##',
+        filter: {"#": RegExp(r'[0-9]')},
+        type: MaskAutoCompletionType.lazy);
+    _cpfTec.text = maskCPF.getMaskedText();
+    maskCEP = MaskTextInputFormatter(
+        initialText: widget._profileController.profile?.cep ?? "",
+        mask: '#####-###',
+        filter: {"#": RegExp(r'[0-9]')},
+        type: MaskAutoCompletionType.lazy);
+    _cepTec.text = maskCEP.getMaskedText();
   }
 
   @override
@@ -68,164 +89,176 @@ class _ProfilePageState extends State<ProfilePage> {
           }
         },
       ),
-      body: Form(
-        key: _formKey,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 400),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Text(
-                    'Id: ${widget._profileController.profile!.id}',
-                    style: const TextStyle(fontSize: 8),
-                  ),
-                  const SizedBox(height: 5),
-                  AppTextFormField(
-                    label: '* Seu nome completo.',
-                    controller: _nameTec,
-                    validator: Validatorless.required('Nome é obrigatório'),
-                  ),
-                  CheckboxListTile(
-                    title: const Text("* É do sexo feminimo ?"),
-                    onChanged: (value) {
-                      setState(() {
-                        _isFemale = value!;
-                      });
-                    },
-                    value: _isFemale,
-                  ),
-                  AppCalendarButton(
-                    title: "* Data de nascimento.",
-                    getDate: () => widget._profileController.dateBirthday,
-                    setDate: (value) =>
-                        widget._profileController.dateBirthday = value,
-                  ),
-                  const SizedBox(height: 5),
-                  const Divider(color: Colors.green, height: 5),
-                  const SizedBox(height: 5),
-                  AppTextFormField(
-                    label: 'Seu telefone. Formato DDDNÚMERO.',
-                    controller: _phoneTec,
-                    validator: Validatorless.number('Informe apenas numeros'),
-                  ),
-                  AppTextFormField(
-                    label: 'Seu CPF. Apenas números.',
-                    controller: _cpfTec,
-                    validator:
-                        Validatorless.cpf('Este número não é CPF válido'),
-                  ),
-                  AppTextFormField(
-                    label: 'Seu endereço completo.',
-                    controller: _addressTec,
-                  ),
-                  AppTextFormField(
-                    label: 'O CEP do seu endereço.',
-                    controller: _cepTec,
-                  ),
-                  AppTextFormField(
-                    label: 'O PLUSCODE do seu endereço.',
-                    controller: _pluscodeTec,
-                  ),
-                  AppTextFormField(
-                    label: 'O número de registro em seu conselho.',
-                    controller: _registerTec,
-                  ),
-                  AppTextFormField(
-                    label: 'Uma breve descrição sobre você.',
-                    controller: _descriptionTec,
-                  ),
-                  const SizedBox(height: 5),
-                  UserProfilePhoto(
-                    photoUrl: widget._profileController.profile!.photo,
-                    setXFile: (value) =>
-                        widget._profileController.xfile = value,
-                  ),
+      body: Center(
+        child: Form(
+          key: _formKey,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(
+                      'Id: ${widget._profileController.profile!.id}',
+                      style: const TextStyle(fontSize: 8),
+                    ),
+                    const SizedBox(height: 5),
+                    AppTextFormField(
+                      label: '* Seu nome completo.',
+                      controller: _nameTec,
+                      validator: Validatorless.required('Nome é obrigatório'),
+                    ),
+                    CheckboxListTile(
+                      title: const Text("* É do sexo feminimo ?"),
+                      onChanged: (value) {
+                        setState(() {
+                          _isFemale = value!;
+                        });
+                      },
+                      value: _isFemale,
+                    ),
+                    AppCalendarButton(
+                      title: "* Data de nascimento.",
+                      getDate: () => widget._profileController.dateBirthday,
+                      setDate: (value) =>
+                          widget._profileController.dateBirthday = value,
+                    ),
+                    const SizedBox(height: 5),
+                    const Divider(color: Colors.green, height: 5),
+                    const SizedBox(height: 5),
+                    AppTextFormField(
+                      label: 'Seu telefone. Formato DDDNÚMERO.',
+                      controller: _phoneTec,
+                      // validator: Validatorless.number('Informe apenas numeros'),
+                      mask: maskPhone,
+                      // mask: MaskTextInputFormatter(
+                      //   mask: '+55 (##) # ####-####',
+                      //   filter: {"#": RegExp(r'[0-9]')},
+                      //   type: MaskAutoCompletionType.lazy,
+                      // ),
+                    ),
+                    AppTextFormField(
+                      label: 'Seu CPF. Apenas números.',
+                      controller: _cpfTec,
+                      validator:
+                          Validatorless.cpf('Este número não é CPF válido'),
+                      mask: maskCPF,
+                    ),
 
-                  const SizedBox(height: 5),
-                  const Text('Suas especialidades'),
-                  expertiseList(),
-                  const SizedBox(height: 5),
-                  const Text('Suas funcões'),
-                  officeList(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Seus convênios'),
-                      IconButton(
-                          onPressed: () async {
-                            await saveProfile();
-                            await widget._profileController.healthPlanAdd();
-                            // await Get.toNamed(Routes.profileHealthPlan);
-                            setState(() {});
-                          },
-                          icon: const Icon(Icons.add))
-                    ],
-                  ),
-                  healthPlanList(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Seus familiares'),
-                      IconButton(
-                          onPressed: () async {
-                            await saveProfile();
-                            await showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  AddFamilyChildren(isChildren: false),
-                            );
-                            setState(() {});
-                          },
-                          icon: const Icon(Icons.add))
-                    ],
-                  ),
-                  familyList(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Crianças sob sua responsabilidade'),
-                      IconButton(
-                          onPressed: () async {
-                            await saveProfile();
-                            await showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  AddFamilyChildren(isChildren: true),
-                            );
-                            setState(() {});
-                          },
-                          icon: const Icon(Icons.add))
-                    ],
-                  ),
-                  childrenList(),
-                  const SizedBox(height: 70),
-                  // ElevatedButton(
-                  //   onPressed: () async {
-                  //     var result = await saveProfile();
-                  //     if (result) {
-                  //       Get.back();
-                  //     }
-                  //     // final formValid =
-                  //     //     _formKey.currentState?.validate() ?? false;
-                  //     // if (formValid) {
-                  //     //   await widget._profileController.append(
-                  //     //     name: _nameTec.text,
-                  //     //     description: _descriptionTec.text,
-                  //     //     phone: _phoneTec.text,
-                  //     //     address: _addressTec.text,
-                  //     //     cep: _cepTec.text,
-                  //     //     pluscode: _pluscodeTec.text,
-                  //     //     cpf: _cpfTec.text,
-                  //     //     register: _registerTec.text,
-                  //     //     isFemale: _isFemale,
-                  //     //   );
-                  //     //   Get.back();
-                  //     // }
-                  //   },
-                  //   child: const Text('Salvar perfil.'),
-                  // ),
-                ],
+                    AppTextFormField(
+                      label: 'O CEP do seu endereço.',
+                      controller: _cepTec,
+                      // validator: Validatorless.number('Informe apenas numeros'),
+                      mask: maskCEP,
+                    ),
+                    AppTextFormField(
+                      label: 'O PLUSCODE do seu endereço.',
+                      controller: _pluscodeTec,
+                    ),
+                    AppTextFormField(
+                      label: 'Seu endereço completo.',
+                      controller: _addressTec,
+                    ),
+                    AppTextFormField(
+                      label: 'O número de registro em seu conselho.',
+                      controller: _registerTec,
+                    ),
+                    AppTextFormField(
+                      label: 'Uma breve descrição sobre você.',
+                      controller: _descriptionTec,
+                    ),
+                    const SizedBox(height: 5),
+                    UserProfilePhoto(
+                      photoUrl: widget._profileController.profile!.photo,
+                      setXFile: (value) =>
+                          widget._profileController.xfile = value,
+                    ),
+
+                    const SizedBox(height: 5),
+                    const Text('Suas especialidades'),
+                    expertiseList(),
+                    const SizedBox(height: 5),
+                    const Text('Suas funcões'),
+                    officeList(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Seus convênios'),
+                        IconButton(
+                            onPressed: () async {
+                              await saveProfile();
+                              await widget._profileController.healthPlanAdd();
+                              // await Get.toNamed(Routes.profileHealthPlan);
+                              setState(() {});
+                            },
+                            icon: const Icon(Icons.add))
+                      ],
+                    ),
+                    healthPlanList(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Seus familiares'),
+                        IconButton(
+                            onPressed: () async {
+                              await saveProfile();
+                              await showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    AddFamilyChildren(isChildren: false),
+                              );
+                              setState(() {});
+                            },
+                            icon: const Icon(Icons.add))
+                      ],
+                    ),
+                    familyList(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Crianças sob sua responsabilidade'),
+                        IconButton(
+                            onPressed: () async {
+                              await saveProfile();
+                              await showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    AddFamilyChildren(isChildren: true),
+                              );
+                              setState(() {});
+                            },
+                            icon: const Icon(Icons.add))
+                      ],
+                    ),
+                    // childrenList(),
+                    const SizedBox(height: 70),
+                    // ElevatedButton(
+                    //   onPressed: () async {
+                    //     var result = await saveProfile();
+                    //     if (result) {
+                    //       Get.back();
+                    //     }
+                    //     // final formValid =
+                    //     //     _formKey.currentState?.validate() ?? false;
+                    //     // if (formValid) {
+                    //     //   await widget._profileController.append(
+                    //     //     name: _nameTec.text,
+                    //     //     description: _descriptionTec.text,
+                    //     //     phone: _phoneTec.text,
+                    //     //     address: _addressTec.text,
+                    //     //     cep: _cepTec.text,
+                    //     //     pluscode: _pluscodeTec.text,
+                    //     //     cpf: _cpfTec.text,
+                    //     //     register: _registerTec.text,
+                    //     //     isFemale: _isFemale,
+                    //     //   );
+                    //     //   Get.back();
+                    //     // }
+                    //   },
+                    //   child: const Text('Salvar perfil.'),
+                    // ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -243,11 +276,12 @@ class _ProfilePageState extends State<ProfilePage> {
       await widget._profileController.append(
         name: _nameTec.text,
         description: _descriptionTec.text,
-        phone: _phoneTec.text,
+        // phone: _phoneTec.text,
+        phone: maskPhone.getUnmaskedText(),
+        cpf: maskCPF.getUnmaskedText(),
+        cep: maskCEP.getUnmaskedText(),
         address: _addressTec.text,
-        cep: _cepTec.text,
         pluscode: _pluscodeTec.text,
-        cpf: _cpfTec.text,
         register: _registerTec.text,
         isFemale: _isFemale,
       );
@@ -412,10 +446,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           IconButton(
                             onPressed: () async {
                               await saveProfile();
-                              await widget._profileController
-                                  .familyChildrenUpdate(
+                              await widget._profileController.familyUpdate(
                                 id: e.id!,
-                                isChildren: false,
                                 isAdd: false,
                               );
                               setState(() {});
@@ -460,63 +492,62 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Widget childrenList() {
-    if (widget._profileController.profile?.children != null) {
-      return Column(
-        children: [
-          ...widget._profileController.profile!.children!
-              .map((e) => Card(
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              await saveProfile();
-                              await widget._profileController
-                                  .familyChildrenUpdate(
-                                id: e.id!,
-                                isChildren: true,
-                                isAdd: false,
-                              );
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.delete_forever),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppTextTitleValue(
-                                title: 'Nome: ',
-                                value: '${e.name}',
-                              ),
-                              AppTextTitleValue(
-                                title: 'id: ',
-                                value: '${e.id}',
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      // ListTile(
-                      //   title: Text(e.id ?? '...'),
-                      //   subtitle: Text(e.description ?? '...'),
-                      //   trailing: IconButton(
-                      //     onPressed: () async {
-                      //       await saveProfile();
-                      //       await widget._profileController
-                      //           .healthPlanEdit(e.id!);
-                      //       setState(() {});
-                      //     },
-                      //     icon: const Icon(Icons.edit),
-                      //   ),
-                      // ),
-                    ]),
-                  ))
-              .toList()
-        ],
-      );
-    } else {
-      return Container();
-    }
-  }
+  // Widget childrenList() {
+  //   if (widget._profileController.profile?.children != null) {
+  //     return Column(
+  //       children: [
+  //         ...widget._profileController.profile!.children!
+  //             .map((e) => Card(
+  //                   child: Column(children: [
+  //                     Row(
+  //                       children: [
+  //                         IconButton(
+  //                           onPressed: () async {
+  //                             await saveProfile();
+  //                             await widget._profileController.familyUpdate(
+  //                               id: e.id!,
+  //                               isChildren: true,
+  //                               isAdd: false,
+  //                             );
+  //                             setState(() {});
+  //                           },
+  //                           icon: const Icon(Icons.delete_forever),
+  //                         ),
+  //                         Column(
+  //                           crossAxisAlignment: CrossAxisAlignment.start,
+  //                           children: [
+  //                             AppTextTitleValue(
+  //                               title: 'Nome: ',
+  //                               value: '${e.name}',
+  //                             ),
+  //                             AppTextTitleValue(
+  //                               title: 'id: ',
+  //                               value: '${e.id}',
+  //                             ),
+  //                           ],
+  //                         )
+  //                       ],
+  //                     ),
+  //                     // ListTile(
+  //                     //   title: Text(e.id ?? '...'),
+  //                     //   subtitle: Text(e.description ?? '...'),
+  //                     //   trailing: IconButton(
+  //                     //     onPressed: () async {
+  //                     //       await saveProfile();
+  //                     //       await widget._profileController
+  //                     //           .healthPlanEdit(e.id!);
+  //                     //       setState(() {});
+  //                     //     },
+  //                     //     icon: const Icon(Icons.edit),
+  //                     //   ),
+  //                     // ),
+  //                   ]),
+  //                 ))
+  //             .toList()
+  //       ],
+  //     );
+  //   } else {
+  //     return Container();
+  //   }
+  // }
 }

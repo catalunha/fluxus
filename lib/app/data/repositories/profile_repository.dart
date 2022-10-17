@@ -10,8 +10,8 @@ abstract class ProfileRepository {
   Future<ProfileModel?> readById(String id);
   Future<void> updateRelationHealthPlan(
       String objectId, List<String> modelIdList, bool add);
-  Future<void> updateRelationChildren(
-      String objectId, List<String> modelIdList, bool add);
+  // Future<void> updateRelationChildren(
+  //     String objectId, List<String> modelIdList, bool add);
   Future<void> updateRelationFamily(
       String objectId, List<String> modelIdList, bool add);
   Future<void> updateRelationOffice(

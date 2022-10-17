@@ -62,10 +62,8 @@ class _ClientAddFamilyChildrenState extends State<ClientAddFamilyChildren> {
                           final formValid =
                               _formKey.currentState?.validate() ?? false;
                           if (formValid) {
-                            await widget._clientAddEditController
-                                .familyChildrenUpdate(
+                            await widget._clientAddEditController.familyUpdate(
                               id: _objectIdTEC.text,
-                              isChildren: widget.isChildren,
                               isAdd: true,
                             );
                             Get.back();

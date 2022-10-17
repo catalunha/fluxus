@@ -166,7 +166,7 @@ class UserProfileController extends GetxController
       _loading(true);
       healthPlan = HealthPlanModel(
         id: healthPlan?.id,
-        profileId: profile?.id,
+        // profileId: profile?.id,
         healthPlanType: healthPlanType,
         code: code,
         due: dateDueHealthPlan,
@@ -193,20 +193,14 @@ class UserProfileController extends GetxController
     }
   }
 
-  Future<void> familyChildrenUpdate({
+  Future<void> familyUpdate({
     required String id,
-    required bool isChildren,
     required bool isAdd,
   }) async {
     try {
       _loading(true);
-      if (isChildren) {
-        await _profileRepository.updateRelationChildren(
-            profile!.id!, [id], isAdd);
-      } else {
-        await _profileRepository.updateRelationFamily(
-            profile!.id!, [id], isAdd);
-      }
+
+      await _profileRepository.updateRelationFamily(profile!.id!, [id], isAdd);
 
       final SplashController splashController = Get.find();
       await splashController.updateUserProfile();

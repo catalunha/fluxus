@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class AppTextFormField extends StatelessWidget {
   final String label;
@@ -7,6 +8,7 @@ class AppTextFormField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChange;
   final int maxLines;
+  final MaskTextInputFormatter? mask;
   const AppTextFormField({
     Key? key,
     required this.label,
@@ -15,6 +17,7 @@ class AppTextFormField extends StatelessWidget {
     this.validator,
     this.onChange,
     this.maxLines = 1,
+    this.mask,
   }) : super(key: key);
 
   @override
@@ -26,6 +29,7 @@ class AppTextFormField extends StatelessWidget {
         obscureText: obscureText,
         validator: validator,
         onChanged: onChange,
+        inputFormatters: mask != null ? [mask!] : [],
         // keyboardType: TextInputType.multiline,
         minLines: 1, //Normal textInputField will be displayed
         maxLines: maxLines, // when user presses enter it will adapt to it

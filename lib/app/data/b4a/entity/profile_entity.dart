@@ -120,7 +120,7 @@ class ProfileEntity {
       office: officeList,
       healthPlan: healthPlanList,
       family: familyList,
-      children: childrenList,
+      // children: childrenList,
     );
     return profileModel;
   }
@@ -231,41 +231,41 @@ class ProfileEntity {
     return parseObject;
   }
 
-  ParseObject? toParseUpdateRelationChildren({
-    required String objectId,
-    required bool add,
-    required List<String> modelIdList,
-  }) {
-    final parseObject = ParseObject(ProfileEntity.className);
-    parseObject.objectId = objectId;
-    if (add) {
-      if (modelIdList.isEmpty) {
-        parseObject.unset('children');
-      } else {
-        parseObject.addRelation(
-          'children',
-          modelIdList
-              .map(
-                (element) =>
-                    ParseObject(ProfileEntity.className)..objectId = element,
-              )
-              .toList(),
-        );
-      }
-    } else {
-      if (modelIdList.isEmpty) {
-        parseObject.unset('children');
-      } else {
-        parseObject.removeRelation(
-            'children',
-            modelIdList
-                .map((element) =>
-                    ParseObject(ProfileEntity.className)..objectId = element)
-                .toList());
-      }
-    }
-    return parseObject;
-  }
+  // ParseObject? toParseUpdateRelationChildren({
+  //   required String objectId,
+  //   required bool add,
+  //   required List<String> modelIdList,
+  // }) {
+  //   final parseObject = ParseObject(ProfileEntity.className);
+  //   parseObject.objectId = objectId;
+  //   if (add) {
+  //     if (modelIdList.isEmpty) {
+  //       parseObject.unset('children');
+  //     } else {
+  //       parseObject.addRelation(
+  //         'children',
+  //         modelIdList
+  //             .map(
+  //               (element) =>
+  //                   ParseObject(ProfileEntity.className)..objectId = element,
+  //             )
+  //             .toList(),
+  //       );
+  //     }
+  //   } else {
+  //     if (modelIdList.isEmpty) {
+  //       parseObject.unset('children');
+  //     } else {
+  //       parseObject.removeRelation(
+  //           'children',
+  //           modelIdList
+  //               .map((element) =>
+  //                   ParseObject(ProfileEntity.className)..objectId = element)
+  //               .toList());
+  //     }
+  //   }
+  //   return parseObject;
+  // }
 
   ParseObject? toParseUpdateRelationFamily({
     required String objectId,

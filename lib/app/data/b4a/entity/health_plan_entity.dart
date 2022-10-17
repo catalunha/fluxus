@@ -1,5 +1,6 @@
 import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/data/b4a/entity/health_plan_type_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class HealthPlanEntity {
@@ -8,10 +9,14 @@ class HealthPlanEntity {
   HealthPlanModel fromParse(ParseObject parseObject) {
     HealthPlanModel model = HealthPlanModel(
       id: parseObject.objectId!,
-      profileId: parseObject.get('profileId'),
+      // profileId: parseObject.get('profileId'),
       healthPlanType: parseObject.get('healthPlanType') != null
           ? HealthPlanTypeEntity()
               .fromParse(parseObject.get('healthPlanType') as ParseObject)
+          : null,
+      profile: parseObject.get('profile') != null
+          ? ProfileEntity()
+              .fromParseSimpleData(parseObject.get('profile') as ParseObject)
           : null,
       code: parseObject.get('code'),
       due: parseObject.get('due'),
@@ -26,14 +31,20 @@ class HealthPlanEntity {
     if (model.id != null) {
       parseObject.objectId = model.id;
     }
-    if (model.profileId != null) {
-      parseObject.set('profileId', model.profileId);
-    }
+    // if (model.profileId != null) {
+    //   parseObject.set('profileId', model.profileId);
+    // }
     if (model.healthPlanType != null) {
       parseObject.set(
           'healthPlanType',
           (ParseObject(HealthPlanTypeEntity.className)
                 ..objectId = model.healthPlanType!.id)
+              .toPointer());
+    }
+    if (model.profile != null) {
+      parseObject.set(
+          'profile',
+          (ParseObject(ProfileEntity.className)..objectId = model.profile!.id)
               .toPointer());
     }
 

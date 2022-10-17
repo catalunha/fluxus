@@ -129,15 +129,15 @@ class ProfileRepositoryB4a implements ProfileRepository {
     }
   }
 
-  @override
-  Future<void> updateRelationChildren(
-      String objectId, List<String> modelIdList, bool add) async {
-    final parseObject = ProfileEntity().toParseUpdateRelationChildren(
-        objectId: objectId, modelIdList: modelIdList, add: add);
-    if (parseObject != null) {
-      await parseObject.save();
-    }
-  }
+  // @override
+  // Future<void> updateRelationChildren(
+  //     String objectId, List<String> modelIdList, bool add) async {
+  //   final parseObject = ProfileEntity().toParseUpdateRelationChildren(
+  //       objectId: objectId, modelIdList: modelIdList, add: add);
+  //   if (parseObject != null) {
+  //     await parseObject.save();
+  //   }
+  // }
 
   @override
   Future<void> updateRelationFamily(

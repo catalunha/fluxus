@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
               title: const Text('Buscar paciente'),
               subtitle: const Text('Por Número do convênio'),
               onTap: () {
-                Get.toNamed(Routes.clientProfileSearch);
+                Get.toNamed(Routes.healthPlanSearch);
               },
             ),
           ),

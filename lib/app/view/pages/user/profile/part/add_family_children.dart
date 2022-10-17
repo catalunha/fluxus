@@ -61,10 +61,8 @@ class _AddFamilyChildrenState extends State<AddFamilyChildren> {
                           final formValid =
                               _formKey.currentState?.validate() ?? false;
                           if (formValid) {
-                            await widget._profileController
-                                .familyChildrenUpdate(
+                            await widget._profileController.familyUpdate(
                               id: _objectIdTEC.text,
-                              isChildren: widget.isChildren,
                               isAdd: true,
                             );
                             Get.back();

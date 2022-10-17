@@ -1,5 +1,6 @@
 import 'package:fluxus/app/view/controllers/client/addedit/client_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/client/search/client_search_dependencies.dart';
+import 'package:fluxus/app/view/controllers/health_plan/search/health_plan_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/profile/user_profile_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/register/email/user_register_email_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/login/login_dependencies.dart';
@@ -9,6 +10,8 @@ import 'package:fluxus/app/view/pages/client/addedit/client_addedit_page.dart';
 import 'package:fluxus/app/view/pages/client/addedit/client_health_plan_addedit_page.dart';
 import 'package:fluxus/app/view/pages/client/search/client_search_list_page.dart';
 import 'package:fluxus/app/view/pages/client/search/client_search_page.dart';
+import 'package:fluxus/app/view/pages/health_plan/search/health_plan_search_list_page.dart';
+import 'package:fluxus/app/view/pages/health_plan/search/health_plan_search_page.dart';
 import 'package:fluxus/app/view/pages/user/profile/health_plan_addedit_page.dart';
 import 'package:fluxus/app/view/pages/user/profile/profile_page.dart';
 import 'package:fluxus/app/view/pages/user/login/auth_login_page.dart';
@@ -24,6 +27,8 @@ class Routes {
 
   static const userRegisterEmail = '/user/register/email';
 
+  static const home = '/home';
+
   static const profile = '/user/profile';
   static const profileHealthPlan = '/user/profile/healthPlan';
 
@@ -32,7 +37,8 @@ class Routes {
   static const clientProfileAddEdit = '/client/profile/addedit';
   static const clientProfileHealthPlan = '/client/profile/healthPlan';
 
-  static const home = '/home';
+  static const healthPlanSearch = '/healthPlan/search';
+  static const healthPlanList = '/healthPlan/list';
 
   static final pageList = [
     GetPage(
@@ -82,6 +88,15 @@ class Routes {
     GetPage(
       name: Routes.clientProfileHealthPlan,
       page: () => ClientHealthPlanAddEditPage(),
+    ),
+    GetPage(
+      name: Routes.healthPlanSearch,
+      binding: HealthPlanSearchDependencies(),
+      page: () => HealthPlanSearchPage(),
+    ),
+    GetPage(
+      name: Routes.healthPlanList,
+      page: () => HealthPlanSearchListPage(),
     ),
   ];
 }
