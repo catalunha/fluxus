@@ -19,17 +19,34 @@ class ClientSearchListPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Obx(() => Divider(
-                color: _clientProfileController.lastPage
-                    ? Colors.red
-                    : Colors.green,
-              )),
-          Expanded(
-            child: Obx(() => ClientProfileList(
-                  clientProfileList: _clientProfileController.clientProfileList,
-                  nextPage: () => _clientProfileController.nextPage(),
-                  lastPage: _clientProfileController.lastPage,
+          // Obx(() => Divider(
+          //       color: _clientProfileController.lastPage
+          //           ? Colors.red
+          //           : Colors.green,
+          //     )),
+          InkWell(
+            onTap: () {
+              _clientProfileController.nextPage();
+            },
+            child: Obx(() => Container(
+                  color: _clientProfileController.lastPage
+                      ? Colors.black
+                      : Colors.green,
+                  height: 24,
+                  child: Center(
+                    child: _clientProfileController.lastPage
+                        ? const Text('Última página')
+                        : const Text('Próxima página'),
+                  ),
                 )),
+          ),
+          Expanded(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: ClientProfileList(
+                clientProfileList: _clientProfileController.clientProfileList,
+              ),
+            ),
           ),
         ],
       ),

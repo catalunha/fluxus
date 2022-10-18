@@ -25,10 +25,15 @@ class HealthPlanSearchListPage extends StatelessWidget {
           //           : Colors.green,
           //     )),
           Expanded(
-            child: HealthPlanList(
-              healthPlanList: _healthPlanSearchController.healthPlanList,
-              // nextPage: () => _healthPlanSearchController.nextPage(),
-              // lastPage: _healthPlanSearchController.lastPage,
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: HealthPlanList(
+                  healthPlanList: _healthPlanSearchController.healthPlanList,
+                  // nextPage: () => _healthPlanSearchController.nextPage(),
+                  // lastPage: _healthPlanSearchController.lastPage,
+                ),
+              ),
             ),
           ),
         ],

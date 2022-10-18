@@ -213,23 +213,23 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     familyList(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Crianças sob sua responsabilidade'),
-                        IconButton(
-                            onPressed: () async {
-                              await saveProfile();
-                              await showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    AddFamilyChildren(isChildren: true),
-                              );
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.add))
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     const Text('Crianças sob sua responsabilidade'),
+                    //     IconButton(
+                    //         onPressed: () async {
+                    //           await saveProfile();
+                    //           await showDialog(
+                    //             context: context,
+                    //             builder: (BuildContext context) =>
+                    //                 AddFamilyChildren(isChildren: true),
+                    //           );
+                    //           setState(() {});
+                    //         },
+                    //         icon: const Icon(Icons.add))
+                    //   ],
+                    // ),
                     // childrenList(),
                     const SizedBox(height: 70),
                     // ElevatedButton(

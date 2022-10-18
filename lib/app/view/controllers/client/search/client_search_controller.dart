@@ -35,7 +35,7 @@ class ClientSearchController extends GetxController
   void onInit() {
     clientProfileList.clear();
     _changePagination(1, 12);
-    ever(_pagination, (_) => listAll());
+    ever(_pagination, (_) async => await listAll());
     loaderListener(_loading);
     messageListener(_message);
     super.onInit();
@@ -62,7 +62,6 @@ class ClientSearchController extends GetxController
     required bool birthdayBool,
   }) async {
     _loading(true);
-    clientProfileList.clear();
     if (!nameContainsBool &&
         !cpfEqualToBool &&
         !phoneEqualToBool &&
@@ -83,21 +82,33 @@ class ClientSearchController extends GetxController
       query.whereEqualTo('birthday', selectedDate);
       selectedDate = selectedDate!.add(const Duration(hours: 3));
     }
-
-    listAll();
+    clientProfileList.clear();
+    if (lastPage) {
+      _lastPage(false);
+      _pagination.update((val) {
+        val!.page = 1;
+        val.limit = 12;
+      });
+    } else {
+      await listAll();
+    }
+    // _changePagination(_pagination.value.page, _pagination.value.limit);
     _loading(false);
+    print('clientProfileList: ${clientProfileList.length}');
     Get.toNamed(Routes.clientProfileList);
   }
 
-  listAll() async {
-    _loading(true);
+  Future<void> listAll() async {
+    if (!lastPage) {
+      _loading(true);
 
-    List<ProfileModel> temp =
-        await _profileRepository.softList(query, _pagination.value);
-    if (temp.isEmpty) {
-      _lastPage.value = true;
+      List<ProfileModel> temp =
+          await _profileRepository.softList(query, _pagination.value);
+      if (temp.isEmpty) {
+        _lastPage.value = true;
+      }
+      clientProfileList.addAll(temp);
+      _loading(false);
     }
-    clientProfileList.addAll(temp);
-    _loading(false);
   }
 }

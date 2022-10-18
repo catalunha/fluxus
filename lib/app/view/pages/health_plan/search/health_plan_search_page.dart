@@ -27,68 +27,73 @@ class _SearchPageState extends State<HealthPlanSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Buscando registro'),
+        title: const Text('Buscando convênios'),
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Card(
-                child: Column(
-                  children: [
-                    const Text('por Código'),
-                    Row(
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 400),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Card(
+                    child: Column(
                       children: [
-                        Checkbox(
-                          value: _codeContains,
-                          onChanged: (value) {
-                            setState(() {
-                              _codeContains = value!;
-                            });
-                          },
-                        ),
-                        Expanded(
-                          child: AppTextFormField(
-                            label: 'Código que contém',
-                            controller: _codeContainsTEC,
-                          ),
+                        const Text('por Código'),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _codeContains,
+                              onChanged: (value) {
+                                setState(() {
+                                  _codeContains = value!;
+                                });
+                              },
+                            ),
+                            Expanded(
+                              child: AppTextFormField(
+                                label: 'Código que contém',
+                                controller: _codeContainsTEC,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
 
-              // Card(
-              //   child: Column(
-              //     children: [
-              //       const Text('por Data de nascimento'),
-              //       const SizedBox(height: 5),
-              //       Row(
-              //         children: [
-              //           Checkbox(
-              //             value: _birthday,
-              //             onChanged: (value) {
-              //               setState(() {
-              //                 _birthday = value!;
-              //               });
-              //             },
-              //           ),
-              //           AppCalendarButton(
-              //             title: "Data de nascimento.",
-              //             getDate: () =>
-              //                 widget._healthPlanSearchController.selectedDate,
-              //             setDate: (value) => widget
-              //                 ._healthPlanSearchController.selectedDate = value,
-              //           ),
-              //         ],
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              const SizedBox(height: 100)
-            ],
+                  // Card(
+                  //   child: Column(
+                  //     children: [
+                  //       const Text('por Data de nascimento'),
+                  //       const SizedBox(height: 5),
+                  //       Row(
+                  //         children: [
+                  //           Checkbox(
+                  //             value: _birthday,
+                  //             onChanged: (value) {
+                  //               setState(() {
+                  //                 _birthday = value!;
+                  //               });
+                  //             },
+                  //           ),
+                  //           AppCalendarButton(
+                  //             title: "Data de nascimento.",
+                  //             getDate: () =>
+                  //                 widget._healthPlanSearchController.selectedDate,
+                  //             setDate: (value) => widget
+                  //                 ._healthPlanSearchController.selectedDate = value,
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  const SizedBox(height: 100)
+                ],
+              ),
+            ),
           ),
         ),
       ),

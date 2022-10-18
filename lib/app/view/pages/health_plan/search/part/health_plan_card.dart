@@ -52,10 +52,6 @@ class HealthPlanCard extends StatelessWidget {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Id: ${healthPlanModel.id}',
-                    style: const TextStyle(fontSize: 8),
-                  ),
                   AppTextTitleValue(
                     title: 'Tipo: ',
                     value: '${healthPlanModel.healthPlanType?.name}',
