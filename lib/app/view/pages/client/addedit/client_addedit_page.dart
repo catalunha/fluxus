@@ -95,15 +95,18 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             const Divider(color: Colors.green, height: 5),
                             const SizedBox(height: 5),
                             AppTextFormField(
-                              label: 'Seu telefone. Formato DDDNÚMERO.',
+                              label: 'Seu telefone mais acessível',
                               controller: _clientAddEditController.phoneTec,
                               mask: _clientAddEditController.maskPhone,
-
-                              // validator: Validatorless.number(
-                              //     'Informe apenas numeros'),
                             ),
                             AppTextFormField(
-                              label: 'Seu CPF. Apenas números.',
+                              label: 'Seu email mais acessível',
+                              controller: _clientAddEditController.emailTec,
+                              validator:
+                                  Validatorless.email('Não é email válido.'),
+                            ),
+                            AppTextFormField(
+                              label: 'Seu CPF',
                               controller: _clientAddEditController.cpfTec,
                               mask: _clientAddEditController.maskCPF,
                               validator: Validatorless.cpf(
@@ -227,6 +230,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       }
       await _clientAddEditController.append(
         name: _clientAddEditController.nameTec.text,
+        email: _clientAddEditController.emailTec.text,
         description: _clientAddEditController.descriptionTec.text,
         phone: _clientAddEditController.maskPhone.getUnmaskedText(),
         cpf: _clientAddEditController.maskCPF.getUnmaskedText(),

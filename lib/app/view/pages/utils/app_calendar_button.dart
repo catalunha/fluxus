@@ -1,3 +1,4 @@
+import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -7,12 +8,13 @@ class AppCalendarButton extends StatelessWidget {
   final String title;
   final DateTime? Function() getDate;
   final Function(DateTime?) setDate;
-
+  final isBirthDay;
   AppCalendarButton({
     Key? key,
     required this.title,
     required this.getDate,
     required this.setDate,
+    this.isBirthDay = true,
   }) : super(key: key);
 
   @override
@@ -38,20 +40,49 @@ class AppCalendarButton extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(10.0)),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        child: Column(
           children: [
-            const Icon(
-              Icons.today,
-              color: Colors.grey,
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.today,
+                  color: Colors.grey,
+                ),
+                const SizedBox(width: 10),
+                Obx(
+                  () {
+                    if (getDate() != null) {
+                      return Text('$title  ${dateFormat.format(getDate()!)}');
+                    } else {
+                      return Text('$title Selecione uma data');
+                    }
+                  },
+                ),
+              ],
             ),
-            const SizedBox(width: 10),
             Obx(
               () {
                 if (getDate() != null) {
-                  return Text('$title  ${dateFormat.format(getDate()!)}');
+                  DateDuration duration;
+                  if (isBirthDay) {
+                    duration =
+                        AgeCalculator.age(getDate()!, today: DateTime.now());
+                  } else {
+                    duration =
+                        AgeCalculator.age(today: getDate()!, DateTime.now());
+                  }
+                  if (duration.years < 0) {
+                    return const Text(
+                      'Oops. Algo errado.',
+                      style: TextStyle(color: Colors.red),
+                    );
+                  } else {
+                    return Text(
+                        '${duration.years} a, ${duration.months} m, ${duration.days} d');
+                  }
                 } else {
-                  return Text('$title Selecione uma data');
+                  return const Text('...');
                 }
               },
             ),

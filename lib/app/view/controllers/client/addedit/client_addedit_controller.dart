@@ -67,6 +67,7 @@ class ClientAddEditController extends GetxController
   String? clientId;
 
 //+++ forms
+  final emailTec = TextEditingController();
   final nameTec = TextEditingController();
   final phoneTec = TextEditingController();
   final addressTec = TextEditingController();
@@ -108,6 +109,7 @@ class ClientAddEditController extends GetxController
 
   setFormFieldControllers() {
     nameTec.text = profile?.name ?? "";
+    emailTec.text = profile?.email ?? "";
     // phoneTec.text = profile?.phone ?? "";
     // cepTec.text = profile?.cep ?? "";
     // cpfTec.text = profile?.cpf ?? "";
@@ -147,6 +149,7 @@ class ClientAddEditController extends GetxController
 
   Future<void> append({
     String? name,
+    String? email,
     String? phone,
     String? address,
     String? cep,
@@ -162,6 +165,7 @@ class ClientAddEditController extends GetxController
       if (clientId == null) {
         profile = ProfileModel(
           name: name,
+          email: email,
           phone: phone,
           address: address,
           cep: cep,
@@ -175,6 +179,7 @@ class ClientAddEditController extends GetxController
       } else {
         profile = profile!.copyWith(
           name: name,
+          email: email,
           phone: phone,
           address: address,
           cep: cep,
@@ -225,6 +230,7 @@ class ClientAddEditController extends GetxController
 
   Future<void> healthPlanAdd() async {
     onSetDateDueHealthPlan();
+    healthPlan = HealthPlanModel();
     await Get.toNamed(Routes.clientProfileHealthPlan, arguments: null);
   }
 
