@@ -89,6 +89,15 @@ class HealthPlanCard extends StatelessWidget {
                   Icons.edit,
                 ),
               ),
+              IconButton(
+                onPressed: () {
+                  Get.toNamed(Routes.clientProfileView,
+                      arguments: healthPlanModel.profile?.id);
+                },
+                icon: const Icon(
+                  Icons.assignment_ind_outlined,
+                ),
+              ),
             ],
           ),
         ],

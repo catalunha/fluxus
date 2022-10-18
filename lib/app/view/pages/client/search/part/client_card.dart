@@ -79,6 +79,15 @@ class ClientProfileCard extends StatelessWidget {
                             Icons.edit,
                           ),
                         ),
+                        IconButton(
+                          onPressed: () {
+                            Get.toNamed(Routes.clientProfileView,
+                                arguments: profile.id);
+                          },
+                          icon: const Icon(
+                            Icons.assignment_ind_outlined,
+                          ),
+                        ),
                       ],
                     ),
                   ],
