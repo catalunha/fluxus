@@ -230,12 +230,12 @@ class ClientViewPage extends StatelessWidget {
                       width: 300,
                       child: Row(
                         children: [
-                          profileModel.photo == null
+                          e.photo == null
                               ? const SizedBox()
                               : ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: Image.network(
-                                    profileModel.photo!,
+                                    e.photo!,
                                     height: 70,
                                     width: 70,
                                     errorBuilder: (BuildContext context,
