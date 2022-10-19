@@ -2,21 +2,20 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
-import 'package:fluxus/app/core/models/user_model.dart';
 
 /// Evento
 class EventModel {
   final String? id;
-  final List<UserModel>? user;
-  final List<UserModel>? professionals;
+  final ProfileModel? user;
+  final List<ProfileModel>? professionals;
   final List<ExpertiseModel>? expertise; // Especialidade
   final List<ProfileModel>? patients;
-  final List<HealthPlanModel>? healthInsurance; // Convenio
+  final List<HealthPlanModel>? healthPlan; // Convenio
   final String autorization;
   final String fatura;
   final RoomModel? room;
@@ -33,7 +32,7 @@ class EventModel {
     this.professionals,
     this.expertise,
     this.patients,
-    this.healthInsurance,
+    this.healthPlan,
     required this.autorization,
     required this.fatura,
     this.room,
@@ -47,11 +46,11 @@ class EventModel {
 
   EventModel copyWith({
     String? id,
-    List<UserModel>? user,
-    List<UserModel>? professionals,
+    ProfileModel? user,
+    List<ProfileModel>? professionals,
     List<ExpertiseModel>? expertise,
     List<ProfileModel>? patients,
-    List<HealthPlanModel>? healthInsurance,
+    List<HealthPlanModel>? healthPlan,
     String? autorization,
     String? fatura,
     RoomModel? room,
@@ -68,7 +67,7 @@ class EventModel {
       professionals: professionals ?? this.professionals,
       expertise: expertise ?? this.expertise,
       patients: patients ?? this.patients,
-      healthInsurance: healthInsurance ?? this.healthInsurance,
+      healthPlan: healthPlan ?? this.healthPlan,
       autorization: autorization ?? this.autorization,
       fatura: fatura ?? this.fatura,
       room: room ?? this.room,
@@ -88,7 +87,7 @@ class EventModel {
       result.addAll({'id': id});
     }
     if (user != null) {
-      result.addAll({'user': user!.map((x) => x.toMap()).toList()});
+      result.addAll({'user': user!.toMap()});
     }
     if (professionals != null) {
       result.addAll(
@@ -100,9 +99,8 @@ class EventModel {
     if (patients != null) {
       result.addAll({'patients': patients!.map((x) => x.toMap()).toList()});
     }
-    if (healthInsurance != null) {
-      result.addAll(
-          {'healthInsurance': healthInsurance!.map((x) => x.toMap()).toList()});
+    if (healthPlan != null) {
+      result.addAll({'healthPlan': healthPlan!.map((x) => x.toMap()).toList()});
     }
     result.addAll({'autorization': autorization});
     result.addAll({'fatura': fatura});
@@ -134,12 +132,10 @@ class EventModel {
   factory EventModel.fromMap(Map<String, dynamic> map) {
     return EventModel(
       id: map['id'],
-      user: map['user'] != null
-          ? List<UserModel>.from(map['user']?.map((x) => UserModel.fromMap(x)))
-          : null,
+      user: map['user'] != null ? ProfileModel.fromMap(map['user']) : null,
       professionals: map['professionals'] != null
-          ? List<UserModel>.from(
-              map['professionals']?.map((x) => UserModel.fromMap(x)))
+          ? List<ProfileModel>.from(
+              map['professionals']?.map((x) => ProfileModel.fromMap(x)))
           : null,
       expertise: map['expertise'] != null
           ? List<ExpertiseModel>.from(
@@ -149,9 +145,9 @@ class EventModel {
           ? List<ProfileModel>.from(
               map['patients']?.map((x) => ProfileModel.fromMap(x)))
           : null,
-      healthInsurance: map['healthInsurance'] != null
+      healthPlan: map['healthPlan'] != null
           ? List<HealthPlanModel>.from(
-              map['healthInsurance']?.map((x) => HealthPlanModel.fromMap(x)))
+              map['healthPlan']?.map((x) => HealthPlanModel.fromMap(x)))
           : null,
       autorization: map['autorization'] ?? '',
       fatura: map['fatura'] ?? '',
@@ -178,7 +174,7 @@ class EventModel {
 
   @override
   String toString() {
-    return 'EventModel(id: $id, user: $user, professionals: $professionals, expertise: $expertise, patients: $patients, healthInsurance: $healthInsurance, autorization: $autorization, fatura: $fatura, room: $room, start: $start, end: $end, status: $status, log: $log, description: $description, isDeleted: $isDeleted)';
+    return 'EventModel(id: $id, user: $user, professionals: $professionals, expertise: $expertise, patients: $patients, healthPlan: $healthPlan, autorization: $autorization, fatura: $fatura, room: $room, start: $start, end: $end, status: $status, log: $log, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
@@ -187,11 +183,11 @@ class EventModel {
 
     return other is EventModel &&
         other.id == id &&
-        listEquals(other.user, user) &&
+        other.user == user &&
         listEquals(other.professionals, professionals) &&
         listEquals(other.expertise, expertise) &&
         listEquals(other.patients, patients) &&
-        listEquals(other.healthInsurance, healthInsurance) &&
+        listEquals(other.healthPlan, healthPlan) &&
         other.autorization == autorization &&
         other.fatura == fatura &&
         other.room == room &&
@@ -210,7 +206,7 @@ class EventModel {
         professionals.hashCode ^
         expertise.hashCode ^
         patients.hashCode ^
-        healthInsurance.hashCode ^
+        healthPlan.hashCode ^
         autorization.hashCode ^
         fatura.hashCode ^
         room.hashCode ^

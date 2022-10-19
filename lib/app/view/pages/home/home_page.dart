@@ -51,6 +51,15 @@ class HomePage extends StatelessWidget {
               },
             ),
           ),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.event),
+              title: const Text('Cadastrar evento'),
+              onTap: () {
+                // Get.toNamed(Routes.clientProfileAddEdit, arguments: null);
+              },
+            ),
+          ),
         ],
       ),
     );
