@@ -53,6 +53,16 @@ class HomePage extends StatelessWidget {
           ),
           Card(
             child: ListTile(
+              leading: const Icon(Icons.search),
+              title: const Text('Buscar Profissional'),
+              subtitle: const Text('Por área'),
+              onTap: () {
+                Get.toNamed(Routes.teamProfileSearch);
+              },
+            ),
+          ),
+          Card(
+            child: ListTile(
               leading: const Icon(Icons.event),
               title: const Text('Cadastrar evento'),
               onTap: () {

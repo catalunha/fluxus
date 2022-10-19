@@ -4,7 +4,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 abstract class ProfileRepository {
   // Future<List<ProfileModel>> list(Pagination pagination);
-  Future<List<ProfileModel>> softList(
+  Future<List<ProfileModel>> list(
       QueryBuilder<ParseObject> query, Pagination pagination);
   Future<String> update(ProfileModel userProfileModel);
   Future<ProfileModel?> readById(String id);

@@ -184,7 +184,6 @@ class ProfileEntity {
     if (profileModel.isDeleted != null) {
       profileParseObject.set('isDeleted', profileModel.isDeleted);
     }
-    print('=========> ${profileModel.isFemale}');
     if (profileModel.isFemale != null) {
       profileParseObject.set('isFemale', profileModel.isFemale);
     }

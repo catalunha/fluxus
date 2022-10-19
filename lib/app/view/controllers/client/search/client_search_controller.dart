@@ -62,6 +62,8 @@ class ClientSearchController extends GetxController
     required bool birthdayBool,
   }) async {
     _loading(true);
+    query = QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+
     if (!nameContainsBool &&
         !cpfEqualToBool &&
         !phoneEqualToBool &&
@@ -75,12 +77,25 @@ class ClientSearchController extends GetxController
       query.whereEqualTo('cpf', cpfEqualToString);
     }
     if (phoneEqualToBool) {
+      print('phoneEqualToString: $phoneEqualToString');
       query.whereEqualTo('phone', phoneEqualToString);
     }
-    if (birthdayBool) {
-      selectedDate = selectedDate!.subtract(const Duration(hours: 3));
+    if (birthdayBool && selectedDate != null) {
+      print(selectedDate);
+      // selectedDate = selectedDate!.subtract(const Duration(hours: 3));
+      print(selectedDate);
+      // String dateToSearch = DateTime(selectedDate!.year, selectedDate!.month,
+      //         selectedDate!.day, 00, 00, 00)
+      //     .toIso8601String();
+      // print('selectedDate: $dateToSearch');
+      // print('selectedDate: $dateToSearch');
+      // query.whereEqualTo('birthday', dateToSearch);
+      // query.whereEqualTo('birthday', '2022-10-19T00:00:00');
+      // query.whereEqualTo('birthday', '2022-10-19T00:00:000Z');
       query.whereEqualTo('birthday', selectedDate);
-      selectedDate = selectedDate!.add(const Duration(hours: 3));
+      // 2022-10-19T00:00:00.000Z
+      // selectedDate = selectedDate!.add(const Duration(hours: 3));
+      print(selectedDate);
     }
     clientProfileList.clear();
     if (lastPage) {
@@ -101,9 +116,10 @@ class ClientSearchController extends GetxController
   Future<void> listAll() async {
     if (!lastPage) {
       _loading(true);
-
+      print(query.toString());
       List<ProfileModel> temp =
-          await _profileRepository.softList(query, _pagination.value);
+          await _profileRepository.list(query, _pagination.value);
+      print(temp);
       if (temp.isEmpty) {
         _lastPage.value = true;
       }

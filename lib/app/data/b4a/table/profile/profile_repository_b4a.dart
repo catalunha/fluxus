@@ -11,11 +11,11 @@ class ProfileRepositoryB4a implements ProfileRepository {
       QueryBuilder<ParseObject> query, Pagination pagination) async {
     // QueryBuilder<ParseObject> query =
     //     QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
-    query.whereEqualTo('isDeleted', false);
-    query.orderByDescending('updatedAt');
+    // query.whereEqualTo('isDeleted', false);
+    // query.orderByDescending('updatedAt');
 
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
+    // query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+    // query.setLimit(pagination.limit);
 
     return query;
   }
@@ -47,7 +47,7 @@ class ProfileRepositoryB4a implements ProfileRepository {
   // }
 
   @override
-  Future<List<ProfileModel>> softList(
+  Future<List<ProfileModel>> list(
       QueryBuilder<ParseObject> query, Pagination pagination) async {
     QueryBuilder<ParseObject> query2;
     query2 = await getQueryAll(query, pagination);

@@ -291,8 +291,6 @@ class ClientAddEditController extends GetxController
       await _profileRepository.updateRelationFamily(profile!.id!, [id], isAdd);
       await _profileRepository.updateRelationFamily(id, [profile!.id!], isAdd);
 
-      // final SplashController splashController = Get.find();
-      // await splashController.updateUserProfile();
       await getProfile();
     } on ProfileRepositoryException {
       _message.value = MessageModel(

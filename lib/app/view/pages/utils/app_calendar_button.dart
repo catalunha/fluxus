@@ -29,8 +29,8 @@ class AppCalendarButton extends StatelessWidget {
           lastDate: DateTime(DateTime.now().year + 1),
         );
         if (selectedDate != null) {
-          setDate(DateTime(
-              selectedDate.year, selectedDate.month, selectedDate.day));
+          setDate(DateTime(selectedDate.year, selectedDate.month,
+              selectedDate.day, 0, 0, 0));
         } else {
           setDate(null);
         }
