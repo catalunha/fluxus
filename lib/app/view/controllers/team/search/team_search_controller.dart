@@ -48,23 +48,24 @@ class TeamSearchController extends GetxController
     _changePagination(_pagination.value.page + 1, _pagination.value.limit);
   }
 
-  Future<void> search(String type) async {
+  Future<void> search(Map<String, Office> officeNew) async {
     _loading(true);
-    // if (type == '') {
-    // wntNbb1000
-    query.whereEqualTo(
-        'office',
-        (ParseObject(OfficeEntity.className)..objectId = 'wntNbb1000')
-            .toPointer());
-    query.whereEqualTo(
-        'office',
-        (ParseObject(OfficeEntity.className)..objectId = '4Zr3rIyGUd')
-            .toPointer());
-    // }
+    for (var element in officeNew.entries) {
+      if (element.value.status) {
+        query.whereEqualTo(
+            'office',
+            (ParseObject(OfficeEntity.className)..objectId = element.key)
+                .toPointer());
+      }
+    }
+
     teamProfileList.clear();
     if (lastPage) {
       _lastPage(false);
-      _changePagination(1, 12);
+      _pagination.update((val) {
+        val!.page = 1;
+        val.limit = 12;
+      });
     } else {
       await listAll();
     }
@@ -85,4 +86,23 @@ class TeamSearchController extends GetxController
       _loading(false);
     }
   }
+
+  Map<String, Office> office = {
+    'wntNbb1000': Office(name: 'Avaliadora', status: false),
+    '4Zr3rIyGUd': Office(name: 'Profissional', status: false),
+    'X4IeGQuXAF': Office(name: 'Nutrição', status: false),
+    '5HAGAKmBnF': Office(name: 'Psicologia', status: false),
+  };
+}
+
+class Office {
+  String name;
+  bool status;
+  Office({
+    required this.name,
+    required this.status,
+  });
+
+  @override
+  String toString() => 'Office(name: $name, status: $status)';
 }

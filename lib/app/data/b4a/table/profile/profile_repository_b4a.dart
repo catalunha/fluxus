@@ -9,13 +9,11 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class ProfileRepositoryB4a implements ProfileRepository {
   Future<QueryBuilder<ParseObject>> getQueryAll(
       QueryBuilder<ParseObject> query, Pagination pagination) async {
-    // QueryBuilder<ParseObject> query =
-    //     QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
-    // query.whereEqualTo('isDeleted', false);
-    // query.orderByDescending('updatedAt');
+    query.whereEqualTo('isDeleted', false);
+    query.orderByDescending('updatedAt');
 
-    // query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    // query.setLimit(pagination.limit);
+    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+    query.setLimit(pagination.limit);
 
     return query;
   }

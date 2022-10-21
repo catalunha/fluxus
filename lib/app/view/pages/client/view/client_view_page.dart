@@ -1,5 +1,6 @@
 import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/view/controllers/client/view/client_view_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_link_text.dart';
@@ -16,7 +17,7 @@ class ClientViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Dados deste paciente')),
+      appBar: AppBar(title: const Text('Dados desta pessoa')),
       body: FutureBuilder(
           future: clientViewController.getProfile(),
           builder: (context, snapshot) {
@@ -149,15 +150,20 @@ class ClientViewPage extends StatelessWidget {
                           inColumn: true,
                         ),
                         const Text(
+                          'Familiares: ',
+                          style: TextStyle(color: Colors.blueGrey),
+                        ),
+                        familyList(profileModel),
+                        const Text(
                           'Convênios: ',
                           style: TextStyle(color: Colors.blueGrey),
                         ),
                         healthPlanList(profileModel),
                         const Text(
-                          'Familiares: ',
+                          'Ocupações: ',
                           style: TextStyle(color: Colors.blueGrey),
                         ),
-                        familyList(profileModel),
+                        officeList(profileModel),
                       ],
                     ),
                   ),
@@ -168,50 +174,14 @@ class ClientViewPage extends StatelessWidget {
     );
   }
 
-  Widget healthPlanList(ProfileModel profileModel) {
-    if (profileModel.healthPlan != null &&
-        profileModel.healthPlan!.isNotEmpty) {
-      return Column(
-        children: [
-          ...profileModel.healthPlan!
-              .map((e) => Card(
-                    child: SizedBox(
-                      width: 300,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppTextTitleValue(
-                            title: 'Gestor: ',
-                            value: '${e.healthPlanType?.name}',
-                          ),
-                          AppTextTitleValue(
-                            title: 'Número: ',
-                            value: '${e.code}',
-                          ),
-                          AppTextTitleValue(
-                            title: 'Descrição: ',
-                            value: '${e.description}',
-                          ),
-                          AppTextTitleValue(
-                            title: 'Vencimento: ',
-                            value: e.due != null
-                                ? dateFormat.format(e.due!)
-                                : "...",
-                          ),
-                          AppTextTitleValue(
-                            title: 'Id: ',
-                            value: '${e.id}',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ))
-              .toList()
-        ],
-      );
-    } else {
-      return const Text('...');
-    }
+  copy(String text) async {
+    Get.snackbar(
+      text,
+      'Ids copiados.',
+      // backgroundColor: Colors.yellow,
+      margin: const EdgeInsets.all(10),
+    );
+    await Clipboard.setData(ClipboardData(text: text));
   }
 
   Widget familyList(ProfileModel profileModel) {
@@ -271,6 +241,92 @@ class ClientViewPage extends StatelessWidget {
       );
     } else {
       return const Text('...');
+    }
+  }
+
+  Widget healthPlanList(ProfileModel profileModel) {
+    if (profileModel.healthPlan != null &&
+        profileModel.healthPlan!.isNotEmpty) {
+      return Column(
+        children: [
+          ...profileModel.healthPlan!
+              .map((e) => InkWell(
+                    child: Card(
+                      child: SizedBox(
+                        width: 300,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppTextTitleValue(
+                              title: 'Gestor: ',
+                              value: '${e.healthPlanType?.name}',
+                            ),
+                            AppTextTitleValue(
+                              title: 'Número: ',
+                              value: '${e.code}',
+                            ),
+                            AppTextTitleValue(
+                              title: 'Descrição: ',
+                              value: '${e.description}',
+                            ),
+                            AppTextTitleValue(
+                              title: 'Vencimento: ',
+                              value: e.due != null
+                                  ? dateFormat.format(e.due!)
+                                  : "...",
+                            ),
+                            AppTextTitleValue(
+                              title: 'Id: ',
+                              value: '${e.id}',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () => copy('${profileModel.id!} ${e.id!}'),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return const Text('...');
+    }
+  }
+
+  Widget officeList(ProfileModel profileModel) {
+    if (profileModel.office != null && profileModel.office!.isNotEmpty) {
+      return Column(
+        children: [
+          ...profileModel.office!
+              .map((e) => InkWell(
+                    child: Card(
+                      child: SizedBox(
+                        width: 300,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppTextTitleValue(
+                                title: 'Nome: ',
+                                value: '${e.name}',
+                              ),
+                              AppTextTitleValue(
+                                title: 'Descrição: ',
+                                value: '${e.description}',
+                              ),
+                              AppTextTitleValue(
+                                title: 'id: ',
+                                value: '${e.id}',
+                              ),
+                            ]),
+                      ),
+                    ),
+                    onTap: () => copy('${profileModel.id!} ${e.id!}'),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return Container();
     }
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fluxus/app/view/controllers/team/search/team_search_controller.dart';
 import 'package:get/get.dart';
+
+import 'package:fluxus/app/view/controllers/team/search/team_search_controller.dart';
+import 'package:fluxus/app/view/pages/utils/app_icon.dart';
 
 class TeamSearchPage extends StatefulWidget {
   final _teamSearchController = Get.find<TeamSearchController>();
@@ -24,17 +26,28 @@ class _SearchPageState extends State<TeamSearchPage> {
             child: Column(
               children: [
                 Card(
-                  child: ListTile(
-                    title: const Text('Avaliadoras'),
-                    onTap: () =>
-                        widget._teamSearchController.search('wntNbb1000'),
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    title: const Text('Profissionais'),
-                    onTap: () =>
-                        widget._teamSearchController.search('4Zr3rIyGUd'),
+                  child: Column(
+                    children: widget._teamSearchController.office.entries.map(
+                      (e) {
+                        return Row(
+                          children: [
+                            Checkbox(
+                              value: e.value.status,
+                              onChanged: (value) {
+                                setState(() {
+                                  e.value.status = value!;
+                                });
+                              },
+                            ),
+                            Expanded(
+                              child: ListTile(
+                                title: Text(e.value.name),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ).toList(),
                   ),
                 ),
                 const SizedBox(height: 100)
@@ -42,6 +55,14 @@ class _SearchPageState extends State<TeamSearchPage> {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Executar busca',
+        child: const Icon(AppIconData.search),
+        onPressed: () async {
+          widget._teamSearchController
+              .search(widget._teamSearchController.office);
+        },
       ),
     );
   }
