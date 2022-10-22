@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluxus/app/core/models/drop_down_abstract.dart';
+import 'package:fluxus/app/core/utils/drop_down_abstract.dart';
 
 class AppDropDownGeneric<T extends DropDrowAbstract> extends StatelessWidget {
   final String? title;

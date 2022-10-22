@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.event),
               title: const Text('Cadastrar evento'),
               onTap: () {
-                // Get.toNamed(Routes.clientProfileAddEdit, arguments: null);
+                Get.toNamed(Routes.eventAddEdit, arguments: null);
               },
             ),
           ),

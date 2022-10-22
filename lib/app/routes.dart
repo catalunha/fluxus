@@ -1,6 +1,7 @@
 import 'package:fluxus/app/view/controllers/client/addedit/client_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/client/search/client_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/client/view/client_view_dependencies.dart';
+import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/health_plan/search/health_plan_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/team/search/team_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/profile/user_profile_dependencies.dart';
@@ -13,6 +14,7 @@ import 'package:fluxus/app/view/pages/client/addedit/client_health_plan_addedit_
 import 'package:fluxus/app/view/pages/client/search/client_search_list_page.dart';
 import 'package:fluxus/app/view/pages/client/search/client_search_page.dart';
 import 'package:fluxus/app/view/pages/client/view/client_view_page.dart';
+import 'package:fluxus/app/view/pages/event/event_addedit_page.dart';
 import 'package:fluxus/app/view/pages/health_plan/search/health_plan_search_list_page.dart';
 import 'package:fluxus/app/view/pages/health_plan/search/health_plan_search_page.dart';
 import 'package:fluxus/app/view/pages/team/team_search_list_page.dart';
@@ -48,6 +50,8 @@ class Routes {
 
   static const teamProfileSearch = '/team/search';
   static const teamProfileList = '/team/list';
+
+  static const eventAddEdit = '/event/addedit';
 
   static final pageList = [
     GetPage(
@@ -120,6 +124,11 @@ class Routes {
     GetPage(
       name: Routes.teamProfileList,
       page: () => TeamSearchListPage(),
+    ),
+    GetPage(
+      name: Routes.eventAddEdit,
+      binding: EventAddEditDependencies(),
+      page: () => EventAddEditPage(),
     ),
   ];
 }

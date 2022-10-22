@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/event_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
+import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
 import 'package:fluxus/app/data/b4a/table/event/event_repository_exception.dart';
 import 'package:fluxus/app/data/repositories/event_repository.dart';
 import 'package:fluxus/app/data/repositories/event_status_repository.dart';
@@ -43,6 +44,7 @@ class EventAddEditController extends GetxController
   set dateStart(DateTime? nemDate) {
     if (nemDate != null) {
       _dateStart(DateTime(nemDate.year, nemDate.month, nemDate.day));
+      _dateEnd(DateTime(nemDate.year, nemDate.month, nemDate.day));
     }
   }
 
@@ -54,8 +56,23 @@ class EventAddEditController extends GetxController
     }
   }
 
+  setDateStartTime(int hour, int minute) {
+    if (dateStart != null) {
+      _dateStart(DateTime(
+          dateStart!.year, dateStart!.month, dateStart!.day, hour, minute));
+    }
+  }
+
+  setDateEndTime(int hour, int minute) {
+    if (dateStart != null) {
+      _dateEnd(DateTime(
+          dateStart!.year, dateStart!.month, dateStart!.day, hour, minute));
+    }
+  }
+
   var roomList = <RoomModel>[].obs;
   var eventStatusList = <EventStatusModel>[].obs;
+  var startDateList = <StartDateDropDrow>[].obs;
   String? eventId;
 
 //+++ forms
@@ -71,6 +88,7 @@ class EventAddEditController extends GetxController
     messageListener(_message);
     getRoomList();
     getEventStatusList();
+    getStartDateList();
     eventId = Get.arguments;
     super.onInit();
   }
@@ -88,12 +106,21 @@ class EventAddEditController extends GetxController
   Future<void> getEvent() async {
     // _loading(true);
     if (eventId != null) {
+      log('==>>>>', name: 'getEvent');
       EventModel? eventModelTemp = await _eventRepository.readById(eventId!);
       event = eventModelTemp;
       onSetDates();
     }
     setFormFieldControllers();
     // _loading(false);
+  }
+
+  getStartDateList() {
+    List<StartDateDropDrow> all = [
+      StartDateDropDrow(name: '08:00', hour: '08', minute: '00'),
+      StartDateDropDrow(name: '08:15', hour: '08', minute: '15'),
+    ];
+    startDateList(all);
   }
 
   void onSetDates() {

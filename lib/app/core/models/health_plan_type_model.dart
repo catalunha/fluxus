@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fluxus/app/core/models/drop_down_abstract.dart';
+import 'package:fluxus/app/core/utils/drop_down_abstract.dart';
 
 class HealthPlanTypeModel extends DropDrowAbstract {
   final String? id;

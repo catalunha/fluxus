@@ -18,32 +18,6 @@ class ProfileRepositoryB4a implements ProfileRepository {
     return query;
   }
 
-  // @override
-  // Future<List<ProfileModel>> list(Pagination pagination) async {
-  //   QueryBuilder<ParseObject> query;
-  //   query = await getQueryAll(query,pagination);
-
-  //   ParseResponse? response;
-  //   try {
-  //     response = await query.query();
-  //     List<ProfileModel> listTemp = <ProfileModel>[];
-  //     if (response.success && response.results != null) {
-  //       for (var element in response.results!) {
-  //         listTemp.add(ProfileEntity().fromParseSimpleData(element));
-  //       }
-  //       return listTemp;
-  //     } else {
-  //       return [];
-  //     }
-  //   } on Exception {
-  //     var errorCodes = ParseErrorCode(response!.error!);
-  //     throw ProfileRepositoryException(
-  //       code: errorCodes.code,
-  //       message: errorCodes.message,
-  //     );
-  //   }
-  // }
-
   @override
   Future<List<ProfileModel>> list(
       QueryBuilder<ParseObject> query, Pagination pagination) async {

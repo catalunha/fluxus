@@ -29,10 +29,11 @@ class EventStatusRepositoryB4a extends GetxService
         for (var element in response.results!) {
           listTemp.add(EventStatusEntity().fromParse(element));
         }
-        return listTemp;
-      } else {
-        throw Exception();
       }
+      return listTemp;
+      //  else {
+      //   throw Exception();
+      // }
     } on Exception {
       var errorCodes = ParseErrorCode(response!.error!);
       throw EventStatusRepositoryException(
