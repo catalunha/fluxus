@@ -1,14 +1,16 @@
 import 'dart:convert';
 
+import 'package:fluxus/app/core/utils/drop_down_abstract.dart';
+
 /// Status do evento
-class EventStatusModel {
+class EventStatusModel extends DropDrowAbstract {
   final String? id;
-  final String? name;
+  // final String? name;
   final String? description;
   final bool? isDeleted;
   EventStatusModel({
     this.id,
-    this.name,
+    super.name,
     this.description,
     this.isDeleted,
   });

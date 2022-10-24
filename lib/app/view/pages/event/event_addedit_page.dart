@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/core/models/event_status_model.dart';
+import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
 import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
@@ -20,8 +22,6 @@ class EventAddEditPage extends StatefulWidget {
 class _EventAddEditPageState extends State<EventAddEditPage> {
   final dateFormat = DateFormat('dd/MM/y');
   final _formKey = GlobalKey<FormState>();
-  StartDateDropDrow? startDateDropDrowSelected;
-  StartDateDropDrow? endDateDropDrowSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -44,132 +44,154 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
           }
         },
       ),
-      body: FutureBuilder<void>(
-          future: widget._eventAddEditController.getEvent(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              return Center(
-                child: Form(
-                  key: _formKey,
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 600),
-                    child: Center(
-                      child: SingleChildScrollView(
-                        child: Column(
+      body: Center(
+        child: Form(
+          key: _formKey,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(
+                      'Id: ${widget._eventAddEditController.event?.id}',
+                      style: const TextStyle(fontSize: 8),
+                    ),
+                    const SizedBox(height: 5),
+                    AppTextFormField(
+                      label: 'Autorização',
+                      controller:
+                          widget._eventAddEditController.autorizationTec,
+                    ),
+                    AppTextFormField(
+                      label: 'Fatura',
+                      controller: widget._eventAddEditController.faturaTec,
+                    ),
+                    AppTextFormField(
+                      label: 'Descrição',
+                      controller: widget._eventAddEditController.descriptionTec,
+                    ),
+                    AppCalendarButton(
+                      title: "Data do atendimento.",
+                      getDate: () => widget._eventAddEditController.dateStart,
+                      setDate: (value) =>
+                          widget._eventAddEditController.dateStart = value,
+                      isBirthDay: false,
+                    ),
+                    const Text('Horário do atendimento'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
                           children: [
-                            Text(
-                              'Id: ${widget._eventAddEditController.event?.id}',
-                              style: const TextStyle(fontSize: 8),
-                            ),
-                            const SizedBox(height: 5),
-                            AppTextFormField(
-                              label: 'Autorização',
-                              controller: widget
-                                  ._eventAddEditController.autorizationTec,
-                            ),
-                            AppTextFormField(
-                              label: 'Fatura',
-                              controller:
-                                  widget._eventAddEditController.faturaTec,
-                            ),
-                            AppTextFormField(
-                              label: 'Descrição',
-                              controller:
-                                  widget._eventAddEditController.descriptionTec,
-                            ),
-                            AppCalendarButton(
-                              title: "Data do atendimento.",
-                              getDate: () =>
-                                  widget._eventAddEditController.dateStart,
-                              setDate: (value) => widget
-                                  ._eventAddEditController.dateStart = value,
-                              isBirthDay: false,
-                            ),
-                            const Text('Horário do atendimento'),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Column(
-                                  children: [
-                                    const Text('Início'),
-                                    Obx(() =>
-                                        AppDropDownGeneric<StartDateDropDrow>(
-                                          options: widget
-                                              ._eventAddEditController
-                                              .startDateList
-                                              .toList(),
-                                          selected: startDateDropDrowSelected,
-                                          execute: (value) {
-                                            startDateDropDrowSelected = value;
-
-                                            setState(() {});
-                                          },
-                                          width: 150,
-                                        )),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    const Text('Fim'),
-                                    Obx(() =>
-                                        AppDropDownGeneric<StartDateDropDrow>(
-                                          options: widget
-                                              ._eventAddEditController
-                                              .startDateList
-                                              .toList(),
-                                          selected: endDateDropDrowSelected,
-                                          execute: (value) {
-                                            endDateDropDrowSelected = value;
-                                            setState(() {});
-                                          },
-                                          width: 150,
-                                        )),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text('Profissionais'),
-                                IconButton(
-                                  onPressed: () async {
-                                    var result = await saveEvent();
-                                    if (result) {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return Container();
-                                        },
-                                        // EventAddFamilyChildren(
-                                        //     isChildren: false),
-                                      );
-                                      setState(() {});
-                                    } else {
-                                      Get.snackbar(
-                                        'Atenção',
-                                        'Campos obrigatórios não foram preenchidos.',
-                                        backgroundColor: Colors.red,
-                                      );
-                                    }
+                            const Text('Início'),
+                            Obx(() => AppDropDownGeneric<StartDateDropDrow>(
+                                  options: widget
+                                      ._eventAddEditController.startDateList
+                                      .toList(),
+                                  selected: widget._eventAddEditController
+                                      .startDateDropDrowSelected,
+                                  execute: (value) {
+                                    widget._eventAddEditController
+                                        .startDateDropDrowSelected = value;
+                                    widget._eventAddEditController
+                                        .onUpdateEnd(value!);
+                                    setState(() {});
                                   },
-                                  icon: const Icon(Icons.add),
-                                )
-                              ],
-                            ),
-                            familyList(),
-                            const SizedBox(height: 70),
+                                  width: 150,
+                                )),
                           ],
                         ),
+                        Column(
+                          children: [
+                            const Text('Fim'),
+                            Obx(
+                              () => AppDropDownGeneric<StartDateDropDrow>(
+                                options: widget
+                                    ._eventAddEditController.startDateList
+                                    .toList(),
+                                selected: widget._eventAddEditController
+                                    .endDateDropDrowSelected,
+                                execute: (value) {
+                                  widget._eventAddEditController
+                                      .endDateDropDrowSelected = value;
+                                  setState(() {});
+                                },
+                                width: 150,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const Text('Ambiente'),
+                    Obx(
+                      () => AppDropDownGeneric<RoomModel>(
+                        options:
+                            widget._eventAddEditController.roomList.toList(),
+                        selected:
+                            widget._eventAddEditController.roomModelSelected,
+                        execute: (value) {
+                          widget._eventAddEditController.roomModelSelected =
+                              value;
+                          setState(() {});
+                        },
+                        width: 150,
                       ),
                     ),
-                  ),
+                    const Text('Status'),
+                    Obx(
+                      () => AppDropDownGeneric<EventStatusModel>(
+                        options: widget._eventAddEditController.eventStatusList
+                            .toList(),
+                        selected:
+                            widget._eventAddEditController.eventStatusSelected,
+                        execute: (value) {
+                          widget._eventAddEditController.eventStatusSelected =
+                              value;
+                          setState(() {});
+                        },
+                        width: 150,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Profissionais'),
+                        IconButton(
+                          onPressed: () async {
+                            var result = await saveEvent();
+                            if (result) {
+                              await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Container();
+                                },
+                                // EventAddFamilyChildren(
+                                //     isChildren: false),
+                              );
+                              setState(() {});
+                            } else {
+                              Get.snackbar(
+                                'Atenção',
+                                'Campos obrigatórios não foram preenchidos.',
+                                backgroundColor: Colors.red,
+                              );
+                            }
+                          },
+                          icon: const Icon(Icons.add),
+                        )
+                      ],
+                    ),
+                    profissionalList(),
+                    const SizedBox(height: 70),
+                  ],
                 ),
-              );
-            }
-          }),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -183,13 +205,15 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
         autorization: widget._eventAddEditController.autorizationTec.text,
         fatura: widget._eventAddEditController.faturaTec.text,
         description: widget._eventAddEditController.descriptionTec.text,
+        room: widget._eventAddEditController.roomModelSelected,
+        status: widget._eventAddEditController.eventStatusSelected,
       );
       return true;
     }
     return false;
   }
 
-  Widget familyList() {
+  Widget profissionalList() {
     if (widget._eventAddEditController.event?.professionals != null) {
       return Obx(() => Column(
             children: [

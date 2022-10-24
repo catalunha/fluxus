@@ -116,10 +116,10 @@ class EventEntity {
               .toPointer());
     }
     if (model.start != null) {
-      parseObject.set('start', model.start);
+      parseObject.set('start', model.start!.subtract(const Duration(hours: 3)));
     }
     if (model.end != null) {
-      parseObject.set('end', model.end);
+      parseObject.set('end', model.end!.subtract(const Duration(hours: 3)));
     }
     if (model.status != null) {
       parseObject.set(

@@ -1,8 +1,8 @@
 import 'package:fluxus/app/core/utils/drop_down_abstract.dart';
 
 class StartDateDropDrow extends DropDrowAbstract {
-  final String? hour;
-  final String? minute;
+  final int? hour;
+  final int? minute;
   StartDateDropDrow({
     super.name,
     this.hour,

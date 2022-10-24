@@ -1,15 +1,17 @@
 import 'dart:convert';
 
+import 'package:fluxus/app/core/utils/drop_down_abstract.dart';
+
 /// Sala de atendimento
-class RoomModel {
+class RoomModel extends DropDrowAbstract {
   final String? id;
-  final String? name;
+  // final String? name;
   final String? description;
   final bool? isActive;
   final bool? isDeleted;
   RoomModel({
     this.id,
-    this.name,
+    super.name,
     this.description,
     this.isActive,
     this.isDeleted,

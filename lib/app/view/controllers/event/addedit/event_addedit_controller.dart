@@ -33,11 +33,7 @@ class EventAddEditController extends GetxController
   EventModel? get event => _event.value;
   set event(EventModel? eventModelNew) => _event(eventModelNew);
 
-  // final healthPlanList = <HealthPlanModel>[].obs;
-
-  // final _healthPlan = Rxn<HealthPlanModel>();
-  // HealthPlanModel? get healthPlan => _healthPlan.value;
-  // set healthPlan(HealthPlanModel? healthPlanNew) => _healthPlan(healthPlanNew);
+//+++ Datas
 
   final Rxn<DateTime> _dateStart = Rxn<DateTime>();
   DateTime? get dateStart => _dateStart.value;
@@ -63,16 +59,29 @@ class EventAddEditController extends GetxController
     }
   }
 
-  setDateEndTime(int hour, int minute) {
-    if (dateStart != null) {
-      _dateEnd(DateTime(
-          dateStart!.year, dateStart!.month, dateStart!.day, hour, minute));
-    }
-  }
+  // setDateEndTime(int hour, int minute) {
+  //   if (dateStart != null) {
+  //     _dateEnd(DateTime(
+  //         dateStart!.year, dateStart!.month, dateStart!.day, hour, minute));
+  //   }
+  // }
+  var startDateList = <StartDateDropDrow>[].obs;
+  StartDateDropDrow? startDateDropDrowSelected;
+  // StartDateDropDrow? endDateDropDrowSelected;
+  final _endDateDropDrowSelected = Rxn<StartDateDropDrow>();
+  StartDateDropDrow? get endDateDropDrowSelected =>
+      _endDateDropDrowSelected.value;
+  set endDateDropDrowSelected(StartDateDropDrow? newModel) =>
+      _endDateDropDrowSelected(newModel);
+
+//--- Datas
 
   var roomList = <RoomModel>[].obs;
+  RoomModel? roomModelSelected;
+
   var eventStatusList = <EventStatusModel>[].obs;
-  var startDateList = <StartDateDropDrow>[].obs;
+  EventStatusModel? eventStatusSelected;
+
   String? eventId;
 
 //+++ forms
@@ -117,10 +126,20 @@ class EventAddEditController extends GetxController
 
   getStartDateList() {
     List<StartDateDropDrow> all = [
-      StartDateDropDrow(name: '08:00', hour: '08', minute: '00'),
-      StartDateDropDrow(name: '08:15', hour: '08', minute: '15'),
+      StartDateDropDrow(name: '08:00', hour: 08, minute: 00),
+      StartDateDropDrow(name: '08:15', hour: 08, minute: 15),
+      StartDateDropDrow(name: '08:30', hour: 08, minute: 30),
+      StartDateDropDrow(name: '09:00', hour: 09, minute: 00),
     ];
     startDateList(all);
+  }
+
+  onUpdateEnd(StartDateDropDrow startDateDropDrow) {
+    int indexOfStart = startDateList.indexOf(startDateDropDrow);
+    int salto = 2;
+    if (indexOfStart < startDateList.length - salto) {
+      _endDateDropDrowSelected(startDateList[indexOfStart + salto]);
+    }
   }
 
   void onSetDates() {
@@ -132,6 +151,16 @@ class EventAddEditController extends GetxController
     autorizationTec.text = event?.autorization ?? "";
     faturaTec.text = event?.fatura ?? "";
     descriptionTec.text = event?.description ?? "";
+  }
+
+  DateTime onMountDateStart() {
+    return DateTime(dateStart!.year, dateStart!.month, dateStart!.day,
+        startDateDropDrowSelected!.hour!, startDateDropDrowSelected!.minute!);
+  }
+
+  DateTime onMountDateEnd() {
+    return DateTime(dateEnd!.year, dateEnd!.month, dateEnd!.day,
+        endDateDropDrowSelected!.hour!, endDateDropDrowSelected!.minute!);
   }
 
   Future<void> append({
@@ -149,8 +178,8 @@ class EventAddEditController extends GetxController
           autorization: autorization,
           fatura: fatura,
           room: room,
-          start: dateStart,
-          end: dateEnd,
+          start: onMountDateStart(),
+          end: onMountDateEnd(),
           status: status,
           description: description,
           isDeleted: isDeleted,
@@ -159,10 +188,10 @@ class EventAddEditController extends GetxController
         event = event!.copyWith(
           autorization: autorization,
           fatura: fatura,
-          room: room,
-          start: dateStart,
-          end: dateEnd,
-          status: status,
+          // room: room,
+          start: onMountDateStart(),
+          end: onMountDateEnd(),
+          // status: status,
           description: description,
           isDeleted: isDeleted,
         );
