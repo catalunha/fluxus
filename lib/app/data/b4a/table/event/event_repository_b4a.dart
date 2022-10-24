@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fluxus/app/core/models/event_model.dart';
 import 'package:fluxus/app/data/b4a/entity/event_entity.dart';
 import 'package:fluxus/app/data/b4a/table/event/event_repository_exception.dart';
@@ -11,6 +13,8 @@ class EventRepositoryB4a implements EventRepository {
       QueryBuilder<ParseObject> query, Pagination pagination) async {
     // QueryBuilder<ParseObject> query =
     //     QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    log('query...', name: 'EventRepositoryB4a.getQueryAll');
+    query.includeObject(['room', 'status']);
     query.whereEqualTo('isDeleted', false);
     query.orderByDescending('updatedAt');
 
@@ -74,6 +78,8 @@ class EventRepositoryB4a implements EventRepository {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
     query.whereEqualTo('objectId', id);
+    query.includeObject(['room', 'status']);
+
     query.first();
     ParseResponse? response;
     try {

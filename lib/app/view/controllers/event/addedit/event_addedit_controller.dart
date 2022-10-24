@@ -66,7 +66,13 @@ class EventAddEditController extends GetxController
   //   }
   // }
   var startDateList = <StartDateDropDrow>[].obs;
-  StartDateDropDrow? startDateDropDrowSelected;
+  // StartDateDropDrow? startDateDropDrowSelected;
+  final _startDateDropDrowSelected = Rxn<StartDateDropDrow>();
+  StartDateDropDrow? get startDateDropDrowSelected =>
+      _startDateDropDrowSelected.value;
+  set startDateDropDrowSelected(StartDateDropDrow? newModel) =>
+      _startDateDropDrowSelected(newModel);
+
   // StartDateDropDrow? endDateDropDrowSelected;
   final _endDateDropDrowSelected = Rxn<StartDateDropDrow>();
   StartDateDropDrow? get endDateDropDrowSelected =>
@@ -77,10 +83,16 @@ class EventAddEditController extends GetxController
 //--- Datas
 
   var roomList = <RoomModel>[].obs;
-  RoomModel? roomModelSelected;
+  final _roomModelSelected = Rxn<RoomModel>();
+  RoomModel? get roomModelSelected => _roomModelSelected.value;
+  set roomModelSelected(RoomModel? newModel) => _roomModelSelected(newModel);
 
   var eventStatusList = <EventStatusModel>[].obs;
-  EventStatusModel? eventStatusSelected;
+  // EventStatusModel? eventStatusSelected;
+  final _eventStatusSelected = Rxn<EventStatusModel>();
+  EventStatusModel? get eventStatusSelected => _eventStatusSelected.value;
+  set eventStatusSelected(EventStatusModel? newModel) =>
+      _eventStatusSelected(newModel);
 
   String? eventId;
 
@@ -92,13 +104,15 @@ class EventAddEditController extends GetxController
 
   @override
   void onInit() async {
-    log('+++> Controller onInit');
+    log('+++> EventAddEditController onInit');
     loaderListener(_loading);
     messageListener(_message);
     getRoomList();
     getEventStatusList();
     getStartDateList();
     eventId = Get.arguments;
+    log(eventId ?? 'null', name: 'EventAddEditController');
+    getEvent();
     super.onInit();
   }
 
@@ -115,10 +129,13 @@ class EventAddEditController extends GetxController
   Future<void> getEvent() async {
     // _loading(true);
     if (eventId != null) {
-      log('==>>>>', name: 'getEvent');
+      log('+++', name: 'getEvent');
       EventModel? eventModelTemp = await _eventRepository.readById(eventId!);
+      log('==1>>>> ${eventModelTemp!.start}', name: 'getEvent');
       event = eventModelTemp;
       onSetDates();
+      onSetRoom();
+      onSetStatus();
     }
     setFormFieldControllers();
     // _loading(false);
@@ -126,10 +143,10 @@ class EventAddEditController extends GetxController
 
   getStartDateList() {
     List<StartDateDropDrow> all = [
-      StartDateDropDrow(name: '08:00', hour: 08, minute: 00),
-      StartDateDropDrow(name: '08:15', hour: 08, minute: 15),
-      StartDateDropDrow(name: '08:30', hour: 08, minute: 30),
-      StartDateDropDrow(name: '09:00', hour: 09, minute: 00),
+      StartDateDropDrow(name: '08:00', hour: 8, minute: 0),
+      StartDateDropDrow(name: '08:15', hour: 8, minute: 15),
+      StartDateDropDrow(name: '08:30', hour: 8, minute: 30),
+      StartDateDropDrow(name: '09:00', hour: 9, minute: 0),
     ];
     startDateList(all);
   }
@@ -143,8 +160,25 @@ class EventAddEditController extends GetxController
   }
 
   void onSetDates() {
-    dateStart = event?.start;
-    dateEnd = event?.end;
+    _dateStart(event?.start);
+    if (dateStart != null) {
+      startDateDropDrowSelected = startDateList.firstWhereOrNull((element) =>
+          element.hour == dateStart!.hour &&
+          element.minute == dateStart!.minute);
+    }
+    _dateEnd(event?.end);
+    if (dateEnd != null) {
+      endDateDropDrowSelected = startDateList.firstWhereOrNull((element) =>
+          element.hour == dateEnd!.hour && element.minute == dateEnd!.minute);
+    }
+  }
+
+  void onSetRoom() {
+    _roomModelSelected(event?.room);
+  }
+
+  void onSetStatus() {
+    _eventStatusSelected(event?.status);
   }
 
   setFormFieldControllers() {

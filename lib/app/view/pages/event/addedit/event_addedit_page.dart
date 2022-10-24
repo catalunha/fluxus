@@ -53,10 +53,10 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Text(
-                      'Id: ${widget._eventAddEditController.event?.id}',
-                      style: const TextStyle(fontSize: 8),
-                    ),
+                    Obx(() => Text(
+                          'Id: ${widget._eventAddEditController.event?.id}',
+                          style: const TextStyle(fontSize: 8),
+                        )),
                     const SizedBox(height: 5),
                     AppTextFormField(
                       label: 'Autorização',

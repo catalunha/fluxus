@@ -70,6 +70,16 @@ class HomePage extends StatelessWidget {
               },
             ),
           ),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.search),
+              title: const Text('Buscar Evento'),
+              subtitle: const Text('Por ...'),
+              onTap: () {
+                Get.toNamed(Routes.eventSearch);
+              },
+            ),
+          ),
         ],
       ),
     );
