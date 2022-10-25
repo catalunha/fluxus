@@ -3,12 +3,14 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/event_model.dart';
+import 'package:fluxus/app/core/models/evolution_model.dart';
 import 'package:fluxus/app/core/models/expertise_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
 import 'package:fluxus/app/data/b4a/table/event/event_repository_exception.dart';
 import 'package:fluxus/app/data/repositories/event_repository.dart';
 import 'package:fluxus/app/data/repositories/event_status_repository.dart';
+import 'package:fluxus/app/data/repositories/evolution_repository.dart';
 import 'package:fluxus/app/data/repositories/expertise_repository.dart';
 import 'package:fluxus/app/data/repositories/room_repository.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
@@ -22,15 +24,18 @@ class EventAddEditController extends GetxController
   final RoomRepository _roomRepository;
   final EventStatusRepository _eventStatusRepository;
   final ExpertiseRepository _expertiseRepository;
+  final EvolutionRepository _evolutionRepository;
   EventAddEditController({
     required EventRepository eventRepository,
     required RoomRepository roomRepository,
     required EventStatusRepository eventStatusRepository,
     required ExpertiseRepository expertiseRepository,
+    required EvolutionRepository evolutionRepository,
   })  : _eventRepository = eventRepository,
         _roomRepository = roomRepository,
         _eventStatusRepository = eventStatusRepository,
-        _expertiseRepository = expertiseRepository;
+        _expertiseRepository = expertiseRepository,
+        _evolutionRepository = evolutionRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
@@ -233,6 +238,7 @@ class EventAddEditController extends GetxController
       logData = '$logData\ndesc:${description ?? '-'}';
       logData = '$logData\nroom:${room?.name ?? '-'}';
       logData = '$logData\nstatus:${status?.name ?? '-'}';
+      String? eventStatusIdPast = event?.status?.id;
       if (eventId == null) {
         event = EventModel(
           autorization: autorization,
@@ -258,8 +264,40 @@ class EventAddEditController extends GetxController
           log: logData,
         );
       }
-      eventId = await _eventRepository.update(event!);
+      String eventIdTemp = await _eventRepository.update(event!);
+      log('+++ evolutionModel');
+      log('${event!.status != null}', name: 'EvolutionModel');
+      log('$eventStatusIdPast', name: 'EvolutionModel');
+      log('${status!.id}', name: 'EvolutionModel');
+      if (event!.status != null &&
+          eventStatusIdPast != 'turMpAqIVQ' &&
+          status.id == 'turMpAqIVQ') {
+        log('+++ evolutionModel 1 ');
 
+        if (event!.professionals != null &&
+            event!.professionals!.isNotEmpty &&
+            event!.patients != null &&
+            event!.patients!.isNotEmpty) {
+          log('+++ evolutionModel 2');
+
+          for (var professional in event!.professionals!) {
+            for (var patient in event!.patients!) {
+              EvolutionModel evolutionModel = EvolutionModel(
+                start: onMountDateStart(),
+                event: eventIdTemp,
+                professional: professional,
+                expertise: event!.expertises![professional.id],
+                patient: patient,
+              );
+              log(evolutionModel.toString(), name: 'EvolutionModel');
+              await _evolutionRepository.update(evolutionModel);
+            }
+          }
+        }
+      }
+      log('--- evolutionModel');
+
+      eventId = eventIdTemp;
       event = event!.copyWith(id: eventId);
     } on EventRepositoryException {
       _message.value = MessageModel(

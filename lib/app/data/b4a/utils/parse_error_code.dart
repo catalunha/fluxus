@@ -29,5 +29,6 @@ class ParseErrorCode {
     101: 'Email ou senha inválidos ou não cadastrados.',
     202: 'Já existe uma conta para este email.',
     205: 'Veja seu email para validar seu cadastro.',
+    //  111 - schema mismatch for Evolution.event; expected Pointer<Event> but got String - IncorrectType
   };
 }

@@ -31,7 +31,7 @@ class AppTextFormField extends StatelessWidget {
         onChanged: onChange,
         inputFormatters: mask != null ? [mask!] : [],
         // keyboardType: TextInputType.multiline,
-        minLines: 1, //Normal textInputField will be displayed
+        minLines: maxLines, //Normal textInputField will be displayed
         maxLines: maxLines, // when user presses enter it will adapt to it
         // cursorColor: context.theme.primaryColor,
         decoration: InputDecoration(

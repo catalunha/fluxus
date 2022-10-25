@@ -82,6 +82,7 @@ class _EvaluationAddEditPageState extends State<EvaluationAddEditPage> {
                           widget._evaluationAddEditController.descriptionTec,
                       validator:
                           Validatorless.required('Descrição é obrigatório'),
+                      maxLines: 10,
                     ),
                     Obx(
                       () => CheckboxListTile(
