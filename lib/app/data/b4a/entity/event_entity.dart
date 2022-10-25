@@ -88,6 +88,81 @@ class EventEntity {
     return model;
   }
 
+  EventModel fromParseSimpleData(ParseObject parseObject) {
+    // //+++ get professionals
+    // List<ProfileModel> professionalsList = [];
+    // QueryBuilder<ParseObject> queryProfessionals =
+    //     QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+    // queryProfessionals.whereRelatedTo(
+    //     'professionals', 'Event', parseObject.objectId!);
+    // final ParseResponse responseProfessionals =
+    //     await queryProfessionals.query();
+    // if (responseProfessionals.success &&
+    //     responseProfessionals.results != null) {
+    //   for (var e in responseProfessionals.results!) {
+    //     professionalsList
+    //         .add(await ProfileEntity().fromParse(e as ParseObject));
+    //   }
+    // }
+    // //--- get professionals
+
+    // //+++ get expertises
+    // Map<String, String>? expertises = <String, String>{};
+    // Map<String, dynamic>? tempClass =
+    //     parseObject.get<Map<String, dynamic>>('expertises');
+    // if (tempClass != null) {
+    //   for (var item in tempClass.entries) {
+    //     expertises[item.key] = item.value;
+    //   }
+    // }
+    // //--- get expertises
+
+    // //+++ get patients
+    // List<ProfileModel> patientsList = [];
+    // QueryBuilder<ParseObject> queryPatients =
+    //     QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+    // queryPatients.whereRelatedTo('patients', 'Event', parseObject.objectId!);
+    // final ParseResponse responsePatients = await queryPatients.query();
+    // if (responsePatients.success && responsePatients.results != null) {
+    //   for (var e in responsePatients.results!) {
+    //     patientsList.add(await ProfileEntity().fromParse(e as ParseObject));
+    //   }
+    // }
+    // // --- get patients
+    // //+++ get healthPlans
+    // Map<String, String>? healthPlans = <String, String>{};
+    // Map<String, dynamic>? tempClass2 =
+    //     parseObject.get<Map<String, dynamic>>('healthPlans');
+    // if (tempClass2 != null) {
+    //   for (var item in tempClass2.entries) {
+    //     healthPlans[item.key] = item.value;
+    //   }
+    // }
+    // // --- get healthPlans
+    EventModel model = EventModel(
+      id: parseObject.objectId!,
+      // professionals: professionalsList,
+      // expertises: expertises,
+      // patients: patientsList,
+      // healthPlans: healthPlans,
+      autorization: parseObject.get('autorization'),
+      fatura: parseObject.get('fatura'),
+      room: parseObject.get('room') != null
+          ? RoomEntity().fromParse(parseObject.get('room') as ParseObject)
+          : null,
+      status: parseObject.get('status') != null
+          ? EventStatusEntity()
+              .fromParse(parseObject.get('status') as ParseObject)
+          : null,
+      start: parseObject.get('start'),
+      end: parseObject.get('end'),
+      log: parseObject.get('log'),
+      description: parseObject.get('description'),
+      isDeleted: parseObject.get('isDeleted') ?? false,
+    );
+    return model;
+  }
+
   Future<ParseObject> toParse(EventModel model) async {
     final parseObject = ParseObject(EventEntity.className);
     if (model.id != null) {

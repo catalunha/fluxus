@@ -5,6 +5,8 @@ import 'package:fluxus/app/view/controllers/evaluation/addedit/evaluation_addedi
 import 'package:fluxus/app/view/controllers/evaluation/search/evaluation_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/event/search/event_search_dependencies.dart';
+import 'package:fluxus/app/view/controllers/evolution/addedit/evolution_addedit_dependencies.dart';
+import 'package:fluxus/app/view/controllers/evolution/search/evolution_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/health_plan/search/health_plan_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/team/search/team_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/profile/user_profile_dependencies.dart';
@@ -23,6 +25,8 @@ import 'package:fluxus/app/view/pages/evaluation/search/evaluation_search_page.d
 import 'package:fluxus/app/view/pages/event/addedit/event_addedit_page.dart';
 import 'package:fluxus/app/view/pages/event/search/event_search_list_page.dart';
 import 'package:fluxus/app/view/pages/event/search/event_search_page.dart';
+import 'package:fluxus/app/view/pages/evolution/addedit/evolution_addedit_page.dart';
+import 'package:fluxus/app/view/pages/evolution/search/evolution_search_list_page.dart';
 import 'package:fluxus/app/view/pages/health_plan/search/health_plan_search_list_page.dart';
 import 'package:fluxus/app/view/pages/health_plan/search/health_plan_search_page.dart';
 import 'package:fluxus/app/view/pages/team/team_search_list_page.dart';
@@ -66,6 +70,9 @@ class Routes {
   static const evaluationAddEdit = '/evaluation/addedit';
   static const evaluationSearch = '/evaluation/search';
   static const evaluationList = '/evaluation/list';
+
+  static const evolutionList = '/evolution/list';
+  static const evolutionAddEdit = '/evolution/addedit';
 
   static final pageList = [
     GetPage(
@@ -166,6 +173,16 @@ class Routes {
     GetPage(
       name: Routes.evaluationList,
       page: () => EvaluationSearchListPage(),
+    ),
+    GetPage(
+      name: Routes.evolutionList,
+      binding: EvolutionSearchDependencies(),
+      page: () => EvolutionSearchListPage(),
+    ),
+    GetPage(
+      name: Routes.evolutionAddEdit,
+      binding: EvolutionAddEditDependencies(),
+      page: () => EvolutionAddEditPage(),
     ),
   ];
 }

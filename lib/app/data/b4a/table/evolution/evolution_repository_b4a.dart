@@ -1,5 +1,6 @@
 import 'package:fluxus/app/core/models/evolution_model.dart';
 import 'package:fluxus/app/data/b4a/entity/evolution_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/b4a/table/evolution/evolution_repository_exception.dart';
 import 'package:fluxus/app/data/b4a/utils/parse_error_code.dart';
 import 'package:fluxus/app/data/repositories/evolution_repository.dart';
@@ -11,7 +12,7 @@ class EvolutionRepositoryB4a implements EvolutionRepository {
       QueryBuilder<ParseObject> query, Pagination pagination) async {
     // QueryBuilder<ParseObject> query =
     //     QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
-    query.includeObject(['professional']);
+    query.includeObject(['professional', 'patient']);
     query.whereEqualTo('isDeleted', false);
     query.orderByDescending('updatedAt');
 
@@ -23,13 +24,21 @@ class EvolutionRepositoryB4a implements EvolutionRepository {
 
   @override
   Future<List<EvolutionModel>> list(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
-    QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+      String eventId, String professionalId) async {
+    QueryBuilder<ParseObject> query =
+        QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
+    query.whereEqualTo('event', eventId);
+    query.whereEqualTo(
+        'professional',
+        (ParseObject(ProfileEntity.className)..objectId = professionalId)
+            .toPointer());
+    query.whereEqualTo('isDeleted', false);
+    query.includeObject(['professional', 'patient']);
+    query.orderByDescending('updatedAt');
 
     ParseResponse? response;
     try {
-      response = await query2.query();
+      response = await query.query();
       List<EvolutionModel> listTemp = <EvolutionModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
@@ -96,13 +105,13 @@ class EvolutionRepositoryB4a implements EvolutionRepository {
     }
   }
 
-  @override
-  Future<void> updateRelationCid(
-      String objectId, List<String> modelIdList, bool add) async {
-    final parseObject = EvolutionEntity().toParseUpdateRelationCid(
-        objectId: objectId, modelIdList: modelIdList, add: add);
-    if (parseObject != null) {
-      await parseObject.save();
-    }
-  }
+  // @override
+  // Future<void> updateRelationCid(
+  //     String objectId, List<String> modelIdList, bool add) async {
+  //   final parseObject = EvolutionEntity().toParseUpdateRelationCid(
+  //       objectId: objectId, modelIdList: modelIdList, add: add);
+  //   if (parseObject != null) {
+  //     await parseObject.save();
+  //   }
+  // }
 }

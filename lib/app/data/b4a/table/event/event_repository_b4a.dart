@@ -36,7 +36,7 @@ class EventRepositoryB4a implements EventRepository {
       List<EventModel> listTemp = <EventModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          listTemp.add(await EventEntity().fromParse(element));
+          listTemp.add(EventEntity().fromParseSimpleData(element));
         }
         return listTemp;
       } else {

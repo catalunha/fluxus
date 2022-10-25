@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:fluxus/app/core/models/cid_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 
 ///Evolução do paciente.
@@ -13,7 +12,7 @@ class EvolutionModel {
   final ProfileModel? professional;
   final String? expertise;
   final ProfileModel? patient;
-  final List<CidModel>? cid;
+  final List<String>? cid;
   final String? description;
   final String? file;
   final bool? isDeleted;
@@ -38,7 +37,7 @@ class EvolutionModel {
     ProfileModel? professional,
     String? expertise,
     ProfileModel? patient,
-    List<CidModel>? cid,
+    List<String>? cid,
     String? description,
     String? file,
     bool? isDeleted,
@@ -79,7 +78,7 @@ class EvolutionModel {
       result.addAll({'patient': patient!.toMap()});
     }
     if (cid != null) {
-      result.addAll({'cid': cid!.map((x) => x.toMap()).toList()});
+      result.addAll({'cid': cid});
     }
     if (description != null) {
       result.addAll({'description': description});
@@ -107,9 +106,7 @@ class EvolutionModel {
       expertise: map['expertise'],
       patient:
           map['patient'] != null ? ProfileModel.fromMap(map['patient']) : null,
-      cid: map['cid'] != null
-          ? List<CidModel>.from(map['cid']?.map((x) => CidModel.fromMap(x)))
-          : null,
+      cid: List<String>.from(map['cid']),
       description: map['description'],
       file: map['file'],
       isDeleted: map['isDeleted'],
