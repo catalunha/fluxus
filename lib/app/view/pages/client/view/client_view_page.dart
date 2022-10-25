@@ -160,6 +160,11 @@ class ClientViewPage extends StatelessWidget {
                         ),
                         healthPlanList(profileModel),
                         const Text(
+                          'Expecialidades: ',
+                          style: TextStyle(color: Colors.blueGrey),
+                        ),
+                        expertiseList(profileModel),
+                        const Text(
                           'Ocupações: ',
                           style: TextStyle(color: Colors.blueGrey),
                         ),
@@ -274,6 +279,44 @@ class ClientViewPage extends StatelessWidget {
                               value: e.due != null
                                   ? dateFormat.format(e.due!)
                                   : "...",
+                            ),
+                            AppTextTitleValue(
+                              title: 'Id: ',
+                              value: '${e.id}',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () => copy('${profileModel.id!} ${e.id!}'),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return const Text('...');
+    }
+  }
+
+  Widget expertiseList(ProfileModel profileModel) {
+    if (profileModel.expertise != null && profileModel.expertise!.isNotEmpty) {
+      return Column(
+        children: [
+          ...profileModel.expertise!
+              .map((e) => InkWell(
+                    child: Card(
+                      child: SizedBox(
+                        width: 300,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppTextTitleValue(
+                              title: 'Gestor: ',
+                              value: '${e.name}',
+                            ),
+                            AppTextTitleValue(
+                              title: 'Descrição: ',
+                              value: '${e.description}',
                             ),
                             AppTextTitleValue(
                               title: 'Id: ',

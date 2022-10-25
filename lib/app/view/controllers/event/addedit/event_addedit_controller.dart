@@ -9,6 +9,7 @@ import 'package:fluxus/app/data/b4a/table/event/event_repository_exception.dart'
 import 'package:fluxus/app/data/repositories/event_repository.dart';
 import 'package:fluxus/app/data/repositories/event_status_repository.dart';
 import 'package:fluxus/app/data/repositories/room_repository.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
@@ -187,12 +188,12 @@ class EventAddEditController extends GetxController
     descriptionTec.text = event?.description ?? "";
   }
 
-  DateTime onMountDateStart() {
+  DateTime? onMountDateStart() {
     return DateTime(dateStart!.year, dateStart!.month, dateStart!.day,
         startDateDropDrowSelected!.hour!, startDateDropDrowSelected!.minute!);
   }
 
-  DateTime onMountDateEnd() {
+  DateTime? onMountDateEnd() {
     return DateTime(dateEnd!.year, dateEnd!.month, dateEnd!.day,
         endDateDropDrowSelected!.hour!, endDateDropDrowSelected!.minute!);
   }
@@ -207,6 +208,15 @@ class EventAddEditController extends GetxController
   }) async {
     try {
       _loading(true);
+      String logData = event?.log ?? '+++';
+      logData = '$logData\n+++${DateTime.now()}';
+      var splashController = Get.find<SplashController>();
+      logData = '$logData\nuser:${splashController.userModel!.email}';
+      logData = '$logData\nstart:${onMountDateStart() ?? '-'}';
+      logData = '$logData\nend:${onMountDateEnd() ?? '-'}';
+      logData = '$logData\ndesc:${description ?? '-'}';
+      logData = '$logData\nroom:${room?.name ?? '-'}';
+      logData = '$logData\nstatus:${status?.name ?? '-'}';
       if (eventId == null) {
         event = EventModel(
           autorization: autorization,
@@ -217,17 +227,19 @@ class EventAddEditController extends GetxController
           status: status,
           description: description,
           isDeleted: isDeleted,
+          log: logData,
         );
       } else {
         event = event!.copyWith(
           autorization: autorization,
           fatura: fatura,
-          // room: room,
+          room: room,
           start: onMountDateStart(),
           end: onMountDateEnd(),
-          // status: status,
+          status: status,
           description: description,
           isDeleted: isDeleted,
+          log: logData,
         );
       }
       eventId = await _eventRepository.update(event!);
@@ -244,27 +256,45 @@ class EventAddEditController extends GetxController
     }
   }
 
-  // Future<void> familyUpdate({
-  //   required String id,
-  //   required bool isAdd,
-  // }) async {
-  //   try {
-  //     _loading(true);
+//HEGkYcanUF 0yvOXKwqnw
+  Future<void> updateProfissionals({
+    required String ids,
+    required bool add,
+  }) async {
+    try {
+      _loading(true);
+      Map<String, String>? expertises = event?.expertises;
+      if (add) {
+        List<String> idProfissionalIdExpertise = ids.split(' ');
+        await _eventRepository.updateRelationProfessionals(
+            event!.id!, [idProfissionalIdExpertise[0]], true);
+        if (expertises != null) {
+          expertises.update(idProfissionalIdExpertise[0],
+              (value) => idProfissionalIdExpertise[1],
+              ifAbsent: () => idProfissionalIdExpertise[1]);
+        } else {
+          expertises = {
+            idProfissionalIdExpertise[0]: idProfissionalIdExpertise[1]
+          };
+        }
+      } else {
+        await _eventRepository.updateRelationProfessionals(
+            event!.id!, [ids], false);
+        expertises!.remove(ids);
+      }
+      event = event!.copyWith(expertises: expertises);
 
-  //     await _eventRepository.updateRelationFamily(event!.id!, [id], isAdd);
-  //     await _eventRepository.updateRelationFamily(id, [event!.id!], isAdd);
+      eventId = await _eventRepository.update(event!);
 
-  //     // final SplashController splashController = Get.find();
-  //     // await splashController.updateUserProfile();
-  //     await getEvent();
-  //   } on ProfileRepositoryException {
-  //     _message.value = MessageModel(
-  //       title: 'Erro em ProfileController',
-  //       message: 'Não foi possivel salvar o perfil',
-  //       isError: true,
-  //     );
-  //   } finally {
-  //     _loading(false);
-  //   }
-  // }
+      await getEvent();
+    } on EventRepositoryException {
+      _message.value = MessageModel(
+        title: 'Erro em EventController',
+        message: 'Não foi possivel salvar o Event',
+        isError: true,
+      );
+    } finally {
+      _loading(false);
+    }
+  }
 }

@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
 import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_controller.dart';
+import 'package:fluxus/app/view/pages/event/addedit/part/event_add_ids.dart';
 import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
@@ -162,14 +165,20 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                           onPressed: () async {
                             var result = await saveEvent();
                             if (result) {
-                              await showDialog(
+                              String? res = await showDialog(
+                                barrierDismissible: false,
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return Container();
+                                  return const EventAddIds(
+                                    title: 'Informe os profissionais',
+                                  );
                                 },
-                                // EventAddFamilyChildren(
-                                //     isChildren: false),
                               );
+                              if (res != null) {
+                                widget._eventAddEditController
+                                    .updateProfissionals(ids: res, add: true);
+                              }
+                              log(res ?? '...', name: 'res');
                               setState(() {});
                             } else {
                               Get.snackbar(
@@ -183,7 +192,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                         )
                       ],
                     ),
-                    profissionalList(),
+                    Obx(() => profissionalList()),
                     const SizedBox(height: 70),
                   ],
                 ),
@@ -215,44 +224,45 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
 
   Widget profissionalList() {
     if (widget._eventAddEditController.event?.professionals != null) {
-      return Obx(() => Column(
-            children: [
-              ...widget._eventAddEditController.event!.professionals!
-                  .map((e) => Card(
-                        child: Column(children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () async {
-                                  // await saveEvent();
-                                  // await widget._eventAddEditController.familyUpdate(
-                                  //   id: e.id!,
-                                  //   isAdd: false,
-                                  // );
-                                  // setState(() {});
-                                },
-                                icon: const Icon(Icons.delete_forever),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  AppTextTitleValue(
-                                    title: 'Nome: ',
-                                    value: '${e.name}',
-                                  ),
-                                  AppTextTitleValue(
-                                    title: 'Id: ',
-                                    value: '${e.id}',
-                                  ),
-                                ],
-                              )
-                            ],
+      return Column(
+        children: [
+          ...widget._eventAddEditController.event!.professionals!
+              .map((e) => Card(
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              // await saveEvent();
+                              await widget._eventAddEditController
+                                  .updateProfissionals(
+                                ids: e.id!,
+                                add: false,
+                              );
+                              setState(() {});
+                            },
+                            icon: const Icon(Icons.delete_forever),
                           ),
-                        ]),
-                      ))
-                  .toList()
-            ],
-          ));
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppTextTitleValue(
+                                title: 'Nome: ',
+                                value: '${e.name}',
+                              ),
+                              AppTextTitleValue(
+                                title: 'Id: ',
+                                value: '${e.id}',
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ]),
+                  ))
+              .toList()
+        ],
+      );
     } else {
       return Container();
     }

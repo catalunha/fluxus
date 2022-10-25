@@ -100,7 +100,7 @@ class EventRepositoryB4a implements EventRepository {
   }
 
   @override
-  Future<void> toParseUpdateRelationProfessionals(
+  Future<void> updateRelationProfessionals(
       String objectId, List<String> modelIdList, bool add) async {
     final parseObject = EventEntity().toParseUpdateRelationProfessionals(
         objectId: objectId, modelIdList: modelIdList, add: add);
@@ -110,7 +110,7 @@ class EventRepositoryB4a implements EventRepository {
   }
 
   @override
-  Future<void> toParseUpdateRelationHealthPlans(
+  Future<void> updateRelationHealthPlans(
       String objectId, List<String> modelIdList, bool add) async {
     final parseObject = EventEntity().toParseUpdateRelationHealthPlans(
         objectId: objectId, modelIdList: modelIdList, add: add);

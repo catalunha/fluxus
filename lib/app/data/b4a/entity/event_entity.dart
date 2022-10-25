@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:fluxus/app/core/models/event_model.dart';
+import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/entity/event_status_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/room_entity.dart';
@@ -10,33 +11,33 @@ class EventEntity {
   static const String className = 'Event';
 
   Future<EventModel> fromParse(ParseObject parseObject) async {
-    // //+++ get professionals
-    // List<ProfileModel> professionalsList = [];
-    // QueryBuilder<ParseObject> queryProfessionals =
-    //     QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
-    // queryProfessionals.whereRelatedTo(
-    //     'professionals', 'Event', parseObject.objectId!);
-    // final ParseResponse responseProfessionals =
-    //     await queryProfessionals.query();
-    // if (responseProfessionals.success &&
-    //     responseProfessionals.results != null) {
-    //   for (var e in responseProfessionals.results!) {
-    //     professionalsList
-    //         .add(await ProfileEntity().fromParse(e as ParseObject));
-    //   }
-    // }
-    // //--- get professionals
+    //+++ get professionals
+    List<ProfileModel> professionalsList = [];
+    QueryBuilder<ParseObject> queryProfessionals =
+        QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+    queryProfessionals.whereRelatedTo(
+        'professionals', 'Event', parseObject.objectId!);
+    final ParseResponse responseProfessionals =
+        await queryProfessionals.query();
+    if (responseProfessionals.success &&
+        responseProfessionals.results != null) {
+      for (var e in responseProfessionals.results!) {
+        professionalsList
+            .add(await ProfileEntity().fromParse(e as ParseObject));
+      }
+    }
+    //--- get professionals
 
-    // //+++ get expertises
-    // Map<String, String>? expertises = <String, String>{};
-    // Map<String, dynamic>? tempClass =
-    //     parseObject.get<Map<String, dynamic>>('expertises');
-    // if (tempClass != null) {
-    //   for (var item in tempClass.entries) {
-    //     expertises[item.key] = item.value;
-    //   }
-    // }
-    // //--- get expertises
+    //+++ get expertises
+    Map<String, String>? expertises = <String, String>{};
+    Map<String, dynamic>? tempClass =
+        parseObject.get<Map<String, dynamic>>('expertises');
+    if (tempClass != null) {
+      for (var item in tempClass.entries) {
+        expertises[item.key] = item.value;
+      }
+    }
+    //--- get expertises
 
     // //+++ get patients
     // List<ProfileModel> patientsList = [];
@@ -66,7 +67,8 @@ class EventEntity {
         name: 'EventEntity');
     EventModel model = EventModel(
       id: parseObject.objectId!,
-      // professionals: professionalsList,
+      professionals: professionalsList,
+      expertises: expertises,
       // patients: patientsList,
       autorization: parseObject.get('autorization'),
       fatura: parseObject.get('fatura'),
