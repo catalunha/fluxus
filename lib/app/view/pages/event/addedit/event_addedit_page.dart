@@ -74,6 +74,12 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                       label: 'Descrição',
                       controller: widget._eventAddEditController.descriptionTec,
                     ),
+                    Obx(() => Text(widget._eventAddEditController.dateStart
+                            ?.toIso8601String() ??
+                        '...')),
+                    Obx(() => Text(widget._eventAddEditController.dateEnd
+                            ?.toIso8601String() ??
+                        '...')),
                     AppCalendarButton(
                       title: "Data do atendimento.",
                       getDate: () => widget._eventAddEditController.dateStart,
@@ -170,7 +176,8 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return const EventAddIds(
-                                    title: 'Informe os profissionais',
+                                    title:
+                                        'Informe o Id do profissional e da especialidade',
                                   );
                                 },
                               );
@@ -193,6 +200,43 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                       ],
                     ),
                     Obx(() => profissionalList()),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Pacientes'),
+                        IconButton(
+                          onPressed: () async {
+                            var result = await saveEvent();
+                            if (result) {
+                              String? res = await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const EventAddIds(
+                                    title:
+                                        'Informe o Id do paciente e do convênio',
+                                  );
+                                },
+                              );
+                              if (res != null) {
+                                widget._eventAddEditController
+                                    .updatePatients(ids: res, add: true);
+                              }
+                              log(res ?? '...', name: 'res');
+                              setState(() {});
+                            } else {
+                              Get.snackbar(
+                                'Atenção',
+                                'Campos obrigatórios não foram preenchidos.',
+                                backgroundColor: Colors.red,
+                              );
+                            }
+                          },
+                          icon: const Icon(Icons.add),
+                        )
+                      ],
+                    ),
+                    Obx(() => patientList()),
                     const SizedBox(height: 70),
                   ],
                 ),
@@ -243,18 +287,86 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                             },
                             icon: const Icon(Icons.delete_forever),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppTextTitleValue(
-                                title: 'Nome: ',
-                                value: '${e.name}',
-                              ),
-                              AppTextTitleValue(
-                                title: 'Id: ',
-                                value: '${e.id}',
-                              ),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppTextTitleValue(
+                                  title: 'Nome: ',
+                                  value: '${e.name}',
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Id: ',
+                                  value: '${e.id}',
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Especialidade: ',
+                                  value: widget._eventAddEditController
+                                      .getExpertiseName(widget
+                                          ._eventAddEditController
+                                          .event!
+                                          .expertises![e.id]!),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ]),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget patientList() {
+    if (widget._eventAddEditController.event?.patients != null) {
+      return Column(
+        children: [
+          ...widget._eventAddEditController.event!.patients!
+              .map((e) => Card(
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              // await saveEvent();
+                              await widget._eventAddEditController
+                                  .updatePatients(
+                                ids: e.id!,
+                                add: false,
+                              );
+                              setState(() {});
+                            },
+                            icon: const Icon(Icons.delete_forever),
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppTextTitleValue(
+                                  title: 'Nome: ',
+                                  value: '${e.name}',
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Id: ',
+                                  value: '${e.id}',
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Convênio tipo: ',
+                                  value: widget._eventAddEditController
+                                      .getHealthPlanType(e.id!),
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Convênio código: ',
+                                  value: widget._eventAddEditController
+                                      .getHealthPlanCode(e.id!),
+                                ),
+                              ],
+                            ),
                           )
                         ],
                       ),

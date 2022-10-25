@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:fluxus/app/core/models/expertise_model.dart';
-import 'package:fluxus/app/core/models/user_model.dart';
+import 'package:fluxus/app/core/models/profile_model.dart';
 
 /// Avaliação do paciente.
 /// Ficha padrão com.
@@ -20,10 +20,11 @@ import 'package:fluxus/app/core/models/user_model.dart';
 ///
 class EvaluationModel {
   final String? id;
-  final UserModel? professional;
+  final ProfileModel? professional;
   final ExpertiseModel? expertise;
   final String? name;
   final String? description;
+  final bool? isPublic;
   final bool? isDeleted;
   EvaluationModel({
     this.id,
@@ -31,15 +32,17 @@ class EvaluationModel {
     this.expertise,
     this.name,
     this.description,
+    this.isPublic,
     this.isDeleted,
   });
 
   EvaluationModel copyWith({
     String? id,
-    UserModel? professional,
+    ProfileModel? professional,
     ExpertiseModel? expertise,
     String? name,
     String? description,
+    bool? isPublic,
     bool? isDeleted,
   }) {
     return EvaluationModel(
@@ -48,6 +51,7 @@ class EvaluationModel {
       expertise: expertise ?? this.expertise,
       name: name ?? this.name,
       description: description ?? this.description,
+      isPublic: isPublic ?? this.isPublic,
       isDeleted: isDeleted ?? this.isDeleted,
     );
   }
@@ -70,6 +74,9 @@ class EvaluationModel {
     if (description != null) {
       result.addAll({'description': description});
     }
+    if (isPublic != null) {
+      result.addAll({'isPublic': isPublic});
+    }
     if (isDeleted != null) {
       result.addAll({'isDeleted': isDeleted});
     }
@@ -81,13 +88,14 @@ class EvaluationModel {
     return EvaluationModel(
       id: map['id'],
       professional: map['professional'] != null
-          ? UserModel.fromMap(map['professional'])
+          ? ProfileModel.fromMap(map['professional'])
           : null,
       expertise: map['expertise'] != null
           ? ExpertiseModel.fromMap(map['expertise'])
           : null,
       name: map['name'],
       description: map['description'],
+      isPublic: map['isPublic'],
       isDeleted: map['isDeleted'],
     );
   }
@@ -99,7 +107,7 @@ class EvaluationModel {
 
   @override
   String toString() {
-    return 'EvaluationModel(id: $id, professional: $professional, expertise: $expertise, name: $name, description: $description, isDeleted: $isDeleted)';
+    return 'EvaluationModel(id: $id, professional: $professional, expertise: $expertise, name: $name, description: $description, isPublic: $isPublic, isDeleted: $isDeleted)';
   }
 
   @override
@@ -112,6 +120,7 @@ class EvaluationModel {
         other.expertise == expertise &&
         other.name == name &&
         other.description == description &&
+        other.isPublic == isPublic &&
         other.isDeleted == isDeleted;
   }
 
@@ -122,6 +131,7 @@ class EvaluationModel {
         expertise.hashCode ^
         name.hashCode ^
         description.hashCode ^
+        isPublic.hashCode ^
         isDeleted.hashCode;
   }
 }

@@ -110,9 +110,9 @@ class EventRepositoryB4a implements EventRepository {
   }
 
   @override
-  Future<void> updateRelationHealthPlans(
+  Future<void> updateRelationPatients(
       String objectId, List<String> modelIdList, bool add) async {
-    final parseObject = EventEntity().toParseUpdateRelationHealthPlans(
+    final parseObject = EventEntity().toParseUpdateRelationPatients(
         objectId: objectId, modelIdList: modelIdList, add: add);
     if (parseObject != null) {
       await parseObject.save();

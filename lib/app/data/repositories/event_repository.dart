@@ -9,6 +9,6 @@ abstract class EventRepository {
   Future<EventModel?> readById(String id);
   Future<void> updateRelationProfessionals(
       String objectId, List<String> modelIdList, bool add);
-  Future<void> updateRelationHealthPlans(
+  Future<void> updateRelationPatients(
       String objectId, List<String> modelIdList, bool add);
 }

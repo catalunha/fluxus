@@ -11,20 +11,22 @@ import 'package:fluxus/app/core/models/user_model.dart';
 ///Evolução do paciente.
 class EvolutionModel {
   final String? id;
-  final EventModel? event;
-  final ExpertiseModel? expertise;
+  final DateTime? meeting;
   final UserModel? professional;
+  final ExpertiseModel? expertise;
   final ProfileModel? patient;
   final List<CidModel>? cid;
   final String? description;
   final String? file;
+  final EventModel? event;
   final bool? isDeleted;
 
   EvolutionModel({
     this.id,
     this.event,
-    this.expertise,
+    this.meeting,
     this.professional,
+    this.expertise,
     this.patient,
     this.cid,
     this.description,
@@ -35,8 +37,9 @@ class EvolutionModel {
   EvolutionModel copyWith({
     String? id,
     EventModel? event,
-    ExpertiseModel? expertise,
+    DateTime? meeting,
     UserModel? professional,
+    ExpertiseModel? expertise,
     ProfileModel? patient,
     List<CidModel>? cid,
     String? description,
@@ -46,8 +49,9 @@ class EvolutionModel {
     return EvolutionModel(
       id: id ?? this.id,
       event: event ?? this.event,
-      expertise: expertise ?? this.expertise,
+      meeting: meeting ?? this.meeting,
       professional: professional ?? this.professional,
+      expertise: expertise ?? this.expertise,
       patient: patient ?? this.patient,
       cid: cid ?? this.cid,
       description: description ?? this.description,
@@ -65,11 +69,14 @@ class EvolutionModel {
     if (event != null) {
       result.addAll({'event': event!.toMap()});
     }
-    if (expertise != null) {
-      result.addAll({'expertise': expertise!.toMap()});
+    if (meeting != null) {
+      result.addAll({'meeting': meeting!.millisecondsSinceEpoch});
     }
     if (professional != null) {
       result.addAll({'professional': professional!.toMap()});
+    }
+    if (expertise != null) {
+      result.addAll({'expertise': expertise!.toMap()});
     }
     if (patient != null) {
       result.addAll({'patient': patient!.toMap()});
@@ -94,11 +101,14 @@ class EvolutionModel {
     return EvolutionModel(
       id: map['id'],
       event: map['event'] != null ? EventModel.fromMap(map['event']) : null,
-      expertise: map['expertise'] != null
-          ? ExpertiseModel.fromMap(map['expertise'])
+      meeting: map['meeting'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['meeting'])
           : null,
       professional: map['professional'] != null
           ? UserModel.fromMap(map['professional'])
+          : null,
+      expertise: map['expertise'] != null
+          ? ExpertiseModel.fromMap(map['expertise'])
           : null,
       patient:
           map['patient'] != null ? ProfileModel.fromMap(map['patient']) : null,
@@ -118,7 +128,7 @@ class EvolutionModel {
 
   @override
   String toString() {
-    return 'EvolutionModel(id: $id, event: $event, expertise: $expertise, professional: $professional, patient: $patient, cid: $cid, description: $description, file: $file, isDeleted: $isDeleted)';
+    return 'EvolutionModel(id: $id, event: $event, meeting: $meeting, professional: $professional, expertise: $expertise, patient: $patient, cid: $cid, description: $description, file: $file, isDeleted: $isDeleted)';
   }
 
   @override
@@ -128,8 +138,9 @@ class EvolutionModel {
     return other is EvolutionModel &&
         other.id == id &&
         other.event == event &&
-        other.expertise == expertise &&
+        other.meeting == meeting &&
         other.professional == professional &&
+        other.expertise == expertise &&
         other.patient == patient &&
         listEquals(other.cid, cid) &&
         other.description == description &&
@@ -141,8 +152,9 @@ class EvolutionModel {
   int get hashCode {
     return id.hashCode ^
         event.hashCode ^
-        expertise.hashCode ^
+        meeting.hashCode ^
         professional.hashCode ^
+        expertise.hashCode ^
         patient.hashCode ^
         cid.hashCode ^
         description.hashCode ^

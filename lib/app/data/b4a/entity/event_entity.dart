@@ -39,29 +39,28 @@ class EventEntity {
     }
     //--- get expertises
 
-    // //+++ get patients
-    // List<ProfileModel> patientsList = [];
-    // QueryBuilder<ParseObject> queryPatients =
-    //     QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
-    // queryProfessionals.whereRelatedTo(
-    //     'patients', 'Event', parseObject.objectId!);
-    // final ParseResponse responsePatients = await queryPatients.query();
-    // if (responsePatients.success && responsePatients.results != null) {
-    //   for (var e in responsePatients.results!) {
-    //     patientsList.add(await ProfileEntity().fromParse(e as ParseObject));
-    //   }
-    // }
-    // //--- get patients
-    // //+++ get expertises
-    // Map<String, String>? healthPlans = <String, String>{};
-    // Map<String, dynamic>? tempClass2 =
-    //     parseObject.get<Map<String, dynamic>>('healthPlans');
-    // if (tempClass2 != null) {
-    //   for (var item in tempClass2.entries) {
-    //     healthPlans[item.key] = item.value;
-    //   }
-    // }
-    //--- get expertises
+    //+++ get patients
+    List<ProfileModel> patientsList = [];
+    QueryBuilder<ParseObject> queryPatients =
+        QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+    queryPatients.whereRelatedTo('patients', 'Event', parseObject.objectId!);
+    final ParseResponse responsePatients = await queryPatients.query();
+    if (responsePatients.success && responsePatients.results != null) {
+      for (var e in responsePatients.results!) {
+        patientsList.add(await ProfileEntity().fromParse(e as ParseObject));
+      }
+    }
+    // --- get patients
+    //+++ get healthPlans
+    Map<String, String>? healthPlans = <String, String>{};
+    Map<String, dynamic>? tempClass2 =
+        parseObject.get<Map<String, dynamic>>('healthPlans');
+    if (tempClass2 != null) {
+      for (var item in tempClass2.entries) {
+        healthPlans[item.key] = item.value;
+      }
+    }
+    // --- get healthPlans
     log('${parseObject.get('room')}', name: 'EventEntity');
     log('${RoomEntity().fromParse(parseObject.get('room') as ParseObject)}',
         name: 'EventEntity');
@@ -69,7 +68,8 @@ class EventEntity {
       id: parseObject.objectId!,
       professionals: professionalsList,
       expertises: expertises,
-      // patients: patientsList,
+      patients: patientsList,
+      healthPlans: healthPlans,
       autorization: parseObject.get('autorization'),
       fatura: parseObject.get('fatura'),
       room: parseObject.get('room') != null
@@ -178,7 +178,7 @@ class EventEntity {
     return parseObject;
   }
 
-  ParseObject? toParseUpdateRelationHealthPlans({
+  ParseObject? toParseUpdateRelationPatients({
     required String objectId,
     required List<String> modelIdList,
     required bool add,
@@ -186,12 +186,12 @@ class EventEntity {
     final parseObject = ParseObject(EventEntity.className);
     parseObject.objectId = objectId;
     if (modelIdList.isEmpty) {
-      parseObject.unset('healthPlans');
+      parseObject.unset('patients');
       return parseObject;
     }
     if (add) {
       parseObject.addRelation(
-        'healthPlans',
+        'patients',
         modelIdList
             .map(
               (element) =>
@@ -201,7 +201,7 @@ class EventEntity {
       );
     } else {
       parseObject.removeRelation(
-        'healthPlans',
+        'patients',
         modelIdList
             .map((element) =>
                 ParseObject(ProfileEntity.className)..objectId = element)

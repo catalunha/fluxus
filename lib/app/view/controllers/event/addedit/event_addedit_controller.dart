@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/event_model.dart';
+import 'package:fluxus/app/core/models/expertise_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
 import 'package:fluxus/app/data/b4a/table/event/event_repository_exception.dart';
 import 'package:fluxus/app/data/repositories/event_repository.dart';
 import 'package:fluxus/app/data/repositories/event_status_repository.dart';
+import 'package:fluxus/app/data/repositories/expertise_repository.dart';
 import 'package:fluxus/app/data/repositories/room_repository.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
@@ -19,13 +21,16 @@ class EventAddEditController extends GetxController
   final EventRepository _eventRepository;
   final RoomRepository _roomRepository;
   final EventStatusRepository _eventStatusRepository;
+  final ExpertiseRepository _expertiseRepository;
   EventAddEditController({
     required EventRepository eventRepository,
     required RoomRepository roomRepository,
     required EventStatusRepository eventStatusRepository,
+    required ExpertiseRepository expertiseRepository,
   })  : _eventRepository = eventRepository,
         _roomRepository = roomRepository,
-        _eventStatusRepository = eventStatusRepository;
+        _eventStatusRepository = eventStatusRepository,
+        _expertiseRepository = expertiseRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
@@ -89,11 +94,16 @@ class EventAddEditController extends GetxController
   set roomModelSelected(RoomModel? newModel) => _roomModelSelected(newModel);
 
   var eventStatusList = <EventStatusModel>[].obs;
-  // EventStatusModel? eventStatusSelected;
   final _eventStatusSelected = Rxn<EventStatusModel>();
   EventStatusModel? get eventStatusSelected => _eventStatusSelected.value;
   set eventStatusSelected(EventStatusModel? newModel) =>
       _eventStatusSelected(newModel);
+
+  var expertiseList = <ExpertiseModel>[].obs;
+  final _expertiseModelSelected = Rxn<ExpertiseModel>();
+  ExpertiseModel? get expertiseModelSelected => _expertiseModelSelected.value;
+  set expertiseModelSelected(ExpertiseModel? newModel) =>
+      _expertiseModelSelected(newModel);
 
   String? eventId;
 
@@ -110,6 +120,7 @@ class EventAddEditController extends GetxController
     messageListener(_message);
     getRoomList();
     getEventStatusList();
+    getExpertiseList();
     getStartDateList();
     eventId = Get.arguments;
     log(eventId ?? 'null', name: 'EventAddEditController');
@@ -125,6 +136,11 @@ class EventAddEditController extends GetxController
   getEventStatusList() async {
     List<EventStatusModel> all = await _eventStatusRepository.list();
     eventStatusList(all);
+  }
+
+  getExpertiseList() async {
+    List<ExpertiseModel> all = await _expertiseRepository.list();
+    expertiseList(all);
   }
 
   Future<void> getEvent() async {
@@ -296,5 +312,68 @@ class EventAddEditController extends GetxController
     } finally {
       _loading(false);
     }
+  }
+
+  String getExpertiseName(String expertiseId) {
+    var expertiseModelSelected =
+        expertiseList.firstWhere((element) => element.id == expertiseId);
+    return expertiseModelSelected.name!;
+  }
+
+//a4HhGpRLLx UIhi3dwq8y
+  Future<void> updatePatients({
+    required String ids,
+    required bool add,
+  }) async {
+    try {
+      _loading(true);
+      Map<String, String>? healthPlans = event?.healthPlans;
+      if (add) {
+        List<String> idPatientIdHealthPlan = ids.split(' ');
+        await _eventRepository.updateRelationPatients(
+            event!.id!, [idPatientIdHealthPlan[0]], true);
+        if (healthPlans != null) {
+          healthPlans.update(
+              idPatientIdHealthPlan[0], (value) => idPatientIdHealthPlan[1],
+              ifAbsent: () => idPatientIdHealthPlan[1]);
+        } else {
+          healthPlans = {idPatientIdHealthPlan[0]: idPatientIdHealthPlan[1]};
+        }
+      } else {
+        await _eventRepository.updateRelationPatients(event!.id!, [ids], false);
+        healthPlans!.remove(ids);
+      }
+      event = event!.copyWith(healthPlans: healthPlans);
+
+      eventId = await _eventRepository.update(event!);
+
+      await getEvent();
+    } on EventRepositoryException {
+      _message.value = MessageModel(
+        title: 'Erro em EventController',
+        message: 'Não foi possivel salvar o Event',
+        isError: true,
+      );
+    } finally {
+      _loading(false);
+    }
+  }
+
+  String getHealthPlanCode(String patientId) {
+    var patients = event!.patients!;
+    var healthPlans = event!.healthPlans!;
+    var patient = patients.firstWhere((element) => element.id == patientId);
+    var healthPlanThisPatient = patient.healthPlan!
+        .firstWhere((element) => element.id == healthPlans[patientId]);
+    return healthPlanThisPatient.code ?? '...';
+  }
+
+  String getHealthPlanType(String patientId) {
+    var patients = event!.patients!;
+    var healthPlans = event!.healthPlans!;
+    var patient = patients.firstWhere((element) => element.id == patientId);
+    var healthPlanThisPatient = patient.healthPlan!
+        .firstWhere((element) => element.id == healthPlans[patientId]);
+    return healthPlanThisPatient.healthPlanType?.name ?? '...';
   }
 }

@@ -1,8 +1,10 @@
 import 'package:fluxus/app/data/b4a/table/event/event_repository_b4a.dart';
 import 'package:fluxus/app/data/b4a/table/event_status/event_status_repository_b4a.dart';
+import 'package:fluxus/app/data/b4a/table/expertise/expertise_repository_b4a.dart';
 import 'package:fluxus/app/data/b4a/table/room/room_repository_b4a.dart';
 import 'package:fluxus/app/data/repositories/event_repository.dart';
 import 'package:fluxus/app/data/repositories/event_status_repository.dart';
+import 'package:fluxus/app/data/repositories/expertise_repository.dart';
 import 'package:fluxus/app/data/repositories/room_repository.dart';
 import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_controller.dart';
 import 'package:get/get.dart';
@@ -19,12 +21,15 @@ class EventAddEditDependencies implements Bindings {
     Get.lazyPut<EventStatusRepository>(
       () => EventStatusRepositoryB4a(),
     );
-
+    Get.lazyPut<ExpertiseRepository>(
+      () => ExpertiseRepositoryB4a(),
+    );
     Get.put<EventAddEditController>(
       EventAddEditController(
         eventRepository: Get.find(),
         roomRepository: Get.find(),
         eventStatusRepository: Get.find(),
+        expertiseRepository: Get.find(),
       ),
     );
   }
