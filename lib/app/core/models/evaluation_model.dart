@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:fluxus/app/core/utils/drop_down_abstract.dart';
+
 /// Avaliação do paciente.
 /// Ficha padrão com.
 ///
@@ -15,11 +17,11 @@ import 'dart:convert';
 ///
 /// [ x ] A [ x ] B [  ] C
 ///
-class EvaluationModel {
+class EvaluationModel extends DropDrowAbstract {
   final String? id;
   final String? professionalId;
   final String? expertiseId;
-  final String? name;
+  // final String? name;
   final String? description;
   final bool? isPublic;
   final bool? isDeleted;
@@ -27,7 +29,7 @@ class EvaluationModel {
     this.id,
     this.professionalId,
     this.expertiseId,
-    this.name,
+    super.name,
     this.description,
     this.isPublic = false,
     this.isDeleted,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/core/models/evaluation_model.dart';
 import 'package:fluxus/app/view/controllers/evolution/addedit/evolution_addedit_controller.dart';
+import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
 import 'package:get/get.dart';
 
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
@@ -51,6 +53,22 @@ class _EvolutionAddEditPageState extends State<EvolutionAddEditPage> {
                           style: const TextStyle(fontSize: 8),
                         )),
                     const SizedBox(height: 5),
+                    const Text('Especialidade'),
+                    Obx(
+                      () => AppDropDownGeneric<EvaluationModel>(
+                        options: widget
+                            ._evolutionAddEditController.evaluationList
+                            .toList(),
+                        selected: widget
+                            ._evolutionAddEditController.evaluationSelected,
+                        execute: (value) {
+                          widget._evolutionAddEditController
+                              .evaluationSelected = value;
+                          setState(() {});
+                        },
+                        width: 150,
+                      ),
+                    ),
                     AppTextFormField(
                       label: 'Descrição',
                       controller:

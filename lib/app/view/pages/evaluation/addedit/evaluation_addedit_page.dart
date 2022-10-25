@@ -55,7 +55,7 @@ class _EvaluationAddEditPageState extends State<EvaluationAddEditPage> {
                           style: const TextStyle(fontSize: 8),
                         )),
                     const SizedBox(height: 5),
-                    const Text('Ambiente'),
+                    const Text('Especialidade'),
                     Obx(
                       () => AppDropDownGeneric<ExpertiseModel>(
                         options: widget

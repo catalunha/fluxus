@@ -1,17 +1,26 @@
 import 'package:flutter/widgets.dart';
+import 'package:fluxus/app/core/models/evaluation_model.dart';
 import 'package:fluxus/app/core/models/evolution_model.dart';
+import 'package:fluxus/app/data/b4a/entity/evaluation_entity.dart';
 import 'package:fluxus/app/data/b4a/table/evolution/evolution_repository_exception.dart';
+import 'package:fluxus/app/data/repositories/evaluation_repository.dart';
 import 'package:fluxus/app/data/repositories/evolution_repository.dart';
+import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class EvolutionAddEditController extends GetxController
     with LoaderMixin, MessageMixin {
   final EvolutionRepository _evolutionRepository;
+  final EvaluationRepository _evaluationRepository;
+
   EvolutionAddEditController({
     required EvolutionRepository evolutionRepository,
-  }) : _evolutionRepository = evolutionRepository;
+    required EvaluationRepository evaluationRepository,
+  })  : _evolutionRepository = evolutionRepository,
+        _evaluationRepository = evaluationRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
@@ -26,6 +35,12 @@ class EvolutionAddEditController extends GetxController
   final descriptionTec = TextEditingController();
 //--- forms
 
+  List<EvaluationModel> evaluationList = <EvaluationModel>[].obs;
+  final _evaluationSelected = Rxn<EvaluationModel>();
+  EvaluationModel? get evaluationSelected => _evaluationSelected.value;
+  set evaluationSelected(EvaluationModel? newModel) =>
+      _evaluationSelected(newModel);
+
   @override
   void onInit() async {
     print('EvolutionAddEditController');
@@ -33,6 +48,7 @@ class EvolutionAddEditController extends GetxController
     messageListener(_message);
     evolutionId = Get.arguments;
     getEvolution();
+    getEvaluation();
     super.onInit();
   }
 
@@ -77,5 +93,17 @@ class EvolutionAddEditController extends GetxController
     } finally {
       _loading(false);
     }
+  }
+
+  void getEvaluation() async {
+    QueryBuilder<ParseObject> query =
+        QueryBuilder<ParseObject>(ParseObject(EvaluationEntity.className));
+    List<EvaluationModel> temp = await _evaluationRepository.list(
+        query,
+        Pagination()
+          ..limit = 20
+          ..page = 1);
+
+    evaluationList.addAll(temp);
   }
 }
