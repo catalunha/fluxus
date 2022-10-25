@@ -73,17 +73,19 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               validator:
                                   Validatorless.required('Nome é obrigatório'),
                             ),
-                            Obx(() => CheckboxListTile(
-                                  title: const Text("* É do sexo feminimo ?"),
-                                  onChanged: (value) {
-                                    // setState(() {
-                                    //   _isFemale = value!;
-                                    // });
-                                    _clientAddEditController.isFemale =
-                                        value ?? false;
-                                  },
-                                  value: _clientAddEditController.isFemale,
-                                )),
+                            Obx(
+                              () => CheckboxListTile(
+                                title: const Text("* É do sexo feminimo ?"),
+                                onChanged: (value) {
+                                  // setState(() {
+                                  //   _isFemale = value!;
+                                  // });
+                                  _clientAddEditController.isFemale =
+                                      value ?? false;
+                                },
+                                value: _clientAddEditController.isFemale,
+                              ),
+                            ),
                             AppCalendarButton(
                               title: "* Data de nascimento.",
                               getDate: () =>

@@ -1,6 +1,8 @@
 import 'package:fluxus/app/view/controllers/client/addedit/client_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/client/search/client_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/client/view/client_view_dependencies.dart';
+import 'package:fluxus/app/view/controllers/evaluation/addedit/evaluation_addedit_dependencies.dart';
+import 'package:fluxus/app/view/controllers/evaluation/search/evaluation_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/event/search/event_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/health_plan/search/health_plan_search_dependencies.dart';
@@ -15,6 +17,9 @@ import 'package:fluxus/app/view/pages/client/addedit/client_health_plan_addedit_
 import 'package:fluxus/app/view/pages/client/search/client_search_list_page.dart';
 import 'package:fluxus/app/view/pages/client/search/client_search_page.dart';
 import 'package:fluxus/app/view/pages/client/view/client_view_page.dart';
+import 'package:fluxus/app/view/pages/evaluation/addedit/evaluation_addedit_page.dart';
+import 'package:fluxus/app/view/pages/evaluation/search/evaluation_search_list_page.dart';
+import 'package:fluxus/app/view/pages/evaluation/search/evaluation_search_page.dart';
 import 'package:fluxus/app/view/pages/event/addedit/event_addedit_page.dart';
 import 'package:fluxus/app/view/pages/event/search/event_search_list_page.dart';
 import 'package:fluxus/app/view/pages/event/search/event_search_page.dart';
@@ -57,6 +62,10 @@ class Routes {
   static const eventAddEdit = '/event/addedit';
   static const eventSearch = '/event/search';
   static const eventList = '/event/list';
+
+  static const evaluationAddEdit = '/evaluation/addedit';
+  static const evaluationSearch = '/evaluation/search';
+  static const evaluationList = '/evaluation/list';
 
   static final pageList = [
     GetPage(
@@ -143,6 +152,20 @@ class Routes {
     GetPage(
       name: Routes.eventList,
       page: () => EventSearchListPage(),
+    ),
+    GetPage(
+      name: Routes.evaluationAddEdit,
+      binding: EvaluationAddEditDependencies(),
+      page: () => EvaluationAddEditPage(),
+    ),
+    GetPage(
+      name: Routes.evaluationSearch,
+      binding: EvaluationSearchDependencies(),
+      page: () => EvaluationSearchPage(),
+    ),
+    GetPage(
+      name: Routes.evaluationList,
+      page: () => EvaluationSearchListPage(),
     ),
   ];
 }

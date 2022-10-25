@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import 'package:fluxus/app/core/models/expertise_model.dart';
-import 'package:fluxus/app/core/models/profile_model.dart';
-
 /// Avaliação do paciente.
 /// Ficha padrão com.
 ///
@@ -20,26 +17,26 @@ import 'package:fluxus/app/core/models/profile_model.dart';
 ///
 class EvaluationModel {
   final String? id;
-  final ProfileModel? professional;
-  final ExpertiseModel? expertise;
+  final String? professionalId;
+  final String? expertiseId;
   final String? name;
   final String? description;
   final bool? isPublic;
   final bool? isDeleted;
   EvaluationModel({
     this.id,
-    this.professional,
-    this.expertise,
+    this.professionalId,
+    this.expertiseId,
     this.name,
     this.description,
-    this.isPublic,
+    this.isPublic = false,
     this.isDeleted,
   });
 
   EvaluationModel copyWith({
     String? id,
-    ProfileModel? professional,
-    ExpertiseModel? expertise,
+    String? professionalId,
+    String? expertiseId,
     String? name,
     String? description,
     bool? isPublic,
@@ -47,8 +44,8 @@ class EvaluationModel {
   }) {
     return EvaluationModel(
       id: id ?? this.id,
-      professional: professional ?? this.professional,
-      expertise: expertise ?? this.expertise,
+      professionalId: professionalId ?? this.professionalId,
+      expertiseId: expertiseId ?? this.expertiseId,
       name: name ?? this.name,
       description: description ?? this.description,
       isPublic: isPublic ?? this.isPublic,
@@ -62,11 +59,11 @@ class EvaluationModel {
     if (id != null) {
       result.addAll({'id': id});
     }
-    if (professional != null) {
-      result.addAll({'professional': professional!.toMap()});
+    if (professionalId != null) {
+      result.addAll({'professionalId': professionalId});
     }
-    if (expertise != null) {
-      result.addAll({'expertise': expertise!.toMap()});
+    if (expertiseId != null) {
+      result.addAll({'expertiseId': expertiseId});
     }
     if (name != null) {
       result.addAll({'name': name});
@@ -87,12 +84,8 @@ class EvaluationModel {
   factory EvaluationModel.fromMap(Map<String, dynamic> map) {
     return EvaluationModel(
       id: map['id'],
-      professional: map['professional'] != null
-          ? ProfileModel.fromMap(map['professional'])
-          : null,
-      expertise: map['expertise'] != null
-          ? ExpertiseModel.fromMap(map['expertise'])
-          : null,
+      professionalId: map['professionalId'],
+      expertiseId: map['expertiseId'],
       name: map['name'],
       description: map['description'],
       isPublic: map['isPublic'],
@@ -107,7 +100,7 @@ class EvaluationModel {
 
   @override
   String toString() {
-    return 'EvaluationModel(id: $id, professional: $professional, expertise: $expertise, name: $name, description: $description, isPublic: $isPublic, isDeleted: $isDeleted)';
+    return 'EvaluationModel(id: $id, professionalId: $professionalId, expertiseId: $expertiseId, name: $name, description: $description, isPublic: $isPublic, isDeleted: $isDeleted)';
   }
 
   @override
@@ -116,8 +109,8 @@ class EvaluationModel {
 
     return other is EvaluationModel &&
         other.id == id &&
-        other.professional == professional &&
-        other.expertise == expertise &&
+        other.professionalId == professionalId &&
+        other.expertiseId == expertiseId &&
         other.name == name &&
         other.description == description &&
         other.isPublic == isPublic &&
@@ -127,8 +120,8 @@ class EvaluationModel {
   @override
   int get hashCode {
     return id.hashCode ^
-        professional.hashCode ^
-        expertise.hashCode ^
+        professionalId.hashCode ^
+        expertiseId.hashCode ^
         name.hashCode ^
         description.hashCode ^
         isPublic.hashCode ^

@@ -19,68 +19,89 @@ class HomePage extends StatelessWidget {
           PopMenuButtonPhotoUser(),
         ],
       ),
-      body: Column(
-        children: [
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.person_add),
-              title: const Text('Cadastrar paciente'),
-              onTap: () {
-                Get.toNamed(Routes.clientProfileAddEdit, arguments: null);
-              },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.person_add),
+                title: const Text('Cadastrar paciente'),
+                onTap: () {
+                  Get.toNamed(Routes.clientProfileAddEdit, arguments: null);
+                },
+              ),
             ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.search),
-              title: const Text('Buscar paciente'),
-              subtitle:
-                  const Text('Por Nome, CPF, Telefone, Data de Nascimento'),
-              onTap: () {
-                Get.toNamed(Routes.clientProfileSearch);
-              },
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text('Buscar paciente'),
+                subtitle:
+                    const Text('Por Nome, CPF, Telefone, Data de Nascimento'),
+                onTap: () {
+                  Get.toNamed(Routes.clientProfileSearch);
+                },
+              ),
             ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.search),
-              title: const Text('Buscar paciente'),
-              subtitle: const Text('Por Número do convênio'),
-              onTap: () {
-                Get.toNamed(Routes.healthPlanSearch);
-              },
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text('Buscar paciente'),
+                subtitle: const Text('Por Número do convênio'),
+                onTap: () {
+                  Get.toNamed(Routes.healthPlanSearch);
+                },
+              ),
             ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.search),
-              title: const Text('Buscar Profissional'),
-              subtitle: const Text('Por área'),
-              onTap: () {
-                Get.toNamed(Routes.teamProfileSearch);
-              },
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text('Buscar Profissional'),
+                subtitle: const Text('Por área'),
+                onTap: () {
+                  Get.toNamed(Routes.teamProfileSearch);
+                },
+              ),
             ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.event),
-              title: const Text('Cadastrar evento'),
-              onTap: () {
-                Get.toNamed(Routes.eventAddEdit, arguments: null);
-              },
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.event),
+                title: const Text('Cadastrar evento'),
+                onTap: () {
+                  Get.toNamed(Routes.eventAddEdit, arguments: null);
+                },
+              ),
             ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.search),
-              title: const Text('Buscar Evento'),
-              subtitle: const Text('Por ...'),
-              onTap: () {
-                Get.toNamed(Routes.eventSearch);
-              },
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text('Buscar Evento'),
+                subtitle: const Text('Por ...'),
+                onTap: () {
+                  Get.toNamed(Routes.eventSearch);
+                },
+              ),
             ),
-          ),
-        ],
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.add_comment_outlined),
+                title: const Text('Cadastrar Ficha de avaliação'),
+                onTap: () {
+                  Get.toNamed(Routes.evaluationAddEdit, arguments: null);
+                },
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text('Buscar Ficha de avaliação'),
+                subtitle: const Text('Por ...'),
+                onTap: () {
+                  Get.toNamed(Routes.evaluationSearch);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
