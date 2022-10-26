@@ -21,7 +21,7 @@ class EvolutionEntity {
 
     EvolutionModel model = EvolutionModel(
       id: parseObject.objectId!,
-      start: parseObject.get('start'),
+      start: parseObject.get<DateTime>('start')?.toLocal(),
       event: parseObject.get('event'),
       professional: parseObject.get('professional') != null
           ? ProfileEntity().fromParseSimpleData(

@@ -122,7 +122,7 @@ class ProfileEntity {
       id: parseObject.objectId!,
       email: parseObject.get('email'),
       name: parseObject.get('name'),
-      birthday: parseObject.get('birthday'),
+      birthday: parseObject.get<DateTime>('birthday')?.toLocal(),
       phone: parseObject.get('phone'),
       address: parseObject.get('address'),
       cep: parseObject.get('cep'),

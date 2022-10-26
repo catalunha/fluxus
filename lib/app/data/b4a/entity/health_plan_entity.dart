@@ -19,7 +19,7 @@ class HealthPlanEntity {
               .fromParseSimpleData(parseObject.get('profile') as ParseObject)
           : null,
       code: parseObject.get('code'),
-      due: parseObject.get('due'),
+      due: parseObject.get<DateTime>('due')?.toLocal(),
       description: parseObject.get('description'),
       isDeleted: parseObject.get('isDeleted') ?? false,
     );

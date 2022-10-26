@@ -80,8 +80,8 @@ class EventEntity {
           ? EventStatusEntity()
               .fromParse(parseObject.get('status') as ParseObject)
           : null,
-      start: parseObject.get<DateTime>('start')!.toLocal(),
-      end: parseObject.get<DateTime>('end')!.toLocal(),
+      start: parseObject.get<DateTime>('start')?.toLocal(),
+      end: parseObject.get<DateTime>('end')?.toLocal(),
       // start: parseObject
       //     .get<DateTime>('start')!
       //     .subtract(const Duration(hours: 3)),
@@ -161,8 +161,8 @@ class EventEntity {
           : null,
       // parseObject.set('start', model.start!.subtract(const Duration(hours: 3)));
 
-      start: parseObject.get<DateTime>('start'),
-      end: parseObject.get<DateTime>('end'),
+      start: parseObject.get<DateTime>('start')?.toLocal(),
+      end: parseObject.get<DateTime>('end')?.toLocal(),
       // start: parseObject
       //     .get<DateTime>('start')!
       //     .subtract(const Duration(hours: 3)),
