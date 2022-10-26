@@ -10,7 +10,7 @@ import 'package:fluxus/app/core/models/room_model.dart';
 class EventModel {
   final String? id;
   final List<ProfileModel>? professionals;
-  final Map<String, String>? expertises; // Especialidade
+  final Map<String, String>? procedures; // procedimento
   final List<ProfileModel>? patients;
   final Map<String, String>? healthPlans; // Convenios
   final String? autorization;
@@ -26,7 +26,7 @@ class EventModel {
   EventModel({
     this.id,
     this.professionals,
-    this.expertises,
+    this.procedures,
     this.patients,
     this.healthPlans,
     this.autorization,
@@ -43,7 +43,7 @@ class EventModel {
   EventModel copyWith({
     String? id,
     List<ProfileModel>? professionals,
-    Map<String, String>? expertises,
+    Map<String, String>? procedures,
     List<ProfileModel>? patients,
     Map<String, String>? healthPlans,
     String? autorization,
@@ -59,7 +59,7 @@ class EventModel {
     return EventModel(
       id: id ?? this.id,
       professionals: professionals ?? this.professionals,
-      expertises: expertises ?? this.expertises,
+      procedures: procedures ?? this.procedures,
       patients: patients ?? this.patients,
       healthPlans: healthPlans ?? this.healthPlans,
       autorization: autorization ?? this.autorization,
@@ -84,8 +84,8 @@ class EventModel {
       result.addAll(
           {'professionals': professionals!.map((x) => x.toMap()).toList()});
     }
-    if (expertises != null) {
-      result.addAll({'expertises': expertises});
+    if (procedures != null) {
+      result.addAll({'procedures': procedures});
     }
     if (patients != null) {
       result.addAll({'patients': patients!.map((x) => x.toMap()).toList()});
@@ -131,7 +131,7 @@ class EventModel {
           ? List<ProfileModel>.from(
               map['professionals']?.map((x) => ProfileModel.fromMap(x)))
           : null,
-      expertises: Map<String, String>.from(map['expertises']),
+      procedures: Map<String, String>.from(map['procedures']),
       patients: map['patients'] != null
           ? List<ProfileModel>.from(
               map['patients']?.map((x) => ProfileModel.fromMap(x)))
@@ -162,7 +162,7 @@ class EventModel {
 
   @override
   String toString() {
-    return 'EventModel(id: $id, professionals: $professionals, expertises: $expertises, patients: $patients, healthPlans: $healthPlans, autorization: $autorization, fatura: $fatura, room: $room, start: $start, end: $end, status: $status, log: $log, description: $description, isDeleted: $isDeleted)';
+    return 'EventModel(id: $id, professionals: $professionals, procedures: $procedures, patients: $patients, healthPlans: $healthPlans, autorization: $autorization, fatura: $fatura, room: $room, start: $start, end: $end, status: $status, log: $log, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
@@ -172,7 +172,7 @@ class EventModel {
     return other is EventModel &&
         other.id == id &&
         listEquals(other.professionals, professionals) &&
-        mapEquals(other.expertises, expertises) &&
+        mapEquals(other.procedures, procedures) &&
         listEquals(other.patients, patients) &&
         mapEquals(other.healthPlans, healthPlans) &&
         other.autorization == autorization &&
@@ -190,7 +190,7 @@ class EventModel {
   int get hashCode {
     return id.hashCode ^
         professionals.hashCode ^
-        expertises.hashCode ^
+        procedures.hashCode ^
         patients.hashCode ^
         healthPlans.hashCode ^
         autorization.hashCode ^

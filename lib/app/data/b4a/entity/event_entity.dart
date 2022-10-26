@@ -29,12 +29,12 @@ class EventEntity {
     //--- get professionals
 
     //+++ get expertises
-    Map<String, String>? expertises = <String, String>{};
+    Map<String, String>? procedures = <String, String>{};
     Map<String, dynamic>? tempClass =
-        parseObject.get<Map<String, dynamic>>('expertises');
+        parseObject.get<Map<String, dynamic>>('procedures');
     if (tempClass != null) {
       for (var item in tempClass.entries) {
-        expertises[item.key] = item.value;
+        procedures[item.key] = item.value;
       }
     }
     //--- get expertises
@@ -61,13 +61,14 @@ class EventEntity {
       }
     }
     // --- get healthPlans
-    log('${parseObject.get('room')}', name: 'EventEntity');
-    log('${RoomEntity().fromParse(parseObject.get('room') as ParseObject)}',
-        name: 'EventEntity');
+    // log('${parseObject.get('room')}', name: 'EventEntity');
+    // log('${RoomEntity().fromParse(parseObject.get('room') as ParseObject)}',
+    // name: 'EventEntity')
+    log('${parseObject.get('start')}', name: 'EventEntity.fromParse');
     EventModel model = EventModel(
       id: parseObject.objectId!,
       professionals: professionalsList,
-      expertises: expertises,
+      procedures: procedures,
       patients: patientsList,
       healthPlans: healthPlans,
       autorization: parseObject.get('autorization'),
@@ -79,8 +80,12 @@ class EventEntity {
           ? EventStatusEntity()
               .fromParse(parseObject.get('status') as ParseObject)
           : null,
-      start: parseObject.get('start'),
-      end: parseObject.get('end'),
+      start: parseObject.get<DateTime>('start')!.toLocal(),
+      end: parseObject.get<DateTime>('end')!.toLocal(),
+      // start: parseObject
+      //     .get<DateTime>('start')!
+      //     .subtract(const Duration(hours: 3)),
+      // end: parseObject.get<DateTime>('end')!.subtract(const Duration(hours: 3)),
       log: parseObject.get('log'),
       description: parseObject.get('description'),
       isDeleted: parseObject.get('isDeleted') ?? false,
@@ -154,8 +159,14 @@ class EventEntity {
           ? EventStatusEntity()
               .fromParse(parseObject.get('status') as ParseObject)
           : null,
-      start: parseObject.get('start'),
-      end: parseObject.get('end'),
+      // parseObject.set('start', model.start!.subtract(const Duration(hours: 3)));
+
+      start: parseObject.get<DateTime>('start'),
+      end: parseObject.get<DateTime>('end'),
+      // start: parseObject
+      //     .get<DateTime>('start')!
+      //     .subtract(const Duration(hours: 3)),
+      // end: parseObject.get<DateTime>('end')!.subtract(const Duration(hours: 3)),
       log: parseObject.get('log'),
       description: parseObject.get('description'),
       isDeleted: parseObject.get('isDeleted') ?? false,
@@ -168,13 +179,13 @@ class EventEntity {
     if (model.id != null) {
       parseObject.objectId = model.id;
     }
-    if (model.expertises != null) {
+    if (model.procedures != null) {
       // profileParseObject.set<Map<String, dynamic>>('expertises', model.expertises!);
       var data = <String, dynamic>{};
-      for (var item in model.expertises!.entries) {
+      for (var item in model.procedures!.entries) {
         data[item.key] = item.value;
       }
-      parseObject.set('expertises', data);
+      parseObject.set('procedures', data);
     }
     if (model.healthPlans != null) {
       // profileParseObject.set<Map<String, dynamic>>('healthPlans', model.healthPlans!);
@@ -197,10 +208,13 @@ class EventEntity {
               .toPointer());
     }
     if (model.start != null) {
-      parseObject.set('start', model.start!.subtract(const Duration(hours: 3)));
+      log('${model.start}', name: 'EventEntity.toParse');
+      parseObject.set('start', model.start);
+      // parseObject.set('start', model.start!.subtract(const Duration(hours: 3)));
     }
     if (model.end != null) {
-      parseObject.set('end', model.end!.subtract(const Duration(hours: 3)));
+      parseObject.set('end', model.end);
+      // parseObject.set('end', model.end!.subtract(const Duration(hours: 3)));
     }
     if (model.status != null) {
       parseObject.set(

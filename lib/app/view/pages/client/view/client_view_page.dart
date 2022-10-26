@@ -165,7 +165,7 @@ class ClientViewPage extends StatelessWidget {
                         ),
                         expertiseList(profileModel),
                         const Text(
-                          'Procedimento: ',
+                          'Procedimentos: ',
                           style: TextStyle(color: Colors.blueGrey),
                         ),
                         procedureList(profileModel),

@@ -4,14 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/event_model.dart';
 import 'package:fluxus/app/core/models/evolution_model.dart';
-import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/models/procedure_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
 import 'package:fluxus/app/data/b4a/table/event/event_repository_exception.dart';
 import 'package:fluxus/app/data/repositories/event_repository.dart';
 import 'package:fluxus/app/data/repositories/event_status_repository.dart';
 import 'package:fluxus/app/data/repositories/evolution_repository.dart';
-import 'package:fluxus/app/data/repositories/expertise_repository.dart';
+import 'package:fluxus/app/data/repositories/procedure_repository.dart';
 import 'package:fluxus/app/data/repositories/room_repository.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
@@ -23,18 +23,18 @@ class EventAddEditController extends GetxController
   final EventRepository _eventRepository;
   final RoomRepository _roomRepository;
   final EventStatusRepository _eventStatusRepository;
-  final ExpertiseRepository _expertiseRepository;
+  final ProcedureRepository _procedureRepository;
   final EvolutionRepository _evolutionRepository;
   EventAddEditController({
     required EventRepository eventRepository,
     required RoomRepository roomRepository,
     required EventStatusRepository eventStatusRepository,
-    required ExpertiseRepository expertiseRepository,
+    required ProcedureRepository procedureRepository,
     required EvolutionRepository evolutionRepository,
   })  : _eventRepository = eventRepository,
         _roomRepository = roomRepository,
         _eventStatusRepository = eventStatusRepository,
-        _expertiseRepository = expertiseRepository,
+        _procedureRepository = procedureRepository,
         _evolutionRepository = evolutionRepository;
 
   final _loading = false.obs;
@@ -104,10 +104,10 @@ class EventAddEditController extends GetxController
   set eventStatusSelected(EventStatusModel? newModel) =>
       _eventStatusSelected(newModel);
 
-  var expertiseList = <ExpertiseModel>[].obs;
-  final _expertiseModelSelected = Rxn<ExpertiseModel>();
-  ExpertiseModel? get expertiseModelSelected => _expertiseModelSelected.value;
-  set expertiseModelSelected(ExpertiseModel? newModel) =>
+  var procedureList = <ProcedureModel>[].obs;
+  final _expertiseModelSelected = Rxn<ProcedureModel>();
+  ProcedureModel? get expertiseModelSelected => _expertiseModelSelected.value;
+  set expertiseModelSelected(ProcedureModel? newModel) =>
       _expertiseModelSelected(newModel);
 
   String? eventId;
@@ -125,7 +125,7 @@ class EventAddEditController extends GetxController
     messageListener(_message);
     getRoomList();
     getEventStatusList();
-    getExpertiseList();
+    getProcedureList();
     getStartDateList();
     eventId = Get.arguments;
     log(eventId ?? 'null', name: 'EventAddEditController');
@@ -143,18 +143,19 @@ class EventAddEditController extends GetxController
     eventStatusList(all);
   }
 
-  getExpertiseList() async {
-    List<ExpertiseModel> all = await _expertiseRepository.list();
-    expertiseList(all);
+  getProcedureList() async {
+    List<ProcedureModel> all = await _procedureRepository.list();
+    procedureList(all);
   }
 
   Future<void> getEvent() async {
     // _loading(true);
     if (eventId != null) {
-      log('+++', name: 'getEvent');
+      log('${event?.start}', name: 'getEvent1');
       EventModel? eventModelTemp = await _eventRepository.readById(eventId!);
-      log('==1>>>> ${eventModelTemp!.start}', name: 'getEvent');
+      log('${eventModelTemp!.start}', name: 'getEvent2');
       event = eventModelTemp;
+      log('${event?.start}', name: 'getEvent3');
       onSetDates();
       onSetRoom();
       onSetStatus();
@@ -183,6 +184,7 @@ class EventAddEditController extends GetxController
 
   void onSetDates() {
     _dateStart(event?.start);
+    log('$dateStart', name: 'onSetDates1');
     if (dateStart != null) {
       startDateDropDrowSelected = startDateList.firstWhereOrNull((element) =>
           element.hour == dateStart!.hour &&
@@ -286,7 +288,7 @@ class EventAddEditController extends GetxController
                 start: onMountDateStart(),
                 event: eventIdTemp,
                 professional: professional,
-                expertise: event!.expertises![professional.id],
+                expertise: event!.procedures![professional.id],
                 patient: patient,
               );
               log(evolutionModel.toString(), name: 'EvolutionModel');
@@ -310,37 +312,45 @@ class EventAddEditController extends GetxController
     }
   }
 
-//HEGkYcanUF 0yvOXKwqnw
+//a4HhGpRLLx s11b6r3tDv
   Future<void> updateProfissionals({
     required String ids,
     required bool add,
   }) async {
     try {
       _loading(true);
-      Map<String, String>? expertises = event?.expertises;
+      Map<String, String>? procedures = event?.procedures;
       if (add) {
-        List<String> idProfissionalIdExpertise = ids.split(' ');
+        List<String> idProfissionalIdProcedure = ids.split(' ');
         await _eventRepository.updateRelationProfessionals(
-            event!.id!, [idProfissionalIdExpertise[0]], true);
-        if (expertises != null) {
-          expertises.update(idProfissionalIdExpertise[0],
-              (value) => idProfissionalIdExpertise[1],
-              ifAbsent: () => idProfissionalIdExpertise[1]);
+            event!.id!, [idProfissionalIdProcedure[0]], true);
+        if (procedures != null) {
+          procedures.update(idProfissionalIdProcedure[0],
+              (value) => idProfissionalIdProcedure[1],
+              ifAbsent: () => idProfissionalIdProcedure[1]);
         } else {
-          expertises = {
-            idProfissionalIdExpertise[0]: idProfissionalIdExpertise[1]
+          procedures = {
+            idProfissionalIdProcedure[0]: idProfissionalIdProcedure[1]
           };
         }
       } else {
         await _eventRepository.updateRelationProfessionals(
             event!.id!, [ids], false);
-        expertises!.remove(ids);
+        procedures!.remove(ids);
       }
-      event = event!.copyWith(expertises: expertises);
+      log('${event?.start}', name: 'updateProfissionals1');
+      log('${event?.end}', name: 'updateProfissionals1');
+      event = event!.copyWith(procedures: procedures);
+      log('${event?.start}', name: 'updateProfissionals2');
+      log('${event?.end}', name: 'updateProfissionals2');
 
       eventId = await _eventRepository.update(event!);
+      log('${event?.start}', name: 'updateProfissionals3');
+      log('${event?.end}', name: 'updateProfissionals3');
 
       await getEvent();
+      log('${event?.start}', name: 'updateProfissionals4');
+      log('${event?.end}', name: 'updateProfissionals4');
     } on EventRepositoryException {
       _message.value = MessageModel(
         title: 'Erro em EventController',
@@ -352,10 +362,12 @@ class EventAddEditController extends GetxController
     }
   }
 
-  String getExpertiseName(String expertiseId) {
-    var expertiseModelSelected =
-        expertiseList.firstWhere((element) => element.id == expertiseId);
-    return expertiseModelSelected.name!;
+  String getProcedureName(String procedureId) {
+    // log(procedureId, name: 'getProcedureName');
+    // log('$procedureList', name: 'getProcedureName');
+    var procedureModelSelected =
+        procedureList.firstWhere((element) => element.id == procedureId);
+    return procedureModelSelected.name!;
   }
 
 //a4HhGpRLLx UIhi3dwq8y
@@ -397,21 +409,36 @@ class EventAddEditController extends GetxController
     }
   }
 
-  String getHealthPlanCode(String patientId) {
+  String getHealthPlan(String patientId, String getFieldName) {
     var patients = event!.patients!;
     var healthPlans = event!.healthPlans!;
     var patient = patients.firstWhere((element) => element.id == patientId);
     var healthPlanThisPatient = patient.healthPlan!
         .firstWhere((element) => element.id == healthPlans[patientId]);
-    return healthPlanThisPatient.code ?? '...';
+    if (getFieldName == 'code') {
+      return healthPlanThisPatient.code ?? '...';
+    } else if (getFieldName == 'name') {
+      return healthPlanThisPatient.healthPlanType?.name ?? '...';
+    } else {
+      return healthPlanThisPatient.healthPlanType?.id ?? '...';
+    }
   }
 
-  String getHealthPlanType(String patientId) {
-    var patients = event!.patients!;
-    var healthPlans = event!.healthPlans!;
-    var patient = patients.firstWhere((element) => element.id == patientId);
-    var healthPlanThisPatient = patient.healthPlan!
-        .firstWhere((element) => element.id == healthPlans[patientId]);
-    return healthPlanThisPatient.healthPlanType?.name ?? '...';
-  }
+  // String getHealthPlanType(String patientId) {
+  //   var patients = event!.patients!;
+  //   var healthPlans = event!.healthPlans!;
+  //   var patient = patients.firstWhere((element) => element.id == patientId);
+  //   var healthPlanThisPatient = patient.healthPlan!
+  //       .firstWhere((element) => element.id == healthPlans[patientId]);
+  //   return healthPlanThisPatient.healthPlanType?.name ?? '...';
+  // }
+
+  // String getHealthPlanId(String patientId) {
+  //   var patients = event!.patients!;
+  //   var healthPlans = event!.healthPlans!;
+  //   var patient = patients.firstWhere((element) => element.id == patientId);
+  //   var healthPlanThisPatient = patient.healthPlan!
+  //       .firstWhere((element) => element.id == healthPlans[patientId]);
+  //   return healthPlanThisPatient.healthPlanType?.id ?? '...';
+  // }
 }

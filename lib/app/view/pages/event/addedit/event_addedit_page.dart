@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
+import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_controller.dart';
 import 'package:fluxus/app/view/pages/event/addedit/part/event_add_ids.dart';
 import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
@@ -166,6 +167,11 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        IconButton(
+                            onPressed: () {
+                              Get.toNamed(Routes.teamProfileSearch);
+                            },
+                            icon: const Icon(Icons.search)),
                         const Text('Profissionais'),
                         IconButton(
                           onPressed: () async {
@@ -203,6 +209,11 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        IconButton(
+                            onPressed: () {
+                              Get.toNamed(Routes.clientProfileSearch);
+                            },
+                            icon: const Icon(Icons.search)),
                         const Text('Pacientes'),
                         IconButton(
                           onPressed: () async {
@@ -300,12 +311,17 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                                   value: '${e.id}',
                                 ),
                                 AppTextTitleValue(
-                                  title: 'Especialidade: ',
+                                  title: 'Procedimento: ',
                                   value: widget._eventAddEditController
-                                      .getExpertiseName(widget
+                                      .getProcedureName(widget
                                           ._eventAddEditController
                                           .event!
-                                          .expertises![e.id]!),
+                                          .procedures![e.id]!),
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Procedimento Id: ',
+                                  value:
+                                      '${widget._eventAddEditController.event!.procedures![e.id]}',
                                 ),
                               ],
                             ),
@@ -358,12 +374,17 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                                 AppTextTitleValue(
                                   title: 'Convênio tipo: ',
                                   value: widget._eventAddEditController
-                                      .getHealthPlanType(e.id!),
+                                      .getHealthPlan(e.id!, 'name'),
                                 ),
                                 AppTextTitleValue(
                                   title: 'Convênio código: ',
                                   value: widget._eventAddEditController
-                                      .getHealthPlanCode(e.id!),
+                                      .getHealthPlan(e.id!, 'code'),
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Convênio Id: ',
+                                  value: widget._eventAddEditController
+                                      .getHealthPlan(e.id!, 'id'),
                                 ),
                               ],
                             ),

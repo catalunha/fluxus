@@ -6,6 +6,7 @@ class ProcedureEntity {
   static const String className = 'Procedure';
 
   ProcedureModel fromParse(ParseObject parseObject) {
+    // log('${parseObject.get('cost')}', name: 'ProcedureEntity.fromParse');
     ProcedureModel expertiseModel = ProcedureModel(
       id: parseObject.objectId!,
       expertise: parseObject.get('expertise') != null
@@ -14,7 +15,7 @@ class ProcedureEntity {
           : null,
       name: parseObject.get('name'),
       code: parseObject.get('code'),
-      cost: parseObject.get('cost'),
+      cost: double.tryParse(parseObject.get<dynamic>('cost').toString()) ?? 0.0,
     );
     return expertiseModel;
   }
