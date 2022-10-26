@@ -1,10 +1,12 @@
 import 'package:fluxus/app/core/models/expertise_model.dart';
 import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/office_model.dart';
+import 'package:fluxus/app/core/models/procedure_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/entity/expertise_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/health_plan_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/office_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/procedure_entity.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class ProfileEntity {
@@ -27,7 +29,23 @@ class ProfileEntity {
       ];
     }
     //--- get expertises
-
+    //+++ get procedure
+    List<ProcedureModel> procedureList = [];
+    QueryBuilder<ParseObject> queryProdecure =
+        QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
+    queryProdecure.whereRelatedTo(
+        'procedure', 'Profile', parseObject.objectId!);
+    // queryProdecure.includeObject(['expertise']);
+    final ParseResponse responseProdecure = await queryProdecure.query();
+    if (responseProdecure.success && responseProdecure.results != null) {
+      procedureList = [
+        ...responseProdecure.results!
+            .map<ProcedureModel>(
+                (e) => ProcedureEntity().fromParse(e as ParseObject))
+            .toList()
+      ];
+    }
+    //--- get procedure
     //+++ get office
     List<OfficeModel> officeList = [];
     QueryBuilder<ParseObject> queryOffice =
@@ -116,10 +134,11 @@ class ProfileEntity {
       isActive: parseObject.get('isActive') ?? false,
       isDeleted: parseObject.get('isDeleted') ?? false,
       isFemale: parseObject.get('isFemale') ?? false,
+      family: familyList,
+      healthPlan: healthPlanList,
+      procedure: procedureList,
       expertise: expertiseList,
       office: officeList,
-      healthPlan: healthPlanList,
-      family: familyList,
       // children: childrenList,
     );
     return profileModel;

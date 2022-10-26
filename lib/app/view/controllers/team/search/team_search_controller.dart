@@ -1,6 +1,8 @@
+import 'package:fluxus/app/core/models/office_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/entity/office_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
+import 'package:fluxus/app/data/repositories/office_repository.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
@@ -12,9 +14,17 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class TeamSearchController extends GetxController
     with LoaderMixin, MessageMixin {
   final ProfileRepository _profileRepository;
+  final OfficeRepository _officeRepository;
   TeamSearchController({
     required ProfileRepository profileRepository,
-  }) : _profileRepository = profileRepository;
+    required OfficeRepository officeRepository,
+  })  : _profileRepository = profileRepository,
+        _officeRepository = officeRepository;
+  @override
+  void onReady() {
+    getAllOffice();
+    super.onReady();
+  }
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
@@ -24,8 +34,11 @@ class TeamSearchController extends GetxController
   final _lastPage = false.obs;
   get lastPage => _lastPage.value;
 
+  List<OfficeModel> officeList = <OfficeModel>[].obs;
+
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+
   @override
   void onInit() {
     teamProfileList.clear();
@@ -33,7 +46,6 @@ class TeamSearchController extends GetxController
     ever(_pagination, (_) async => await listAll());
     loaderListener(_loading);
     messageListener(_message);
-
     super.onInit();
   }
 
@@ -87,12 +99,24 @@ class TeamSearchController extends GetxController
     }
   }
 
-  Map<String, Office> office = {
-    'wntNbb1000': Office(name: 'Avaliadora', status: false),
-    '4Zr3rIyGUd': Office(name: 'Profissional', status: false),
-    'X4IeGQuXAF': Office(name: 'Nutrição', status: false),
-    '5HAGAKmBnF': Office(name: 'Psicologia', status: false),
-  };
+  Future<void> getAllOffice() async {
+    _loading(true);
+
+    List<OfficeModel> temp = await _officeRepository.list();
+    officeList.addAll(temp);
+    for (var office in officeList) {
+      officeOptions[office.id!] = Office(name: office.name!, status: false);
+    }
+    _loading(false);
+  }
+
+  var officeOptions = <String, Office>{}.obs;
+  // Map<String, Office> office = {
+  //   'wntNbb1000': Office(name: 'Avaliadora', status: false),
+  //   '4Zr3rIyGUd': Office(name: 'Profissional', status: false),
+  //   'X4IeGQuXAF': Office(name: 'Nutrição', status: false),
+  //   '5HAGAKmBnF': Office(name: 'Psicologia', status: false),
+  // };
 }
 
 class Office {

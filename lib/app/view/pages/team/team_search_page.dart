@@ -23,36 +23,31 @@ class _SearchPageState extends State<TeamSearchPage> {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 400),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Card(
-                  child: Column(
-                    children: widget._teamSearchController.office.entries.map(
-                      (e) {
-                        return Row(
-                          children: [
-                            Checkbox(
-                              value: e.value.status,
-                              onChanged: (value) {
-                                setState(() {
-                                  e.value.status = value!;
-                                });
-                              },
+            child: Obx(() => Column(
+                  children:
+                      widget._teamSearchController.officeOptions.entries.map(
+                    (e) {
+                      return Row(
+                        children: [
+                          Checkbox(
+                            value: e.value.status,
+                            onChanged: (value) {
+                              setState(() {
+                                e.value.status = value!;
+                              });
+                            },
+                          ),
+                          Expanded(
+                            child: ListTile(
+                              title: Text(e.value.name),
                             ),
-                            Expanded(
-                              child: ListTile(
-                                title: Text(e.value.name),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ).toList(),
-                  ),
-                ),
-                const SizedBox(height: 100)
-              ],
-            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ).toList(),
+                )),
+            // const SizedBox(height: 100)
           ),
         ),
       ),
@@ -61,7 +56,7 @@ class _SearchPageState extends State<TeamSearchPage> {
         child: const Icon(AppIconData.search),
         onPressed: () async {
           widget._teamSearchController
-              .search(widget._teamSearchController.office);
+              .search(widget._teamSearchController.officeOptions);
         },
       ),
     );

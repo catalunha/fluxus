@@ -16,7 +16,7 @@ marciocatalunha@gmail.com
 https://calendar.google.com/calendar/u/0/r/eventedit?text=Prele%C3%A7%C3%B5es+Sola+Fide&dates=20221015T120000000Z/20221016T140000000Z&details=Confira+seus+ingresos+na+Sympla.%0A%0A-+Acesse+o+menu+%22Ingressos%22+no+site+ou+aplicativo+da+Sympla+e+crie+uma+conta+ou+fa%C3%A7a+login+utilizando+o+seu+email.%0Ahttps://www.sympla.com.br/meus-ingressos%0A%0A-+Para+mais+informa%C3%A7%C3%B5es+sobre+o+evento+acesse:%0Ahttps://www.sympla.com.br/evento/prelecoes-sola-fide/1730373%0A&location=Quadra+208+Sul+Alameda+15,+1,+Palmas+TO,+BRASIL&ctz=America/Sao_Paulo
 
 
-# Busca Agenda
+# +++ Busca Agenda
 
 catalunha@pop-os:~/myapp$ flutter create --project-name=fluxus --org br.net.cemec --platforms android,web ./fluxus
 
@@ -27,3 +27,7 @@ qsRservationEspacos = Reserva.objects.filter(
     Q(status=1)
 )
 
+# --- Busca Agenda
+
+Cargos tá ok
+Áreas: psicologia, nutrição, fisioterapia, fonoaudiologia, terapia ocupacional, psicopedagogia, musicalização

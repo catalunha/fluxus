@@ -165,7 +165,12 @@ class ClientViewPage extends StatelessWidget {
                         ),
                         expertiseList(profileModel),
                         const Text(
-                          'Ocupações: ',
+                          'Procedimento: ',
+                          style: TextStyle(color: Colors.blueGrey),
+                        ),
+                        procedureList(profileModel),
+                        const Text(
+                          'Funções: ',
                           style: TextStyle(color: Colors.blueGrey),
                         ),
                         officeList(profileModel),
@@ -333,6 +338,43 @@ class ClientViewPage extends StatelessWidget {
       );
     } else {
       return const Text('...');
+    }
+  }
+
+  Widget procedureList(ProfileModel profileModel) {
+    if (profileModel.procedure != null) {
+      return Column(
+        children: [
+          ...profileModel.procedure!
+              .map((e) => InkWell(
+                    child: Card(
+                      child: SizedBox(
+                        width: 300,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppTextTitleValue(
+                                title: 'Code: ',
+                                value: '${e.code}',
+                              ),
+                              AppTextTitleValue(
+                                title: 'Nome: ',
+                                value: '${e.name}',
+                              ),
+                              AppTextTitleValue(
+                                title: 'id: ',
+                                value: '${e.id}',
+                              ),
+                            ]),
+                      ),
+                    ),
+                    onTap: () => copy('${profileModel.id!} ${e.id!}'),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return Container();
     }
   }
 

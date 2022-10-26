@@ -175,11 +175,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
 
                     const SizedBox(height: 5),
+                    const Text('Suas Funções'),
+                    officeList(),
+                    const SizedBox(height: 5),
                     const Text('Suas especialidades'),
                     expertiseList(),
                     const SizedBox(height: 5),
-                    const Text('Suas funcões'),
-                    officeList(),
+                    const Text('Seus procedimentos'),
+                    procedureList(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -296,7 +299,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           ...widget._profileController.profile!.expertise!
               .map((e) => SizedBox(
-                    width: double.infinity,
+                    width: 300,
                     child: Card(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -327,13 +330,50 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  Widget procedureList() {
+    if (widget._profileController.profile?.procedure != null) {
+      return Column(
+        children: [
+          ...widget._profileController.profile!.procedure!
+              .map((e) => SizedBox(
+                    width: 300,
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppTextTitleValue(
+                                title: 'Code: ',
+                                value: '${e.code}',
+                              ),
+                              AppTextTitleValue(
+                                title: 'Nome: ',
+                                value: '${e.name}',
+                              ),
+                              AppTextTitleValue(
+                                title: 'id: ',
+                                value: '${e.id}',
+                              ),
+                            ]),
+                      ),
+                    ),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
   Widget officeList() {
     if (widget._profileController.profile?.office != null) {
       return Column(
         children: [
           ...widget._profileController.profile!.office!
               .map((e) => SizedBox(
-                    width: double.infinity,
+                    width: 300,
                     child: Card(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

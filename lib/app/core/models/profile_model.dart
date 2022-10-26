@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fluxus/app/core/models/expertise_model.dart';
 import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/office_model.dart';
+import 'package:fluxus/app/core/models/procedure_model.dart';
 
 // Perfil de usuario ou pessoa
 class ProfileModel {
@@ -26,6 +27,7 @@ class ProfileModel {
   // final List<ProfileModel>? children; // crianças que estão ligadas a vc
   final List<HealthPlanModel>? healthPlan; // Convenio
   final List<ExpertiseModel>? expertise; // especialidade
+  final List<ProcedureModel>? procedure; // procedimentos
   final List<OfficeModel>? office; // cargo: Adm, Sec, Aval, Prof, Paciente
 
   final List<String>? routes;
@@ -49,6 +51,7 @@ class ProfileModel {
     this.family,
     this.healthPlan,
     this.expertise,
+    this.procedure,
     this.office,
     this.routes,
     this.isActive,
@@ -73,6 +76,7 @@ class ProfileModel {
     List<ProfileModel>? family,
     List<HealthPlanModel>? healthPlan,
     List<ExpertiseModel>? expertise,
+    List<ProcedureModel>? procedure,
     List<OfficeModel>? office,
     List<String>? routes,
     bool? isActive,
@@ -96,6 +100,7 @@ class ProfileModel {
       family: family ?? this.family,
       healthPlan: healthPlan ?? this.healthPlan,
       expertise: expertise ?? this.expertise,
+      procedure: procedure ?? this.procedure,
       office: office ?? this.office,
       routes: routes ?? this.routes,
       isActive: isActive ?? this.isActive,
@@ -157,6 +162,9 @@ class ProfileModel {
     if (expertise != null) {
       result.addAll({'expertise': expertise!.map((x) => x.toMap()).toList()});
     }
+    if (procedure != null) {
+      result.addAll({'procedure': procedure!.map((x) => x.toMap()).toList()});
+    }
     if (office != null) {
       result.addAll({'office': office!.map((x) => x.toMap()).toList()});
     }
@@ -203,6 +211,10 @@ class ProfileModel {
           ? List<ExpertiseModel>.from(
               map['expertise']?.map((x) => ExpertiseModel.fromMap(x)))
           : null,
+      procedure: map['procedure'] != null
+          ? List<ProcedureModel>.from(
+              map['procedure']?.map((x) => ProcedureModel.fromMap(x)))
+          : null,
       office: map['office'] != null
           ? List<OfficeModel>.from(
               map['office']?.map((x) => OfficeModel.fromMap(x)))
@@ -220,7 +232,7 @@ class ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, userId: $userId, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, register: $register, family: $family, healthPlan: $healthPlan, expertise: $expertise, office: $office, routes: $routes, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'ProfileModel(id: $id, userId: $userId, email: $email, name: $name, phone: $phone, address: $address, cep: $cep, pluscode: $pluscode, photo: $photo, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, description: $description, register: $register, family: $family, healthPlan: $healthPlan, expertise: $expertise, procedure: $procedure, office: $office, routes: $routes, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -245,6 +257,7 @@ class ProfileModel {
         listEquals(other.family, family) &&
         listEquals(other.healthPlan, healthPlan) &&
         listEquals(other.expertise, expertise) &&
+        listEquals(other.procedure, procedure) &&
         listEquals(other.office, office) &&
         listEquals(other.routes, routes) &&
         other.isActive == isActive &&
@@ -270,6 +283,7 @@ class ProfileModel {
         family.hashCode ^
         healthPlan.hashCode ^
         expertise.hashCode ^
+        procedure.hashCode ^
         office.hashCode ^
         routes.hashCode ^
         isActive.hashCode ^
