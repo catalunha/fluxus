@@ -24,6 +24,16 @@ class HomePage extends StatelessWidget {
           children: [
             Card(
               child: ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text('Buscar Profissional'),
+                subtitle: const Text('Por área'),
+                onTap: () {
+                  Get.toNamed(Routes.teamProfileSearch);
+                },
+              ),
+            ),
+            Card(
+              child: ListTile(
                 leading: const Icon(Icons.person_add),
                 title: const Text('Cadastrar paciente'),
                 onTap: () {
@@ -49,16 +59,6 @@ class HomePage extends StatelessWidget {
                 subtitle: const Text('Por Número do convênio'),
                 onTap: () {
                   Get.toNamed(Routes.healthPlanSearch);
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Buscar Profissional'),
-                subtitle: const Text('Por área'),
-                onTap: () {
-                  Get.toNamed(Routes.teamProfileSearch);
                 },
               ),
             ),

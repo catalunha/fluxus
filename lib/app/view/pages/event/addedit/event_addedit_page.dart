@@ -57,30 +57,13 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Obx(() => Text(
-                          'Id: ${widget._eventAddEditController.event?.id}',
-                          style: const TextStyle(fontSize: 8),
-                        )),
                     const SizedBox(height: 5),
-                    AppTextFormField(
-                      label: 'Autorização',
-                      controller:
-                          widget._eventAddEditController.autorizationTec,
-                    ),
-                    AppTextFormField(
-                      label: 'Fatura',
-                      controller: widget._eventAddEditController.faturaTec,
-                    ),
-                    AppTextFormField(
-                      label: 'Descrição',
-                      controller: widget._eventAddEditController.descriptionTec,
-                    ),
-                    Obx(() => Text(widget._eventAddEditController.dateStart
-                            ?.toIso8601String() ??
-                        '...')),
-                    Obx(() => Text(widget._eventAddEditController.dateEnd
-                            ?.toIso8601String() ??
-                        '...')),
+                    // Obx(() => Text(widget._eventAddEditController.dateStart
+                    //         ?.toIso8601String() ??
+                    //     '...')),
+                    // Obx(() => Text(widget._eventAddEditController.dateEnd
+                    //         ?.toIso8601String() ??
+                    //     '...')),
                     AppCalendarButton(
                       title: "Data do atendimento.",
                       getDate: () => widget._eventAddEditController.dateStart,
@@ -88,7 +71,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                           widget._eventAddEditController.dateStart = value,
                       isBirthDay: false,
                     ),
-                    const Text('Horário do atendimento'),
+                    // const Text('Horário do atendimento'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -149,21 +132,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                         width: 150,
                       ),
                     ),
-                    const Text('Status'),
-                    Obx(
-                      () => AppDropDownGeneric<EventStatusModel>(
-                        options: widget._eventAddEditController.eventStatusList
-                            .toList(),
-                        selected:
-                            widget._eventAddEditController.eventStatusSelected,
-                        execute: (value) {
-                          widget._eventAddEditController.eventStatusSelected =
-                              value;
-                          setState(() {});
-                        },
-                        width: 150,
-                      ),
-                    ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -248,6 +217,38 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                       ],
                     ),
                     Obx(() => patientList()),
+                    const Text('Status'),
+                    Obx(
+                      () => AppDropDownGeneric<EventStatusModel>(
+                        options: widget._eventAddEditController.eventStatusList
+                            .toList(),
+                        selected:
+                            widget._eventAddEditController.eventStatusSelected,
+                        execute: (value) {
+                          widget._eventAddEditController.eventStatusSelected =
+                              value;
+                          setState(() {});
+                        },
+                        width: 150,
+                      ),
+                    ),
+                    AppTextFormField(
+                      label: 'Descrição',
+                      controller: widget._eventAddEditController.descriptionTec,
+                    ),
+                    AppTextFormField(
+                      label: 'Autorização',
+                      controller:
+                          widget._eventAddEditController.autorizationTec,
+                    ),
+                    AppTextFormField(
+                      label: 'Fatura',
+                      controller: widget._eventAddEditController.faturaTec,
+                    ),
+
+                    Obx(() => Text(
+                          'Id: ${widget._eventAddEditController.event?.id}',
+                        )),
                     const SizedBox(height: 70),
                   ],
                 ),

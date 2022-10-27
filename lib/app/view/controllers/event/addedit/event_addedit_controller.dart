@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/event_model.dart';
@@ -25,6 +23,7 @@ class EventAddEditController extends GetxController
   final EventStatusRepository _eventStatusRepository;
   final ProcedureRepository _procedureRepository;
   final EvolutionRepository _evolutionRepository;
+
   EventAddEditController({
     required EventRepository eventRepository,
     required RoomRepository roomRepository,
@@ -117,10 +116,15 @@ class EventAddEditController extends GetxController
   final faturaTec = TextEditingController();
   final descriptionTec = TextEditingController();
 //--- forms
+  @override
+  void onReady() {
+    getEvent();
+    super.onReady();
+  }
 
   @override
   void onInit() async {
-    log('+++> EventAddEditController onInit');
+    //log('+++> EventAddEditController onInit');
     loaderListener(_loading);
     messageListener(_message);
     getRoomList();
@@ -128,8 +132,8 @@ class EventAddEditController extends GetxController
     getProcedureList();
     getStartDateList();
     eventId = Get.arguments;
-    log(eventId ?? 'null', name: 'EventAddEditController');
-    getEvent();
+    //log(eventId ?? 'null', name: 'EventAddEditController');
+    // getEvent();
     super.onInit();
   }
 
@@ -149,19 +153,19 @@ class EventAddEditController extends GetxController
   }
 
   Future<void> getEvent() async {
-    // _loading(true);
+    _loading(true);
     if (eventId != null) {
-      log('${event?.start}', name: 'getEvent1');
+      //log('${event?.start}', name: 'getEvent1');
       EventModel? eventModelTemp = await _eventRepository.readById(eventId!);
-      log('${eventModelTemp!.start}', name: 'getEvent2');
+      //log('${eventModelTemp!.start}', name: 'getEvent2');
       event = eventModelTemp;
-      log('${event?.start}', name: 'getEvent3');
+      //log('${event?.start}', name: 'getEvent3');
       onSetDates();
       onSetRoom();
       onSetStatus();
     }
     setFormFieldControllers();
-    // _loading(false);
+    _loading(false);
   }
 
   getStartDateList() {
@@ -184,7 +188,7 @@ class EventAddEditController extends GetxController
 
   void onSetDates() {
     _dateStart(event?.start);
-    log('$dateStart', name: 'onSetDates1');
+    //log('$dateStart', name: 'onSetDates1');
     if (dateStart != null) {
       startDateDropDrowSelected = startDateList.firstWhereOrNull((element) =>
           element.hour == dateStart!.hour &&
@@ -267,20 +271,20 @@ class EventAddEditController extends GetxController
         );
       }
       String eventIdTemp = await _eventRepository.update(event!);
-      log('+++ evolutionModel');
-      log('${event!.status != null}', name: 'EvolutionModel');
-      log('$eventStatusIdPast', name: 'EvolutionModel');
-      log('${status!.id}', name: 'EvolutionModel');
+      //log('+++ evolutionModel');
+      //log('${event!.status != null}', name: 'EvolutionModel');
+      //log('$eventStatusIdPast', name: 'EvolutionModel');
+      //log('${status!.id}', name: 'EvolutionModel');
       if (event!.status != null &&
           eventStatusIdPast != 'turMpAqIVQ' &&
-          status.id == 'turMpAqIVQ') {
-        log('+++ evolutionModel 1 ');
+          status!.id == 'turMpAqIVQ') {
+        //log('+++ evolutionModel 1 ');
 
         if (event!.professionals != null &&
             event!.professionals!.isNotEmpty &&
             event!.patients != null &&
             event!.patients!.isNotEmpty) {
-          log('+++ evolutionModel 2');
+          //log('+++ evolutionModel 2');
 
           for (var professional in event!.professionals!) {
             for (var patient in event!.patients!) {
@@ -291,13 +295,13 @@ class EventAddEditController extends GetxController
                 expertise: event!.procedures![professional.id],
                 patient: patient,
               );
-              log(evolutionModel.toString(), name: 'EvolutionModel');
+              //log(evolutionModel.toString(), name: 'EvolutionModel');
               await _evolutionRepository.update(evolutionModel);
             }
           }
         }
       }
-      log('--- evolutionModel');
+      //log('--- evolutionModel');
 
       eventId = eventIdTemp;
       event = event!.copyWith(id: eventId);
@@ -338,19 +342,19 @@ class EventAddEditController extends GetxController
             event!.id!, [ids], false);
         procedures!.remove(ids);
       }
-      log('${event?.start}', name: 'updateProfissionals1');
-      log('${event?.end}', name: 'updateProfissionals1');
+      //log('${event?.start}', name: 'updateProfissionals1');
+      //log('${event?.end}', name: 'updateProfissionals1');
       event = event!.copyWith(procedures: procedures);
-      log('${event?.start}', name: 'updateProfissionals2');
-      log('${event?.end}', name: 'updateProfissionals2');
+      //log('${event?.start}', name: 'updateProfissionals2');
+      //log('${event?.end}', name: 'updateProfissionals2');
 
       eventId = await _eventRepository.update(event!);
-      log('${event?.start}', name: 'updateProfissionals3');
-      log('${event?.end}', name: 'updateProfissionals3');
+      //log('${event?.start}', name: 'updateProfissionals3');
+      //log('${event?.end}', name: 'updateProfissionals3');
 
       await getEvent();
-      log('${event?.start}', name: 'updateProfissionals4');
-      log('${event?.end}', name: 'updateProfissionals4');
+      //log('${event?.start}', name: 'updateProfissionals4');
+      //log('${event?.end}', name: 'updateProfissionals4');
     } on EventRepositoryException {
       _message.value = MessageModel(
         title: 'Erro em EventController',
@@ -363,8 +367,8 @@ class EventAddEditController extends GetxController
   }
 
   String getProcedureName(String procedureId) {
-    // log(procedureId, name: 'getProcedureName');
-    // log('$procedureList', name: 'getProcedureName');
+    // //log(procedureId, name: 'getProcedureName');
+    // //log('$procedureList', name: 'getProcedureName');
     var procedureModelSelected =
         procedureList.firstWhere((element) => element.id == procedureId);
     return procedureModelSelected.name!;
@@ -414,13 +418,17 @@ class EventAddEditController extends GetxController
     var healthPlans = event!.healthPlans!;
     var patient = patients.firstWhere((element) => element.id == patientId);
     var healthPlanThisPatient = patient.healthPlan!
-        .firstWhere((element) => element.id == healthPlans[patientId]);
-    if (getFieldName == 'code') {
-      return healthPlanThisPatient.code ?? '...';
-    } else if (getFieldName == 'name') {
-      return healthPlanThisPatient.healthPlanType?.name ?? '...';
+        .firstWhereOrNull((element) => element.id == healthPlans[patientId]);
+    if (healthPlanThisPatient != null) {
+      if (getFieldName == 'code') {
+        return healthPlanThisPatient.code ?? '...';
+      } else if (getFieldName == 'name') {
+        return healthPlanThisPatient.healthPlanType?.name ?? '...';
+      } else {
+        return healthPlanThisPatient.healthPlanType?.id ?? '...';
+      }
     } else {
-      return healthPlanThisPatient.healthPlanType?.id ?? '...';
+      return 'Convênio não encontrado';
     }
   }
 

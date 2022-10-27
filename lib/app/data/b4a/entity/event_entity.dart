@@ -64,7 +64,7 @@ class EventEntity {
     // log('${parseObject.get('room')}', name: 'EventEntity');
     // log('${RoomEntity().fromParse(parseObject.get('room') as ParseObject)}',
     // name: 'EventEntity')
-    log('${parseObject.get('start')}', name: 'EventEntity.fromParse');
+    // log('${parseObject.get('start')}', name: 'EventEntity.fromParse');
     EventModel model = EventModel(
       id: parseObject.objectId!,
       professionals: professionalsList,

@@ -1,0 +1,157 @@
+[GETX] GOING TO ROUTE /event/addedit
+[GETX] Instance "RoomRepository" has been created
+[GETX] Instance "EventStatusRepository" has been created
+[GETX] Instance "EventStatusRepository" has been initialized
+[GETX] Instance "ProcedureRepository" has been created
+[GETX] Instance "EvolutionRepository" has been created
+[GETX] Instance "EventAddEditController" has been created
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/Event?where=%7B%22objectId%22:%20%220TtiBQpJ4f%22%7D&include=room,status&limit=1
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/Event?where={"objectId": "0TtiBQpJ4f"}&include=room,status&limit=1
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/Event?where=%7B%22objectId%22:%20%220TtiBQpJ4f%22%7D&include=room,status
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/Event?where={"objectId": "0TtiBQpJ4f"}&include=room,status
+I/flutter ( 5267): ╰--
+[GETX] Instance "EventAddEditController" has been initialized
+D/EGL_emulation( 5267): app_time_stats: avg=169.35ms min=1.74ms max=2867.30ms count=19
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/Room?where=%7B%22isActive%22:%20true,%22isDeleted%22:%20false%7D&order=name
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/Room?where={"isActive": true,"isDeleted": false}&order=name
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/EventStatus?where=%7B%22isDeleted%22:%20false%7D&order=name
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/EventStatus?where={"isDeleted": false}&order=name
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/Procedure?where=%7B%7D&order=name&include=expertise
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/Procedure?where={}&order=name&include=expertise
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: Event
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Payload: [{"className":"Event","objectId":"0TtiBQpJ4f","createdAt":"2022-10-26T19:41:52.079Z","updatedAt":"2022-10-27T12:12:30.785Z","autorization":"a12","fatura":"f1","room":{"__type":"Pointer","className":"Room","objectId":"UnzxtP0WfC"},"start":{"__type":"Date","iso":"2022-10-28T11:00:00.000Z"},"end":{"__type":"Date","iso":"2022-10-28T11:30:00.000Z"},"status":{"__type":"Pointer","className":"EventStatus","objectId":"zoFBVNZ16I"},"log":"+++\n+++2022-10-26 16:41:51.474972\nuser:marciocatalunha@gmail.com\nstart:2022-10-28 08:00:00.000\nend:2022-10-28 08:30:00.000\ndesc:d1\nroom:Sala 1\nstatus:Em espera\n+++2022-10-26 16:58:58.964987\nuser:marciocatalunha@gmail.com\nstart:2022-10-28 08:00:00.000\nend:2022-10-28 08:30:00.000\ndesc:d1\nroom:Sala 1\nstatus:Em espera\n+++2022-10-26 16:59:26.788900\nuser:marciocatalunha@gmail.com\nstart:2022-10-28 08:00:00.000\nend:2022-10-28 08:30:00.000\ndesc:d1\nroom:Sala 1\nstatus:Em espera\n+++2022-1
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/Profile?where=%7B%22$relatedTo%22:%7B%22object%22:%7B%22__type%22:%22Pointer%22,%22className%22:%22Event%22,%22objectId%22:%220TtiBQpJ4f%22%7D,%22key%22:%22professionals%22%7D%7D
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/Profile?where={"$relatedTo":{"object":{"__type":"Pointer","className":"Event","objectId":"0TtiBQpJ4f"},"key":"professionals"}}
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: Event
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Payload: [{"className":"Event","objectId":"0TtiBQpJ4f","createdAt":"2022-10-26T19:41:52.079Z","updatedAt":"2022-10-27T12:12:30.785Z","autorization":"a12","fatura":"f1","room":{"__type":"Pointer","className":"Room","objectId":"UnzxtP0WfC"},"start":{"__type":"Date","iso":"2022-10-28T11:00:00.000Z"},"end":{"__type":"Date","iso":"2022-10-28T11:30:00.000Z"},"status":{"__type":"Pointer","className":"EventStatus","objectId":"zoFBVNZ16I"},"log":"+++\n+++2022-10-26 16:41:51.474972\nuser:marciocatalunha@gmail.com\nstart:2022-10-28 08:00:00.000\nend:2022-10-28 08:30:00.000\ndesc:d1\nroom:Sala 1\nstatus:Em espera\n+++2022-10-26 16:58:58.964987\nuser:marciocatalunha@gmail.com\nstart:2022-10-28 08:00:00.000\nend:2022-10-28 08:30:00.000\ndesc:d1\nroom:Sala 1\nstatus:Em espera\n+++2022-10-26 16:59:26.788900\nuser:marciocatalunha@gmail.com\nstart:2022-10-28 08:00:00.000\nend:2022-10-28 08:30:00.000\ndesc:d1\nroom:Sala 1\nstatus:Em espera\n+++2022-1
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: Procedure
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Payload: [{"className":"Procedure","objectId":"u3P8YEFqxy","createdAt":"2022-10-26T17:01:04.761Z","updatedAt":"2022-10-26T17:01:04.761Z","expertise":{"__type":"Pointer","className":"Expertise","objectId":"2lDDJBJGRK"},"code":"25100181","name":"Assistencia fisioterapeutica ambulatorial paciente c seqüelas traumatismos toraco-abdominais ou pos-operatorio cirurgias toraco-abdominais.","cost":20.62}, {"className":"Procedure","objectId":"XQZWJMP2mh","createdAt":"2022-10-26T17:01:04.761Z","updatedAt":"2022-10-26T17:01:04.761Z","expertise":{"__type":"Pointer","className":"Expertise","objectId":"2lDDJBJGRK"},"code":"25070096","name":"Assistência fisioterapêutica ambulatorial ao paciente com disfunção decorrente de alterações do sistema cardiovascular.","cost":30.91}, {"className":"Procedure","objectId":"UOsDLdwHqO","createdAt":"2022-10-26T17:01:04.761Z","updatedAt":"2022-10-26T17:01:04.761Z","expertise":{"__type":"Pointer","clas
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: Room
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Payload: [{"className":"Room","objectId":"UnzxtP0WfC","createdAt":"2022-10-21T20:16:28.792Z","updatedAt":"2022-10-21T20:16:28.792Z","name":"Sala 1","description":"Sala 1...","isActive":true,"isDeleted":false}, {"className":"Room","objectId":"utd0Udr8WY","createdAt":"2022-10-21T20:16:39.406Z","updatedAt":"2022-10-21T20:16:39.406Z","name":"Sala 2","description":"Sala 2...","isActive":true,"isDeleted":false}]
+I/flutter ( 5267): ╰--
+I/flutter ( 5267):
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: EventStatus
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Payload: [{"className":"EventStatus","objectId":"turMpAqIVQ","createdAt":"2022-10-21T20:57:10.082Z","updatedAt":"2022-10-21T20:57:10.082Z","name":"Atendimento","description":"Atendimento...","isDeleted":false}, {"className":"EventStatus","objectId":"nWrJFX9pDS","createdAt":"2022-10-21T20:56:57.754Z","updatedAt":"2022-10-21T20:56:57.754Z","name":"Avaliação","description":"Avaliação...","isDeleted":false}, {"className":"EventStatus","objectId":"zoFBVNZ16I","createdAt":"2022-10-21T20:56:25.608Z","updatedAt":"2022-10-21T20:56:56.404Z","name":"Em espera","description":"Em espera...","isDeleted":false}]
+I/flutter ( 5267): ╰--
+I/flutter ( 5267):
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: Profile
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Payload: [{"className":"Profile","objectId":"a4HhGpRLLx","createdAt":"2022-10-11T16:50:37.831Z","updatedAt":"2022-10-27T12:12:30.252Z","email":"izairabotelho@gmail.com","userId":"WBsPQoaZLQ","isActive":true,"isFemale":true,"isDeleted":false,"name":"Izaira Cristiane Catalunha Botelho","description":"Enfermeira","phone":"33988053701","address":"Rua Uruguaiana, 387","cep":"35051510","pluscode":"","cpf":"06648123680","register":"142285","birthday":{"__type":"Date","iso":"2022-08-17T03:00:00.000Z"},"photo":{"__type":"File","name":"6694bab6ecb3066729d8314e7b21acf6_WhatsApp_Image_2022_10_04_at_12_20_39_jpeg.bin","url":"https://parsefiles.back4app.com/41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp/6694bab6ecb3066729d8314e7b21acf6_WhatsApp_Image_2022_10_04_at_12_20_39_jpeg.bin"},"expertise":{"__type":"Relation","className":"Expertise","objects":null},"office":{"__type":"Relation","className":"Office","objects":null},"family":{"__type":"Relation
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/Expertise?where=%7B%22$relatedTo%22:%7B%22object%22:%7B%22__type%22:%22Pointer%22,%22className%22:%22Profile%22,%22objectId%22:%22a4HhGpRLLx%22%7D,%22key%22:%22expertise%22%7D%7D
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/Expertise?where={"$relatedTo":{"object":{"__type":"Pointer","className":"Profile","objectId":"a4HhGpRLLx"},"key":"expertise"}}
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: Expertise
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Payload: [{"className":"Expertise","objectId":"0yvOXKwqnw","createdAt":"2022-10-08T23:00:04.587Z","updatedAt":"2022-10-26T17:19:58.072Z","name":"Psicologia","code":"61","description":"Psicologia...","isDeleted":false}]
+I/flutter ( 5267): ╰--
+I/flutter ( 5267):
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/Procedure?where=%7B%22$relatedTo%22:%7B%22object%22:%7B%22__type%22:%22Pointer%22,%22className%22:%22Profile%22,%22objectId%22:%22a4HhGpRLLx%22%7D,%22key%22:%22procedure%22%7D%7D
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/Procedure?where={"$relatedTo":{"object":{"__type":"Pointer","className":"Profile","objectId":"a4HhGpRLLx"},"key":"procedure"}}
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: Procedure
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Payload: [{"className":"Procedure","objectId":"s11b6r3tDv","createdAt":"2022-10-26T17:01:04.762Z","updatedAt":"2022-10-26T17:01:04.762Z","expertise":{"__type":"Pointer","className":"Expertise","objectId":"0yvOXKwqnw"},"code":"61020176","name":"Prorrogação – Atendimento em Terapia ABA","cost":80}]
+I/flutter ( 5267): ╰--
+I/flutter ( 5267):
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/Office?where=%7B%22$relatedTo%22:%7B%22object%22:%7B%22__type%22:%22Pointer%22,%22className%22:%22Profile%22,%22objectId%22:%22a4HhGpRLLx%22%7D,%22key%22:%22office%22%7D%7D
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/Office?where={"$relatedTo":{"object":{"__type":"Pointer","className":"Profile","objectId":"a4HhGpRLLx"},"key":"office"}}
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: Office
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Payload: [{"className":"Office","objectId":"wntNbb1000","createdAt":"2022-10-08T23:47:42.772Z","updatedAt":"2022-10-11T18:27:56.512Z","name":"Avaliadora","description":"Avaliadora...","isDeleted":false}]
+I/flutter ( 5267): ╰--
+I/flutter ( 5267):
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/HealthPlan?where=%7B%22$relatedTo%22:%7B%22object%22:%7B%22__type%22:%22Pointer%22,%22className%22:%22Profile%22,%22objectId%22:%22a4HhGpRLLx%22%7D,%22key%22:%22healthPlan%22%7D%7D&include=healthPlanType
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/HealthPlan?where={"$relatedTo":{"object":{"__type":"Pointer","className":"Profile","objectId":"a4HhGpRLLx"},"key":"healthPlan"}}&include=healthPlanType
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: HealthPlan
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Payload: [{"className":"HealthPlan","objectId":"UIhi3dwq8y","createdAt":"2022-10-11T17:06:28.195Z","updatedAt":"2022-10-11T17:06:28.497Z","healthPlanType":{"__type":"Pointer","className":"HealthPlanType","objectId":"kQuO3Dxxt6"},"code":"232323232323232","due":{"__type":"Date","iso":"2022-10-12T03:00:00.000Z"},"description":"uni enf","isDeleted":false}]
+I/flutter ( 5267): ╰--
+I/flutter ( 5267):
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/Profile?where=%7B%22$relatedTo%22:%7B%22object%22:%7B%22__type%22:%22Pointer%22,%22className%22:%22Profile%22,%22objectId%22:%22a4HhGpRLLx%22%7D,%22key%22:%22family%22%7D%7D
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/Profile?where={"$relatedTo":{"object":{"__type":"Pointer","className":"Profile","objectId":"a4HhGpRLLx"},"key":"family"}}
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: Profile
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Payload: [{"className":"Profile","objectId":"CJz9nXpoyN","createdAt":"2022-10-12T23:28:48.400Z","updatedAt":"2022-10-14T14:59:50.873Z","name":"miguel","description":"","phone":"","address":"abc","cep":"","pluscode":"","cpf":"","register":"","isFemale":false,"birthday":{"__type":"Date","iso":"2022-10-09T03:00:00.000Z"},"isActive":false,"isDeleted":false,"photo":{"__type":"File","name":"dc5c54737080309ab91dde9ea480b1c2_image_picker7558387976731077319.jpg","url":"https://parsefiles.back4app.com/41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp/dc5c54737080309ab91dde9ea480b1c2_image_picker7558387976731077319.jpg"},"expertise":{"__type":"Relation","className":"Expertise","objects":null},"office":{"__type":"Relation","className":"Office","objects":null},"family":{"__type":"Relation","className":"Profile","objects":null},"healthPlan":{"__type":"Relation","className":"HealthPlan","objects":null},"procedure":{"__type":"Relation","className":"Proce
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/Profile?where=%7B%22$relatedTo%22:%7B%22object%22:%7B%22__type%22:%22Pointer%22,%22className%22:%22Profile%22,%22objectId%22:%22a4HhGpRLLx%22%7D,%22key%22:%22children%22%7D%7D
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/Profile?where={"$relatedTo":{"object":{"__type":"Pointer","className":"Profile","objectId":"a4HhGpRLLx"},"key":"children"}}
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: Profile
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Reponse: OK
+I/flutter ( 5267): ╰--
+I/flutter ( 5267):
+I/flutter ( 5267): ╭-- Parse Request
+I/flutter ( 5267): curl -X GET -H 'user-agent: Flutter Parse SDK 3.1.2' -H 'X-Parse-Application-Id: 41khDEwc9OeEDclYQ9UnT2HEmysZ2E5JG5534qsp' -H 'X-Parse-Session-Token: r:f38d6fe0469edc994847ad2a0da92ff7' -H 'X-Parse-Client-Key: Ha2Cr0rF2iHTCiJFyeadmwMY6wTVmDw4R9W2Mu6O' https://parseapi.back4app.com/classes/Profile?where=%7B%22$relatedTo%22:%7B%22object%22:%7B%22__type%22:%22Pointer%22,%22className%22:%22Event%22,%22objectId%22:%220TtiBQpJ4f%22%7D,%22key%22:%22patients%22%7D%7D
+I/flutter ( 5267):
+I/flutter ( 5267):  https://parseapi.back4app.com/classes/Profile?where={"$relatedTo":{"object":{"__type":"Pointer","className":"Event","objectId":"0TtiBQpJ4f"},"key":"patients"}}
+I/flutter ( 5267): ╰--
+I/flutter ( 5267): ╭-- Parse Response
+I/flutter ( 5267): Class: Profile
+I/flutter ( 5267): Function: ParseApiRQ.query
+I/flutter ( 5267): Status Code: 200
+I/flutter ( 5267): Reponse: OK
+I/flutter ( 5267): ╰--
+I/flutter ( 5267):
+[EventEntity.fromParse] 2022-10-28 11:00:00.000Z
+D/EGL_emulation( 5267): app_time_stats: avg=568.54ms min=16.57ms max=2159.01ms count=5

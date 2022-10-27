@@ -11,6 +11,8 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class EventRepositoryB4a implements EventRepository {
   Future<QueryBuilder<ParseObject>> getQueryAll(
       QueryBuilder<ParseObject> query, Pagination pagination) async {
+    log('1', name: 'EventRepositoryB4a.getQueryAll');
+
     // QueryBuilder<ParseObject> query =
     //     QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
     log('query...', name: 'EventRepositoryB4a.getQueryAll');
@@ -27,6 +29,7 @@ class EventRepositoryB4a implements EventRepository {
   @override
   Future<List<EventModel>> list(
       QueryBuilder<ParseObject> query, Pagination pagination) async {
+    log('1', name: 'EventRepositoryB4a.list');
     QueryBuilder<ParseObject> query2;
     query2 = await getQueryAll(query, pagination);
 
@@ -53,6 +56,8 @@ class EventRepositoryB4a implements EventRepository {
 
   @override
   Future<String> update(EventModel model) async {
+    log('1', name: 'EventRepositoryB4a.update');
+
     final parseObject = await EventEntity().toParse(model);
     ParseResponse? response;
     try {
@@ -75,6 +80,7 @@ class EventRepositoryB4a implements EventRepository {
 
   @override
   Future<EventModel?> readById(String id) async {
+    log('1', name: 'EventRepositoryB4a.readById');
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
     query.whereEqualTo('objectId', id);
@@ -102,6 +108,7 @@ class EventRepositoryB4a implements EventRepository {
   @override
   Future<void> updateRelationProfessionals(
       String objectId, List<String> modelIdList, bool add) async {
+    log('1', name: 'EventRepositoryB4a.updateRelationProfessionals');
     final parseObject = EventEntity().toParseUpdateRelationProfessionals(
         objectId: objectId, modelIdList: modelIdList, add: add);
     if (parseObject != null) {
@@ -112,6 +119,7 @@ class EventRepositoryB4a implements EventRepository {
   @override
   Future<void> updateRelationPatients(
       String objectId, List<String> modelIdList, bool add) async {
+    log('1', name: 'EventRepositoryB4a.updateRelationPatients');
     final parseObject = EventEntity().toParseUpdateRelationPatients(
         objectId: objectId, modelIdList: modelIdList, add: add);
     if (parseObject != null) {

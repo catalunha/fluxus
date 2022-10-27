@@ -207,7 +207,7 @@ class ProfileEntity {
       profileParseObject.set('isFemale', profileModel.isFemale);
     }
     if (profileModel.birthday != null) {
-      profileParseObject.set('birthday', profileModel.birthday);
+      profileParseObject.set<DateTime?>('birthday', profileModel.birthday);
     }
     return profileParseObject;
   }
