@@ -88,6 +88,12 @@ class ClientProfileCard extends StatelessWidget {
                             Icons.assignment_ind_outlined,
                           ),
                         ),
+                        IconButton(
+                          onPressed: () => copy(profile.id!),
+                          icon: const Icon(
+                            Icons.copy,
+                          ),
+                        ),
                       ],
                     ),
                   ],

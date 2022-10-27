@@ -65,6 +65,15 @@ class HomePage extends StatelessWidget {
             Card(
               child: ListTile(
                 leading: const Icon(Icons.event),
+                title: const Text('Gerar guia atendimento'),
+                onTap: () {
+                  Get.toNamed(Routes.attendanceAddEdit);
+                },
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.event),
                 title: const Text('Cadastrar evento'),
                 onTap: () {
                   Get.toNamed(Routes.eventAddEdit, arguments: null);

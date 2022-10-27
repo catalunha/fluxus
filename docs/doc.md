@@ -1,6 +1,7 @@
+Atendimento:
 Prof Izaira
 Pat Joao
-1 Guia de Autorização
+numero da guia Autorização
 1 x Atendimentos proc1 - ok
 1 x Atendimentos proc2a - ok
 2 x Atendimentos proc2b - ok

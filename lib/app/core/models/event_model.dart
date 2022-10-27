@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
@@ -9,12 +10,15 @@ import 'package:fluxus/app/core/models/room_model.dart';
 /// Evento
 class EventModel {
   final String? id;
+  // final List<AttendanceModel>? attendance;
+
   final List<ProfileModel>? professionals;
   final Map<String, String>? procedures; // procedimento
   final List<ProfileModel>? patients;
   final Map<String, String>? healthPlans; // Convenios
   final String? autorization;
   final String? fatura;
+
   final RoomModel? room;
   final DateTime? start;
   final DateTime? end;

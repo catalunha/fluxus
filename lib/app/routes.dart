@@ -1,3 +1,4 @@
+import 'package:fluxus/app/view/controllers/attendance/addedit/attendance_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/client/addedit/client_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/client/search/client_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/client/view/client_view_dependencies.dart';
@@ -14,6 +15,7 @@ import 'package:fluxus/app/view/controllers/user/register/email/user_register_em
 import 'package:fluxus/app/view/controllers/user/login/login_dependencies.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_dependencies.dart';
 import 'package:fluxus/app/view/controllers/home/home_dependencies.dart';
+import 'package:fluxus/app/view/pages/attendance/addedit/attendance_addedit_page.dart';
 import 'package:fluxus/app/view/pages/client/addedit/client_addedit_page.dart';
 import 'package:fluxus/app/view/pages/client/addedit/client_health_plan_addedit_page.dart';
 import 'package:fluxus/app/view/pages/client/search/client_search_list_page.dart';
@@ -62,6 +64,10 @@ class Routes {
 
   static const teamProfileSearch = '/team/search';
   static const teamProfileList = '/team/list';
+
+  static const attendanceAddEdit = '/attendance/addedit';
+  // static const eventSearch = '/event/search';
+  // static const eventList = '/event/list';
 
   static const eventAddEdit = '/event/addedit';
   static const eventSearch = '/event/search';
@@ -183,6 +189,11 @@ class Routes {
       name: Routes.evolutionAddEdit,
       binding: EvolutionAddEditDependencies(),
       page: () => EvolutionAddEditPage(),
+    ),
+    GetPage(
+      name: Routes.attendanceAddEdit,
+      binding: AttendanceAddEditDependencies(),
+      page: () => AttendanceAddEditPage(),
     ),
   ];
 }

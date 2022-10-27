@@ -65,6 +65,12 @@ class TeamProfileCard extends StatelessWidget {
                             Icons.assignment_ind_outlined,
                           ),
                         ),
+                        IconButton(
+                          onPressed: () => copy(profile.id!),
+                          icon: const Icon(
+                            Icons.copy,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -78,12 +84,10 @@ class TeamProfileCard extends StatelessWidget {
   }
 
   copy(String text) async {
-    Get.snackbar(
-      text,
-      'Id copiado.',
-      // backgroundColor: Colors.yellow,
-      margin: const EdgeInsets.all(10),
-    );
+    Get.snackbar(text, 'Id copiado.',
+        // backgroundColor: Colors.yellow,
+        margin: const EdgeInsets.all(10),
+        duration: const Duration(seconds: 1));
     await Clipboard.setData(ClipboardData(text: text));
   }
 }

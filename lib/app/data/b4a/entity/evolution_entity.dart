@@ -51,7 +51,7 @@ class EvolutionEntity {
       parseObject.objectId = model.id;
     }
     if (model.start != null) {
-      parseObject.set('start', model.start!.subtract(const Duration(hours: 3)));
+      parseObject.set('start', model.start);
     }
     if (model.event != null) {
       parseObject.set('event', model.event);
