@@ -1,5 +1,7 @@
 import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/data/b4a/entity/event_status_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/health_plan_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/procedure_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -13,12 +15,18 @@ class AttendanceEntity {
           ? ProfileEntity().fromParseSimpleData(
               parseObject.get('professional') as ParseObject)
           : null,
-      procedure: parseObject.get('procedure'),
+      procedure: parseObject.get('procedure') != null
+          ? ProcedureEntity()
+              .fromParse(parseObject.get('procedure') as ParseObject)
+          : null,
       patient: parseObject.get('patient') != null
           ? ProfileEntity()
               .fromParseSimpleData(parseObject.get('patient') as ParseObject)
           : null,
-      healthPlan: parseObject.get('healthPlan'),
+      healthPlan: parseObject.get('healthPlan') != null
+          ? HealthPlanEntity()
+              .fromParse(parseObject.get('healthPlan') as ParseObject)
+          : null,
       autorization: parseObject.get('autorization'),
       dStartAutorization:
           parseObject.get<DateTime>('dStartAutorization')?.toLocal(),
@@ -48,10 +56,14 @@ class AttendanceEntity {
                 ..objectId = model.professional!.id)
               .toPointer());
     }
-
     if (model.procedure != null) {
-      parseObject.set('procedure', model.procedure);
+      parseObject.set(
+          'procedure',
+          (ParseObject(ProcedureEntity.className)
+                ..objectId = model.procedure!.id)
+              .toPointer());
     }
+
     if (model.patient != null) {
       parseObject.set(
           'patient',
@@ -59,7 +71,11 @@ class AttendanceEntity {
               .toPointer());
     }
     if (model.healthPlan != null) {
-      parseObject.set('healthPlan', model.healthPlan);
+      parseObject.set(
+          'healthPlan',
+          (ParseObject(HealthPlanEntity.className)
+                ..objectId = model.healthPlan!.id)
+              .toPointer());
     }
 
     if (model.autorization != null) {

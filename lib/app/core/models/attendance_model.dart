@@ -1,14 +1,16 @@
 import 'dart:convert';
 
 import 'package:fluxus/app/core/models/event_status_model.dart';
+import 'package:fluxus/app/core/models/health_plan_model.dart';
+import 'package:fluxus/app/core/models/procedure_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 
 class AttendanceModel {
   final String? id;
   final ProfileModel? professional;
-  final String? procedure;
+  final ProcedureModel? procedure;
   final ProfileModel? patient;
-  final String? healthPlan;
+  final HealthPlanModel? healthPlan;
   final String? autorization;
   final DateTime? dStartAutorization;
   final DateTime? dtStartAttendance;
@@ -35,9 +37,9 @@ class AttendanceModel {
   AttendanceModel copyWith({
     String? id,
     ProfileModel? professional,
-    String? procedure,
+    ProcedureModel? procedure,
     ProfileModel? patient,
-    String? healthPlan,
+    HealthPlanModel? healthPlan,
     String? autorization,
     DateTime? dStartAutorization,
     DateTime? dtStartAttendance,
@@ -72,13 +74,13 @@ class AttendanceModel {
       result.addAll({'professional': professional!.toMap()});
     }
     if (procedure != null) {
-      result.addAll({'procedure': procedure});
+      result.addAll({'procedure': procedure!.toMap()});
     }
     if (patient != null) {
       result.addAll({'patient': patient!.toMap()});
     }
     if (healthPlan != null) {
-      result.addAll({'healthPlan': healthPlan});
+      result.addAll({'healthPlan': healthPlan!.toMap()});
     }
     if (autorization != null) {
       result.addAll({'autorization': autorization});
@@ -114,10 +116,14 @@ class AttendanceModel {
       professional: map['professional'] != null
           ? ProfileModel.fromMap(map['professional'])
           : null,
-      procedure: map['procedure'],
+      procedure: map['procedure'] != null
+          ? ProcedureModel.fromMap(map['procedure'])
+          : null,
       patient:
           map['patient'] != null ? ProfileModel.fromMap(map['patient']) : null,
-      healthPlan: map['healthPlan'],
+      healthPlan: map['healthPlan'] != null
+          ? HealthPlanModel.fromMap(map['healthPlan'])
+          : null,
       autorization: map['autorization'],
       dStartAutorization: map['dStartAutorization'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['dStartAutorization'])

@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
+import 'package:fluxus/app/core/models/health_plan_model.dart';
+import 'package:fluxus/app/core/models/procedure_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/table/attendance/attendance_repository_exception.dart';
 import 'package:fluxus/app/data/b4a/table/profile/profile_repository_exception.dart';
@@ -69,9 +71,9 @@ class AttendanceAddEditController extends GetxController
       for (var procedure in procedureList) {
         var attendance = AttendanceModel(
           professional: professional,
-          procedure: procedure,
+          procedure: ProcedureModel(id: procedure),
           patient: patient,
-          healthPlan: healthPlan,
+          healthPlan: HealthPlanModel(id: healthPlan),
           autorization: autorization,
           dStartAutorization: dStartAutorization,
           status: EventStatusModel(id: 'uvHmcIKiFc'),

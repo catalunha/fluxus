@@ -7,13 +7,13 @@ class ProcedureModel {
   final ExpertiseModel? expertise;
   final String? code;
   final String? name;
-  final double cost;
+  final double? cost;
   ProcedureModel({
     this.id,
     this.expertise,
     this.code,
     this.name,
-    required this.cost,
+    this.cost,
   });
 
   ProcedureModel copyWith({
@@ -47,7 +47,9 @@ class ProcedureModel {
     if (name != null) {
       result.addAll({'name': name});
     }
-    result.addAll({'cost': cost});
+    if (cost != null) {
+      result.addAll({'cost': cost});
+    }
 
     return result;
   }
@@ -60,7 +62,7 @@ class ProcedureModel {
           : null,
       code: map['code'],
       name: map['name'],
-      cost: map['cost']?.toDouble() ?? 0.0,
+      cost: map['cost']?.toDouble(),
     );
   }
 

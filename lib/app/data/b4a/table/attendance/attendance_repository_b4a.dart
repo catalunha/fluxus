@@ -11,8 +11,7 @@ class AttendanceRepositoryB4a implements AttendanceRepository {
       QueryBuilder<ParseObject> query, Pagination pagination) async {
     query.whereEqualTo('isDeleted', false);
     query.orderByDescending('updatedAt');
-    query.includeObject(
-        ['professional', 'procedure', 'patient', 'healthPlan', 'status']);
+    query.includeObject(['professional', 'patient', 'status']);
 
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
