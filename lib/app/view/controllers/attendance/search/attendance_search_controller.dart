@@ -11,15 +11,15 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class AttendanceSearchController extends GetxController
     with LoaderMixin, MessageMixin {
-  final AttendanceRepository _eventRepository;
+  final AttendanceRepository _attendanceRepository;
   AttendanceSearchController({
-    required AttendanceRepository eventRepository,
-  }) : _eventRepository = eventRepository;
+    required AttendanceRepository attendanceRepository,
+  }) : _attendanceRepository = attendanceRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
 
-  List<AttendanceModel> eventList = <AttendanceModel>[].obs;
+  List<AttendanceModel> attendanceList = <AttendanceModel>[].obs;
   final _pagination = Pagination().obs;
   final _lastPage = false.obs;
   get lastPage => _lastPage.value;
@@ -34,7 +34,7 @@ class AttendanceSearchController extends GetxController
       QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
   @override
   void onInit() {
-    eventList.clear();
+    attendanceList.clear();
     _changePagination(1, 12);
     ever(_pagination, (_) async => await listAll());
     loaderListener(_loading);
@@ -65,7 +65,7 @@ class AttendanceSearchController extends GetxController
     _loading(true);
     query = QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
 
-    eventList.clear();
+    attendanceList.clear();
     if (lastPage) {
       _lastPage(false);
       _pagination.update((val) {
@@ -77,18 +77,18 @@ class AttendanceSearchController extends GetxController
       await listAll();
     }
     _loading(false);
-    Get.toNamed(Routes.eventList);
+    Get.toNamed(Routes.attendanceList);
   }
 
   Future<void> listAll() async {
     if (!lastPage) {
       _loading(true);
       List<AttendanceModel> temp =
-          await _eventRepository.list(query, _pagination.value);
+          await _attendanceRepository.list(query, _pagination.value);
       if (temp.isEmpty) {
         _lastPage.value = true;
       }
-      eventList.addAll(temp);
+      attendanceList.addAll(temp);
       _loading(false);
     }
   }

@@ -31,6 +31,23 @@ class AppTextTitleValue extends StatelessWidget {
         ],
       );
     } else {
+      // return Row(
+      //   children: [
+      //     Text(
+      //       title,
+      //       style: const TextStyle(color: Colors.blueGrey),
+      //     ),
+      //     Text(
+      //       // value ?? '...',
+      //       value != null && value!.isNotEmpty ? value! : '...',
+      //       style: const TextStyle(color: Colors.white),
+      //       textAlign: TextAlign.center,
+      //       overflow: TextOverflow.ellipsis,
+      //       softWrap: true,
+      //     ),
+      //   ],
+      // );
+
       return RichText(
         text: TextSpan(
           text: title,

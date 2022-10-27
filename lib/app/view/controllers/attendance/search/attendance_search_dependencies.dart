@@ -18,7 +18,7 @@ class AttendanceSearchDependencies implements Bindings {
 
     Get.put<AttendanceSearchController>(
       AttendanceSearchController(
-        eventRepository: Get.find(),
+        attendanceRepository: Get.find(),
         // healthPlanRepository: Get.find(),
         // healthPlanTypeRepository: Get.find(),
       ),
