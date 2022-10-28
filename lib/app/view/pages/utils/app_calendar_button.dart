@@ -26,7 +26,7 @@ class AppCalendarButton extends StatelessWidget {
           context: context,
           initialDate: initialDate,
           firstDate: DateTime(DateTime.now().year - 120),
-          lastDate: DateTime(DateTime.now().year + 1),
+          lastDate: DateTime(DateTime.now().year + 10),
         );
         if (selectedDate != null) {
           setDate(DateTime(

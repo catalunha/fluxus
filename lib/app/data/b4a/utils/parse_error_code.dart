@@ -12,8 +12,10 @@ class ParseErrorCode {
   String code = '';
   String message = '';
   decode() {
+    log('+++ +++ +++', name: 'ParseErrorCodes');
     log('${parseError.code} - ${parseError.message} - ${parseError.type}',
         name: 'ParseErrorCodes');
+    log('--- --- ---', name: 'ParseErrorCodes');
     if (_appCodes.containsKey(parseError.code)) {
       code = 'Parse Erro: ${parseError.code}';
       message = _appCodes[parseError.code]!;
@@ -29,6 +31,7 @@ class ParseErrorCode {
     101: 'Email ou senha inválidos ou não cadastrados.',
     202: 'Já existe uma conta para este email.',
     205: 'Veja seu email para validar seu cadastro.',
+    // 209 - Invalid session token - InvalidSessionToken
     //  111 - schema mismatch for Evolution.event; expected Pointer<Event> but got String - IncorrectType
   };
 }

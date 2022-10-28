@@ -17,7 +17,7 @@ class _SearchPageState extends State<TeamSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Buscando time'),
+        title: const Text('Selecione a área de atuação'),
       ),
       body: Center(
         child: ConstrainedBox(

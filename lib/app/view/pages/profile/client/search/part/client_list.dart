@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
-import 'package:fluxus/app/view/pages/client/search/part/client_card.dart';
+import 'package:fluxus/app/view/pages/profile/client/search/part/client_card.dart';
 import 'package:get/get.dart';
 
 class ClientProfileList extends StatelessWidget {

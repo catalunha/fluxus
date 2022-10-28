@@ -57,10 +57,9 @@ class HealthPlanSearchController extends GetxController
     required String codeContainsString,
   }) async {
     _loading(true);
-    if (!codeContainsBool) {
-      query =
-          QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
-    }
+    // if (!codeContainsBool) {
+    query = QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
+    // }
     if (codeContainsBool) {
       query.whereContains('code', codeContainsString);
     }

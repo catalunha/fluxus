@@ -27,10 +27,8 @@ class HealthPlanRepositoryB4a implements HealthPlanRepository {
         for (var element in response.results!) {
           listTemp.add(HealthPlanEntity().fromParse(element));
         }
-        return listTemp;
-      } else {
-        throw Exception();
       }
+      return listTemp;
     } on Exception {
       var errorCodes = ParseErrorCode(response!.error!);
       throw HealthPlanRepositoryException(

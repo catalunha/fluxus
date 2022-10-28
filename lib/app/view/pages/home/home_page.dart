@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
             Card(
               child: ListTile(
                 leading: const Icon(Icons.search),
-                title: const Text('Buscar Profissional'),
+                title: const Text('Buscar Equipe'),
                 subtitle: const Text('Por área'),
                 onTap: () {
                   Get.toNamed(Routes.teamProfileSearch);

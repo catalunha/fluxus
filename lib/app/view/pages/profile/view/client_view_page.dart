@@ -160,6 +160,11 @@ class ClientViewPage extends StatelessWidget {
                         ),
                         healthPlanList(profileModel),
                         const Text(
+                          'Funções: ',
+                          style: TextStyle(color: Colors.blueGrey),
+                        ),
+                        officeList(profileModel),
+                        const Text(
                           'Expecialidades: ',
                           style: TextStyle(color: Colors.blueGrey),
                         ),
@@ -169,11 +174,6 @@ class ClientViewPage extends StatelessWidget {
                           style: TextStyle(color: Colors.blueGrey),
                         ),
                         procedureList(profileModel),
-                        const Text(
-                          'Funções: ',
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
-                        officeList(profileModel),
                       ],
                     ),
                   ),
@@ -340,7 +340,7 @@ class ClientViewPage extends StatelessWidget {
   }
 
   Widget procedureList(ProfileModel profileModel) {
-    if (profileModel.procedure != null) {
+    if (profileModel.procedure != null && profileModel.procedure!.isNotEmpty) {
       return Column(
         children: [
           ...profileModel.procedure!
@@ -372,7 +372,7 @@ class ClientViewPage extends StatelessWidget {
         ],
       );
     } else {
-      return Container();
+      return const Text('...');
     }
   }
 
@@ -409,7 +409,7 @@ class ClientViewPage extends StatelessWidget {
         ],
       );
     } else {
-      return Container();
+      return const Text('...');
     }
   }
 }

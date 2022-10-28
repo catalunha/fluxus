@@ -89,6 +89,7 @@ class _HealthPlanAddEditPageState extends State<HealthPlanAddEditPage> {
                     getDate: () => widget._profileController.dateDueHealthPlan,
                     setDate: (value) =>
                         widget._profileController.dateDueHealthPlan = value,
+                    isBirthDay: false,
                   ),
                   const SizedBox(height: 20),
                   widget.healthPlanModel?.id == null
