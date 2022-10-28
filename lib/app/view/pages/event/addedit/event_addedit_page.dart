@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
@@ -58,12 +56,12 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 5),
-                    // Obx(() => Text(widget._eventAddEditController.dateStart
-                    //         ?.toIso8601String() ??
-                    //     '...')),
-                    // Obx(() => Text(widget._eventAddEditController.dateEnd
-                    //         ?.toIso8601String() ??
-                    //     '...')),
+                    Obx(() => Text(widget._eventAddEditController.dateStart
+                            ?.toIso8601String() ??
+                        '...')),
+                    Obx(() => Text(widget._eventAddEditController.dateEnd
+                            ?.toIso8601String() ??
+                        '...')),
                     AppCalendarButton(
                       title: "Data do atendimento.",
                       getDate: () => widget._eventAddEditController.dateStart,
@@ -129,94 +127,92 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                               value;
                           setState(() {});
                         },
-                        width: 150,
+                        width: double.maxFinite,
                       ),
                     ),
+                    const SizedBox(height: 10),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
                             onPressed: () {
-                              Get.toNamed(Routes.teamProfileSearch);
+                              Get.toNamed(Routes.attendanceSearch);
                             },
                             icon: const Icon(Icons.search)),
-                        const Text('Profissionais'),
+                        const Text('Atendimentos'),
                         IconButton(
                           onPressed: () async {
-                            var result = await saveEvent();
-                            if (result) {
-                              String? res = await showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const EventAddIds(
-                                    title:
-                                        'Informe o Id do profissional e da especialidade',
-                                  );
-                                },
-                              );
-                              if (res != null) {
-                                widget._eventAddEditController
-                                    .updateProfissionals(ids: res, add: true);
-                              }
-                              log(res ?? '...', name: 'res');
-                              setState(() {});
-                            } else {
-                              Get.snackbar(
-                                'Atenção',
-                                'Campos obrigatórios não foram preenchidos.',
-                                backgroundColor: Colors.red,
-                              );
+                            // var result = await saveEvent();
+                            // if (result) {
+                            String? res = await showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const EventAddIds(
+                                  title: 'Informe o Id do atendimento',
+                                );
+                              },
+                            );
+                            if (res != null) {
+                              widget._eventAddEditController.addAttendance(res);
                             }
+                            setState(() {});
+                            // } else {
+                            //   Get.snackbar(
+                            //     'Atenção',
+                            //     'Campos obrigatórios não foram preenchidos.',
+                            //     backgroundColor: Colors.red,
+                            //   );
+                            // }
                           },
                           icon: const Icon(Icons.add),
                         )
                       ],
                     ),
-                    Obx(() => profissionalList()),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Get.toNamed(Routes.clientProfileSearch);
-                            },
-                            icon: const Icon(Icons.search)),
-                        const Text('Pacientes'),
-                        IconButton(
-                          onPressed: () async {
-                            var result = await saveEvent();
-                            if (result) {
-                              String? res = await showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const EventAddIds(
-                                    title:
-                                        'Informe o Id do paciente e do convênio',
-                                  );
-                                },
-                              );
-                              if (res != null) {
-                                widget._eventAddEditController
-                                    .updatePatients(ids: res, add: true);
-                              }
-                              log(res ?? '...', name: 'res');
-                              setState(() {});
-                            } else {
-                              Get.snackbar(
-                                'Atenção',
-                                'Campos obrigatórios não foram preenchidos.',
-                                backgroundColor: Colors.red,
-                              );
-                            }
-                          },
-                          icon: const Icon(Icons.add),
-                        )
-                      ],
-                    ),
-                    Obx(() => patientList()),
+                    Obx(() => attendanceList()),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     IconButton(
+                    //         onPressed: () {
+                    //           Get.toNamed(Routes.clientProfileSearch);
+                    //         },
+                    //         icon: const Icon(Icons.search)),
+                    //     const Text('Pacientes'),
+                    //     IconButton(
+                    //       onPressed: () async {
+                    //         var result = await saveEvent();
+                    //         if (result) {
+                    //           String? res = await showDialog(
+                    //             barrierDismissible: false,
+                    //             context: context,
+                    //             builder: (BuildContext context) {
+                    //               return const EventAddIds(
+                    //                 title:
+                    //                     'Informe o Id do paciente e do convênio',
+                    //               );
+                    //             },
+                    //           );
+                    //           if (res != null) {
+                    //             widget._eventAddEditController
+                    //                 .updatePatients(ids: res, add: true);
+                    //           }
+                    //           log(res ?? '...', name: 'res');
+                    //           setState(() {});
+                    //         } else {
+                    //           Get.snackbar(
+                    //             'Atenção',
+                    //             'Campos obrigatórios não foram preenchidos.',
+                    //             backgroundColor: Colors.red,
+                    //           );
+                    //         }
+                    //       },
+                    //       icon: const Icon(Icons.add),
+                    //     )
+                    //   ],
+                    // ),
+                    // Obx(() => patientList()),
                     const Text('Status'),
                     Obx(
                       () => AppDropDownGeneric<EventStatusModel>(
@@ -227,23 +223,17 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                         execute: (value) {
                           widget._eventAddEditController.eventStatusSelected =
                               value;
+                          print(value);
+                          print(widget
+                              ._eventAddEditController.eventStatusSelected);
                           setState(() {});
                         },
-                        width: 150,
+                        width: double.maxFinite,
                       ),
                     ),
                     AppTextFormField(
                       label: 'Descrição',
                       controller: widget._eventAddEditController.descriptionTec,
-                    ),
-                    AppTextFormField(
-                      label: 'Autorização',
-                      controller:
-                          widget._eventAddEditController.autorizationTec,
-                    ),
-                    AppTextFormField(
-                      label: 'Fatura',
-                      controller: widget._eventAddEditController.faturaTec,
                     ),
 
                     Obx(() => Text(
@@ -263,26 +253,24 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
   Future<bool> saveEvent() async {
     final formValid = _formKey.currentState?.validate() ?? false;
     if (formValid) {
-      // if (widget._eventAddEditController.dateBirthday == null) {
-      //   return false;
-      // }
+      if (widget._eventAddEditController.dateStart == null) {
+        return false;
+      }
       await widget._eventAddEditController.append(
-        autorization: widget._eventAddEditController.autorizationTec.text,
-        fatura: widget._eventAddEditController.faturaTec.text,
-        description: widget._eventAddEditController.descriptionTec.text,
         room: widget._eventAddEditController.roomModelSelected,
         status: widget._eventAddEditController.eventStatusSelected,
+        description: widget._eventAddEditController.descriptionTec.text,
       );
       return true;
     }
     return false;
   }
 
-  Widget profissionalList() {
-    if (widget._eventAddEditController.event?.professionals != null) {
+  Widget attendanceList() {
+    if (widget._eventAddEditController.attendanceList.isNotEmpty) {
       return Column(
         children: [
-          ...widget._eventAddEditController.event!.professionals!
+          ...widget._eventAddEditController.attendanceList
               .map((e) => Card(
                     child: Column(children: [
                       Row(
@@ -291,10 +279,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                             onPressed: () async {
                               // await saveEvent();
                               await widget._eventAddEditController
-                                  .updateProfissionals(
-                                ids: e.id!,
-                                add: false,
-                              );
+                                  .removeAttendance(e.id!);
                               setState(() {});
                             },
                             icon: const Icon(Icons.delete_forever),
@@ -304,25 +289,28 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 AppTextTitleValue(
-                                  title: 'Nome: ',
-                                  value: '${e.name}',
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Id: ',
+                                  title: 'Atendimento Id: ',
                                   value: '${e.id}',
                                 ),
                                 AppTextTitleValue(
-                                  title: 'Procedimento: ',
-                                  value: widget._eventAddEditController
-                                      .getProcedureName(widget
-                                          ._eventAddEditController
-                                          .event!
-                                          .procedures![e.id]!),
+                                  title: 'Pac. Nome: ',
+                                  value: '${e.patient!.name}',
                                 ),
                                 AppTextTitleValue(
-                                  title: 'Procedimento Id: ',
-                                  value:
-                                      '${widget._eventAddEditController.event!.procedures![e.id]}',
+                                  title: 'Id: ',
+                                  value: '${e.patient!.id}',
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Prof. Nome: ',
+                                  value: '${e.professional!.name}',
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Id: ',
+                                  value: '${e.professional!.id}',
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Id: ',
+                                  value: '${e.procedure!.name}',
                                 ),
                               ],
                             ),
@@ -339,66 +327,127 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
     }
   }
 
-  Widget patientList() {
-    if (widget._eventAddEditController.event?.patients != null) {
-      return Column(
-        children: [
-          ...widget._eventAddEditController.event!.patients!
-              .map((e) => Card(
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              // await saveEvent();
-                              await widget._eventAddEditController
-                                  .updatePatients(
-                                ids: e.id!,
-                                add: false,
-                              );
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.delete_forever),
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AppTextTitleValue(
-                                  title: 'Nome: ',
-                                  value: '${e.name}',
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Id: ',
-                                  value: '${e.id}',
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Convênio tipo: ',
-                                  value: widget._eventAddEditController
-                                      .getHealthPlan(e.id!, 'name'),
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Convênio código: ',
-                                  value: widget._eventAddEditController
-                                      .getHealthPlan(e.id!, 'code'),
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Convênio Id: ',
-                                  value: widget._eventAddEditController
-                                      .getHealthPlan(e.id!, 'id'),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ]),
-                  ))
-              .toList()
-        ],
-      );
-    } else {
-      return Container();
-    }
-  }
+  // Widget profissionalList() {
+  //   if (widget._eventAddEditController.event?.professionals != null) {
+  //     return Column(
+  //       children: [
+  //         ...widget._eventAddEditController.event!.professionals!
+  //             .map((e) => Card(
+  //                   child: Column(children: [
+  //                     Row(
+  //                       children: [
+  //                         IconButton(
+  //                           onPressed: () async {
+  //                             // await saveEvent();
+  //                             await widget._eventAddEditController
+  //                                 .updateProfissionals(
+  //                               ids: e.id!,
+  //                               add: false,
+  //                             );
+  //                             setState(() {});
+  //                           },
+  //                           icon: const Icon(Icons.delete_forever),
+  //                         ),
+  //                         Expanded(
+  //                           child: Column(
+  //                             crossAxisAlignment: CrossAxisAlignment.start,
+  //                             children: [
+  //                               AppTextTitleValue(
+  //                                 title: 'Nome: ',
+  //                                 value: '${e.name}',
+  //                               ),
+  //                               AppTextTitleValue(
+  //                                 title: 'Id: ',
+  //                                 value: '${e.id}',
+  //                               ),
+  //                               AppTextTitleValue(
+  //                                 title: 'Procedimento: ',
+  //                                 value: widget._eventAddEditController
+  //                                     .getProcedureName(widget
+  //                                         ._eventAddEditController
+  //                                         .event!
+  //                                         .procedures![e.id]!),
+  //                               ),
+  //                               AppTextTitleValue(
+  //                                 title: 'Procedimento Id: ',
+  //                                 value:
+  //                                     '${widget._eventAddEditController.event!.procedures![e.id]}',
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         )
+  //                       ],
+  //                     ),
+  //                   ]),
+  //                 ))
+  //             .toList()
+  //       ],
+  //     );
+  //   } else {
+  //     return Container();
+  //   }
+  // }
+
+  // Widget patientList() {
+  //   if (widget._eventAddEditController.event?.patients != null) {
+  //     return Column(
+  //       children: [
+  //         ...widget._eventAddEditController.event!.patients!
+  //             .map((e) => Card(
+  //                   child: Column(children: [
+  //                     Row(
+  //                       children: [
+  //                         IconButton(
+  //                           onPressed: () async {
+  //                             // await saveEvent();
+  //                             await widget._eventAddEditController
+  //                                 .updatePatients(
+  //                               ids: e.id!,
+  //                               add: false,
+  //                             );
+  //                             setState(() {});
+  //                           },
+  //                           icon: const Icon(Icons.delete_forever),
+  //                         ),
+  //                         Expanded(
+  //                           child: Column(
+  //                             crossAxisAlignment: CrossAxisAlignment.start,
+  //                             children: [
+  //                               AppTextTitleValue(
+  //                                 title: 'Nome: ',
+  //                                 value: '${e.name}',
+  //                               ),
+  //                               AppTextTitleValue(
+  //                                 title: 'Id: ',
+  //                                 value: '${e.id}',
+  //                               ),
+  //                               AppTextTitleValue(
+  //                                 title: 'Convênio tipo: ',
+  //                                 value: widget._eventAddEditController
+  //                                     .getHealthPlan(e.id!, 'name'),
+  //                               ),
+  //                               AppTextTitleValue(
+  //                                 title: 'Convênio código: ',
+  //                                 value: widget._eventAddEditController
+  //                                     .getHealthPlan(e.id!, 'code'),
+  //                               ),
+  //                               AppTextTitleValue(
+  //                                 title: 'Convênio Id: ',
+  //                                 value: widget._eventAddEditController
+  //                                     .getHealthPlan(e.id!, 'id'),
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         )
+  //                       ],
+  //                     ),
+  //                   ]),
+  //                 ))
+  //             .toList()
+  //       ],
+  //     );
+  //   } else {
+  //     return Container();
+  //   }
+  // }
 }

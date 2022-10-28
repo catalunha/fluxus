@@ -1,8 +1,10 @@
+import 'package:fluxus/app/data/b4a/table/attendance/attendance_repository_b4a.dart';
 import 'package:fluxus/app/data/b4a/table/event/event_repository_b4a.dart';
 import 'package:fluxus/app/data/b4a/table/event_status/event_status_repository_b4a.dart';
 import 'package:fluxus/app/data/b4a/table/evolution/evolution_repository_b4a.dart';
 import 'package:fluxus/app/data/b4a/table/procedure/procedure_repository_b4a.dart';
 import 'package:fluxus/app/data/b4a/table/room/room_repository_b4a.dart';
+import 'package:fluxus/app/data/repositories/attendance_repository.dart';
 import 'package:fluxus/app/data/repositories/event_repository.dart';
 import 'package:fluxus/app/data/repositories/event_status_repository.dart';
 import 'package:fluxus/app/data/repositories/evolution_repository.dart';
@@ -29,6 +31,9 @@ class EventAddEditDependencies implements Bindings {
     Get.lazyPut<EvolutionRepository>(
       () => EvolutionRepositoryB4a(),
     );
+    Get.lazyPut<AttendanceRepository>(
+      () => AttendanceRepositoryB4a(),
+    );
     Get.put<EventAddEditController>(
       EventAddEditController(
         eventRepository: Get.find(),
@@ -36,6 +41,7 @@ class EventAddEditDependencies implements Bindings {
         eventStatusRepository: Get.find(),
         procedureRepository: Get.find(),
         evolutionRepository: Get.find(),
+        attendanceRepository: Get.find(),
       ),
     );
   }

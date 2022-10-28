@@ -31,8 +31,8 @@ class AttendanceEntity {
       dStartAutorization:
           parseObject.get<DateTime>('dStartAutorization')?.toLocal(),
       dtStartAttendance:
-          parseObject.get<DateTime>('dStartAttendance')?.toLocal(),
-      dtEndAttendance: parseObject.get<DateTime>('dEndAttendance')?.toLocal(),
+          parseObject.get<DateTime>('dtStartAttendance')?.toLocal(),
+      dtEndAttendance: parseObject.get<DateTime>('dtEndAttendance')?.toLocal(),
       status: parseObject.get('status') != null
           ? EventStatusEntity()
               .fromParse(parseObject.get('status') as ParseObject)
@@ -103,6 +103,17 @@ class AttendanceEntity {
     if (model.isDeleted != null) {
       parseObject.set('isDeleted', model.isDeleted);
     }
+    return parseObject;
+  }
+
+  ParseObject toParseUnset(String modelId, List<String> unsetFields) {
+    final parseObject = ParseObject(AttendanceEntity.className);
+    parseObject.objectId = modelId;
+
+    for (var field in unsetFields) {
+      parseObject.unset(field);
+    }
+
     return parseObject;
   }
 }

@@ -8,9 +8,11 @@ class EventAddIds extends StatefulWidget {
   // final _clientAddEditController = Get.find<ClientAddEditController>();
   // final bool isChildren;
   final String title;
+  final String formFieldLabel;
   const EventAddIds({
     Key? key,
     required this.title,
+    this.formFieldLabel = '',
   }) : super(key: key);
 
   @override
@@ -39,7 +41,7 @@ class _EventAddIdsState extends State<EventAddIds> {
               children: [
                 Text(widget.title),
                 AppTextFormField(
-                  label: 'Informe o par de ids',
+                  label: widget.formFieldLabel,
                   controller: _objectIdTEC,
                   validator: Validatorless.required('ids são obrigatórios'),
                 ),

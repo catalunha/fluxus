@@ -64,8 +64,8 @@ class HomePage extends StatelessWidget {
             ),
             Card(
               child: ListTile(
-                leading: const Icon(Icons.event),
-                title: const Text('Gerar guia atendimento'),
+                leading: const Icon(Icons.view_compact_outlined),
+                title: const Text('Gerar guia'),
                 onTap: () {
                   Get.toNamed(Routes.attendanceAddEdit);
                 },
@@ -74,7 +74,7 @@ class HomePage extends StatelessWidget {
             Card(
               child: ListTile(
                 leading: const Icon(Icons.search),
-                title: const Text('Buscar atendimento'),
+                title: const Text('Buscar guia'),
                 subtitle: const Text('Por ...'),
                 onTap: () {
                   Get.toNamed(Routes.attendanceSearch);

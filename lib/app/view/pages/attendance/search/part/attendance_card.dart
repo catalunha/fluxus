@@ -13,7 +13,7 @@ class AttendanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat formatter = DateFormat('dd/MM/yyyy');
+    final DateFormat formatter = DateFormat('dd/MM/yyyy hh:mm');
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 600),
@@ -60,9 +60,24 @@ class AttendanceCard extends StatelessWidget {
                         value: attendance.autorization,
                       ),
                       AppTextTitleValue(
-                        title: 'Data: ',
+                        title: 'Data Autorização: ',
                         value: formatter.format(attendance.dStartAutorization!),
                       ),
+                      AppTextTitleValue(
+                        title: 'Data Inicio atendimento: ',
+                        value: attendance.dtStartAttendance != null
+                            ? formatter.format(attendance.dtStartAttendance!)
+                            : null,
+                      ),
+                      AppTextTitleValue(
+                        title: 'Data fim atendimento: ',
+                        value: attendance.dtEndAttendance != null
+                            ? formatter.format(attendance.dtEndAttendance!)
+                            : null,
+                      ),
+                      AppTextTitleValue(
+                          title: 'Data fim atendimento: ',
+                          value: attendance.status?.name),
                       Wrap(
                         children: [
                           IconButton(

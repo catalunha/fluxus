@@ -6,5 +6,6 @@ abstract class AttendanceRepository {
   Future<List<AttendanceModel>> list(
       QueryBuilder<ParseObject> query, Pagination pagination);
   Future<String> update(AttendanceModel model);
+  Future<void> updateUnset(String modelId, List<String> unsetFields);
   Future<AttendanceModel?> readById(String id);
 }

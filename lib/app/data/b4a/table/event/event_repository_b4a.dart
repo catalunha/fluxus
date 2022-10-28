@@ -108,7 +108,6 @@ class EventRepositoryB4a implements EventRepository {
   @override
   Future<void> updateRelationAttendance(
       String objectId, List<String> modelIdList, bool add) async {
-    log('1', name: 'EventRepositoryB4a.updateRelationAttendance');
     final parseObject = EventEntity().toParseUpdateRelationAttendance(
         objectId: objectId, modelIdList: modelIdList, add: add);
     if (parseObject != null) {

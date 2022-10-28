@@ -5,7 +5,9 @@ import 'package:fluxus/app/core/models/event_model.dart';
 import 'package:fluxus/app/core/models/procedure_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
+import 'package:fluxus/app/data/b4a/table/attendance/attendance_repository_exception.dart';
 import 'package:fluxus/app/data/b4a/table/event/event_repository_exception.dart';
+import 'package:fluxus/app/data/repositories/attendance_repository.dart';
 import 'package:fluxus/app/data/repositories/event_repository.dart';
 import 'package:fluxus/app/data/repositories/event_status_repository.dart';
 import 'package:fluxus/app/data/repositories/evolution_repository.dart';
@@ -23,6 +25,7 @@ class EventAddEditController extends GetxController
   final EventStatusRepository _eventStatusRepository;
   final ProcedureRepository _procedureRepository;
   final EvolutionRepository _evolutionRepository;
+  final AttendanceRepository _attendanceRepository;
 
   EventAddEditController({
     required EventRepository eventRepository,
@@ -30,11 +33,13 @@ class EventAddEditController extends GetxController
     required EventStatusRepository eventStatusRepository,
     required ProcedureRepository procedureRepository,
     required EvolutionRepository evolutionRepository,
+    required AttendanceRepository attendanceRepository,
   })  : _eventRepository = eventRepository,
         _roomRepository = roomRepository,
         _eventStatusRepository = eventStatusRepository,
         _procedureRepository = procedureRepository,
-        _evolutionRepository = evolutionRepository;
+        _evolutionRepository = evolutionRepository,
+        _attendanceRepository = attendanceRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
@@ -112,6 +117,7 @@ class EventAddEditController extends GetxController
   String? eventId;
 
   List<AttendanceModel> attendanceList = <AttendanceModel>[].obs;
+  List<AttendanceModel> attendanceListOriginal = <AttendanceModel>[];
 
 //+++ forms
   // final autorizationTec = TextEditingController();
@@ -162,7 +168,8 @@ class EventAddEditController extends GetxController
       //log('${eventModelTemp!.start}', name: 'getEvent2');
       event = eventModelTemp;
       if (eventModelTemp?.attendance != null) {
-        attendanceList.addAll(eventModelTemp!.attendance!);
+        attendanceList.addAll([...eventModelTemp!.attendance!]);
+        attendanceListOriginal.addAll([...eventModelTemp.attendance!]);
       }
       //log('${event?.start}', name: 'getEvent3');
       onSetDates();
@@ -231,8 +238,6 @@ class EventAddEditController extends GetxController
   }
 
   Future<void> append({
-    String? autorization,
-    String? fatura,
     RoomModel? room,
     EventStatusModel? status,
     String? description,
@@ -249,11 +254,9 @@ class EventAddEditController extends GetxController
       logData = '$logData\ndesc:${description ?? '-'}';
       logData = '$logData\nroom:${room?.name ?? '-'}';
       logData = '$logData\nstatus:${status?.name ?? '-'}';
-      String? eventStatusIdPast = event?.status?.id;
+      // String? eventStatusIdPast = event?.status?.id;
       if (eventId == null) {
         event = EventModel(
-          // autorization: autorization,
-          // fatura: fatura,
           room: room,
           start: onMountDateStart(),
           end: onMountDateEnd(),
@@ -264,8 +267,6 @@ class EventAddEditController extends GetxController
         );
       } else {
         event = event!.copyWith(
-          // autorization: autorization,
-          // fatura: fatura,
           room: room,
           start: onMountDateStart(),
           end: onMountDateEnd(),
@@ -276,6 +277,7 @@ class EventAddEditController extends GetxController
         );
       }
       String eventIdTemp = await _eventRepository.update(event!);
+      await updateAttendanceInEvent(eventIdTemp);
       //log('+++ evolutionModel');
       //log('${event!.status != null}', name: 'EvolutionModel');
       //log('$eventStatusIdPast', name: 'EvolutionModel');
@@ -321,49 +323,17 @@ class EventAddEditController extends GetxController
     }
   }
 
-//a4HhGpRLLx s11b6r3tDv
-  Future<void> updateProfissionals({
-    required String ids,
-    required bool add,
-  }) async {
+  addAttendance(String attendanceId) async {
     try {
       _loading(true);
-      Map<String, String>? procedures = event?.procedures;
-      if (add) {
-        List<String> idProfissionalIdProcedure = ids.split(' ');
-        await _eventRepository.updateRelationProfessionals(
-            event!.id!, [idProfissionalIdProcedure[0]], true);
-        if (procedures != null) {
-          procedures.update(idProfissionalIdProcedure[0],
-              (value) => idProfissionalIdProcedure[1],
-              ifAbsent: () => idProfissionalIdProcedure[1]);
-        } else {
-          procedures = {
-            idProfissionalIdProcedure[0]: idProfissionalIdProcedure[1]
-          };
-        }
-      } else {
-        await _eventRepository.updateRelationProfessionals(
-            event!.id!, [ids], false);
-        procedures!.remove(ids);
+      var attendance = await _attendanceRepository.readById(attendanceId);
+      if (attendance != null) {
+        attendanceList.add(attendance);
       }
-      //log('${event?.start}', name: 'updateProfissionals1');
-      //log('${event?.end}', name: 'updateProfissionals1');
-      event = event!.copyWith(procedures: procedures);
-      //log('${event?.start}', name: 'updateProfissionals2');
-      //log('${event?.end}', name: 'updateProfissionals2');
-
-      eventId = await _eventRepository.update(event!);
-      //log('${event?.start}', name: 'updateProfissionals3');
-      //log('${event?.end}', name: 'updateProfissionals3');
-
-      await getEvent();
-      //log('${event?.start}', name: 'updateProfissionals4');
-      //log('${event?.end}', name: 'updateProfissionals4');
-    } on EventRepositoryException {
+    } on AttendanceRepositoryException {
       _message.value = MessageModel(
         title: 'Erro em EventController',
-        message: 'Não foi possivel salvar o Event',
+        message: 'Não foi possivel salvar o atendimento',
         isError: true,
       );
     } finally {
@@ -371,87 +341,51 @@ class EventAddEditController extends GetxController
     }
   }
 
-  String getProcedureName(String procedureId) {
-    // //log(procedureId, name: 'getProcedureName');
-    // //log('$procedureList', name: 'getProcedureName');
-    var procedureModelSelected =
-        procedureList.firstWhere((element) => element.id == procedureId);
-    return procedureModelSelected.name!;
+  removeAttendance(String attendanceId) {
+    attendanceList.removeWhere((element) => element.id == attendanceId);
   }
 
-//a4HhGpRLLx UIhi3dwq8y
-  Future<void> updatePatients({
-    required String ids,
-    required bool add,
-  }) async {
-    try {
-      _loading(true);
-      Map<String, String>? healthPlans = event?.healthPlans;
-      if (add) {
-        List<String> idPatientIdHealthPlan = ids.split(' ');
-        await _eventRepository.updateRelationPatients(
-            event!.id!, [idPatientIdHealthPlan[0]], true);
-        if (healthPlans != null) {
-          healthPlans.update(
-              idPatientIdHealthPlan[0], (value) => idPatientIdHealthPlan[1],
-              ifAbsent: () => idPatientIdHealthPlan[1]);
-        } else {
-          healthPlans = {idPatientIdHealthPlan[0]: idPatientIdHealthPlan[1]};
-        }
+  Future<void> updateAttendanceInEvent(String eventId) async {
+    List<AttendanceModel> attendanceListResult = <AttendanceModel>[];
+    attendanceListResult.addAll([...attendanceList]);
+    for (var attendanceOriginal in attendanceListOriginal) {
+      var attendanceFound = attendanceList
+          .firstWhereOrNull((element) => element.id == attendanceOriginal.id);
+      if (attendanceFound == null) {
+        await _eventRepository.updateRelationAttendance(
+            eventId, [attendanceOriginal.id!], false);
+        await updateAttendanceData(attendanceOriginal.id!, false);
       } else {
-        await _eventRepository.updateRelationPatients(event!.id!, [ids], false);
-        healthPlans!.remove(ids);
+        attendanceListResult
+            .removeWhere((element) => element.id == attendanceFound.id);
       }
-      event = event!.copyWith(healthPlans: healthPlans);
-
-      eventId = await _eventRepository.update(event!);
-
-      await getEvent();
-    } on EventRepositoryException {
-      _message.value = MessageModel(
-        title: 'Erro em EventController',
-        message: 'Não foi possivel salvar o Event',
-        isError: true,
-      );
-    } finally {
-      _loading(false);
+    }
+    for (var attendanceResult in attendanceListResult) {
+      await _eventRepository.updateRelationAttendance(
+          eventId, [attendanceResult.id!], true);
+      await updateAttendanceData(attendanceResult.id!, true);
     }
   }
 
-  String getHealthPlan(String patientId, String getFieldName) {
-    var patients = event!.patients!;
-    var healthPlans = event!.healthPlans!;
-    var patient = patients.firstWhere((element) => element.id == patientId);
-    var healthPlanThisPatient = patient.healthPlan!
-        .firstWhereOrNull((element) => element.id == healthPlans[patientId]);
-    if (healthPlanThisPatient != null) {
-      if (getFieldName == 'code') {
-        return healthPlanThisPatient.code ?? '...';
-      } else if (getFieldName == 'name') {
-        return healthPlanThisPatient.healthPlanType?.name ?? '...';
-      } else {
-        return healthPlanThisPatient.healthPlanType?.id ?? '...';
-      }
+  Future<void> updateAttendanceData(String attendanceId, bool add) async {
+    if (add) {
+      await _attendanceRepository.update(
+        AttendanceModel(
+          id: attendanceId,
+          dtStartAttendance: dateStart,
+          dtEndAttendance: dateEnd,
+          status: eventStatusSelected,
+        ),
+      );
     } else {
-      return 'Convênio não encontrado';
+      await _attendanceRepository.updateUnset(
+          attendanceId, ['dtStartAttendance', 'dtEndAttendance', 'status']);
+      await _attendanceRepository.update(
+        AttendanceModel(
+          id: attendanceId,
+          status: EventStatusModel(id: 'uvHmcIKiFc'),
+        ),
+      );
     }
   }
-
-  // String getHealthPlanType(String patientId) {
-  //   var patients = event!.patients!;
-  //   var healthPlans = event!.healthPlans!;
-  //   var patient = patients.firstWhere((element) => element.id == patientId);
-  //   var healthPlanThisPatient = patient.healthPlan!
-  //       .firstWhere((element) => element.id == healthPlans[patientId]);
-  //   return healthPlanThisPatient.healthPlanType?.name ?? '...';
-  // }
-
-  // String getHealthPlanId(String patientId) {
-  //   var patients = event!.patients!;
-  //   var healthPlans = event!.healthPlans!;
-  //   var patient = patients.firstWhere((element) => element.id == patientId);
-  //   var healthPlanThisPatient = patient.healthPlan!
-  //       .firstWhere((element) => element.id == healthPlans[patientId]);
-  //   return healthPlanThisPatient.healthPlanType?.id ?? '...';
-  // }
 }

@@ -70,11 +70,35 @@ class AttendanceRepositoryB4a implements AttendanceRepository {
   }
 
   @override
+  Future<void> updateUnset(String modelId, List<String> unsetFields) async {
+    final parseObject = AttendanceEntity().toParseUnset(modelId, unsetFields);
+    await parseObject.save();
+
+    // if (response.success && response.results != null) {
+    //   ParseObject userProfile = response.results!.first as ParseObject;
+    //   return userProfile.objectId!;
+    // } else {
+    //   var errorCodes = ParseErrorCode(response.error!);
+    //   throw AttendanceRepositoryException(
+    //     code: errorCodes.code,
+    //     message: errorCodes.message,
+    //   );
+    // }
+  }
+
+  @override
   Future<AttendanceModel?> readById(String id) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
     query.whereEqualTo('objectId', id);
-
+    query.includeObject([
+      'professional',
+      'procedure',
+      'patient',
+      'healthPlan',
+      'healthPlan.healthPlanType',
+      'status'
+    ]);
     query.first();
     ParseResponse? response;
     try {
