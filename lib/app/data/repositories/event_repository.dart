@@ -7,8 +7,8 @@ abstract class EventRepository {
       QueryBuilder<ParseObject> query, Pagination pagination);
   Future<String> update(EventModel model);
   Future<EventModel?> readById(String id);
-  Future<void> updateRelationProfessionals(
+  Future<void> updateRelationAttendance(
       String objectId, List<String> modelIdList, bool add);
-  Future<void> updateRelationPatients(
-      String objectId, List<String> modelIdList, bool add);
+  // Future<void> updateRelationPatients(
+  //     String objectId, List<String> modelIdList, bool add);
 }

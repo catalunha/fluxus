@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/event_model.dart';
-import 'package:fluxus/app/core/models/evolution_model.dart';
 import 'package:fluxus/app/core/models/procedure_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
@@ -111,9 +111,11 @@ class EventAddEditController extends GetxController
 
   String? eventId;
 
+  List<AttendanceModel> attendanceList = <AttendanceModel>[].obs;
+
 //+++ forms
-  final autorizationTec = TextEditingController();
-  final faturaTec = TextEditingController();
+  // final autorizationTec = TextEditingController();
+  // final faturaTec = TextEditingController();
   final descriptionTec = TextEditingController();
 //--- forms
   @override
@@ -129,7 +131,7 @@ class EventAddEditController extends GetxController
     messageListener(_message);
     getRoomList();
     getEventStatusList();
-    getProcedureList();
+    // getProcedureList();
     getStartDateList();
     eventId = Get.arguments;
     //log(eventId ?? 'null', name: 'EventAddEditController');
@@ -147,10 +149,10 @@ class EventAddEditController extends GetxController
     eventStatusList(all);
   }
 
-  getProcedureList() async {
-    List<ProcedureModel> all = await _procedureRepository.list();
-    procedureList(all);
-  }
+  // getProcedureList() async {
+  //   List<ProcedureModel> all = await _procedureRepository.list();
+  //   procedureList(all);
+  // }
 
   Future<void> getEvent() async {
     _loading(true);
@@ -159,6 +161,9 @@ class EventAddEditController extends GetxController
       EventModel? eventModelTemp = await _eventRepository.readById(eventId!);
       //log('${eventModelTemp!.start}', name: 'getEvent2');
       event = eventModelTemp;
+      if (eventModelTemp?.attendance != null) {
+        attendanceList.addAll(eventModelTemp!.attendance!);
+      }
       //log('${event?.start}', name: 'getEvent3');
       onSetDates();
       onSetRoom();
@@ -210,8 +215,8 @@ class EventAddEditController extends GetxController
   }
 
   setFormFieldControllers() {
-    autorizationTec.text = event?.autorization ?? "";
-    faturaTec.text = event?.fatura ?? "";
+    // autorizationTec.text = event?.autorization ?? "";
+    // faturaTec.text = event?.fatura ?? "";
     descriptionTec.text = event?.description ?? "";
   }
 
@@ -247,8 +252,8 @@ class EventAddEditController extends GetxController
       String? eventStatusIdPast = event?.status?.id;
       if (eventId == null) {
         event = EventModel(
-          autorization: autorization,
-          fatura: fatura,
+          // autorization: autorization,
+          // fatura: fatura,
           room: room,
           start: onMountDateStart(),
           end: onMountDateEnd(),
@@ -259,8 +264,8 @@ class EventAddEditController extends GetxController
         );
       } else {
         event = event!.copyWith(
-          autorization: autorization,
-          fatura: fatura,
+          // autorization: autorization,
+          // fatura: fatura,
           room: room,
           start: onMountDateStart(),
           end: onMountDateEnd(),
@@ -275,32 +280,32 @@ class EventAddEditController extends GetxController
       //log('${event!.status != null}', name: 'EvolutionModel');
       //log('$eventStatusIdPast', name: 'EvolutionModel');
       //log('${status!.id}', name: 'EvolutionModel');
-      if (event!.status != null &&
-          eventStatusIdPast != 'turMpAqIVQ' &&
-          status!.id == 'turMpAqIVQ') {
-        //log('+++ evolutionModel 1 ');
+      // if (event!.status != null &&
+      //     eventStatusIdPast != 'turMpAqIVQ' &&
+      //     status!.id == 'turMpAqIVQ') {
+      //   //log('+++ evolutionModel 1 ');
 
-        if (event!.professionals != null &&
-            event!.professionals!.isNotEmpty &&
-            event!.patients != null &&
-            event!.patients!.isNotEmpty) {
-          //log('+++ evolutionModel 2');
+      //   if (event!.professionals != null &&
+      //       event!.professionals!.isNotEmpty &&
+      //       event!.patients != null &&
+      //       event!.patients!.isNotEmpty) {
+      //     //log('+++ evolutionModel 2');
 
-          for (var professional in event!.professionals!) {
-            for (var patient in event!.patients!) {
-              EvolutionModel evolutionModel = EvolutionModel(
-                start: onMountDateStart(),
-                event: eventIdTemp,
-                professional: professional,
-                expertise: event!.procedures![professional.id],
-                patient: patient,
-              );
-              //log(evolutionModel.toString(), name: 'EvolutionModel');
-              await _evolutionRepository.update(evolutionModel);
-            }
-          }
-        }
-      }
+      //     for (var professional in event!.professionals!) {
+      //       for (var patient in event!.patients!) {
+      //         EvolutionModel evolutionModel = EvolutionModel(
+      //           start: onMountDateStart(),
+      //           event: eventIdTemp,
+      //           professional: professional,
+      //           expertise: event!.procedures![professional.id],
+      //           patient: patient,
+      //         );
+      //         //log(evolutionModel.toString(), name: 'EvolutionModel');
+      //         await _evolutionRepository.update(evolutionModel);
+      //       }
+      //     }
+      //   }
+      // }
       //log('--- evolutionModel');
 
       eventId = eventIdTemp;

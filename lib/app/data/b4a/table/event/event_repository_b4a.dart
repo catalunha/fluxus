@@ -106,24 +106,24 @@ class EventRepositoryB4a implements EventRepository {
   }
 
   @override
-  Future<void> updateRelationProfessionals(
+  Future<void> updateRelationAttendance(
       String objectId, List<String> modelIdList, bool add) async {
-    log('1', name: 'EventRepositoryB4a.updateRelationProfessionals');
-    final parseObject = EventEntity().toParseUpdateRelationProfessionals(
+    log('1', name: 'EventRepositoryB4a.updateRelationAttendance');
+    final parseObject = EventEntity().toParseUpdateRelationAttendance(
         objectId: objectId, modelIdList: modelIdList, add: add);
     if (parseObject != null) {
       await parseObject.save();
     }
   }
 
-  @override
-  Future<void> updateRelationPatients(
-      String objectId, List<String> modelIdList, bool add) async {
-    log('1', name: 'EventRepositoryB4a.updateRelationPatients');
-    final parseObject = EventEntity().toParseUpdateRelationPatients(
-        objectId: objectId, modelIdList: modelIdList, add: add);
-    if (parseObject != null) {
-      await parseObject.save();
-    }
-  }
+  // @override
+  // Future<void> updateRelationPatients(
+  //     String objectId, List<String> modelIdList, bool add) async {
+  //   log('1', name: 'EventRepositoryB4a.updateRelationPatients');
+  //   final parseObject = EventEntity().toParseUpdateRelationPatients(
+  //       objectId: objectId, modelIdList: modelIdList, add: add);
+  //   if (parseObject != null) {
+  //     await parseObject.save();
+  //   }
+  // }
 }
