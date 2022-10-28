@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/view/controllers/profile/user/user_profile_controller.dart';
 import 'package:get/get.dart';
 import 'package:validatorless/validatorless.dart';
 
-import 'package:fluxus/app/view/controllers/user/profile/user_profile_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
 
 class AddFamilyChildren extends StatefulWidget {

@@ -37,7 +37,7 @@ class ClientAddEditController extends GetxController
   ProfileModel? get profile => _profile.value;
   set profile(ProfileModel? profileModelNew) => _profile(profileModelNew);
 
-  final healthPlanList = <HealthPlanModel>[].obs;
+  // final healthPlanList = <HealthPlanModel>[].obs;
 
   final _healthPlan = Rxn<HealthPlanModel>();
   HealthPlanModel? get healthPlan => _healthPlan.value;
@@ -84,27 +84,41 @@ class ClientAddEditController extends GetxController
   var maskCEP = MaskTextInputFormatter();
 //--- forms
 
+  List<ProfileModel> profileList = <ProfileModel>[].obs;
+  List<ProfileModel> profileListOriginal = <ProfileModel>[];
+  List<HealthPlanModel> healthPlanList = <HealthPlanModel>[].obs;
+  List<HealthPlanModel> healthPlanListOriginal = <HealthPlanModel>[];
+  @override
+  void onReady() {
+    clientId = Get.arguments;
+    getProfile();
+    super.onReady();
+  }
+
   @override
   void onInit() async {
     log('+++> Controller onInit');
     loaderListener(_loading);
     messageListener(_message);
     getHealthPlanTypeList();
-    clientId = Get.arguments;
     super.onInit();
   }
 
   Future<void> getProfile() async {
-    // _loading(true);
+    _loading(true);
     if (clientId != null) {
       log('+++> getProfile $clientId', name: 'getProfile');
       ProfileModel? profileModelTemp =
           await _profileRepository.readById(clientId!);
       profile = profileModelTemp;
+      if (profileModelTemp?.family != null) {
+        profileList.addAll([...profileModelTemp!.family!]);
+        profileListOriginal.addAll([...profileModelTemp.family!]);
+      }
       onSetDateBirthday();
     }
     setFormFieldControllers();
-    // _loading(false);
+    _loading(false);
   }
 
   setFormFieldControllers() {
@@ -192,6 +206,7 @@ class ClientAddEditController extends GetxController
         );
       }
       String userProfileId = await _profileRepository.update(profile!);
+      await updateFamilyInProfile(userProfileId);
 
       if (clientId == null) {
         await _profileRepository.updateRelationOffice(
@@ -281,25 +296,67 @@ class ClientAddEditController extends GetxController
     }
   }
 
-  Future<void> familyUpdate({
-    required String id,
-    required bool isAdd,
-  }) async {
+  // Future<void> familyUpdate({
+  //   required String id,
+  //   required bool isAdd,
+  // }) async {
+  //   try {
+  //     _loading(true);
+
+  //     await _profileRepository.updateRelationFamily(profile!.id!, [id], isAdd);
+  //     await _profileRepository.updateRelationFamily(id, [profile!.id!], isAdd);
+
+  //     await getProfile();
+  //   } on ProfileRepositoryException {
+  //     _message.value = MessageModel(
+  //       title: 'Erro em ProfileController',
+  //       message: 'Não foi possivel salvar o perfil',
+  //       isError: true,
+  //     );
+  //   } finally {
+  //     _loading(false);
+  //   }
+  // }
+
+  Future<void> addFamily(String profileId) async {
     try {
       _loading(true);
-
-      await _profileRepository.updateRelationFamily(profile!.id!, [id], isAdd);
-      await _profileRepository.updateRelationFamily(id, [profile!.id!], isAdd);
-
-      await getProfile();
+      var profiletemp = await _profileRepository.readById(profileId);
+      if (profiletemp != null) {
+        profileList.add(profiletemp);
+      }
     } on ProfileRepositoryException {
       _message.value = MessageModel(
-        title: 'Erro em ProfileController',
-        message: 'Não foi possivel salvar o perfil',
+        title: 'Erro em EventController',
+        message: 'Não foi possivel salvar o atendimento',
         isError: true,
       );
     } finally {
       _loading(false);
+    }
+  }
+
+  removeFamily(String profileId) {
+    profileList.removeWhere((element) => element.id == profileId);
+  }
+
+  Future<void> updateFamilyInProfile(String eventId) async {
+    List<ProfileModel> profileListResult = <ProfileModel>[];
+    profileListResult.addAll([...profileList]);
+    for (var profileOriginal in profileListOriginal) {
+      var profileFound = profileList
+          .firstWhereOrNull((element) => element.id == profileOriginal.id);
+      if (profileFound == null) {
+        await _profileRepository.updateRelationFamily(
+            eventId, [profileOriginal.id!], false);
+      } else {
+        profileListResult
+            .removeWhere((element) => element.id == profileFound.id);
+      }
+    }
+    for (var profileResult in profileListResult) {
+      await _profileRepository.updateRelationFamily(
+          eventId, [profileResult.id!], true);
     }
   }
 }

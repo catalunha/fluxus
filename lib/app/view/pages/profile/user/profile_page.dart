@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/view/controllers/profile/user/user_profile_controller.dart';
 import 'package:fluxus/app/view/pages/profile/user/part/add_family_children.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
@@ -6,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:validatorless/validatorless.dart';
 
-import 'package:fluxus/app/view/controllers/user/profile/user_profile_controller.dart';
 import 'package:fluxus/app/view/pages/profile/user/part/user_profile_photo.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';

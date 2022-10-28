@@ -126,6 +126,7 @@ class EventAddEditController extends GetxController
 //--- forms
   @override
   void onReady() {
+    eventId = Get.arguments;
     getEvent();
     super.onReady();
   }
@@ -139,7 +140,6 @@ class EventAddEditController extends GetxController
     getEventStatusList();
     // getProcedureList();
     getStartDateList();
-    eventId = Get.arguments;
     //log(eventId ?? 'null', name: 'EventAddEditController');
     // getEvent();
     super.onInit();
@@ -323,7 +323,7 @@ class EventAddEditController extends GetxController
     }
   }
 
-  addAttendance(String attendanceId) async {
+  Future<void> addAttendance(String attendanceId) async {
     try {
       _loading(true);
       var attendance = await _attendanceRepository.readById(attendanceId);

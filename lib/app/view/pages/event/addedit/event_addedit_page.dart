@@ -4,7 +4,7 @@ import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_controller.dart';
-import 'package:fluxus/app/view/pages/event/addedit/part/event_add_ids.dart';
+import 'package:fluxus/app/view/pages/utils/app_dialog_add_ids.dart';
 import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
@@ -149,13 +149,14 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                               barrierDismissible: false,
                               context: context,
                               builder: (BuildContext context) {
-                                return const EventAddIds(
+                                return const AppDialogAddIds(
                                   title: 'Informe o Id do atendimento',
                                 );
                               },
                             );
                             if (res != null) {
-                              widget._eventAddEditController.addAttendance(res);
+                              await widget._eventAddEditController
+                                  .addAttendance(res);
                             }
                             setState(() {});
                             // } else {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluxus/app/view/controllers/client/addedit/client_addedit_controller.dart';
+import 'package:fluxus/app/view/controllers/profile/client/addedit/client_addedit_controller.dart';
 import 'package:get/get.dart';
 import 'package:validatorless/validatorless.dart';
 

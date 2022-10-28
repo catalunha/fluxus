@@ -1,8 +1,9 @@
 import 'package:fluxus/app/view/controllers/attendance/addedit/attendance_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/attendance/search/attendance_search_dependencies.dart';
-import 'package:fluxus/app/view/controllers/client/addedit/client_addedit_dependencies.dart';
-import 'package:fluxus/app/view/controllers/client/search/client_search_dependencies.dart';
-import 'package:fluxus/app/view/controllers/client/view/client_view_dependencies.dart';
+import 'package:fluxus/app/view/controllers/profile/client/addedit/client_addedit_dependencies.dart';
+import 'package:fluxus/app/view/controllers/profile/client/search/client_search_dependencies.dart';
+import 'package:fluxus/app/view/controllers/profile/user/user_profile_dependencies.dart';
+import 'package:fluxus/app/view/controllers/profile/view/client_view_dependencies.dart';
 import 'package:fluxus/app/view/controllers/evaluation/addedit/evaluation_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/evaluation/search/evaluation_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_dependencies.dart';
@@ -11,7 +12,6 @@ import 'package:fluxus/app/view/controllers/evolution/addedit/evolution_addedit_
 import 'package:fluxus/app/view/controllers/evolution/search/evolution_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/health_plan/search/health_plan_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/team/search/team_search_dependencies.dart';
-import 'package:fluxus/app/view/controllers/user/profile/user_profile_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/register/email/user_register_email_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/login/login_dependencies.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_dependencies.dart';
@@ -126,7 +126,7 @@ class Routes {
     GetPage(
       name: Routes.clientProfileAddEdit,
       binding: ClientAddEditDependencies(),
-      page: () => const ClientAddEditPage(),
+      page: () => ClientAddEditPage(),
     ),
     GetPage(
       name: Routes.clientProfileHealthPlan,
