@@ -113,8 +113,8 @@ class _ClientHealthPlanAddEditPageState
                         final formValid =
                             _formKey.currentState?.validate() ?? false;
                         if (formValid) {
-                          await widget._clientAddEditController
-                              .healthPlanUpdate(
+                          await widget._clientAddEditController.addHealthPlan(
+                            id: widget.healthPlanModel?.id,
                             healthPlanType: healthPlanTypeSelected!,
                             code: _codeTec.text,
                             description: _descriptionTec.text,

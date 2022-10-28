@@ -39,9 +39,9 @@ class ClientAddEditController extends GetxController
 
   // final healthPlanList = <HealthPlanModel>[].obs;
 
-  final _healthPlan = Rxn<HealthPlanModel>();
-  HealthPlanModel? get healthPlan => _healthPlan.value;
-  set healthPlan(HealthPlanModel? healthPlanNew) => _healthPlan(healthPlanNew);
+  // final _healthPlan = Rxn<HealthPlanModel>();
+  // HealthPlanModel? get healthPlan => _healthPlan.value;
+  // set healthPlan(HealthPlanModel? healthPlanNew) => _healthPlan(healthPlanNew);
 
   XFile? _xfile;
   set xfile(XFile? xfile) {
@@ -114,6 +114,8 @@ class ClientAddEditController extends GetxController
       if (profileModelTemp?.family != null) {
         profileList.addAll([...profileModelTemp!.family!]);
         profileListOriginal.addAll([...profileModelTemp.family!]);
+        healthPlanList.addAll([...profileModelTemp.healthPlan!]);
+        healthPlanListOriginal.addAll([...profileModelTemp.healthPlan!]);
       }
       onSetDateBirthday();
     }
@@ -207,7 +209,7 @@ class ClientAddEditController extends GetxController
       }
       String userProfileId = await _profileRepository.update(profile!);
       await updateFamilyInProfile(userProfileId);
-
+      await updateHealthPlanInProfile(userProfileId);
       if (clientId == null) {
         await _profileRepository.updateRelationOffice(
             userProfileId, ['RrrMr52QBM'], true);
@@ -239,84 +241,103 @@ class ClientAddEditController extends GetxController
   }
 
 // health Plan
-  void onSetDateDueHealthPlan() {
-    dateDueHealthPlan = healthPlan?.due;
-  }
+  // void onSetDateDueHealthPlan() {
+  //   dateDueHealthPlan = healthPlan?.due;
+  // }
 
-  Future<void> healthPlanAdd() async {
-    onSetDateDueHealthPlan();
-    healthPlan = HealthPlanModel();
+  Future<void> healthPlanPageAdd() async {
+    // onSetDateDueHealthPlan();
+    // var healthPlan = HealthPlanModel();
+    dateDueHealthPlan = null;
     await Get.toNamed(Routes.clientProfileHealthPlan, arguments: null);
   }
 
-  Future<void> healthPlanEdit(String healtPlanId) async {
-    var healhPlanSelected =
-        profile!.healthPlan!.firstWhere((element) => element.id == healtPlanId);
-    healthPlan = healhPlanSelected;
+  Future<void> healthPlanPageEdit(String healtPlanId) async {
+    var healthPlan =
+        healthPlanList.firstWhereOrNull((element) => element.id == healtPlanId);
     dateDueHealthPlan = healthPlan?.due;
     await Get.toNamed(Routes.clientProfileHealthPlan, arguments: healthPlan);
   }
 
-  healthPlanUpdate({
+  addHealthPlan({
+    required String? id,
     required HealthPlanTypeModel healthPlanType,
     required String code,
     required String description,
     required bool isDeleted,
   }) async {
-    try {
-      _loading(true);
-
-      healthPlan = HealthPlanModel(
-        id: healthPlan?.id,
-        // profileId: profile?.id,
-        profile: profile,
+    // try {
+    // _loading(true);
+    HealthPlanModel healthPlanTemp;
+    if (id == null) {
+      healthPlanTemp = HealthPlanModel(
         healthPlanType: healthPlanType,
         code: code,
         due: dateDueHealthPlan,
         description: description,
         isDeleted: isDeleted,
       );
-      log('${healthPlan!.id}', name: 'healthPlanUpdate');
-      log('$isDeleted', name: 'healthPlanUpdate');
-      String healthPlanId = await _healthPlanRepository.addEdit(healthPlan!);
-      await _profileRepository.updateRelationHealthPlan(
-          profile!.id!, [healthPlanId], !isDeleted);
-
-      // final SplashController splashController = Get.find();
-      // await splashController.updateUserProfile();
-      await getProfile();
-    } on ProfileRepositoryException {
-      _message.value = MessageModel(
-        title: 'Erro em ProfileController',
-        message: 'Não foi possivel salvar o perfil',
-        isError: true,
+    } else {
+      var healthPlanTemp2 =
+          healthPlanList.firstWhereOrNull((element) => element.id == id);
+      healthPlanTemp = healthPlanTemp2!.copyWith(
+        healthPlanType: healthPlanType,
+        code: code,
+        due: dateDueHealthPlan,
+        description: description,
+        isDeleted: isDeleted,
       );
-    } finally {
+      _loading(true);
+      await _healthPlanRepository.addEdit(healthPlanTemp);
       _loading(false);
     }
+
+    healthPlanList.add(healthPlanTemp);
+    // log('${healthPlan!.id}', name: 'healthPlanUpdate');
+    // log('$isDeleted', name: 'healthPlanUpdate');
+    // String healthPlanId = await _healthPlanRepository.addEdit(healthPlan!);
+    // await _profileRepository.updateRelationHealthPlan(
+    //     profile!.id!, [healthPlanId], !isDeleted);
+
+    // final SplashController splashController = Get.find();
+    // await splashController.updateUserProfile();
+    // await getProfile();
+    // } on ProfileRepositoryException {
+    //   _message.value = MessageModel(
+    //     title: 'Erro em ProfileController',
+    //     message: 'Não foi possivel salvar o perfil',
+    //     isError: true,
+    //   );
+    // } finally {
+    //   // _loading(false);
+    // }
   }
 
-  // Future<void> familyUpdate({
-  //   required String id,
-  //   required bool isAdd,
-  // }) async {
-  //   try {
-  //     _loading(true);
+  removeHealthPlan(String healthPlanId) {
+    healthPlanList.removeWhere((element) => element.id == healthPlanId);
+  }
 
-  //     await _profileRepository.updateRelationFamily(profile!.id!, [id], isAdd);
-  //     await _profileRepository.updateRelationFamily(id, [profile!.id!], isAdd);
-
-  //     await getProfile();
-  //   } on ProfileRepositoryException {
-  //     _message.value = MessageModel(
-  //       title: 'Erro em ProfileController',
-  //       message: 'Não foi possivel salvar o perfil',
-  //       isError: true,
-  //     );
-  //   } finally {
-  //     _loading(false);
-  //   }
-  // }
+  Future<void> updateHealthPlanInProfile(String profileId) async {
+    List<HealthPlanModel> healthPlanListResult = <HealthPlanModel>[];
+    healthPlanListResult.addAll([...healthPlanList]);
+    for (var healthPlanOriginal in healthPlanListOriginal) {
+      var healthPlanFound = healthPlanList
+          .firstWhereOrNull((element) => element.id == healthPlanOriginal.id);
+      if (healthPlanFound == null) {
+        await _profileRepository.updateRelationHealthPlan(
+            profileId, [healthPlanOriginal.id!], false);
+      } else {
+        healthPlanListResult
+            .removeWhere((element) => element.id == healthPlanFound.id);
+      }
+    }
+    for (var healthPlanResult in healthPlanListResult) {
+      String healthPlanId =
+          await _healthPlanRepository.addEdit(healthPlanResult);
+      await _profileRepository.updateRelationHealthPlan(
+          profileId, [healthPlanId], true);
+    }
+  }
 
   Future<void> addFamily(String profileId) async {
     try {

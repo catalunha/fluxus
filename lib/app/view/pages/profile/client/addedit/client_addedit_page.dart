@@ -150,18 +150,18 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               // await widget._clientAddEditController
                               //     .healthPlanAdd();
                               // await Get.toNamed(Routes.profileHealthPlan);
-                              var result = await saveProfile();
-                              if (result) {
-                                await widget._clientAddEditController
-                                    .healthPlanAdd();
-                                setState(() {});
-                              } else {
-                                Get.snackbar(
-                                  'Atenção',
-                                  'Campos obrigatórios não foram preenchidos.',
-                                  backgroundColor: Colors.red,
-                                );
-                              }
+                              // var result = await saveProfile();
+                              // if (result) {
+                              await widget._clientAddEditController
+                                  .healthPlanPageAdd();
+                              setState(() {});
+                              // } else {
+                              //   Get.snackbar(
+                              //     'Atenção',
+                              //     'Campos obrigatórios não foram preenchidos.',
+                              //     backgroundColor: Colors.red,
+                              //   );
+                              // }
                             },
                             icon: const Icon(Icons.add))
                       ],
@@ -317,22 +317,35 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   }
 
   Widget healthPlanList() {
-    if (widget._clientAddEditController.profile?.healthPlan != null) {
+    if (widget._clientAddEditController.healthPlanList.isNotEmpty) {
       return Column(
         children: [
-          ...widget._clientAddEditController.profile!.healthPlan!
+          ...widget._clientAddEditController.healthPlanList
               .map((e) => Card(
                     child: Column(children: [
                       Row(
                         children: [
-                          IconButton(
-                            onPressed: () async {
-                              await saveProfile();
-                              await widget._clientAddEditController
-                                  .healthPlanEdit(e.id!);
-                              // setState(() {});
-                            },
-                            icon: const Icon(Icons.edit),
+                          Column(
+                            children: [
+                              IconButton(
+                                onPressed: () async {
+                                  // await saveProfile();
+                                  await widget._clientAddEditController
+                                      .healthPlanPageEdit(e.id!);
+                                  setState(() {});
+                                },
+                                icon: const Icon(Icons.edit),
+                              ),
+                              IconButton(
+                                onPressed: () async {
+                                  // await saveEvent();
+                                  await widget._clientAddEditController
+                                      .removeHealthPlan(e.id!);
+                                  setState(() {});
+                                },
+                                icon: const Icon(Icons.delete_forever),
+                              ),
+                            ],
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
