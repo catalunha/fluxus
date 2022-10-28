@@ -260,39 +260,35 @@ class ClientAddEditController extends GetxController
   }
 
   addHealthPlan({
-    required String? id,
-    required HealthPlanTypeModel healthPlanType,
-    required String code,
-    required String description,
-    required bool isDeleted,
+    required HealthPlanModel healthPlanTemp,
+    // required String? id,
+    // required HealthPlanTypeModel healthPlanType,
+    // required String code,
+    // required String description,
+    // required bool isDeleted,
   }) async {
     // try {
     // _loading(true);
-    HealthPlanModel healthPlanTemp;
-    if (id == null) {
-      healthPlanTemp = HealthPlanModel(
-        healthPlanType: healthPlanType,
-        code: code,
-        due: dateDueHealthPlan,
-        description: description,
-        isDeleted: isDeleted,
-      );
-    } else {
-      var healthPlanTemp2 =
-          healthPlanList.firstWhereOrNull((element) => element.id == id);
-      healthPlanTemp = healthPlanTemp2!.copyWith(
-        healthPlanType: healthPlanType,
-        code: code,
-        due: dateDueHealthPlan,
-        description: description,
-        isDeleted: isDeleted,
-      );
+    // HealthPlanModel healthPlanTemp;
+    if (healthPlanTemp.id != null) {
+      //   healthPlanList.add(healthPlanTemp);
+      // } else {
+      // var healthPlanTemp2 = healthPlanList
+      //     .firstWhereOrNull((element) => element.id == healthPlanTemp.id);
+      // healthPlanTemp = healthPlanTemp2!.copyWith(
+      //   healthPlanType: healthPlanTemp.healthPlanType,
+      //   code: healthPlanTemp.code,
+      //   due: dateDueHealthPlan,
+      //   description: healthPlanTemp.description,
+      // );
       _loading(true);
       await _healthPlanRepository.addEdit(healthPlanTemp);
+      healthPlanList.removeWhere((element) => element.id == healthPlanTemp.id);
+      // healthPlanList.add(healthPlanTemp);
       _loading(false);
     }
-
     healthPlanList.add(healthPlanTemp);
+
     // log('${healthPlan!.id}', name: 'healthPlanUpdate');
     // log('$isDeleted', name: 'healthPlanUpdate');
     // String healthPlanId = await _healthPlanRepository.addEdit(healthPlan!);

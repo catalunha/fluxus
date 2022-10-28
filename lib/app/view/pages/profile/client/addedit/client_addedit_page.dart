@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/view/controllers/profile/client/addedit/client_addedit_controller.dart';
+import 'package:fluxus/app/view/pages/profile/client/addedit/client_health_plan_addedit_page.dart';
 import 'package:fluxus/app/view/pages/utils/app_dialog_add_ids.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
@@ -129,11 +131,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           widget._clientAddEditController.descriptionTec,
                     ),
                     const SizedBox(height: 5),
-                    UserProfilePhoto(
-                      photoUrl: widget._clientAddEditController.profile?.photo,
-                      setXFile: (value) =>
-                          widget._clientAddEditController.xfile = value,
-                    ),
+                    Obx(() => UserProfilePhoto(
+                          photoUrl:
+                              widget._clientAddEditController.profile?.photo,
+                          setXFile: (value) =>
+                              widget._clientAddEditController.xfile = value,
+                        )),
                     const SizedBox(height: 5),
                     // const Text('Suas especialidades'),
                     // expertiseList(),
@@ -146,14 +149,30 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                         const Text('Seus convênios'),
                         IconButton(
                             onPressed: () async {
+                              HealthPlanModel? res = await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  widget._clientAddEditController
+                                      .dateDueHealthPlan = null;
+                                  return ClientHealthPlanAddEditPage(
+                                      healthPlanModel: HealthPlanModel());
+                                },
+                              );
+                              if (res != null) {
+                                // await widget._eventAddEditController
+                                //     .addAttendance(res);
+                                await widget._clientAddEditController
+                                    .addHealthPlan(healthPlanTemp: res);
+                              }
                               // await saveProfile();
                               // await widget._clientAddEditController
                               //     .healthPlanAdd();
                               // await Get.toNamed(Routes.profileHealthPlan);
                               // var result = await saveProfile();
                               // if (result) {
-                              await widget._clientAddEditController
-                                  .healthPlanPageAdd();
+                              // await widget._clientAddEditController
+                              //     .healthPlanPageAdd();
                               setState(() {});
                               // } else {
                               //   Get.snackbar(
@@ -330,8 +349,25 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               IconButton(
                                 onPressed: () async {
                                   // await saveProfile();
-                                  await widget._clientAddEditController
-                                      .healthPlanPageEdit(e.id!);
+                                  HealthPlanModel? res = await showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      widget._clientAddEditController
+                                          .dateDueHealthPlan = e.due;
+                                      return ClientHealthPlanAddEditPage(
+                                          healthPlanModel: e);
+                                    },
+                                  );
+                                  if (res != null) {
+                                    // await widget._eventAddEditController
+                                    //     .addAttendance(res);
+                                    await widget._clientAddEditController
+                                        .addHealthPlan(healthPlanTemp: res);
+                                  }
+
+                                  // await widget._clientAddEditController
+                                  //     .healthPlanPageEdit(e.id!);
                                   setState(() {});
                                 },
                                 icon: const Icon(Icons.edit),
