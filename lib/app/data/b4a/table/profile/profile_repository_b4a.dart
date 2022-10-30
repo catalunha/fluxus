@@ -8,10 +8,13 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class ProfileRepositoryB4a implements ProfileRepository {
   Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
+      QueryBuilder<ParseObject> query, Pagination pagination,
+      {List<String>? includeColumns}) async {
     query.whereEqualTo('isDeleted', false);
     query.orderByDescending('updatedAt');
-
+    if (includeColumns != null) {
+      query.keysToReturn(includeColumns);
+    }
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
 
@@ -20,9 +23,11 @@ class ProfileRepositoryB4a implements ProfileRepository {
 
   @override
   Future<List<ProfileModel>> list(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
+      QueryBuilder<ParseObject> query, Pagination pagination,
+      {List<String>? includeColumns}) async {
     QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+    query2 =
+        await getQueryAll(query, pagination, includeColumns: includeColumns);
 
     ParseResponse? response;
     try {
@@ -30,11 +35,45 @@ class ProfileRepositoryB4a implements ProfileRepository {
       List<ProfileModel> listTemp = <ProfileModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          listTemp.add(ProfileEntity().fromParseSimpleData(element));
+          listTemp.add(await ProfileEntity()
+              .fromParse(element, includeColumns: includeColumns));
         }
         return listTemp;
       } else {
         return [];
+      }
+    } on Exception {
+      var errorCodes = ParseErrorCode(response!.error!);
+      throw ProfileRepositoryException(
+        code: errorCodes.code,
+        message: errorCodes.message,
+      );
+    }
+  }
+
+  @override
+  Future<ProfileModel?> readById(
+    String id, {
+    List<String>? includeColumns,
+  }) async {
+    QueryBuilder<ParseObject> query =
+        QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+    query.whereEqualTo('objectId', id);
+    if (includeColumns != null) {
+      query.keysToReturn(includeColumns);
+    }
+    // query.excludeKeys(
+    //     ['family', 'expertise', 'procedure', 'office', 'healthPlan']);
+    // query.first();
+    ParseResponse? response;
+    try {
+      response = await query.query();
+
+      if (response.success && response.results != null) {
+        return ProfileEntity()
+            .fromParse(response.results!.first, includeColumns: includeColumns);
+      } else {
+        throw Exception();
       }
     } on Exception {
       var errorCodes = ParseErrorCode(response!.error!);
@@ -55,30 +94,6 @@ class ProfileRepositoryB4a implements ProfileRepository {
       if (response.success && response.results != null) {
         ParseObject userProfile = response.results!.first as ParseObject;
         return userProfile.objectId!;
-      } else {
-        throw Exception();
-      }
-    } on Exception {
-      var errorCodes = ParseErrorCode(response!.error!);
-      throw ProfileRepositoryException(
-        code: errorCodes.code,
-        message: errorCodes.message,
-      );
-    }
-  }
-
-  @override
-  Future<ProfileModel?> readById(String id) async {
-    QueryBuilder<ParseObject> query =
-        QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
-    query.whereEqualTo('objectId', id);
-    query.first();
-    ParseResponse? response;
-    try {
-      response = await query.query();
-
-      if (response.success && response.results != null) {
-        return ProfileEntity().fromParse(response.results!.first);
       } else {
         throw Exception();
       }

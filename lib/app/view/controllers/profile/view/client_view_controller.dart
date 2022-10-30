@@ -36,8 +36,8 @@ class ClientViewController extends GetxController
 
   Future<ProfileModel> getProfile() async {
     // _loading(true);
-    ProfileModel? profileModelTemp =
-        await _profileRepository.readById(clientId!);
+    ProfileModel? profileModelTemp = await _profileRepository
+        .readById(clientId!, includeColumns: ['address', 'procedure']);
     profile = profileModelTemp;
     return profileModelTemp!;
     // _loading(false);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fluxus/app/core/models/expertise_model.dart';
 import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/office_model.dart';
@@ -12,112 +14,128 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class ProfileEntity {
   static const String className = 'Profile';
 
-  Future<ProfileModel> fromParse(ParseObject parseObject) async {
-    //+++ get expertises
+  Future<ProfileModel> fromParse(ParseObject parseObject,
+      {List<String>? includeColumns}) async {
+    // List<String> includeColumns = [];
+    // includeRelations.add('expertise');
+    // includeRelations.add('procedure');
+    // includeRelations.add('office');
+    // includeRelations.add('healthPlan');
+    // includeRelations.add('family');
     List<ExpertiseModel> expertiseList = [];
-    QueryBuilder<ParseObject> queryExpertise =
-        QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
-    queryExpertise.whereRelatedTo(
-        'expertise', 'Profile', parseObject.objectId!);
-    final ParseResponse responseExpertise = await queryExpertise.query();
-    if (responseExpertise.success && responseExpertise.results != null) {
-      expertiseList = [
-        ...responseExpertise.results!
-            .map<ExpertiseModel>(
-                (e) => ExpertiseEntity().fromParse(e as ParseObject))
-            .toList()
-      ];
+    if (includeColumns != null && includeColumns.contains('expertise')) {
+      //+++ get expertises
+      QueryBuilder<ParseObject> queryExpertise =
+          QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
+      queryExpertise.whereRelatedTo(
+          'expertise', 'Profile', parseObject.objectId!);
+      final ParseResponse responseExpertise = await queryExpertise.query();
+      if (responseExpertise.success && responseExpertise.results != null) {
+        expertiseList = [
+          ...responseExpertise.results!
+              .map<ExpertiseModel>(
+                  (e) => ExpertiseEntity().fromParse(e as ParseObject))
+              .toList()
+        ];
+      }
+      //--- get expertises
     }
-    //--- get expertises
-    //+++ get procedure
     List<ProcedureModel> procedureList = [];
-    QueryBuilder<ParseObject> queryProdecure =
-        QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
-    queryProdecure.whereRelatedTo(
-        'procedure', 'Profile', parseObject.objectId!);
-    // queryProdecure.includeObject(['expertise']);
-    final ParseResponse responseProdecure = await queryProdecure.query();
-    if (responseProdecure.success && responseProdecure.results != null) {
-      procedureList = [
-        ...responseProdecure.results!
-            .map<ProcedureModel>(
-                (e) => ProcedureEntity().fromParse(e as ParseObject))
-            .toList()
-      ];
+    if (includeColumns != null && includeColumns.contains('procedure')) {
+      //+++ get procedure
+      QueryBuilder<ParseObject> queryProdecure =
+          QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
+      queryProdecure.whereRelatedTo(
+          'procedure', 'Profile', parseObject.objectId!);
+      // queryProdecure.includeObject(['expertise']);
+      final ParseResponse responseProdecure = await queryProdecure.query();
+      if (responseProdecure.success && responseProdecure.results != null) {
+        procedureList = [
+          ...responseProdecure.results!
+              .map<ProcedureModel>(
+                  (e) => ProcedureEntity().fromParse(e as ParseObject))
+              .toList()
+        ];
+      }
+      //--- get procedure
     }
-    //--- get procedure
-    //+++ get office
     List<OfficeModel> officeList = [];
-    QueryBuilder<ParseObject> queryOffice =
-        QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
-    queryOffice.whereRelatedTo('office', 'Profile', parseObject.objectId!);
-    final ParseResponse responseOffice = await queryOffice.query();
-    if (responseOffice.success && responseOffice.results != null) {
-      officeList = [
-        ...responseOffice.results!
-            .map<OfficeModel>((e) => OfficeEntity().fromParse(e as ParseObject))
-            .toList()
-      ];
+    if (includeColumns != null && includeColumns.contains('office')) {
+      //+++ get office
+      QueryBuilder<ParseObject> queryOffice =
+          QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
+      queryOffice.whereRelatedTo('office', 'Profile', parseObject.objectId!);
+      final ParseResponse responseOffice = await queryOffice.query();
+      if (responseOffice.success && responseOffice.results != null) {
+        officeList = [
+          ...responseOffice.results!
+              .map<OfficeModel>(
+                  (e) => OfficeEntity().fromParse(e as ParseObject))
+              .toList()
+        ];
+      }
+      //--- get office
     }
-    //--- get office
-
-    //+++ get healthPlanList
     List<HealthPlanModel> healthPlanList = [];
+    if (includeColumns != null && includeColumns.contains('healthPlan')) {
+      //+++ get healthPlanList
 
-    QueryBuilder<ParseObject> queryHealthPlan =
-        QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
-    queryHealthPlan.whereRelatedTo(
-        'healthPlan', 'Profile', parseObject.objectId!);
-    queryHealthPlan.includeObject(['healthPlanType']);
-    final ParseResponse responseHealthPlan = await queryHealthPlan.query();
-    if (responseHealthPlan.success && responseHealthPlan.results != null) {
-      healthPlanList = [
-        ...responseHealthPlan.results!
-            .map<HealthPlanModel>(
-                (e) => HealthPlanEntity().fromParse(e as ParseObject))
-            .toList()
-      ];
+      QueryBuilder<ParseObject> queryHealthPlan =
+          QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
+      queryHealthPlan.whereRelatedTo(
+          'healthPlan', 'Profile', parseObject.objectId!);
+      queryHealthPlan.includeObject(['healthPlanType']);
+      final ParseResponse responseHealthPlan = await queryHealthPlan.query();
+      if (responseHealthPlan.success && responseHealthPlan.results != null) {
+        healthPlanList = [
+          ...responseHealthPlan.results!
+              .map<HealthPlanModel>(
+                  (e) => HealthPlanEntity().fromParse(e as ParseObject))
+              .toList()
+        ];
+      }
+      //--- get healthPlanList
     }
-    //--- get healthPlanList
-
-    //+++ get family
     List<ProfileModel> familyList = [];
-    QueryBuilder<ParseObject> queryFamily =
-        QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
-    queryFamily.whereRelatedTo('family', 'Profile', parseObject.objectId!);
-    final ParseResponse responseFamily = await queryFamily.query();
-    if (responseFamily.success && responseFamily.results != null) {
-      for (var e in responseFamily.results!) {
-        familyList.add(ProfileEntity().fromParseSimpleData(e as ParseObject));
+    if (includeColumns != null && includeColumns.contains('family')) {
+      //+++ get family
+      QueryBuilder<ParseObject> queryFamily =
+          QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+      queryFamily.whereRelatedTo('family', 'Profile', parseObject.objectId!);
+      final ParseResponse responseFamily = await queryFamily.query();
+      if (responseFamily.success && responseFamily.results != null) {
+        for (var e in responseFamily.results!) {
+          familyList.add(ProfileEntity().fromParseSimpleData(e as ParseObject));
+        }
+
+        // familyList = [
+        //   ...responseFamily.results!
+        //       .map<ProfileModel>((e) async => await ProfileEntity().fromParse(e as ParseObject))
+        //       .toList()
+        // ];
       }
-
-      // familyList = [
-      //   ...responseFamily.results!
-      //       .map<ProfileModel>((e) async => await ProfileEntity().fromParse(e as ParseObject))
-      //       .toList()
-      // ];
+      //--- get family
     }
-    //--- get family
+    // //+++ get children
+    // List<ProfileModel> childrenList = [];
+    // QueryBuilder<ParseObject> queryChildren =
+    //     QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+    // queryChildren.whereRelatedTo('children', 'Profile', parseObject.objectId!);
+    // final ParseResponse responseChildren = await queryChildren.query();
+    // if (responseChildren.success && responseChildren.results != null) {
+    //   for (var e in responseChildren.results!) {
+    //     childrenList.add(ProfileEntity().fromParseSimpleData(e));
+    //   }
 
-    //+++ get children
-    List<ProfileModel> childrenList = [];
-    QueryBuilder<ParseObject> queryChildren =
-        QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
-    queryChildren.whereRelatedTo('children', 'Profile', parseObject.objectId!);
-    final ParseResponse responseChildren = await queryChildren.query();
-    if (responseChildren.success && responseChildren.results != null) {
-      for (var e in responseChildren.results!) {
-        childrenList.add(ProfileEntity().fromParseSimpleData(e));
-      }
-
-      // familyList = [
-      //   ...responseFamily.results!
-      //       .map<ProfileModel>((e) async => await ProfileEntity().fromParse(e as ParseObject))
-      //       .toList()
-      // ];
-    }
-    //--- get children
-
+    //   // familyList = [
+    //   //   ...responseFamily.results!
+    //   //       .map<ProfileModel>((e) async => await ProfileEntity().fromParse(e as ParseObject))
+    //   //       .toList()
+    //   // ];
+    // }
+    // //--- get children
+    log('${parseObject.get('phone')}', name: 'ProfileEntity');
+    log('${parseObject.get('address')}', name: 'ProfileEntity');
     ProfileModel profileModel = ProfileModel(
       id: parseObject.objectId!,
       email: parseObject.get('email'),

@@ -5,9 +5,12 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 abstract class ProfileRepository {
   // Future<List<ProfileModel>> list(Pagination pagination);
   Future<List<ProfileModel>> list(
-      QueryBuilder<ParseObject> query, Pagination pagination);
+    QueryBuilder<ParseObject> query,
+    Pagination pagination, {
+    List<String>? includeColumns,
+  });
   Future<String> update(ProfileModel userProfileModel);
-  Future<ProfileModel?> readById(String id);
+  Future<ProfileModel?> readById(String id, {List<String>? includeColumns});
   Future<void> updateRelationHealthPlan(
       String objectId, List<String> modelIdList, bool add);
   // Future<void> updateRelationChildren(

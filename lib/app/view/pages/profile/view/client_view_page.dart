@@ -58,39 +58,40 @@ class ClientViewPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Foto: ',
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
-                        profileModel.photo == null
-                            ? Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.green),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'Foto indisponível',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              )
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: Image.network(
-                                  profileModel.photo!,
-                                  height: 100,
-                                  width: 100,
-                                  errorBuilder: (BuildContext context,
-                                      Object exception,
-                                      StackTrace? stackTrace) {
-                                    return Container();
-                                  },
-                                ),
-                              ),
-                        Text('${profileModel.id}'),
+                        fotoWidget(profileModel),
+                        // const Text(
+                        //   'Foto: ',
+                        //   style: TextStyle(color: Colors.blueGrey),
+                        // ),
+                        // profileModel.photo == null
+                        //     ? Container(
+                        //         width: 100,
+                        //         height: 100,
+                        //         decoration: BoxDecoration(
+                        //           border: Border.all(color: Colors.green),
+                        //           borderRadius: BorderRadius.circular(10.0),
+                        //         ),
+                        //         child: const Center(
+                        //           child: Text(
+                        //             'Foto indisponível',
+                        //             textAlign: TextAlign.center,
+                        //           ),
+                        //         ),
+                        //       )
+                        //     : ClipRRect(
+                        //         borderRadius: BorderRadius.circular(10.0),
+                        //         child: Image.network(
+                        //           profileModel.photo!,
+                        //           height: 100,
+                        //           width: 100,
+                        //           errorBuilder: (BuildContext context,
+                        //               Object exception,
+                        //               StackTrace? stackTrace) {
+                        //             return Container();
+                        //           },
+                        //         ),
+                        //       ),
+                        // Text('${profileModel.id}'),
                         AppTextTitleValue(
                           title: 'Nome: ',
                           value: profileModel.name,
@@ -410,6 +411,34 @@ class ClientViewPage extends StatelessWidget {
       );
     } else {
       return const Text('...');
+    }
+  }
+
+  Widget fotoWidget(ProfileModel profile) {
+    if (profile.photo != null) {
+      return Column(
+        children: [
+          const Text(
+            'Foto: ',
+            style: TextStyle(color: Colors.blueGrey),
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Image.network(
+              profile.photo!,
+              height: 100,
+              width: 100,
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace? stackTrace) {
+                return Container();
+              },
+            ),
+          ),
+          Text('${profile.id}'),
+        ],
+      );
+    } else {
+      return const SizedBox();
     }
   }
 }

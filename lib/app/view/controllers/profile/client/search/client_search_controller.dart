@@ -117,8 +117,8 @@ class ClientSearchController extends GetxController
     if (!lastPage) {
       _loading(true);
       print(query.toString());
-      List<ProfileModel> temp =
-          await _profileRepository.list(query, _pagination.value);
+      List<ProfileModel> temp = await _profileRepository
+          .list(query, _pagination.value, includeColumns: ['name', 'photo']);
       print(temp);
       if (temp.isEmpty) {
         _lastPage.value = true;
