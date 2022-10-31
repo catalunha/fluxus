@@ -59,121 +59,84 @@ class ClientViewPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         fotoWidget(profileModel),
-                        // const Text(
-                        //   'Foto: ',
-                        //   style: TextStyle(color: Colors.blueGrey),
-                        // ),
-                        // profileModel.photo == null
-                        //     ? Container(
-                        //         width: 100,
-                        //         height: 100,
-                        //         decoration: BoxDecoration(
-                        //           border: Border.all(color: Colors.green),
-                        //           borderRadius: BorderRadius.circular(10.0),
-                        //         ),
-                        //         child: const Center(
-                        //           child: Text(
-                        //             'Foto indisponível',
-                        //             textAlign: TextAlign.center,
-                        //           ),
-                        //         ),
-                        //       )
-                        //     : ClipRRect(
-                        //         borderRadius: BorderRadius.circular(10.0),
-                        //         child: Image.network(
-                        //           profileModel.photo!,
-                        //           height: 100,
-                        //           width: 100,
-                        //           errorBuilder: (BuildContext context,
-                        //               Object exception,
-                        //               StackTrace? stackTrace) {
-                        //             return Container();
-                        //           },
-                        //         ),
-                        //       ),
-                        // Text('${profileModel.id}'),
                         AppTextTitleValue(
-                          title: 'Nome: ',
-                          value: profileModel.name,
+                          title: 'Id: ',
+                          value: profileModel.id,
                           inColumn: true,
                         ),
-                        AppTextTitleValue(
-                          title: 'Sexo: ',
-                          value: profileModel.isFemale != null &&
-                                  profileModel.isFemale!
-                              ? "Feminino"
-                              : "Masculino",
-                          inColumn: true,
-                        ),
-                        AppTextTitleValue(
-                          title: 'Data de nascimento: ',
-                          value: profileModel.birthday != null
-                              ? dateFormat.format(profileModel.birthday!)
-                              : "...",
-                          inColumn: true,
-                        ),
-                        AppTextTitleValue(
-                          title: 'Idade atual: ',
-                          value: dataAge,
-                          inColumn: true,
-                        ),
-                        AppTextTitleValue(
-                          title: 'Telefone: ',
-                          value: maskPhone.getMaskedText(),
-                          inColumn: true,
-                        ),
-                        AppTextTitleValue(
-                          title: 'CPF: ',
-                          value: maskCPF.getMaskedText(),
-                          inColumn: true,
-                        ),
-                        AppTextTitleValue(
-                          title: 'CEP: ',
-                          value: maskCEP.getMaskedText(),
-                          inColumn: true,
-                        ),
-                        AppTextTitleValue(
-                          title: 'Endereço: ',
-                          value: profileModel.address,
-                          inColumn: true,
-                        ),
-                        const Text(
-                          'PlusCode: ',
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
-                        AppLinkText(
-                          url: profileModel.pluscode,
-                          text: profileModel.pluscode,
-                        ),
-                        AppTextTitleValue(
-                          title: 'Descrição: ',
-                          value: profileModel.description,
-                          inColumn: true,
-                        ),
-                        const Text(
-                          'Familiares: ',
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
+                        if (profileModel.name != null)
+                          AppTextTitleValue(
+                            title: 'Nome: ',
+                            value: profileModel.name,
+                            inColumn: true,
+                          ),
+                        if (profileModel.isFemale != null)
+                          AppTextTitleValue(
+                            title: 'Sexo: ',
+                            value: profileModel.isFemale != null &&
+                                    profileModel.isFemale!
+                                ? "Feminino"
+                                : "Masculino",
+                            inColumn: true,
+                          ),
+                        if (profileModel.birthday != null)
+                          AppTextTitleValue(
+                            title: 'Data de nascimento: ',
+                            value: profileModel.birthday != null
+                                ? dateFormat.format(profileModel.birthday!)
+                                : "...",
+                            inColumn: true,
+                          ),
+                        if (dataAge.isNotEmpty)
+                          AppTextTitleValue(
+                            title: 'Idade atual: ',
+                            value: dataAge,
+                            inColumn: true,
+                          ),
+                        if (maskPhone.getMaskedText().isNotEmpty)
+                          AppTextTitleValue(
+                            title: 'Telefone: ',
+                            value: maskPhone.getMaskedText(),
+                            inColumn: true,
+                          ),
+                        if (maskCPF.getMaskedText().isNotEmpty)
+                          AppTextTitleValue(
+                            title: 'CPF: ',
+                            value: maskCPF.getMaskedText(),
+                            inColumn: true,
+                          ),
+                        if (maskCEP.getMaskedText().isNotEmpty)
+                          AppTextTitleValue(
+                            title: 'CEP: ',
+                            value: maskCEP.getMaskedText(),
+                            inColumn: true,
+                          ),
+                        if (profileModel.address != null)
+                          AppTextTitleValue(
+                            title: 'Endereço: ',
+                            value: profileModel.address,
+                            inColumn: true,
+                          ),
+                        if (profileModel.pluscode != null)
+                          const Text(
+                            'PlusCode: ',
+                            style: TextStyle(color: Colors.blueGrey),
+                          ),
+                        if (profileModel.pluscode != null)
+                          AppLinkText(
+                            url: profileModel.pluscode,
+                            text: profileModel.pluscode,
+                          ),
+                        if (profileModel.description != null)
+                          AppTextTitleValue(
+                            title: 'Descrição: ',
+                            value: profileModel.description,
+                            inColumn: true,
+                          ),
                         familyList(profileModel),
-                        const Text(
-                          'Convênios: ',
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
                         healthPlanList(profileModel),
-                        const Text(
-                          'Funções: ',
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
                         officeList(profileModel),
-                        const Text(
-                          'Expecialidades: ',
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
                         expertiseList(profileModel),
-                        const Text(
-                          'Procedimentos: ',
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
                         procedureList(profileModel),
                       ],
                     ),
@@ -203,6 +166,10 @@ class ClientViewPage extends StatelessWidget {
       );
       return Column(
         children: [
+          const Text(
+            'Familiares: ',
+            style: TextStyle(color: Colors.blueGrey),
+          ),
           ...profileModel.family!
               .map((e) => Card(
                     child: SizedBox(
@@ -249,7 +216,7 @@ class ClientViewPage extends StatelessWidget {
         ],
       );
     } else {
-      return const Text('...');
+      return const SizedBox.shrink();
     }
   }
 
@@ -258,6 +225,10 @@ class ClientViewPage extends StatelessWidget {
         profileModel.healthPlan!.isNotEmpty) {
       return Column(
         children: [
+          const Text(
+            'Convênios: ',
+            style: TextStyle(color: Colors.blueGrey),
+          ),
           ...profileModel.healthPlan!
               .map((e) => InkWell(
                     child: Card(
@@ -298,7 +269,7 @@ class ClientViewPage extends StatelessWidget {
         ],
       );
     } else {
-      return const Text('...');
+      return const SizedBox.shrink();
     }
   }
 
@@ -306,6 +277,10 @@ class ClientViewPage extends StatelessWidget {
     if (profileModel.expertise != null && profileModel.expertise!.isNotEmpty) {
       return Column(
         children: [
+          const Text(
+            'Especialidades: ',
+            style: TextStyle(color: Colors.blueGrey),
+          ),
           ...profileModel.expertise!
               .map((e) => InkWell(
                     child: Card(
@@ -336,7 +311,7 @@ class ClientViewPage extends StatelessWidget {
         ],
       );
     } else {
-      return const Text('...');
+      return const SizedBox.shrink();
     }
   }
 
@@ -344,6 +319,10 @@ class ClientViewPage extends StatelessWidget {
     if (profileModel.procedure != null && profileModel.procedure!.isNotEmpty) {
       return Column(
         children: [
+          const Text(
+            'Procedimentos: ',
+            style: TextStyle(color: Colors.blueGrey),
+          ),
           ...profileModel.procedure!
               .map((e) => InkWell(
                     child: Card(
@@ -373,7 +352,7 @@ class ClientViewPage extends StatelessWidget {
         ],
       );
     } else {
-      return const Text('...');
+      return const SizedBox.shrink();
     }
   }
 
@@ -410,7 +389,7 @@ class ClientViewPage extends StatelessWidget {
         ],
       );
     } else {
-      return const Text('...');
+      return const SizedBox.shrink();
     }
   }
 

@@ -48,7 +48,9 @@ class HomePage extends StatelessWidget {
                 subtitle:
                     const Text('Por Nome, CPF, Telefone, Data de Nascimento'),
                 onTap: () {
-                  Get.toNamed(Routes.clientProfileSearch);
+                  Get.toNamed(
+                    Routes.clientProfileSearch,
+                  );
                 },
               ),
             ),

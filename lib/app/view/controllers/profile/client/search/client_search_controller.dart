@@ -31,6 +31,8 @@ class ClientSearchController extends GetxController
 
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+  List<String>? includeColumns;
+
   @override
   void onInit() {
     clientProfileList.clear();
@@ -38,6 +40,8 @@ class ClientSearchController extends GetxController
     ever(_pagination, (_) async => await listAll());
     loaderListener(_loading);
     messageListener(_message);
+    includeColumns = Get.arguments;
+
     super.onInit();
   }
 
@@ -109,17 +113,14 @@ class ClientSearchController extends GetxController
     }
     // _changePagination(_pagination.value.page, _pagination.value.limit);
     _loading(false);
-    print('clientProfileList: ${clientProfileList.length}');
     Get.toNamed(Routes.clientProfileList);
   }
 
   Future<void> listAll() async {
     if (!lastPage) {
       _loading(true);
-      print(query.toString());
       List<ProfileModel> temp = await _profileRepository
           .list(query, _pagination.value, includeColumns: ['name', 'photo']);
-      print(temp);
       if (temp.isEmpty) {
         _lastPage.value = true;
       }

@@ -25,19 +25,22 @@ class ClientViewController extends GetxController
   set profile(ProfileModel? profileModelNew) => _profile(profileModelNew);
 
   String? clientId;
+  List<String>? includeColumns;
 
   @override
   void onInit() async {
     loaderListener(_loading);
     messageListener(_message);
-    clientId = Get.arguments;
+    Map<String, dynamic> args = Get.arguments;
+    clientId = args['clientId'];
+    includeColumns = args['includeColumns'];
     super.onInit();
   }
 
   Future<ProfileModel> getProfile() async {
     // _loading(true);
     ProfileModel? profileModelTemp = await _profileRepository
-        .readById(clientId!, includeColumns: ['address', 'procedure']);
+        .readById(clientId!, includeColumns: ['name', 'procedure']);
     profile = profileModelTemp;
     return profileModelTemp!;
     // _loading(false);

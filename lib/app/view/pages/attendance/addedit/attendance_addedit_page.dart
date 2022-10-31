@@ -73,7 +73,8 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              Get.toNamed(Routes.clientProfileSearch);
+                              Get.toNamed(Routes.clientProfileSearch,
+                                  arguments: ['name', 'procedure']);
                             },
                             icon: const Icon(Icons.search)),
                         const Text('Paciente e Convênio'),
