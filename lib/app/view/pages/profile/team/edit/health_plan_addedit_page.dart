@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/models/health_plan_type_model.dart';
-import 'package:fluxus/app/view/controllers/profile/user/user_profile_controller.dart';
+import 'package:fluxus/app/view/controllers/profile/team/edit/team_edit_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
@@ -11,7 +11,7 @@ import 'package:validatorless/validatorless.dart';
 
 class HealthPlanAddEditPage extends StatefulWidget {
   final HealthPlanModel? healthPlanModel = Get.arguments;
-  final _profileController = Get.find<UserProfileController>();
+  final _profileController = Get.find<TeamEditController>();
   HealthPlanAddEditPage({
     Key? key,
   }) : super(key: key);

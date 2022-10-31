@@ -1,4 +1,5 @@
 import 'package:fluxus/app/core/models/profile_model.dart';
+import 'package:fluxus/app/data/b4a/entity/office_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
@@ -67,13 +68,11 @@ class ClientSearchController extends GetxController
   }) async {
     _loading(true);
     query = QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+    query.whereEqualTo(
+        'office',
+        (ParseObject(OfficeEntity.className)..objectId = 'RrrMr52QBM')
+            .toPointer());
 
-    if (!nameContainsBool &&
-        !cpfEqualToBool &&
-        !phoneEqualToBool &&
-        !birthdayBool) {
-      query = QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
-    }
     if (nameContainsBool) {
       query.whereContains('name', nameContainsString);
     }
@@ -81,11 +80,9 @@ class ClientSearchController extends GetxController
       query.whereEqualTo('cpf', cpfEqualToString);
     }
     if (phoneEqualToBool) {
-      print('phoneEqualToString: $phoneEqualToString');
       query.whereEqualTo('phone', phoneEqualToString);
     }
     if (birthdayBool && selectedDate != null) {
-      print(selectedDate);
       // selectedDate = selectedDate!.subtract(const Duration(hours: 3));
       print(selectedDate);
       // String dateToSearch = DateTime(selectedDate!.year, selectedDate!.month,

@@ -12,9 +12,8 @@ class AttendanceModel {
   final ProfileModel? patient;
   final HealthPlanModel? healthPlan;
   final String? autorization;
-  final DateTime? dStartAutorization;
-  final DateTime? dtStartAttendance;
-  final DateTime? dtEndAttendance;
+  final DateTime? dAutorization;
+  final DateTime? dAttendance;
   final EventStatusModel? status;
   final String? event;
   final bool? isDeleted;
@@ -26,9 +25,8 @@ class AttendanceModel {
     this.patient,
     this.healthPlan,
     this.autorization,
-    this.dStartAutorization,
-    this.dtStartAttendance,
-    this.dtEndAttendance,
+    this.dAutorization,
+    this.dAttendance,
     this.status,
     this.event,
     this.isDeleted,
@@ -41,9 +39,8 @@ class AttendanceModel {
     ProfileModel? patient,
     HealthPlanModel? healthPlan,
     String? autorization,
-    DateTime? dStartAutorization,
-    DateTime? dtStartAttendance,
-    DateTime? dtEndAttendance,
+    DateTime? dAutorization,
+    DateTime? dAttendance,
     EventStatusModel? status,
     String? event,
     bool? isDeleted,
@@ -55,9 +52,8 @@ class AttendanceModel {
       patient: patient ?? this.patient,
       healthPlan: healthPlan ?? this.healthPlan,
       autorization: autorization ?? this.autorization,
-      dStartAutorization: dStartAutorization ?? this.dStartAutorization,
-      dtStartAttendance: dtStartAttendance ?? this.dtStartAttendance,
-      dtEndAttendance: dtEndAttendance ?? this.dtEndAttendance,
+      dAutorization: dAutorization ?? this.dAutorization,
+      dAttendance: dAttendance ?? this.dAttendance,
       status: status ?? this.status,
       event: event ?? this.event,
       isDeleted: isDeleted ?? this.isDeleted,
@@ -85,17 +81,11 @@ class AttendanceModel {
     if (autorization != null) {
       result.addAll({'autorization': autorization});
     }
-    if (dStartAutorization != null) {
-      result.addAll(
-          {'dStartAutorization': dStartAutorization!.millisecondsSinceEpoch});
+    if (dAutorization != null) {
+      result.addAll({'dAutorization': dAutorization!.millisecondsSinceEpoch});
     }
-    if (dtStartAttendance != null) {
-      result.addAll(
-          {'dtStartAttendance': dtStartAttendance!.millisecondsSinceEpoch});
-    }
-    if (dtEndAttendance != null) {
-      result
-          .addAll({'dtEndAttendance': dtEndAttendance!.millisecondsSinceEpoch});
+    if (dAttendance != null) {
+      result.addAll({'dAttendance': dAttendance!.millisecondsSinceEpoch});
     }
     if (status != null) {
       result.addAll({'status': status!.toMap()});
@@ -125,14 +115,11 @@ class AttendanceModel {
           ? HealthPlanModel.fromMap(map['healthPlan'])
           : null,
       autorization: map['autorization'],
-      dStartAutorization: map['dStartAutorization'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['dStartAutorization'])
+      dAutorization: map['dAutorization'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['dAutorization'])
           : null,
-      dtStartAttendance: map['dtStartAttendance'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['dtStartAttendance'])
-          : null,
-      dtEndAttendance: map['dtEndAttendance'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['dtEndAttendance'])
+      dAttendance: map['dAttendance'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['dAttendance'])
           : null,
       status: map['status'] != null
           ? EventStatusModel.fromMap(map['status'])
@@ -149,7 +136,7 @@ class AttendanceModel {
 
   @override
   String toString() {
-    return 'AttendanceModel(id: $id, professional: $professional, procedure: $procedure, patient: $patient, healthPlan: $healthPlan, autorization: $autorization, dStartAutorization: $dStartAutorization, dtStartAttendance: $dtStartAttendance, dtEndAttendance: $dtEndAttendance, status: $status, event: $event, isDeleted: $isDeleted)';
+    return 'AttendanceModel(id: $id, professional: $professional, procedure: $procedure, patient: $patient, healthPlan: $healthPlan, autorization: $autorization, dAutorization: $dAutorization, dAttendance: $dAttendance, status: $status, event: $event, isDeleted: $isDeleted)';
   }
 
   @override
@@ -163,9 +150,8 @@ class AttendanceModel {
         other.patient == patient &&
         other.healthPlan == healthPlan &&
         other.autorization == autorization &&
-        other.dStartAutorization == dStartAutorization &&
-        other.dtStartAttendance == dtStartAttendance &&
-        other.dtEndAttendance == dtEndAttendance &&
+        other.dAutorization == dAutorization &&
+        other.dAttendance == dAttendance &&
         other.status == status &&
         other.event == event &&
         other.isDeleted == isDeleted;
@@ -179,9 +165,8 @@ class AttendanceModel {
         patient.hashCode ^
         healthPlan.hashCode ^
         autorization.hashCode ^
-        dStartAutorization.hashCode ^
-        dtStartAttendance.hashCode ^
-        dtEndAttendance.hashCode ^
+        dAutorization.hashCode ^
+        dAttendance.hashCode ^
         status.hashCode ^
         event.hashCode ^
         isDeleted.hashCode;

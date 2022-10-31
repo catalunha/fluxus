@@ -8,13 +8,13 @@ class AppCalendarButton extends StatelessWidget {
   final String title;
   final DateTime? Function() getDate;
   final Function(DateTime?) setDate;
-  final isBirthDay;
+  final bool? isBirthDay;
   AppCalendarButton({
     Key? key,
     required this.title,
     required this.getDate,
     required this.setDate,
-    this.isBirthDay = true,
+    this.isBirthDay,
   }) : super(key: key);
 
   @override
@@ -63,9 +63,9 @@ class AppCalendarButton extends StatelessWidget {
             ),
             Obx(
               () {
-                if (getDate() != null) {
+                if (getDate() != null && isBirthDay != null) {
                   DateDuration duration;
-                  if (isBirthDay) {
+                  if (isBirthDay!) {
                     duration =
                         AgeCalculator.age(getDate()!, today: DateTime.now());
                   } else {

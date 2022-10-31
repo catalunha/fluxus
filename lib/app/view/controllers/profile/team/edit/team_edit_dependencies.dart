@@ -4,10 +4,10 @@ import 'package:fluxus/app/data/b4a/table/profile/profile_repository_b4a.dart';
 import 'package:fluxus/app/data/repositories/health_plan_repository.dart';
 import 'package:fluxus/app/data/repositories/health_plan_type_repository.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
-import 'package:fluxus/app/view/controllers/profile/user/user_profile_controller.dart';
+import 'package:fluxus/app/view/controllers/profile/team/edit/team_edit_controller.dart';
 import 'package:get/get.dart';
 
-class UserProfileDependencies implements Bindings {
+class TeamEditDependencies implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut<ProfileRepository>(
@@ -20,8 +20,8 @@ class UserProfileDependencies implements Bindings {
       () => HealthPlanTypeRepositoryB4a(),
     );
 
-    Get.put<UserProfileController>(
-      UserProfileController(
+    Get.put<TeamEditController>(
+      TeamEditController(
         profileRepository: Get.find(),
         healthPlanRepository: Get.find(),
         healthPlanTypeRepository: Get.find(),

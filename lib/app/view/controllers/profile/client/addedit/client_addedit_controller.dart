@@ -126,32 +126,32 @@ class ClientAddEditController extends GetxController
   setFormFieldControllers() {
     nameTec.text = profile?.name ?? "";
     emailTec.text = profile?.email ?? "";
-    // phoneTec.text = profile?.phone ?? "";
-    // cepTec.text = profile?.cep ?? "";
-    // cpfTec.text = profile?.cpf ?? "";
+    phoneTec.text = profile?.phone ?? "";
+    cepTec.text = profile?.cep ?? "";
+    cpfTec.text = profile?.cpf ?? "";
     addressTec.text = profile?.address ?? "";
     pluscodeTec.text = profile?.pluscode ?? "";
     registerTec.text = profile?.register ?? "";
     descriptionTec.text = profile?.description ?? "";
     isFemale = profile?.isFemale ?? true;
-    maskPhone = MaskTextInputFormatter(
-        initialText: profile?.phone ?? "",
-        mask: '(##) # ####-####',
-        filter: {"#": RegExp(r'[0-9]')},
-        type: MaskAutoCompletionType.lazy);
-    phoneTec.text = maskPhone.getMaskedText();
-    maskCPF = MaskTextInputFormatter(
-        initialText: profile?.cpf ?? "",
-        mask: '###.###.###-##',
-        filter: {"#": RegExp(r'[0-9]')},
-        type: MaskAutoCompletionType.lazy);
-    cpfTec.text = maskCPF.getMaskedText();
-    maskCEP = MaskTextInputFormatter(
-        initialText: profile?.cep ?? "",
-        mask: '#####-###',
-        filter: {"#": RegExp(r'[0-9]')},
-        type: MaskAutoCompletionType.lazy);
-    cepTec.text = maskCEP.getMaskedText();
+    // maskPhone = MaskTextInputFormatter(
+    //     initialText: profile?.phone ?? "",
+    //     mask: '(##) # ####-####',
+    //     filter: {"#": RegExp(r'[0-9]')},
+    //     type: MaskAutoCompletionType.lazy);
+    // phoneTec.text = maskPhone.getMaskedText();
+    // maskCPF = MaskTextInputFormatter(
+    //     initialText: profile?.cpf ?? "",
+    //     mask: '###.###.###-##',
+    //     filter: {"#": RegExp(r'[0-9]')},
+    //     type: MaskAutoCompletionType.lazy);
+    // cpfTec.text = maskCPF.getMaskedText();
+    // maskCEP = MaskTextInputFormatter(
+    //     initialText: profile?.cep ?? "",
+    //     mask: '#####-###',
+    //     filter: {"#": RegExp(r'[0-9]')},
+    //     type: MaskAutoCompletionType.lazy);
+    // cepTec.text = maskCEP.getMaskedText();
   }
 
   getHealthPlanTypeList() async {

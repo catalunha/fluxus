@@ -1,9 +1,11 @@
 import 'package:fluxus/app/view/controllers/attendance/addedit/attendance_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/attendance/search/attendance_search_dependencies.dart';
+import 'package:fluxus/app/view/controllers/event_status/search/event_status_search_dependencies.dart';
+import 'package:fluxus/app/view/controllers/procedure/search/procedure_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/profile/client/addedit/client_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/profile/client/search/client_search_dependencies.dart';
-import 'package:fluxus/app/view/controllers/profile/user/user_profile_dependencies.dart';
-import 'package:fluxus/app/view/controllers/profile/view/client_view_dependencies.dart';
+import 'package:fluxus/app/view/controllers/profile/team/edit/team_edit_dependencies.dart';
+import 'package:fluxus/app/view/controllers/profile/view/profile_view_dependencies.dart';
 import 'package:fluxus/app/view/controllers/evaluation/addedit/evaluation_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/evaluation/search/evaluation_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_dependencies.dart';
@@ -11,7 +13,7 @@ import 'package:fluxus/app/view/controllers/event/search/event_search_dependenci
 import 'package:fluxus/app/view/controllers/evolution/addedit/evolution_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/evolution/search/evolution_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/health_plan/search/health_plan_search_dependencies.dart';
-import 'package:fluxus/app/view/controllers/team/search/team_search_dependencies.dart';
+import 'package:fluxus/app/view/controllers/profile/team/search/team_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/register/email/user_register_email_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/login/login_dependencies.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_dependencies.dart';
@@ -19,11 +21,15 @@ import 'package:fluxus/app/view/controllers/home/home_dependencies.dart';
 import 'package:fluxus/app/view/pages/attendance/addedit/attendance_addedit_page.dart';
 import 'package:fluxus/app/view/pages/attendance/search/attendance_search_list_page.dart';
 import 'package:fluxus/app/view/pages/attendance/search/attendance_search_page.dart';
+import 'package:fluxus/app/view/pages/event_status/search/event_status_search_list_page.dart';
+import 'package:fluxus/app/view/pages/procedure/search/procedure_search_list_page.dart';
 import 'package:fluxus/app/view/pages/profile/client/addedit/client_addedit_page.dart';
 import 'package:fluxus/app/view/pages/profile/client/addedit/client_health_plan_addedit_page.dart';
 import 'package:fluxus/app/view/pages/profile/client/search/client_search_list_page.dart';
 import 'package:fluxus/app/view/pages/profile/client/search/client_search_page.dart';
-import 'package:fluxus/app/view/pages/profile/view/client_view_page.dart';
+import 'package:fluxus/app/view/pages/profile/team/edit/health_plan_addedit_page.dart';
+import 'package:fluxus/app/view/pages/profile/team/edit/team_edit_page.dart';
+import 'package:fluxus/app/view/pages/profile/view/profile_view_page.dart';
 import 'package:fluxus/app/view/pages/evaluation/addedit/evaluation_addedit_page.dart';
 import 'package:fluxus/app/view/pages/evaluation/search/evaluation_search_list_page.dart';
 import 'package:fluxus/app/view/pages/evaluation/search/evaluation_search_page.dart';
@@ -34,10 +40,8 @@ import 'package:fluxus/app/view/pages/evolution/addedit/evolution_addedit_page.d
 import 'package:fluxus/app/view/pages/evolution/search/evolution_search_list_page.dart';
 import 'package:fluxus/app/view/pages/health_plan/search/health_plan_search_list_page.dart';
 import 'package:fluxus/app/view/pages/health_plan/search/health_plan_search_page.dart';
-import 'package:fluxus/app/view/pages/team/team_search_list_page.dart';
-import 'package:fluxus/app/view/pages/team/team_search_page.dart';
-import 'package:fluxus/app/view/pages/profile/user/health_plan_addedit_page.dart';
-import 'package:fluxus/app/view/pages/profile/user/profile_page.dart';
+import 'package:fluxus/app/view/pages/profile/team/search/team_search_list_page.dart';
+import 'package:fluxus/app/view/pages/profile/team/search/team_search_page.dart';
 import 'package:fluxus/app/view/pages/user/login/auth_login_page.dart';
 import 'package:fluxus/app/view/pages/user/register/email/user_register_email.page.dart';
 import 'package:fluxus/app/view/pages/splash/splash_page.dart';
@@ -83,6 +87,10 @@ class Routes {
   static const evolutionList = '/evolution/list';
   static const evolutionAddEdit = '/evolution/addedit';
 
+  static const procedureList = '/procedure/list';
+
+  static const eventStatusList = '/eventStatus/list';
+
   static final pageList = [
     GetPage(
       name: Routes.splash,
@@ -107,8 +115,8 @@ class Routes {
     ),
     GetPage(
       name: Routes.profile,
-      binding: UserProfileDependencies(),
-      page: () => ProfilePage(),
+      binding: TeamEditDependencies(),
+      page: () => TeamEditPage(),
     ),
     GetPage(
       name: Routes.profileHealthPlan,
@@ -143,8 +151,8 @@ class Routes {
     ),
     GetPage(
       name: Routes.clientProfileView,
-      binding: ClientViewDependencies(),
-      page: () => ClientViewPage(),
+      binding: ProfileViewDependencies(),
+      page: () => ProfileViewPage(),
     ),
     GetPage(
       name: Routes.teamProfileSearch,
@@ -206,6 +214,16 @@ class Routes {
     GetPage(
       name: Routes.attendanceList,
       page: () => AttendanceSearchListPage(),
+    ),
+    GetPage(
+      name: Routes.procedureList,
+      binding: ProcedureSearchDependencies(),
+      page: () => ProcedureSearchListPage(),
+    ),
+    GetPage(
+      name: Routes.eventStatusList,
+      binding: EventStatusSearchDependencies(),
+      page: () => EventStatusSearchListPage(),
     ),
   ];
 }

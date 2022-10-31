@@ -64,6 +64,11 @@ class TeamSearchController extends GetxController
 
   Future<void> search(Map<String, Office> officeNew) async {
     _loading(true);
+    query = QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+    query.whereNotEqualTo(
+        'office',
+        (ParseObject(OfficeEntity.className)..objectId = 'RrrMr52QBM')
+            .toPointer());
     for (var element in officeNew.entries) {
       if (element.value.status) {
         query.whereEqualTo(
@@ -105,6 +110,11 @@ class TeamSearchController extends GetxController
     _loading(true);
 
     List<OfficeModel> temp = await _officeRepository.list();
+    // query.whereNotEqualTo(
+    // 'office',
+    // (ParseObject(OfficeEntity.className)..objectId = 'RrrMr52QBM')
+    //     .toPointer());
+    temp.removeWhere((element) => element.id == 'RrrMr52QBM');
     officeList.addAll(temp);
     for (var office in officeList) {
       officeOptions[office.id!] = Office(name: office.name!, status: false);

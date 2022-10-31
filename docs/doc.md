@@ -32,3 +32,9 @@ Cristina, Joao, Guia, proc3
 
 Fatura
 junção de Guias de Autorizações de varios pacientes
+
+
+Acupuntura isolada -R$ 100,00- sessao isolada
+Acupuntura pacote -R$ 320,00- 1 x semana (4 atend mensal)
+Auriculo pacote -R$ 250,00- 1 x semana (4 atend mensal)
+Enfermagem curativo - troca + laser

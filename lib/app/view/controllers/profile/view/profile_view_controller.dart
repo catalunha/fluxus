@@ -6,10 +6,10 @@ import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
 
-class ClientViewController extends GetxController
+class ProfileViewController extends GetxController
     with LoaderMixin, MessageMixin {
   final ProfileRepository _profileRepository;
-  ClientViewController({
+  ProfileViewController({
     required ProfileRepository profileRepository,
   }) : _profileRepository = profileRepository;
   // @override

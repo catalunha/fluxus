@@ -26,10 +26,10 @@ class AttendanceAddEditController extends GetxController
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
 
-  final Rxn<DateTime> _dStartAutorization = Rxn<DateTime>();
-  DateTime? get dStartAutorization => _dStartAutorization.value;
-  set dStartAutorization(DateTime? newDate) {
-    _dStartAutorization(newDate);
+  final Rxn<DateTime> _dAutorization = Rxn<DateTime>();
+  DateTime? get dAutorization => _dAutorization.value;
+  set dAutorization(DateTime? newDate) {
+    _dAutorization(newDate);
   }
 
   final _professional = Rxn<ProfileModel>();
@@ -55,7 +55,7 @@ class AttendanceAddEditController extends GetxController
   void onInit() async {
     loaderListener(_loading);
     messageListener(_message);
-    _dStartAutorization(DateTime.now());
+    _dAutorization(DateTime.now());
     super.onInit();
   }
 
@@ -74,9 +74,9 @@ class AttendanceAddEditController extends GetxController
           procedure: procedure,
           patient: patient,
           healthPlan: HealthPlanModel(id: healthPlan),
-          autorization: autorization,
-          dStartAutorization: dStartAutorization,
-          status: EventStatusModel(id: 'uvHmcIKiFc'),
+          autorization: autorization!.isEmpty ? null : autorization,
+          dAutorization: dAutorization,
+          status: EventStatusModel(id: 'zoFBVNZ16I'),
         );
         await _attendanceRepository.update(attendance);
       }

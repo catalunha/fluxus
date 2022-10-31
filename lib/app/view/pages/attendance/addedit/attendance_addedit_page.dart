@@ -63,10 +63,10 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                     ),
                     AppCalendarButton(
                       title: "Data da autorização.",
-                      getDate: () => widget
-                          ._attendanceAddEditController.dStartAutorization,
-                      setDate: (value) => widget._attendanceAddEditController
-                          .dStartAutorization = value,
+                      getDate: () =>
+                          widget._attendanceAddEditController.dAutorization,
+                      setDate: (value) => widget
+                          ._attendanceAddEditController.dAutorization = value,
                       isBirthDay: false,
                     ),
                     Row(
@@ -213,7 +213,7 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
   Future<bool> saveAttendance() async {
     final formValid = _formKey.currentState?.validate() ?? false;
     if (formValid) {
-      if (widget._attendanceAddEditController.dStartAutorization == null) {
+      if (widget._attendanceAddEditController.dAutorization == null) {
         return false;
       }
       await widget._attendanceAddEditController.append(

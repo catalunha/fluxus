@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/event_model.dart';
-import 'package:fluxus/app/core/models/procedure_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
 import 'package:fluxus/app/data/b4a/table/attendance/attendance_repository_exception.dart';
@@ -52,27 +51,30 @@ class EventAddEditController extends GetxController
 
   final Rxn<DateTime> _dateStart = Rxn<DateTime>();
   DateTime? get dateStart => _dateStart.value;
-  set dateStart(DateTime? nemDate) {
-    if (nemDate != null) {
-      _dateStart(DateTime(nemDate.year, nemDate.month, nemDate.day));
-      _dateEnd(DateTime(nemDate.year, nemDate.month, nemDate.day));
-    }
+  set dateStart(DateTime? newDate) {
+    _dateStart(newDate);
+    _dateEnd(newDate);
+    // if (nemDate != null) {
+    //   _dateStart(DateTime(nemDate.year, nemDate.month, nemDate.day));
+    //   _dateEnd(DateTime(nemDate.year, nemDate.month, nemDate.day));
+    // }
   }
 
   final Rxn<DateTime> _dateEnd = Rxn<DateTime>();
   DateTime? get dateEnd => _dateEnd.value;
-  set dateEnd(DateTime? nemDate) {
-    if (nemDate != null) {
-      _dateEnd(DateTime(nemDate.year, nemDate.month, nemDate.day));
-    }
+  set dateEnd(DateTime? newDate) {
+    _dateEnd(newDate);
+    // if (nemDate != null) {
+    //   _dateEnd(DateTime(nemDate.year, nemDate.month, nemDate.day));
+    // }
   }
 
-  setDateStartTime(int hour, int minute) {
-    if (dateStart != null) {
-      _dateStart(DateTime(
-          dateStart!.year, dateStart!.month, dateStart!.day, hour, minute));
-    }
-  }
+  // setDateStartTime(int hour, int minute) {
+  //   if (dateStart != null) {
+  //     _dateStart(DateTime(
+  //         dateStart!.year, dateStart!.month, dateStart!.day, hour, minute));
+  //   }
+  // }
 
   // setDateEndTime(int hour, int minute) {
   //   if (dateStart != null) {
@@ -108,11 +110,11 @@ class EventAddEditController extends GetxController
   set eventStatusSelected(EventStatusModel? newModel) =>
       _eventStatusSelected(newModel);
 
-  var procedureList = <ProcedureModel>[].obs;
-  final _expertiseModelSelected = Rxn<ProcedureModel>();
-  ProcedureModel? get expertiseModelSelected => _expertiseModelSelected.value;
-  set expertiseModelSelected(ProcedureModel? newModel) =>
-      _expertiseModelSelected(newModel);
+  // var procedureList = <ProcedureModel>[].obs;
+  // final _expertiseModelSelected = Rxn<ProcedureModel>();
+  // ProcedureModel? get expertiseModelSelected => _expertiseModelSelected.value;
+  // set expertiseModelSelected(ProcedureModel? newModel) =>
+  //     _expertiseModelSelected(newModel);
 
   String? eventId;
 
@@ -148,6 +150,7 @@ class EventAddEditController extends GetxController
   getRoomList() async {
     List<RoomModel> all = await _roomRepository.list();
     roomList(all);
+    roomModelSelected = roomList[0];
   }
 
   getEventStatusList() async {
@@ -190,12 +193,36 @@ class EventAddEditController extends GetxController
     startDateList(all);
   }
 
-  onUpdateEnd(StartDateDropDrow startDateDropDrow) {
+  onUpdateStartChangeEnd(StartDateDropDrow startDateDropDrow) {
     int indexOfStart = startDateList.indexOf(startDateDropDrow);
     int salto = 2;
     if (indexOfStart < startDateList.length - salto) {
       _endDateDropDrowSelected(startDateList[indexOfStart + salto]);
     }
+    dateStart = onMountDateStart();
+    dateEnd = onMountDateEnd();
+    // log('${onMountDateStart()}', name: 'onUpdateEnd');
+    // log('$startDateDropDrowSelected', name: 'onUpdateEnd');
+    // log('${startDateDropDrowSelected?.hour}', name: 'onUpdateEnd');
+    // log('${startDateDropDrowSelected?.minute}', name: 'onUpdateEnd');
+    // log('$endDateDropDrowSelected', name: 'onUpdateEnd');
+    // log('${endDateDropDrowSelected?.hour}', name: 'onUpdateEnd');
+    // log('${endDateDropDrowSelected?.minute}', name: 'onUpdateEnd');
+    // log('$dateStart', name: 'onUpdateEnd');
+    // log('$dateEnd', name: 'onUpdateEnd');
+  }
+
+  onUpdateEnd(StartDateDropDrow startDateDropDrow) {
+    dateEnd = onMountDateEnd();
+    // log('${onMountDateStart()}', name: 'onUpdateEnd');
+    // log('$startDateDropDrowSelected', name: 'onUpdateEnd');
+    // log('${startDateDropDrowSelected?.hour}', name: 'onUpdateEnd');
+    // log('${startDateDropDrowSelected?.minute}', name: 'onUpdateEnd');
+    // log('$endDateDropDrowSelected', name: 'onUpdateEnd');
+    // log('${endDateDropDrowSelected?.hour}', name: 'onUpdateEnd');
+    // log('${endDateDropDrowSelected?.minute}', name: 'onUpdateEnd');
+    // log('$dateStart', name: 'onUpdateEnd');
+    // log('$dateEnd', name: 'onUpdateEnd');
   }
 
   void onSetDates() {
@@ -245,12 +272,14 @@ class EventAddEditController extends GetxController
   }) async {
     try {
       _loading(true);
-      String logData = event?.log ?? '+++';
+      // dateStart = onMountDateStart();
+      // dateEnd = onMountDateEnd();
+      String logData = event?.log ?? '...';
       logData = '$logData\n+++${DateTime.now()}';
       var splashController = Get.find<SplashController>();
       logData = '$logData\nuser:${splashController.userModel!.email}';
-      logData = '$logData\nstart:${onMountDateStart() ?? '-'}';
-      logData = '$logData\nend:${onMountDateEnd() ?? '-'}';
+      logData = '$logData\nstart:${dateStart ?? '-'}';
+      logData = '$logData\nend:${dateEnd ?? '-'}';
       logData = '$logData\ndesc:${description ?? '-'}';
       logData = '$logData\nroom:${room?.name ?? '-'}';
       logData = '$logData\nstatus:${status?.name ?? '-'}';
@@ -258,8 +287,8 @@ class EventAddEditController extends GetxController
       if (eventId == null) {
         event = EventModel(
           room: room,
-          start: onMountDateStart(),
-          end: onMountDateEnd(),
+          start: dateStart,
+          end: dateEnd,
           status: status,
           description: description,
           isDeleted: isDeleted,
@@ -268,8 +297,8 @@ class EventAddEditController extends GetxController
       } else {
         event = event!.copyWith(
           room: room,
-          start: onMountDateStart(),
-          end: onMountDateEnd(),
+          start: dateStart,
+          end: dateEnd,
           status: status,
           description: description,
           isDeleted: isDeleted,
@@ -352,10 +381,11 @@ class EventAddEditController extends GetxController
       var attendanceFound = attendanceList
           .firstWhereOrNull((element) => element.id == attendanceOriginal.id);
       if (attendanceFound == null) {
+        await updateAttendanceData(attendanceOriginal.id!, false);
         await _eventRepository.updateRelationAttendance(
             eventId, [attendanceOriginal.id!], false);
-        await updateAttendanceData(attendanceOriginal.id!, false);
       } else {
+        await updateAttendanceData(attendanceFound.id!, true);
         attendanceListResult
             .removeWhere((element) => element.id == attendanceFound.id);
       }
@@ -372,8 +402,9 @@ class EventAddEditController extends GetxController
       await _attendanceRepository.update(
         AttendanceModel(
           id: attendanceId,
-          dtStartAttendance: dateStart,
-          dtEndAttendance: dateEnd,
+          dAttendance:
+              DateTime(dateStart!.year, dateStart!.month, dateStart!.day),
+          // dtEndAttendance: dateEnd,
           status: eventStatusSelected,
         ),
       );

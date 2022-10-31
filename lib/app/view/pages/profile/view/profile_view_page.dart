@@ -2,16 +2,16 @@ import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
-import 'package:fluxus/app/view/controllers/profile/view/client_view_controller.dart';
+import 'package:fluxus/app/view/controllers/profile/view/profile_view_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_link_text.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class ClientViewPage extends StatelessWidget {
-  final clientViewController = Get.find<ClientViewController>();
-  ClientViewPage({super.key});
+class ProfileViewPage extends StatelessWidget {
+  final clientViewController = Get.find<ProfileViewController>();
+  ProfileViewPage({super.key});
   final dateFormat = DateFormat('dd/MM/y');
 
   @override

@@ -29,7 +29,7 @@ class AppTextFormField extends StatelessWidget {
         obscureText: obscureText,
         validator: validator,
         onChanged: onChange,
-        inputFormatters: mask != null ? [mask!] : [],
+        inputFormatters: mask != null ? [mask!] : null,
         // keyboardType: TextInputType.multiline,
         minLines: maxLines, //Normal textInputField will be displayed
         maxLines: maxLines, // when user presses enter it will adapt to it

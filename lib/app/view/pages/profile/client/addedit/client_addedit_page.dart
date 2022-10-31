@@ -1,14 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/view/controllers/profile/client/addedit/client_addedit_controller.dart';
 import 'package:fluxus/app/view/pages/profile/client/addedit/client_health_plan_addedit_page.dart';
+import 'package:fluxus/app/view/pages/profile/team/edit/part/user_profile_photo.dart';
 import 'package:fluxus/app/view/pages/utils/app_dialog_add_ids.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 
-import 'package:fluxus/app/view/pages/profile/user/part/user_profile_photo.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
 
@@ -93,7 +95,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                     AppTextFormField(
                       label: 'Seu telefone mais acessível',
                       controller: widget._clientAddEditController.phoneTec,
-                      mask: widget._clientAddEditController.maskPhone,
+                      // mask: widget._clientAddEditController.maskPhone,
                     ),
                     AppTextFormField(
                       label: 'Seu email mais acessível',
@@ -103,14 +105,14 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                     AppTextFormField(
                       label: 'Seu CPF',
                       controller: widget._clientAddEditController.cpfTec,
-                      mask: widget._clientAddEditController.maskCPF,
+                      // mask: widget._clientAddEditController.maskCPF,
                       validator:
                           Validatorless.cpf('Este número não é CPF válido'),
                     ),
                     AppTextFormField(
                       label: 'O CEP do seu endereço.',
                       controller: widget._clientAddEditController.cepTec,
-                      mask: widget._clientAddEditController.maskCEP,
+                      // mask: widget._clientAddEditController.maskCEP,
                     ),
                     AppTextFormField(
                       label: 'O PLUSCODE do seu endereço.',
@@ -241,16 +243,24 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       if (widget._clientAddEditController.dateBirthday == null) {
         return false;
       }
+      log(widget._clientAddEditController.phoneTec.text, name: 'saveProfile');
+      log('${widget._clientAddEditController.maskPhone}', name: 'saveProfile');
+      log(widget._clientAddEditController.maskPhone.getUnmaskedText(),
+          name: 'saveProfile');
+      log('${widget._clientAddEditController.maskPhone.getMask()}',
+          name: 'saveProfile');
+      log(widget._clientAddEditController.maskPhone.getMaskedText(),
+          name: 'saveProfile');
       await widget._clientAddEditController.append(
         name: widget._clientAddEditController.nameTec.text,
         email: widget._clientAddEditController.emailTec.text,
         description: widget._clientAddEditController.descriptionTec.text,
-        phone: widget._clientAddEditController.maskPhone.getUnmaskedText(),
-        cpf: widget._clientAddEditController.maskCPF.getUnmaskedText(),
-        cep: widget._clientAddEditController.maskCEP.getUnmaskedText(),
-        // phone: widget._clientAddEditController.phoneTec.text,
-        // cep: widget._clientAddEditController.cepTec.text,
-        // cpf: widget._clientAddEditController.cpfTec.text,
+        // phone: widget._clientAddEditController.maskPhone.getUnmaskedText(),
+        // cpf: widget._clientAddEditController.maskCPF.getUnmaskedText(),
+        // cep: widget._clientAddEditController.maskCEP.getUnmaskedText(),
+        phone: widget._clientAddEditController.phoneTec.text,
+        cep: widget._clientAddEditController.cepTec.text,
+        cpf: widget._clientAddEditController.cpfTec.text,
         address: widget._clientAddEditController.addressTec.text,
         pluscode: widget._clientAddEditController.pluscodeTec.text,
         register: widget._clientAddEditController.registerTec.text,

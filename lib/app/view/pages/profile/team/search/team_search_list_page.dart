@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluxus/app/view/controllers/team/search/team_search_controller.dart';
-import 'package:fluxus/app/view/pages/team/part/team_list.dart';
+import 'package:fluxus/app/view/controllers/profile/team/search/team_search_controller.dart';
+import 'package:fluxus/app/view/pages/profile/team/search/part/team_list.dart';
 import 'package:get/get.dart';
 
 class TeamSearchListPage extends StatelessWidget {

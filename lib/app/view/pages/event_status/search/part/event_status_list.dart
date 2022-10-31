@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:fluxus/app/core/models/profile_model.dart';
-import 'package:fluxus/app/view/pages/team/part/team_card.dart';
+import 'package:fluxus/app/core/models/event_status_model.dart';
+import 'package:fluxus/app/view/pages/event_status/search/part/event_status_card.dart';
 import 'package:get/get.dart';
 
-class TeamProfileList extends StatelessWidget {
-  final List<ProfileModel> clientProfileList;
-  const TeamProfileList({
+class EventStatusList extends StatelessWidget {
+  final List<EventStatusModel> eventStatusList;
+  const EventStatusList({
     super.key,
-    required this.clientProfileList,
+    required this.eventStatusList,
   });
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => ListView.builder(
-        itemCount: clientProfileList.length,
+        itemCount: eventStatusList.length,
         itemBuilder: (context, index) {
-          final person = clientProfileList[index];
-          return TeamProfileCard(
-            profile: person,
+          final person = eventStatusList[index];
+          return EventStatusCard(
+            eventStatus: person,
           );
         },
       ),
@@ -32,10 +32,10 @@ class TeamProfileList extends StatelessWidget {
   //       scrollOffset: 2,
   //       isLoading: lastPage,
   //       child: ListView.builder(
-  //         itemCount: clientProfileList.length,
+  //         itemCount: eventStatusList.length,
   //         itemBuilder: (context, index) {
-  //           final person = clientProfileList[index];
-  //           return ClientProfileCard(
+  //           final person = eventStatusList[index];
+  //           return EventStatusCard(
   //             profile: person,
   //           );
   //         },

@@ -56,12 +56,12 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 5),
-                    Obx(() => Text(widget._eventAddEditController.dateStart
-                            ?.toIso8601String() ??
-                        '...')),
-                    Obx(() => Text(widget._eventAddEditController.dateEnd
-                            ?.toIso8601String() ??
-                        '...')),
+                    // Obx(() => Text(widget._eventAddEditController.dateStart
+                    //         ?.toIso8601String() ??
+                    //     '...')),
+                    // Obx(() => Text(widget._eventAddEditController.dateEnd
+                    //         ?.toIso8601String() ??
+                    //     '...')),
                     AppCalendarButton(
                       title: "Data do atendimento.",
                       getDate: () => widget._eventAddEditController.dateStart,
@@ -86,7 +86,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                                     widget._eventAddEditController
                                         .startDateDropDrowSelected = value;
                                     widget._eventAddEditController
-                                        .onUpdateEnd(value!);
+                                        .onUpdateStartChangeEnd(value!);
                                     setState(() {});
                                   },
                                   width: 150,
@@ -106,6 +106,8 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                                 execute: (value) {
                                   widget._eventAddEditController
                                       .endDateDropDrowSelected = value;
+                                  widget._eventAddEditController
+                                      .onUpdateEnd(value!);
                                   setState(() {});
                                 },
                                 width: 150,
@@ -140,7 +142,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                               Get.toNamed(Routes.attendanceSearch);
                             },
                             icon: const Icon(Icons.search)),
-                        const Text('Atendimentos'),
+                        const Text('* Atendimentos'),
                         IconButton(
                           onPressed: () async {
                             // var result = await saveEvent();
@@ -214,7 +216,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                     //   ],
                     // ),
                     // Obx(() => patientList()),
-                    const Text('Status'),
+                    const Text('* Status'),
                     Obx(
                       () => AppDropDownGeneric<EventStatusModel>(
                         options: widget._eventAddEditController.eventStatusList
@@ -254,7 +256,17 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
   Future<bool> saveEvent() async {
     final formValid = _formKey.currentState?.validate() ?? false;
     if (formValid) {
+      print('oops1');
       if (widget._eventAddEditController.dateStart == null) {
+        print('oops2');
+        return false;
+      }
+      if (widget._eventAddEditController.eventStatusSelected == null) {
+        print('oops3');
+        return false;
+      }
+      if (widget._eventAddEditController.attendanceList.isEmpty) {
+        print('oops4');
         return false;
       }
       await widget._eventAddEditController.append(

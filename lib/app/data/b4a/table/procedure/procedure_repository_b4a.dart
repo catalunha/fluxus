@@ -11,7 +11,7 @@ class ProcedureRepositoryB4a implements ProcedureRepository {
         QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
     // query.whereEqualTo('isDeleted', false);
     query.orderByAscending('name');
-    query.includeObject(['expertise']);
+    // query.includeObject(['expertise']);
     return query;
   }
 

@@ -28,11 +28,9 @@ class AttendanceEntity {
               .fromParse(parseObject.get('healthPlan') as ParseObject)
           : null,
       autorization: parseObject.get('autorization'),
-      dStartAutorization:
-          parseObject.get<DateTime>('dStartAutorization')?.toLocal(),
-      dtStartAttendance:
-          parseObject.get<DateTime>('dtStartAttendance')?.toLocal(),
-      dtEndAttendance: parseObject.get<DateTime>('dtEndAttendance')?.toLocal(),
+      dAutorization: parseObject.get<DateTime>('dAutorization')?.toLocal(),
+      dAttendance: parseObject.get<DateTime>('dAttendance')?.toLocal(),
+      // dtEndAttendance: parseObject.get<DateTime>('dtEndAttendance')?.toLocal(),
       status: parseObject.get('status') != null
           ? EventStatusEntity()
               .fromParse(parseObject.get('status') as ParseObject)
@@ -81,15 +79,15 @@ class AttendanceEntity {
     if (model.autorization != null) {
       parseObject.set('autorization', model.autorization);
     }
-    if (model.dStartAutorization != null) {
-      parseObject.set('dStartAutorization', model.dStartAutorization);
+    if (model.dAutorization != null) {
+      parseObject.set('dAutorization', model.dAutorization);
     }
-    if (model.dtStartAttendance != null) {
-      parseObject.set('dtStartAttendance', model.dtStartAttendance);
+    if (model.dAttendance != null) {
+      parseObject.set('dAttendance', model.dAttendance);
     }
-    if (model.dtEndAttendance != null) {
-      parseObject.set('dtEndAttendance', model.dtEndAttendance);
-    }
+    // if (model.dtEndAttendance != null) {
+    //   parseObject.set('dtEndAttendance', model.dtEndAttendance);
+    // }
     if (model.status != null) {
       parseObject.set(
           'status',

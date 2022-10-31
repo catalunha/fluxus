@@ -16,12 +16,11 @@ import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-class UserProfileController extends GetxController
-    with LoaderMixin, MessageMixin {
+class TeamEditController extends GetxController with LoaderMixin, MessageMixin {
   final ProfileRepository _profileRepository;
   final HealthPlanRepository _healthPlanRepository;
   final HealthPlanTypeRepository _healthPlanTypeRepository;
-  UserProfileController({
+  TeamEditController({
     required ProfileRepository profileRepository,
     required HealthPlanRepository healthPlanRepository,
     required HealthPlanTypeRepository healthPlanTypeRepository,

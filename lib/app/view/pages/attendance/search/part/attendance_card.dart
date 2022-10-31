@@ -32,15 +32,15 @@ class AttendanceCard extends StatelessWidget {
                         value: attendance.id,
                       ),
                       AppTextTitleValue(
-                        title: 'Profissional: ',
+                        title: 'Prof.: ',
                         value: attendance.professional!.name,
                       ),
                       AppTextTitleValue(
-                        title: 'Procedimento code: ',
+                        title: 'Proc. code: ',
                         value: attendance.procedure!.code,
                       ),
                       AppTextTitleValue(
-                        title: 'Procedimento: ',
+                        title: 'Proc.: ',
                         value: attendance.procedure!.name,
                       ),
                       AppTextTitleValue(
@@ -48,11 +48,11 @@ class AttendanceCard extends StatelessWidget {
                         value: attendance.patient!.name,
                       ),
                       AppTextTitleValue(
-                        title: 'Plano: ',
+                        title: 'Conv. code: ',
                         value: attendance.healthPlan!.code,
                       ),
                       AppTextTitleValue(
-                        title: 'Plano: ',
+                        title: 'Conv. nome: ',
                         value: attendance.healthPlan!.healthPlanType?.name,
                       ),
                       AppTextTitleValue(
@@ -61,23 +61,22 @@ class AttendanceCard extends StatelessWidget {
                       ),
                       AppTextTitleValue(
                         title: 'Data Autorização: ',
-                        value: formatter.format(attendance.dStartAutorization!),
+                        value: formatter.format(attendance.dAutorization!),
                       ),
                       AppTextTitleValue(
-                        title: 'Data Inicio atendimento: ',
-                        value: attendance.dtStartAttendance != null
-                            ? formatter.format(attendance.dtStartAttendance!)
+                        title: 'Data atendimento: ',
+                        value: attendance.dAttendance != null
+                            ? formatter.format(attendance.dAttendance!)
                             : null,
                       ),
+                      // AppTextTitleValue(
+                      //   title: 'Data fim atendimento: ',
+                      //   value: attendance.dtEndAttendance != null
+                      //       ? formatter.format(attendance.dtEndAttendance!)
+                      //       : null,
+                      // ),
                       AppTextTitleValue(
-                        title: 'Data fim atendimento: ',
-                        value: attendance.dtEndAttendance != null
-                            ? formatter.format(attendance.dtEndAttendance!)
-                            : null,
-                      ),
-                      AppTextTitleValue(
-                          title: 'Data fim atendimento: ',
-                          value: attendance.status?.name),
+                          title: 'Status: ', value: attendance.status?.name),
                       Wrap(
                         children: [
                           IconButton(
