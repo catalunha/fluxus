@@ -83,7 +83,7 @@ class ClientProfileCard extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             Get.toNamed(Routes.clientProfileView, arguments: {
-                              'cliendId': profile.id,
+                              'clientId': profile.id,
                               'includeColumns':
                                   _clientSearchController.includeColumns
                             });

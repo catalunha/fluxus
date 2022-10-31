@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/routes.dart';
+import 'package:fluxus/app/view/controllers/team/search/team_search_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class TeamProfileCard extends StatelessWidget {
-  // final _clientProfileController = Get.find<ClientProfileController>();
+  final _teamSearchController = Get.find<TeamSearchController>();
 
   final ProfileModel profile;
-  const TeamProfileCard({Key? key, required this.profile}) : super(key: key);
+  TeamProfileCard({Key? key, required this.profile}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +59,11 @@ class TeamProfileCard extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
-                            Get.toNamed(Routes.clientProfileView,
-                                arguments: profile.id);
+                            Get.toNamed(Routes.clientProfileView, arguments: {
+                              'clientId': profile.id,
+                              'includeColumns':
+                                  _teamSearchController.includeColumns
+                            });
                           },
                           icon: const Icon(
                             Icons.assignment_ind_outlined,

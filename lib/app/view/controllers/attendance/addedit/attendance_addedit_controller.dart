@@ -37,7 +37,7 @@ class AttendanceAddEditController extends GetxController
   set professional(ProfileModel? professionalNew) =>
       _professional(professionalNew);
 
-  var procedureList = <String>[].obs;
+  var procedureList = <ProcedureModel>[].obs;
 
   final _patient = Rxn<ProfileModel>();
   ProfileModel? get patient => _patient.value;
@@ -71,7 +71,7 @@ class AttendanceAddEditController extends GetxController
       for (var procedure in procedureList) {
         var attendance = AttendanceModel(
           professional: professional,
-          procedure: ProcedureModel(id: procedure),
+          procedure: procedure,
           patient: patient,
           healthPlan: HealthPlanModel(id: healthPlan),
           autorization: autorization,
@@ -96,8 +96,13 @@ class AttendanceAddEditController extends GetxController
   }) async {
     try {
       _loading(true);
-      ProfileModel? profileModelTemp = await _profileRepository.readById(id);
-      _professional(profileModelTemp);
+      ProfileModel? profileModelTemp = await _profileRepository
+          .readById(id, includeColumns: ['name', 'procedure']);
+      if (profileModelTemp != null) {
+        _professional(profileModelTemp);
+        procedureList.clear();
+        procedureList.addAll([...profileModelTemp.procedure!]);
+      }
     } on ProfileRepositoryException {
       _message.value = MessageModel(
         title: 'Erro em AttendanceController',
@@ -109,47 +114,54 @@ class AttendanceAddEditController extends GetxController
     }
   }
 
-  setProcedure({
-    required String ids,
-    required bool add,
-  }) {
-    List<String> idsSplit = ids.split(' ');
-    String idProfessional = idsSplit[0];
-    String idProcedure = idsSplit[1];
-
-    if (professional!.id == idProfessional) {
-      if (add) {
-        procedureList.add(idProcedure);
-      } else {
-        procedureList.remove(idProcedure);
-      }
-    } else {
-      _message.value = MessageModel(
-        title: 'Profissional diferente',
-        message: 'Use procedimentos do mesmo profissional',
-        isError: true,
-      );
-    }
+  removeProcedure(String id) {
+    procedureList.removeWhere((element) => element.id == id);
   }
 
-  String getProcedure(String procedureId, String getFieldName) {
-    if (patient != null) {
-      var proceduresThisProfessional = professional!.procedure!
-          .firstWhereOrNull((element) => element.id == procedureId);
-      if (proceduresThisProfessional != null) {
-        if (getFieldName == 'code') {
-          return proceduresThisProfessional.code ?? '...';
-        } else if (getFieldName == 'name') {
-          return proceduresThisProfessional.name ?? '...';
-        } else {
-          return proceduresThisProfessional.id ?? '...';
-        }
-      }
-      return '...';
-    } else {
-      return 'Procedimento não encontrado';
-    }
+  addProcedure(ProcedureModel procedureModel) {
+    procedureList.add(procedureModel);
   }
+  // setProcedure({
+  //   required String ids,
+  //   required bool add,
+  // }) {
+  //   List<String> idsSplit = ids.split(' ');
+  //   String idProfessional = idsSplit[0];
+  //   String idProcedure = idsSplit[1];
+
+  //   if (professional!.id == idProfessional) {
+  //     if (add) {
+  //       procedureList.add(idProcedure);
+  //     } else {
+  //       procedureList.remove(idProcedure);
+  //     }
+  //   } else {
+  //     _message.value = MessageModel(
+  //       title: 'Profissional diferente',
+  //       message: 'Use procedimentos do mesmo profissional',
+  //       isError: true,
+  //     );
+  //   }
+  // }
+
+  // String getProcedure(String procedureId, String getFieldName) {
+  //   if (patient != null) {
+  //     var proceduresThisProfessional = professional!.procedure!
+  //         .firstWhereOrNull((element) => element.id == procedureId);
+  //     if (proceduresThisProfessional != null) {
+  //       if (getFieldName == 'code') {
+  //         return proceduresThisProfessional.code ?? '...';
+  //       } else if (getFieldName == 'name') {
+  //         return proceduresThisProfessional.name ?? '...';
+  //       } else {
+  //         return proceduresThisProfessional.id ?? '...';
+  //       }
+  //     }
+  //     return '...';
+  //   } else {
+  //     return 'Procedimento não encontrado';
+  //   }
+  // }
 
   Future<void> setPatientHealthPlan({
     required String ids,
@@ -160,8 +172,8 @@ class AttendanceAddEditController extends GetxController
       String idPatient = idsSplit[0];
       healthPlan = idsSplit[1];
 
-      ProfileModel? profileModelTemp =
-          await _profileRepository.readById(idPatient);
+      ProfileModel? profileModelTemp = await _profileRepository
+          .readById(idPatient, includeColumns: ['name', 'healthPlan']);
       _patient(profileModelTemp);
     } on ProfileRepositoryException {
       _message.value = MessageModel(

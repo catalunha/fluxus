@@ -360,6 +360,10 @@ class ClientViewPage extends StatelessWidget {
     if (profileModel.office != null && profileModel.office!.isNotEmpty) {
       return Column(
         children: [
+          const Text(
+            'Funções: ',
+            style: TextStyle(color: Colors.blueGrey),
+          ),
           ...profileModel.office!
               .map((e) => InkWell(
                     child: Card(

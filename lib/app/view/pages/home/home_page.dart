@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
                 leading: const Icon(Icons.person_add),
                 title: const Text('Cadastrar paciente'),
                 onTap: () {
-                  Get.toNamed(Routes.clientProfileAddEdit, arguments: null);
+                  Get.toNamed(Routes.clientProfileAddEdit);
                 },
               ),
             ),

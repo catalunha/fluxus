@@ -16,14 +16,16 @@ class ProfileEntity {
 
   Future<ProfileModel> fromParse(ParseObject parseObject,
       {List<String>? includeColumns}) async {
-    // List<String> includeColumns = [];
-    // includeRelations.add('expertise');
-    // includeRelations.add('procedure');
-    // includeRelations.add('office');
-    // includeRelations.add('healthPlan');
-    // includeRelations.add('family');
+    if (includeColumns == null) {
+      includeColumns = [];
+      includeColumns.add('expertise');
+      includeColumns.add('procedure');
+      includeColumns.add('office');
+      includeColumns.add('healthPlan');
+      includeColumns.add('family');
+    }
     List<ExpertiseModel> expertiseList = [];
-    if (includeColumns != null && includeColumns.contains('expertise')) {
+    if (includeColumns.contains('expertise')) {
       //+++ get expertises
       QueryBuilder<ParseObject> queryExpertise =
           QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
@@ -41,7 +43,7 @@ class ProfileEntity {
       //--- get expertises
     }
     List<ProcedureModel> procedureList = [];
-    if (includeColumns != null && includeColumns.contains('procedure')) {
+    if (includeColumns.contains('procedure')) {
       //+++ get procedure
       QueryBuilder<ParseObject> queryProdecure =
           QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
@@ -60,7 +62,7 @@ class ProfileEntity {
       //--- get procedure
     }
     List<OfficeModel> officeList = [];
-    if (includeColumns != null && includeColumns.contains('office')) {
+    if (includeColumns.contains('office')) {
       //+++ get office
       QueryBuilder<ParseObject> queryOffice =
           QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
@@ -77,7 +79,7 @@ class ProfileEntity {
       //--- get office
     }
     List<HealthPlanModel> healthPlanList = [];
-    if (includeColumns != null && includeColumns.contains('healthPlan')) {
+    if (includeColumns.contains('healthPlan')) {
       //+++ get healthPlanList
 
       QueryBuilder<ParseObject> queryHealthPlan =
@@ -97,7 +99,7 @@ class ProfileEntity {
       //--- get healthPlanList
     }
     List<ProfileModel> familyList = [];
-    if (includeColumns != null && includeColumns.contains('family')) {
+    if (includeColumns.contains('family')) {
       //+++ get family
       QueryBuilder<ParseObject> queryFamily =
           QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));

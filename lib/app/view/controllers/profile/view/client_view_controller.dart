@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
@@ -32,6 +34,7 @@ class ClientViewController extends GetxController
     loaderListener(_loading);
     messageListener(_message);
     Map<String, dynamic> args = Get.arguments;
+    log('$args', name: 'ClientViewController');
     clientId = args['clientId'];
     includeColumns = args['includeColumns'];
     super.onInit();
@@ -40,7 +43,8 @@ class ClientViewController extends GetxController
   Future<ProfileModel> getProfile() async {
     // _loading(true);
     ProfileModel? profileModelTemp = await _profileRepository
-        .readById(clientId!, includeColumns: ['name', 'procedure']);
+        .readById(clientId!, includeColumns: includeColumns);
+    // .readById(clientId!, includeColumns: ['name', 'procedure']);
     profile = profileModelTemp;
     return profileModelTemp!;
     // _loading(false);

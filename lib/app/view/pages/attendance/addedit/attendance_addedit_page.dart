@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/attendance/addedit/attendance_addedit_controller.dart';
@@ -74,7 +75,7 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                         IconButton(
                             onPressed: () {
                               Get.toNamed(Routes.clientProfileSearch,
-                                  arguments: ['name', 'procedure']);
+                                  arguments: ['name', 'healthPlan']);
                             },
                             icon: const Icon(Icons.search)),
                         const Text('Paciente e Convênio'),
@@ -117,7 +118,8 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              Get.toNamed(Routes.teamProfileSearch);
+                              Get.toNamed(Routes.teamProfileSearch,
+                                  arguments: ['name', 'procedure']);
                             },
                             icon: const Icon(Icons.search)),
                         const Text('Profissional'),
@@ -153,50 +155,50 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                       ],
                     ),
                     Obx(() => profissional()),
-                    if (widget._attendanceAddEditController.patient != null)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              onPressed: () {
-                                Get.toNamed(Routes.teamProfileSearch);
-                              },
-                              icon: const Icon(Icons.search)),
-                          const Text('Procedimentos'),
-                          IconButton(
-                            onPressed: () async {
-                              // var result = await saveAttendance();
-                              // if (result) {
-                              String? res = await showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const AttendanceAddIds(
-                                    title:
-                                        'Informe o Id do profissional e do procedimento',
-                                    formFieldLabel: 'Separador por espaço',
-                                  );
-                                },
-                              );
-                              if (res != null) {
-                                widget._attendanceAddEditController
-                                    .setProcedure(ids: res, add: true);
-                              }
-                              setState(() {});
-                              // } else {
-                              //   Get.snackbar(
-                              //     'Atenção',
-                              //     'Campos obrigatórios não foram preenchidos.',
-                              //     backgroundColor: Colors.red,
-                              //   );
-                              // }
-                            },
-                            icon: const Icon(Icons.add),
-                          )
-                        ],
-                      ),
-                    if (widget._attendanceAddEditController.patient != null)
-                      Obx(() => procedureList()),
+                    // if (widget._attendanceAddEditController.professional != null)
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     IconButton(
+                    //         onPressed: () {
+                    //           Get.toNamed(Routes.teamProfileSearch);
+                    //         },
+                    //         icon: const Icon(Icons.search)),
+                    //     const Text('Procedimentos'),
+                    //     IconButton(
+                    //       onPressed: () async {
+                    //         // var result = await saveAttendance();
+                    //         // if (result) {
+                    //         String? res = await showDialog(
+                    //           barrierDismissible: false,
+                    //           context: context,
+                    //           builder: (BuildContext context) {
+                    //             return const AttendanceAddIds(
+                    //               title:
+                    //                   'Informe o Id do profissional e do procedimento',
+                    //               formFieldLabel: 'Separador por espaço',
+                    //             );
+                    //           },
+                    //         );
+                    //         if (res != null) {
+                    //           widget._attendanceAddEditController
+                    //               .setProcedure(ids: res, add: true);
+                    //         }
+                    //         setState(() {});
+                    //         // } else {
+                    //         //   Get.snackbar(
+                    //         //     'Atenção',
+                    //         //     'Campos obrigatórios não foram preenchidos.',
+                    //         //     backgroundColor: Colors.red,
+                    //         //   );
+                    //         // }
+                    //       },
+                    //       icon: const Icon(Icons.add),
+                    //     )
+                    //   ],
+                    // ),
+                    Obx(() => procedureList()),
+
                     const SizedBox(height: 70),
                   ],
                 ),
@@ -272,16 +274,28 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
       return Card(
         child: SizedBox(
           width: double.maxFinite,
-          child: Column(children: [
-            AppTextTitleValue(
-              title: 'Nome: ',
-              value: '${profileModel.name}',
-            ),
-            AppTextTitleValue(
-              title: 'Id: ',
-              value: '${profileModel.id}',
-            ),
-          ]),
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () => copy(profileModel.id!),
+                icon: const Icon(
+                  Icons.copy,
+                ),
+              ),
+              Column(
+                children: [
+                  AppTextTitleValue(
+                    title: 'Nome: ',
+                    value: '${profileModel.name}',
+                  ),
+                  AppTextTitleValue(
+                    title: 'Id: ',
+                    value: '${profileModel.id}',
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       );
     } else {
@@ -289,10 +303,21 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
     }
   }
 
+  copy(String text) async {
+    Get.snackbar(
+      text,
+      'Id copiado.',
+      // backgroundColor: Colors.yellow,
+      margin: const EdgeInsets.all(10),
+    );
+    await Clipboard.setData(ClipboardData(text: text));
+  }
+
   Widget procedureList() {
     if (widget._attendanceAddEditController.procedureList.isNotEmpty) {
       return Column(
         children: [
+          const Text('Procedimentos:'),
           ...widget._attendanceAddEditController.procedureList
               .map((e) => Card(
                     child: Column(children: [
@@ -302,23 +327,19 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  widget._attendanceAddEditController.setProcedure(
-                                      ids:
-                                          '${widget._attendanceAddEditController.professional!.id} $e',
-                                      add: false);
+                                  widget._attendanceAddEditController
+                                      .removeProcedure(e.id!);
                                   setState(() {});
                                 },
                                 icon: const Icon(Icons.delete_forever),
                               ),
                               IconButton(
                                 onPressed: () async {
-                                  widget._attendanceAddEditController.setProcedure(
-                                      ids:
-                                          '${widget._attendanceAddEditController.professional!.id} $e',
-                                      add: true);
+                                  widget._attendanceAddEditController
+                                      .addProcedure(e);
                                   setState(() {});
                                 },
-                                icon: const Icon(Icons.copy),
+                                icon: const Icon(Icons.add_to_photos_outlined),
                               ),
                             ],
                           ),
@@ -328,18 +349,15 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                               children: [
                                 AppTextTitleValue(
                                   title: 'Código: ',
-                                  value: widget._attendanceAddEditController
-                                      .getProcedure(e, 'code'),
+                                  value: e.code,
                                 ),
                                 AppTextTitleValue(
                                   title: 'Nome: ',
-                                  value: widget._attendanceAddEditController
-                                      .getProcedure(e, 'name'),
+                                  value: e.name,
                                 ),
                                 AppTextTitleValue(
                                   title: 'Id: ',
-                                  value: widget._attendanceAddEditController
-                                      .getProcedure(e, 'id'),
+                                  value: e.id,
                                 ),
                               ],
                             ),
