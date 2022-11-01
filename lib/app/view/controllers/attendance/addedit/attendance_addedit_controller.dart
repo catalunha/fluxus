@@ -76,7 +76,7 @@ class AttendanceAddEditController extends GetxController
           healthPlan: HealthPlanModel(id: healthPlan),
           autorization: autorization!.isEmpty ? null : autorization,
           dAutorization: dAutorization,
-          status: EventStatusModel(id: 'zoFBVNZ16I'),
+          eventStatus: EventStatusModel(id: 'zoFBVNZ16I'),
         );
         await _attendanceRepository.update(attendance);
       }

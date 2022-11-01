@@ -76,7 +76,8 @@ class AttendanceCard extends StatelessWidget {
                       //       : null,
                       // ),
                       AppTextTitleValue(
-                          title: 'Status: ', value: attendance.status?.name),
+                          title: 'Status: ',
+                          value: attendance.eventStatus?.name),
                       Wrap(
                         children: [
                           IconButton(

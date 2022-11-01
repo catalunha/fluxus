@@ -31,9 +31,9 @@ class AttendanceEntity {
       dAutorization: parseObject.get<DateTime>('dAutorization')?.toLocal(),
       dAttendance: parseObject.get<DateTime>('dAttendance')?.toLocal(),
       // dtEndAttendance: parseObject.get<DateTime>('dtEndAttendance')?.toLocal(),
-      status: parseObject.get('status') != null
+      eventStatus: parseObject.get('eventStatus') != null
           ? EventStatusEntity()
-              .fromParse(parseObject.get('status') as ParseObject)
+              .fromParse(parseObject.get('eventStatus') as ParseObject)
           : null,
       event: parseObject.get('event'),
       isDeleted: parseObject.get('isDeleted') ?? false,
@@ -88,11 +88,11 @@ class AttendanceEntity {
     // if (model.dtEndAttendance != null) {
     //   parseObject.set('dtEndAttendance', model.dtEndAttendance);
     // }
-    if (model.status != null) {
+    if (model.eventStatus != null) {
       parseObject.set(
-          'status',
+          'eventStatus',
           (ParseObject(EventStatusEntity.className)
-                ..objectId = model.status!.id)
+                ..objectId = model.eventStatus!.id)
               .toPointer());
     }
     if (model.event != null) {

@@ -102,7 +102,7 @@ class AttendanceSearchController extends GetxController
     }
     if (eventStatusEqualToBool) {
       query.whereEqualTo(
-          'status',
+          'eventStatus',
           (ParseObject(EventStatusEntity.className)
                 ..objectId = eventStatusEqualToString)
               .toPointer());

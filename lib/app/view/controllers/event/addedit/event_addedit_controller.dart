@@ -381,11 +381,11 @@ class EventAddEditController extends GetxController
       var attendanceFound = attendanceList
           .firstWhereOrNull((element) => element.id == attendanceOriginal.id);
       if (attendanceFound == null) {
-        await updateAttendanceData(attendanceOriginal.id!, false);
+        await updateAttendanceData(eventId, attendanceOriginal.id!, false);
         await _eventRepository.updateRelationAttendance(
             eventId, [attendanceOriginal.id!], false);
       } else {
-        await updateAttendanceData(attendanceFound.id!, true);
+        await updateAttendanceData(eventId, attendanceFound.id!, true);
         attendanceListResult
             .removeWhere((element) => element.id == attendanceFound.id);
       }
@@ -393,28 +393,30 @@ class EventAddEditController extends GetxController
     for (var attendanceResult in attendanceListResult) {
       await _eventRepository.updateRelationAttendance(
           eventId, [attendanceResult.id!], true);
-      await updateAttendanceData(attendanceResult.id!, true);
+      await updateAttendanceData(eventId, attendanceResult.id!, true);
     }
   }
 
-  Future<void> updateAttendanceData(String attendanceId, bool add) async {
+  Future<void> updateAttendanceData(
+      String eventId, String attendanceId, bool add) async {
     if (add) {
       await _attendanceRepository.update(
         AttendanceModel(
           id: attendanceId,
+          event: eventId,
           dAttendance:
               DateTime(dateStart!.year, dateStart!.month, dateStart!.day),
           // dtEndAttendance: dateEnd,
-          status: eventStatusSelected,
+          eventStatus: eventStatusSelected,
         ),
       );
     } else {
-      await _attendanceRepository.updateUnset(
-          attendanceId, ['dtStartAttendance', 'dtEndAttendance', 'status']);
+      await _attendanceRepository
+          .updateUnset(attendanceId, ['dAttendance', 'eventStatus']);
       await _attendanceRepository.update(
         AttendanceModel(
           id: attendanceId,
-          status: EventStatusModel(id: 'uvHmcIKiFc'),
+          eventStatus: EventStatusModel(id: 'uvHmcIKiFc'),
         ),
       );
     }
