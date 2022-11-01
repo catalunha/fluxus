@@ -1,9 +1,11 @@
 import 'package:fluxus/app/core/models/attendance_model.dart';
+import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/data/b4a/entity/attendance_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/event_status_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/procedure_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/repositories/attendance_repository.dart';
+import 'package:fluxus/app/data/repositories/event_status_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
@@ -14,9 +16,13 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class AttendanceSearchController extends GetxController
     with LoaderMixin, MessageMixin {
   final AttendanceRepository _attendanceRepository;
+  final EventStatusRepository _eventStatusRepository;
+
   AttendanceSearchController({
     required AttendanceRepository attendanceRepository,
-  }) : _attendanceRepository = attendanceRepository;
+    required EventStatusRepository eventStatusRepository,
+  })  : _attendanceRepository = attendanceRepository,
+        _eventStatusRepository = eventStatusRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
@@ -38,6 +44,12 @@ class AttendanceSearchController extends GetxController
     _dAttendance.value = dAttendance1;
   }
 
+  var eventStatusList = <EventStatusModel>[].obs;
+  final _eventStatusSelected = Rxn<EventStatusModel>();
+  EventStatusModel? get eventStatusSelected => _eventStatusSelected.value;
+  set eventStatusSelected(EventStatusModel? newModel) =>
+      _eventStatusSelected(newModel);
+
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
   @override
@@ -47,7 +59,15 @@ class AttendanceSearchController extends GetxController
     ever(_pagination, (_) async => await listAll());
     loaderListener(_loading);
     messageListener(_message);
+    getEventStatusList();
+
     super.onInit();
+  }
+
+  getEventStatusList() async {
+    List<EventStatusModel> all = await _eventStatusRepository.list();
+    eventStatusList(all);
+    eventStatusSelected = eventStatusList[0];
   }
 
   void _changePagination(int page, int limit) {
@@ -104,9 +124,16 @@ class AttendanceSearchController extends GetxController
       query.whereEqualTo(
           'eventStatus',
           (ParseObject(EventStatusEntity.className)
-                ..objectId = eventStatusEqualToString)
+                ..objectId = eventStatusSelected!.id)
               .toPointer());
     }
+    //   if (eventStatusEqualToBool) {
+    //   query.whereEqualTo(
+    //       'eventStatus',
+    //       (ParseObject(EventStatusEntity.className)
+    //             ..objectId = eventStatusEqualToString)
+    //           .toPointer());
+    // }
     if (dAutorizationBool && dAutorization != null) {
       query.whereEqualTo('dAutorization', dAutorization);
       // query.whereGreaterThanOrEqualsTo(

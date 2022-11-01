@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/core/models/event_status_model.dart';
+import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/event/search/event_search_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
+import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
 import 'package:fluxus/app/view/pages/utils/app_icon.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
 import 'package:get/get.dart';
@@ -91,18 +94,33 @@ class _SearchPageState extends State<EventSearchPage> {
                                 });
                               },
                             ),
-                            IconButton(
-                              onPressed: () {
-                                Get.toNamed(Routes.eventStatusList);
-                              },
-                              icon: const Icon(Icons.search),
-                            ),
-                            Expanded(
-                              child: AppTextFormField(
-                                label: 'Status do evento com Id',
-                                controller: _eventStatusEqualToTEC,
+                            Obx(
+                              () => AppDropDownGeneric<EventStatusModel>(
+                                options: widget
+                                    ._eventSearchController.eventStatusList
+                                    .toList(),
+                                selected: widget
+                                    ._eventSearchController.eventStatusSelected,
+                                execute: (value) {
+                                  widget._eventSearchController
+                                      .eventStatusSelected = value;
+                                  setState(() {});
+                                },
+                                width: 300,
                               ),
                             ),
+                            // IconButton(
+                            //   onPressed: () {
+                            //     Get.toNamed(Routes.eventStatusList);
+                            //   },
+                            //   icon: const Icon(Icons.search),
+                            // ),
+                            // Expanded(
+                            //   child: AppTextFormField(
+                            //     label: 'Status do evento com Id',
+                            //     controller: _eventStatusEqualToTEC,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ],
@@ -122,18 +140,32 @@ class _SearchPageState extends State<EventSearchPage> {
                                 });
                               },
                             ),
-                            IconButton(
-                              onPressed: () {
-                                Get.toNamed(Routes.roomList);
-                              },
-                              icon: const Icon(Icons.search),
-                            ),
-                            Expanded(
-                              child: AppTextFormField(
-                                label: 'Id do ambiente',
-                                controller: _roomEqualToTEC,
+                            Obx(
+                              () => AppDropDownGeneric<RoomModel>(
+                                options: widget._eventSearchController.roomList
+                                    .toList(),
+                                selected:
+                                    widget._eventSearchController.roomSelected,
+                                execute: (value) {
+                                  widget._eventSearchController.roomSelected =
+                                      value;
+                                  setState(() {});
+                                },
+                                width: 300,
                               ),
                             ),
+                            // IconButton(
+                            //   onPressed: () {
+                            //     Get.toNamed(Routes.roomList);
+                            //   },
+                            //   icon: const Icon(Icons.search),
+                            // ),
+                            // Expanded(
+                            //   child: AppTextFormField(
+                            //     label: 'Id do ambiente',
+                            //     controller: _roomEqualToTEC,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ],

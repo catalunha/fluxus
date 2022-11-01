@@ -226,14 +226,14 @@ class EventAddEditController extends GetxController
   }
 
   void onSetDates() {
-    _dateStart(event?.start);
+    _dateStart(event?.dtStart);
     //log('$dateStart', name: 'onSetDates1');
     if (dateStart != null) {
       startDateDropDrowSelected = startDateList.firstWhereOrNull((element) =>
           element.hour == dateStart!.hour &&
           element.minute == dateStart!.minute);
     }
-    _dateEnd(event?.end);
+    _dateEnd(event?.dtEnd);
     if (dateEnd != null) {
       endDateDropDrowSelected = startDateList.firstWhereOrNull((element) =>
           element.hour == dateEnd!.hour && element.minute == dateEnd!.minute);
@@ -245,7 +245,7 @@ class EventAddEditController extends GetxController
   }
 
   void onSetStatus() {
-    _eventStatusSelected(event?.status);
+    _eventStatusSelected(event?.eventStatus);
   }
 
   setFormFieldControllers() {
@@ -287,9 +287,9 @@ class EventAddEditController extends GetxController
       if (eventId == null) {
         event = EventModel(
           room: room,
-          start: dateStart,
-          end: dateEnd,
-          status: status,
+          dtStart: dateStart,
+          dtEnd: dateEnd,
+          eventStatus: status,
           description: description,
           isDeleted: isDeleted,
           log: logData,
@@ -297,9 +297,9 @@ class EventAddEditController extends GetxController
       } else {
         event = event!.copyWith(
           room: room,
-          start: dateStart,
-          end: dateEnd,
-          status: status,
+          dtStart: dateStart,
+          dtEnd: dateEnd,
+          eventStatus: status,
           description: description,
           isDeleted: isDeleted,
           log: logData,

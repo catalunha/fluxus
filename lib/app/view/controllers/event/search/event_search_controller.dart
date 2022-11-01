@@ -1,10 +1,14 @@
 import 'package:fluxus/app/core/models/event_model.dart';
+import 'package:fluxus/app/core/models/event_status_model.dart';
+import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/data/b4a/entity/attendance_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/event_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/event_status_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/room_entity.dart';
 import 'package:fluxus/app/data/repositories/event_repository.dart';
+import 'package:fluxus/app/data/repositories/event_status_repository.dart';
+import 'package:fluxus/app/data/repositories/room_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
@@ -15,9 +19,16 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class EventSearchController extends GetxController
     with LoaderMixin, MessageMixin {
   final EventRepository _eventRepository;
+  final EventStatusRepository _eventStatusRepository;
+  final RoomRepository _roomRepository;
+
   EventSearchController({
     required EventRepository eventRepository,
-  }) : _eventRepository = eventRepository;
+    required EventStatusRepository eventStatusRepository,
+    required RoomRepository roomRepository,
+  })  : _eventRepository = eventRepository,
+        _roomRepository = roomRepository,
+        _eventStatusRepository = eventStatusRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
@@ -33,11 +44,21 @@ class EventSearchController extends GetxController
     _dtStart.value = dtStart1;
   }
 
-  final Rxn<DateTime> _dtEnd = Rxn<DateTime>();
-  DateTime? get dtEnd => _dtEnd.value;
-  set dtEnd(DateTime? dtEnd1) {
-    _dtEnd.value = dtEnd1;
-  }
+  // final Rxn<DateTime> _dtEnd = Rxn<DateTime>();
+  // DateTime? get dtEnd => _dtEnd.value;
+  // set dtEnd(DateTime? dtEnd1) {
+  //   _dtEnd.value = dtEnd1;
+  // }
+  var eventStatusList = <EventStatusModel>[].obs;
+  final _eventStatusSelected = Rxn<EventStatusModel>();
+  EventStatusModel? get eventStatusSelected => _eventStatusSelected.value;
+  set eventStatusSelected(EventStatusModel? newModel) =>
+      _eventStatusSelected(newModel);
+
+  var roomList = <RoomModel>[].obs;
+  final _roomSelected = Rxn<RoomModel>();
+  RoomModel? get roomSelected => _roomSelected.value;
+  set roomSelected(RoomModel? newModel) => _roomSelected(newModel);
 
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
@@ -48,7 +69,22 @@ class EventSearchController extends GetxController
     ever(_pagination, (_) async => await listAll());
     loaderListener(_loading);
     messageListener(_message);
+    getEventStatusList();
+    getRoomList();
+
     super.onInit();
+  }
+
+  getEventStatusList() async {
+    List<EventStatusModel> all = await _eventStatusRepository.list();
+    eventStatusList(all);
+    eventStatusSelected = eventStatusList[0];
+  }
+
+  getRoomList() async {
+    List<RoomModel> all = await _roomRepository.list();
+    roomList(all);
+    roomSelected = roomList[0];
   }
 
   void _changePagination(int page, int limit) {
@@ -83,26 +119,40 @@ class EventSearchController extends GetxController
     if (dtStartBool && dtStart != null) {
       // query.whereEqualTo('start', dtStart);
       query.whereGreaterThanOrEqualsTo(
-          'start', DateTime(dtStart!.year, dtStart!.month, dtStart!.day));
-      query.whereLessThanOrEqualTo('start',
+          'dtStart', DateTime(dtStart!.year, dtStart!.month, dtStart!.day));
+      query.whereLessThanOrEqualTo('dtStart',
           DateTime(dtStart!.year, dtStart!.month, dtStart!.day, 23, 59));
     }
-
     if (eventStatusEqualToBool) {
       query.whereEqualTo(
-        'status',
+        'eventStatus',
         (ParseObject(EventStatusEntity.className)
-              ..objectId = eventStatusEqualToString)
+              ..objectId = eventStatusSelected!.id)
             .toPointer(),
       );
     }
+    // if (eventStatusEqualToBool) {
+    //   query.whereEqualTo(
+    //     'eventStatus',
+    //     (ParseObject(EventStatusEntity.className)
+    //           ..objectId = eventStatusEqualToString)
+    //         .toPointer(),
+    //   );
+    // }
     if (roomEqualToBool) {
       query.whereEqualTo(
         'room',
-        (ParseObject(RoomEntity.className)..objectId = roomEqualToString)
+        (ParseObject(RoomEntity.className)..objectId = roomSelected!.id)
             .toPointer(),
       );
     }
+    // if (roomEqualToBool) {
+    //   query.whereEqualTo(
+    //     'room',
+    //     (ParseObject(RoomEntity.className)..objectId = roomEqualToString)
+    //         .toPointer(),
+    //   );
+    // }
     //
     eventList.clear();
     if (lastPage) {

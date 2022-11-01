@@ -11,20 +11,19 @@ class EventModel {
   final String? id;
   final List<AttendanceModel>? attendance;
   final RoomModel? room;
-  final DateTime? start;
-  final DateTime? end;
-  final EventStatusModel? status;
+  final DateTime? dtStart;
+  final DateTime? dtEnd;
+  final EventStatusModel? eventStatus;
   final String? log;
   final String? description;
   final bool? isDeleted;
-
   EventModel({
     this.id,
     this.attendance,
     this.room,
-    this.start,
-    this.end,
-    this.status,
+    this.dtStart,
+    this.dtEnd,
+    this.eventStatus,
     this.log,
     this.description,
     this.isDeleted,
@@ -34,9 +33,9 @@ class EventModel {
     String? id,
     List<AttendanceModel>? attendance,
     RoomModel? room,
-    DateTime? start,
-    DateTime? end,
-    EventStatusModel? status,
+    DateTime? dtStart,
+    DateTime? dtEnd,
+    EventStatusModel? eventStatus,
     String? log,
     String? description,
     bool? isDeleted,
@@ -45,9 +44,9 @@ class EventModel {
       id: id ?? this.id,
       attendance: attendance ?? this.attendance,
       room: room ?? this.room,
-      start: start ?? this.start,
-      end: end ?? this.end,
-      status: status ?? this.status,
+      dtStart: dtStart ?? this.dtStart,
+      dtEnd: dtEnd ?? this.dtEnd,
+      eventStatus: eventStatus ?? this.eventStatus,
       log: log ?? this.log,
       description: description ?? this.description,
       isDeleted: isDeleted ?? this.isDeleted,
@@ -66,14 +65,14 @@ class EventModel {
     if (room != null) {
       result.addAll({'room': room!.toMap()});
     }
-    if (start != null) {
-      result.addAll({'start': start!.millisecondsSinceEpoch});
+    if (dtStart != null) {
+      result.addAll({'dtStart': dtStart!.millisecondsSinceEpoch});
     }
-    if (end != null) {
-      result.addAll({'end': end!.millisecondsSinceEpoch});
+    if (dtEnd != null) {
+      result.addAll({'dtEnd': dtEnd!.millisecondsSinceEpoch});
     }
-    if (status != null) {
-      result.addAll({'status': status!.toMap()});
+    if (eventStatus != null) {
+      result.addAll({'eventStatus': eventStatus!.toMap()});
     }
     if (log != null) {
       result.addAll({'log': log});
@@ -96,14 +95,14 @@ class EventModel {
               map['attendance']?.map((x) => AttendanceModel.fromMap(x)))
           : null,
       room: map['room'] != null ? RoomModel.fromMap(map['room']) : null,
-      start: map['start'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['start'])
+      dtStart: map['dtStart'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['dtStart'])
           : null,
-      end: map['end'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['end'])
+      dtEnd: map['dtEnd'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['dtEnd'])
           : null,
-      status: map['status'] != null
-          ? EventStatusModel.fromMap(map['status'])
+      eventStatus: map['eventStatus'] != null
+          ? EventStatusModel.fromMap(map['eventStatus'])
           : null,
       log: map['log'],
       description: map['description'],
@@ -118,7 +117,7 @@ class EventModel {
 
   @override
   String toString() {
-    return 'EventModel(id: $id, attendance: $attendance, room: $room, start: $start, end: $end, status: $status, log: $log, description: $description, isDeleted: $isDeleted)';
+    return 'EventModel(id: $id, attendance: $attendance, room: $room, dtStart: $dtStart, dtEnd: $dtEnd, eventStatus: $eventStatus, log: $log, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
@@ -129,9 +128,9 @@ class EventModel {
         other.id == id &&
         listEquals(other.attendance, attendance) &&
         other.room == room &&
-        other.start == start &&
-        other.end == end &&
-        other.status == status &&
+        other.dtStart == dtStart &&
+        other.dtEnd == dtEnd &&
+        other.eventStatus == eventStatus &&
         other.log == log &&
         other.description == description &&
         other.isDeleted == isDeleted;
@@ -142,9 +141,9 @@ class EventModel {
     return id.hashCode ^
         attendance.hashCode ^
         room.hashCode ^
-        start.hashCode ^
-        end.hashCode ^
-        status.hashCode ^
+        dtStart.hashCode ^
+        dtEnd.hashCode ^
+        eventStatus.hashCode ^
         log.hashCode ^
         description.hashCode ^
         isDeleted.hashCode;
