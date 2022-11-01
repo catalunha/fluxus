@@ -86,8 +86,9 @@ class Routes {
   static const evaluationSearch = '/evaluation/search';
   static const evaluationList = '/evaluation/list';
 
-  static const evolutionList = '/evolution/list';
   static const evolutionAddEdit = '/evolution/addedit';
+  // static const evolutionSearch = '/evolution/search';
+  static const evolutionList = '/evolution/list';
 
   static const procedureList = '/procedure/list';
 

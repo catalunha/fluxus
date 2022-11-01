@@ -4,7 +4,7 @@ import 'package:fluxus/app/view/pages/evolution/search/part/evolution_list.dart'
 import 'package:get/get.dart';
 
 class EvolutionSearchListPage extends StatelessWidget {
-  final _evaluationSearchController = Get.find<EvolutionSearchController>();
+  final _evolutionSearchController = Get.find<EvolutionSearchController>();
 
   EvolutionSearchListPage({Key? key}) : super(key: key);
 
@@ -14,13 +14,13 @@ class EvolutionSearchListPage extends StatelessWidget {
       appBar: AppBar(
         title: Obx(
           () => Text(
-              '${_evaluationSearchController.evaluationList.length} evoluções.'),
+              '${_evolutionSearchController.evolutionList.length} evoluções.'),
         ),
       ),
       body: Column(
         children: [
           // Obx(() => Divider(
-          //       color: _evaluationSearchController.lastPage
+          //       color: _evolutionSearchController.lastPage
           //           ? Colors.red
           //           : Colors.green,
           //     )),
@@ -29,7 +29,7 @@ class EvolutionSearchListPage extends StatelessWidget {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 600),
               child: EvolutionList(
-                eventList: _evaluationSearchController.evaluationList,
+                eventList: _evolutionSearchController.evolutionList,
               ),
             ),
           ),

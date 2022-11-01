@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/models/evolution_model.dart';
 import 'package:fluxus/app/routes.dart';
+import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 
 class EvolutionCard extends StatelessWidget {
@@ -17,36 +18,42 @@ class EvolutionCard extends StatelessWidget {
           Row(
             children: [
               Column(
+                children: [
+                  evolution.patient?.photo != null &&
+                          evolution.patient!.photo!.isNotEmpty
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.network(
+                            evolution.patient!.photo!,
+                            height: 58,
+                            width: 58,
+                          ),
+                        )
+                      : const SizedBox(
+                          height: 58,
+                          width: 58,
+                          child: Icon(Icons.person_outline),
+                        ),
+                  Text(
+                    '${evolution.patient?.id}',
+                    // style: const TextStyle(fontSize: 8),
+                  ),
+                ],
+              ),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${evolution.id}',
+                  AppTextTitleValue(
+                    title: 'Id: ',
+                    value: '${evolution.id}',
                   ),
-                  Text(
-                    '${evolution.patient?.name}',
+                  AppTextTitleValue(
+                    title: 'Nome: ',
+                    value: '${evolution.patient?.name}',
                   ),
-                  Column(
-                    children: [
-                      evolution.patient?.photo != null &&
-                              evolution.patient!.photo!.isNotEmpty
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Image.network(
-                                evolution.patient!.photo!,
-                                height: 58,
-                                width: 58,
-                              ),
-                            )
-                          : const SizedBox(
-                              height: 58,
-                              width: 58,
-                              child: Icon(Icons.person_outline),
-                            ),
-                      Text(
-                        '${evolution.patient?.id}',
-                        style: const TextStyle(fontSize: 8),
-                      ),
-                    ],
+                  AppTextTitleValue(
+                    title: 'Aendido em: ',
+                    value: '${evolution.dtAttendance}',
                   ),
                   Wrap(
                     children: [

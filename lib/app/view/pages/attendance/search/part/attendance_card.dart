@@ -65,8 +65,8 @@ class AttendanceCard extends StatelessWidget {
                       ),
                       AppTextTitleValue(
                         title: 'Data atendimento: ',
-                        value: attendance.dAttendance != null
-                            ? formatter.format(attendance.dAttendance!)
+                        value: attendance.dtAttendance != null
+                            ? formatter.format(attendance.dtAttendance!)
                             : null,
                       ),
                       // AppTextTitleValue(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fluxus/app/core/models/evolution_model.dart';
 import 'package:fluxus/app/data/repositories/evolution_repository.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
@@ -7,15 +9,15 @@ import 'package:get/get.dart';
 
 class EvolutionSearchController extends GetxController
     with LoaderMixin, MessageMixin {
-  final EvolutionRepository _evaluationRepository;
+  final EvolutionRepository _evolutionRepository;
   EvolutionSearchController({
-    required EvolutionRepository evaluationRepository,
-  }) : _evaluationRepository = evaluationRepository;
+    required EvolutionRepository evolutionRepository,
+  }) : _evolutionRepository = evolutionRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
 
-  List<EvolutionModel> evaluationList = <EvolutionModel>[].obs;
+  var evolutionList = <EvolutionModel>[].obs;
 
   String? eventId;
   @override
@@ -26,22 +28,20 @@ class EvolutionSearchController extends GetxController
 
   @override
   void onInit() {
-    evaluationList.clear();
+    evolutionList.clear();
     loaderListener(_loading);
     messageListener(_message);
-    eventId = Get.arguments;
     super.onInit();
   }
 
   Future<void> listAll() async {
     _loading(true);
-
+    log('+++', name: 'EvolutionSearchController.listAll');
     var splashController = Get.find<SplashController>();
     String professionalId = splashController.userModel!.profile!.id!;
-    List<EvolutionModel> temp =
-        await _evaluationRepository.list(eventId!, professionalId);
+    List<EvolutionModel> temp = await _evolutionRepository.list(professionalId);
 
-    evaluationList.addAll(temp);
+    evolutionList.addAll(temp);
     _loading(false);
   }
 }

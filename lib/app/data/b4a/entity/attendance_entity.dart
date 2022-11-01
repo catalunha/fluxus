@@ -29,13 +29,14 @@ class AttendanceEntity {
           : null,
       autorization: parseObject.get('autorization'),
       dAutorization: parseObject.get<DateTime>('dAutorization')?.toLocal(),
-      dAttendance: parseObject.get<DateTime>('dAttendance')?.toLocal(),
-      // dtEndAttendance: parseObject.get<DateTime>('dtEndAttendance')?.toLocal(),
+      dtAttendance: parseObject.get<DateTime>('dtAttendance')?.toLocal(),
+      // dtEndtAttendance: parseObject.get<DateTime>('dtEndtAttendance')?.toLocal(),
       eventStatus: parseObject.get('eventStatus') != null
           ? EventStatusEntity()
               .fromParse(parseObject.get('eventStatus') as ParseObject)
           : null,
       event: parseObject.get('event'),
+      evolution: parseObject.get('evolution'),
       isDeleted: parseObject.get('isDeleted') ?? false,
     );
     return model;
@@ -82,11 +83,11 @@ class AttendanceEntity {
     if (model.dAutorization != null) {
       parseObject.set('dAutorization', model.dAutorization);
     }
-    if (model.dAttendance != null) {
-      parseObject.set('dAttendance', model.dAttendance);
+    if (model.dtAttendance != null) {
+      parseObject.set('dtAttendance', model.dtAttendance);
     }
-    // if (model.dtEndAttendance != null) {
-    //   parseObject.set('dtEndAttendance', model.dtEndAttendance);
+    // if (model.dtEndtAttendance != null) {
+    //   parseObject.set('dtEndtAttendance', model.dtEndtAttendance);
     // }
     if (model.eventStatus != null) {
       parseObject.set(
@@ -97,6 +98,9 @@ class AttendanceEntity {
     }
     if (model.event != null) {
       parseObject.set('event', model.event);
+    }
+    if (model.evolution != null) {
+      parseObject.set('evolution', model.evolution);
     }
     if (model.isDeleted != null) {
       parseObject.set('isDeleted', model.isDeleted);

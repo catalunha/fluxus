@@ -13,9 +13,10 @@ class AttendanceModel {
   final HealthPlanModel? healthPlan;
   final String? autorization;
   final DateTime? dAutorization;
-  final DateTime? dAttendance;
+  final DateTime? dtAttendance;
   final EventStatusModel? eventStatus;
   final String? event;
+  final String? evolution;
   final bool? isDeleted;
 
   AttendanceModel({
@@ -26,9 +27,10 @@ class AttendanceModel {
     this.healthPlan,
     this.autorization,
     this.dAutorization,
-    this.dAttendance,
+    this.dtAttendance,
     this.eventStatus,
     this.event,
+    this.evolution,
     this.isDeleted,
   });
 
@@ -41,8 +43,9 @@ class AttendanceModel {
     String? autorization,
     DateTime? dAutorization,
     DateTime? dAttendance,
-    EventStatusModel? status,
+    EventStatusModel? eventStatus,
     String? event,
+    String? evolution,
     bool? isDeleted,
   }) {
     return AttendanceModel(
@@ -53,9 +56,10 @@ class AttendanceModel {
       healthPlan: healthPlan ?? this.healthPlan,
       autorization: autorization ?? this.autorization,
       dAutorization: dAutorization ?? this.dAutorization,
-      dAttendance: dAttendance ?? this.dAttendance,
-      eventStatus: status ?? eventStatus,
+      dtAttendance: dAttendance ?? dtAttendance,
+      eventStatus: eventStatus ?? this.eventStatus,
       event: event ?? this.event,
+      evolution: evolution ?? this.evolution,
       isDeleted: isDeleted ?? this.isDeleted,
     );
   }
@@ -84,14 +88,17 @@ class AttendanceModel {
     if (dAutorization != null) {
       result.addAll({'dAutorization': dAutorization!.millisecondsSinceEpoch});
     }
-    if (dAttendance != null) {
-      result.addAll({'dAttendance': dAttendance!.millisecondsSinceEpoch});
+    if (dtAttendance != null) {
+      result.addAll({'dAttendance': dtAttendance!.millisecondsSinceEpoch});
     }
     if (eventStatus != null) {
-      result.addAll({'status': eventStatus!.toMap()});
+      result.addAll({'eventStatus': eventStatus!.toMap()});
     }
     if (event != null) {
       result.addAll({'event': event});
+    }
+    if (evolution != null) {
+      result.addAll({'evolution': evolution});
     }
     if (isDeleted != null) {
       result.addAll({'isDeleted': isDeleted});
@@ -118,13 +125,14 @@ class AttendanceModel {
       dAutorization: map['dAutorization'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['dAutorization'])
           : null,
-      dAttendance: map['dAttendance'] != null
+      dtAttendance: map['dAttendance'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['dAttendance'])
           : null,
-      eventStatus: map['status'] != null
-          ? EventStatusModel.fromMap(map['status'])
+      eventStatus: map['eventStatus'] != null
+          ? EventStatusModel.fromMap(map['eventStatus'])
           : null,
       event: map['event'],
+      evolution: map['evolution'],
       isDeleted: map['isDeleted'],
     );
   }
@@ -136,7 +144,7 @@ class AttendanceModel {
 
   @override
   String toString() {
-    return 'AttendanceModel(id: $id, professional: $professional, procedure: $procedure, patient: $patient, healthPlan: $healthPlan, autorization: $autorization, dAutorization: $dAutorization, dAttendance: $dAttendance, status: $eventStatus, event: $event, isDeleted: $isDeleted)';
+    return 'AttendanceModel(id: $id, professional: $professional, procedure: $procedure, patient: $patient, healthPlan: $healthPlan, autorization: $autorization, dAutorization: $dAutorization, dAttendance: $dtAttendance, eventStatus: $eventStatus, event: $event, evolution: $evolution, isDeleted: $isDeleted)';
   }
 
   @override
@@ -151,9 +159,10 @@ class AttendanceModel {
         other.healthPlan == healthPlan &&
         other.autorization == autorization &&
         other.dAutorization == dAutorization &&
-        other.dAttendance == dAttendance &&
+        other.dtAttendance == dtAttendance &&
         other.eventStatus == eventStatus &&
         other.event == event &&
+        other.evolution == evolution &&
         other.isDeleted == isDeleted;
   }
 
@@ -166,9 +175,10 @@ class AttendanceModel {
         healthPlan.hashCode ^
         autorization.hashCode ^
         dAutorization.hashCode ^
-        dAttendance.hashCode ^
+        dtAttendance.hashCode ^
         eventStatus.hashCode ^
         event.hashCode ^
+        evolution.hashCode ^
         isDeleted.hashCode;
   }
 }

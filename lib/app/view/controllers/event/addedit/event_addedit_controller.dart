@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/event_model.dart';
+import 'package:fluxus/app/core/models/evolution_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
 import 'package:fluxus/app/data/b4a/table/attendance/attendance_repository_exception.dart';
@@ -307,37 +308,6 @@ class EventAddEditController extends GetxController
       }
       String eventIdTemp = await _eventRepository.update(event!);
       await updateAttendanceInEvent(eventIdTemp);
-      //log('+++ evolutionModel');
-      //log('${event!.status != null}', name: 'EvolutionModel');
-      //log('$eventStatusIdPast', name: 'EvolutionModel');
-      //log('${status!.id}', name: 'EvolutionModel');
-      // if (event!.status != null &&
-      //     eventStatusIdPast != 'turMpAqIVQ' &&
-      //     status!.id == 'turMpAqIVQ') {
-      //   //log('+++ evolutionModel 1 ');
-
-      //   if (event!.professionals != null &&
-      //       event!.professionals!.isNotEmpty &&
-      //       event!.patients != null &&
-      //       event!.patients!.isNotEmpty) {
-      //     //log('+++ evolutionModel 2');
-
-      //     for (var professional in event!.professionals!) {
-      //       for (var patient in event!.patients!) {
-      //         EvolutionModel evolutionModel = EvolutionModel(
-      //           start: onMountDateStart(),
-      //           event: eventIdTemp,
-      //           professional: professional,
-      //           expertise: event!.procedures![professional.id],
-      //           patient: patient,
-      //         );
-      //         //log(evolutionModel.toString(), name: 'EvolutionModel');
-      //         await _evolutionRepository.update(evolutionModel);
-      //       }
-      //     }
-      //   }
-      // }
-      //log('--- evolutionModel');
 
       eventId = eventIdTemp;
       event = event!.copyWith(id: eventId);
@@ -381,11 +351,11 @@ class EventAddEditController extends GetxController
       var attendanceFound = attendanceList
           .firstWhereOrNull((element) => element.id == attendanceOriginal.id);
       if (attendanceFound == null) {
-        await updateAttendanceData(eventId, attendanceOriginal.id!, false);
+        await updateAttendanceData(eventId, attendanceOriginal, false);
         await _eventRepository.updateRelationAttendance(
             eventId, [attendanceOriginal.id!], false);
       } else {
-        await updateAttendanceData(eventId, attendanceFound.id!, true);
+        await updateAttendanceData(eventId, attendanceFound, true);
         attendanceListResult
             .removeWhere((element) => element.id == attendanceFound.id);
       }
@@ -393,32 +363,38 @@ class EventAddEditController extends GetxController
     for (var attendanceResult in attendanceListResult) {
       await _eventRepository.updateRelationAttendance(
           eventId, [attendanceResult.id!], true);
-      await updateAttendanceData(eventId, attendanceResult.id!, true);
+      await updateAttendanceData(eventId, attendanceResult, true);
     }
   }
 
   Future<void> updateAttendanceData(
-      String eventId, String attendanceId, bool add) async {
+      String eventId, AttendanceModel attendanceModel, bool add) async {
     if (add) {
       await _attendanceRepository.update(
         AttendanceModel(
-          id: attendanceId,
+          id: attendanceModel.id,
           event: eventId,
-          dAttendance:
-              DateTime(dateStart!.year, dateStart!.month, dateStart!.day),
-          // dtEndAttendance: dateEnd,
+          dtAttendance: dateStart,
           eventStatus: eventStatusSelected,
         ),
       );
+      await _evolutionRepository.update(
+        EvolutionModel(
+            id: attendanceModel.evolution,
+            event: eventId,
+            dtAttendance: dateStart),
+      );
     } else {
       await _attendanceRepository
-          .updateUnset(attendanceId, ['dAttendance', 'eventStatus']);
+          .updateUnset(attendanceModel.id!, ['event', 'dtAttendance']);
       await _attendanceRepository.update(
         AttendanceModel(
-          id: attendanceId,
+          id: attendanceModel.id,
           eventStatus: EventStatusModel(id: 'uvHmcIKiFc'),
         ),
       );
+      await _evolutionRepository
+          .updateUnset(attendanceModel.id!, ['event', 'dtAttendance']);
     }
   }
 }

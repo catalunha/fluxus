@@ -1,4 +1,5 @@
 import 'package:fluxus/app/core/models/evolution_model.dart';
+import 'package:fluxus/app/data/b4a/entity/procedure_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -21,11 +22,16 @@ class EvolutionEntity {
 
     EvolutionModel model = EvolutionModel(
       id: parseObject.objectId!,
-      start: parseObject.get<DateTime>('start')?.toLocal(),
+      dtAttendance: parseObject.get<DateTime>('dtAttendance')?.toLocal(),
       event: parseObject.get('event'),
       professional: parseObject.get('professional') != null
-          ? ProfileEntity().fromParseSimpleData(
-              parseObject.get('professional') as ParseObject)
+          ? await ProfileEntity().fromParse(
+              parseObject.get('professional') as ParseObject,
+              includeColumns: [])
+          : null,
+      procedure: parseObject.get('procedure') != null
+          ? ProcedureEntity()
+              .fromParse(parseObject.get('procedure') as ParseObject)
           : null,
       expertise: parseObject.get('expertise'),
       patient: parseObject.get('patient') != null
@@ -50,17 +56,25 @@ class EvolutionEntity {
     if (model.id != null) {
       parseObject.objectId = model.id;
     }
-    if (model.start != null) {
-      parseObject.set('start', model.start);
+    if (model.dtAttendance != null) {
+      parseObject.set('dtAttendance', model.dtAttendance);
     }
     if (model.event != null) {
       parseObject.set('event', model.event);
     }
+
     if (model.professional != null) {
       parseObject.set(
           'professional',
           (ParseObject(ProfileEntity.className)
                 ..objectId = model.professional!.id)
+              .toPointer());
+    }
+    if (model.procedure != null) {
+      parseObject.set(
+          'procedure',
+          (ParseObject(ProcedureEntity.className)
+                ..objectId = model.procedure!.id)
               .toPointer());
     }
     if (model.expertise != null) {
@@ -83,6 +97,16 @@ class EvolutionEntity {
     return parseObject;
   }
 
+  ParseObject toParseUnset(String modelId, List<String> unsetFields) {
+    final parseObject = ParseObject(EvolutionEntity.className);
+    parseObject.objectId = modelId;
+
+    for (var field in unsetFields) {
+      parseObject.unset(field);
+    }
+
+    return parseObject;
+  }
   // ParseObject? toParseUpdateRelationCid({
   //   required String objectId,
   //   required List<String> modelIdList,

@@ -2,14 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:fluxus/app/core/models/procedure_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 
 ///Evolução do paciente.
 class EvolutionModel {
   final String? id;
-  final DateTime? start;
+  final DateTime? dtAttendance;
   final String? event;
   final ProfileModel? professional;
+  final ProcedureModel? procedure;
   final String? expertise;
   final ProfileModel? patient;
   final List<String>? cid;
@@ -19,9 +21,10 @@ class EvolutionModel {
 
   EvolutionModel({
     this.id,
-    this.start,
+    this.dtAttendance,
     this.event,
     this.professional,
+    this.procedure,
     this.expertise,
     this.patient,
     this.cid,
@@ -32,9 +35,10 @@ class EvolutionModel {
 
   EvolutionModel copyWith({
     String? id,
-    DateTime? start,
+    DateTime? dtAttendance,
     String? event,
     ProfileModel? professional,
+    ProcedureModel? procedure,
     String? expertise,
     ProfileModel? patient,
     List<String>? cid,
@@ -44,9 +48,10 @@ class EvolutionModel {
   }) {
     return EvolutionModel(
       id: id ?? this.id,
-      start: start ?? this.start,
+      dtAttendance: dtAttendance ?? this.dtAttendance,
       event: event ?? this.event,
       professional: professional ?? this.professional,
+      procedure: procedure ?? this.procedure,
       expertise: expertise ?? this.expertise,
       patient: patient ?? this.patient,
       cid: cid ?? this.cid,
@@ -62,14 +67,17 @@ class EvolutionModel {
     if (id != null) {
       result.addAll({'id': id});
     }
-    if (start != null) {
-      result.addAll({'start': start!.millisecondsSinceEpoch});
+    if (dtAttendance != null) {
+      result.addAll({'dtAttendance': dtAttendance!.millisecondsSinceEpoch});
     }
     if (event != null) {
       result.addAll({'event': event});
     }
     if (professional != null) {
       result.addAll({'professional': professional!.toMap()});
+    }
+    if (procedure != null) {
+      result.addAll({'procedure': procedure!.toMap()});
     }
     if (expertise != null) {
       result.addAll({'expertise': expertise});
@@ -96,12 +104,15 @@ class EvolutionModel {
   factory EvolutionModel.fromMap(Map<String, dynamic> map) {
     return EvolutionModel(
       id: map['id'],
-      start: map['start'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['start'])
+      dtAttendance: map['dtAttendance'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['dtAttendance'])
           : null,
       event: map['event'],
       professional: map['professional'] != null
           ? ProfileModel.fromMap(map['professional'])
+          : null,
+      procedure: map['procedure'] != null
+          ? ProcedureModel.fromMap(map['procedure'])
           : null,
       expertise: map['expertise'],
       patient:
@@ -120,7 +131,7 @@ class EvolutionModel {
 
   @override
   String toString() {
-    return 'EvolutionModel(id: $id, start: $start, event: $event, professional: $professional, expertise: $expertise, patient: $patient, cid: $cid, description: $description, file: $file, isDeleted: $isDeleted)';
+    return 'EvolutionModel(id: $id, dtAttendance: $dtAttendance, event: $event, professional: $professional, procedure: $procedure, expertise: $expertise, patient: $patient, cid: $cid, description: $description, file: $file, isDeleted: $isDeleted)';
   }
 
   @override
@@ -129,9 +140,10 @@ class EvolutionModel {
 
     return other is EvolutionModel &&
         other.id == id &&
-        other.start == start &&
+        other.dtAttendance == dtAttendance &&
         other.event == event &&
         other.professional == professional &&
+        other.procedure == procedure &&
         other.expertise == expertise &&
         other.patient == patient &&
         listEquals(other.cid, cid) &&
@@ -143,9 +155,10 @@ class EvolutionModel {
   @override
   int get hashCode {
     return id.hashCode ^
-        start.hashCode ^
+        dtAttendance.hashCode ^
         event.hashCode ^
         professional.hashCode ^
+        procedure.hashCode ^
         expertise.hashCode ^
         patient.hashCode ^
         cid.hashCode ^

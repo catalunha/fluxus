@@ -12,7 +12,7 @@ class EvolutionSearchDependencies implements Bindings {
 
     Get.put<EvolutionSearchController>(
       EvolutionSearchController(
-        evaluationRepository: Get.find(),
+        evolutionRepository: Get.find(),
       ),
     );
   }

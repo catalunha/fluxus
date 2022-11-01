@@ -121,6 +121,16 @@ class HomePage extends StatelessWidget {
                 },
               ),
             ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text('Buscar Evolução'),
+                subtitle: const Text('Por ...'),
+                onTap: () {
+                  Get.toNamed(Routes.evolutionList);
+                },
+              ),
+            ),
           ],
         ),
       ),

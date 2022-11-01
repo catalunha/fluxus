@@ -1,12 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
+import 'package:fluxus/app/core/models/evolution_model.dart';
 import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/procedure_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/table/attendance/attendance_repository_exception.dart';
 import 'package:fluxus/app/data/b4a/table/profile/profile_repository_exception.dart';
 import 'package:fluxus/app/data/repositories/attendance_repository.dart';
+import 'package:fluxus/app/data/repositories/evolution_repository.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
@@ -16,12 +18,15 @@ class AttendanceAddEditController extends GetxController
     with LoaderMixin, MessageMixin {
   final AttendanceRepository _attendanceRepository;
   final ProfileRepository _profileRepository;
+  final EvolutionRepository _evolutionRepository;
 
   AttendanceAddEditController({
     required AttendanceRepository attendanceRepository,
     required ProfileRepository profileRepository,
+    required EvolutionRepository evolutionRepository,
   })  : _attendanceRepository = attendanceRepository,
-        _profileRepository = profileRepository;
+        _profileRepository = profileRepository,
+        _evolutionRepository = evolutionRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
@@ -69,6 +74,13 @@ class AttendanceAddEditController extends GetxController
     try {
       _loading(true);
       for (var procedure in procedureList) {
+        var evolutionModel = EvolutionModel(
+          professional: professional,
+          procedure: procedure,
+          expertise: procedure.expertise!.id,
+          patient: patient,
+        );
+        String evolutionId = await _evolutionRepository.update(evolutionModel);
         var attendance = AttendanceModel(
           professional: professional,
           procedure: procedure,
@@ -77,6 +89,7 @@ class AttendanceAddEditController extends GetxController
           autorization: autorization!.isEmpty ? null : autorization,
           dAutorization: dAutorization,
           eventStatus: EventStatusModel(id: 'zoFBVNZ16I'),
+          evolution: evolutionId,
         );
         await _attendanceRepository.update(attendance);
       }

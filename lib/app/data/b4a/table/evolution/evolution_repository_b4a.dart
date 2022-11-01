@@ -23,11 +23,10 @@ class EvolutionRepositoryB4a implements EvolutionRepository {
   }
 
   @override
-  Future<List<EvolutionModel>> list(
-      String eventId, String professionalId) async {
+  Future<List<EvolutionModel>> list(String professionalId) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
-    query.whereEqualTo('event', eventId);
+    // query.whereEqualTo('event', eventId);
     query.whereEqualTo(
         'professional',
         (ParseObject(ProfileEntity.className)..objectId = professionalId)
@@ -114,4 +113,21 @@ class EvolutionRepositoryB4a implements EvolutionRepository {
   //     await parseObject.save();
   //   }
   // }
+
+  @override
+  Future<void> updateUnset(String modelId, List<String> unsetFields) async {
+    final parseObject = EvolutionEntity().toParseUnset(modelId, unsetFields);
+    await parseObject.save();
+
+    // if (response.success && response.results != null) {
+    //   ParseObject userProfile = response.results!.first as ParseObject;
+    //   return userProfile.objectId!;
+    // } else {
+    //   var errorCodes = ParseErrorCode(response.error!);
+    //   throw AttendanceRepositoryException(
+    //     code: errorCodes.code,
+    //     message: errorCodes.message,
+    //   );
+    // }
+  }
 }
