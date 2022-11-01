@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/event/search/event_search_controller.dart';
+import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_icon.dart';
+import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
 import 'package:get/get.dart';
 
 class EventSearchPage extends StatefulWidget {
-  final _eventController = Get.find<EventSearchController>();
+  final _eventSearchController = Get.find<EventSearchController>();
   EventSearchPage({Key? key}) : super(key: key);
 
   @override
@@ -13,19 +16,19 @@ class EventSearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<EventSearchPage> {
   final _formKey = GlobalKey<FormState>();
-  // bool _nameContains = false;
-  // bool _cpfEqualTo = false;
-  // bool _phoneEqualTo = false;
-  // bool _birthday = false;
-  // final _nameContainsTEC = TextEditingController();
-  // final _cpfEqualToTEC = TextEditingController();
-  // final _phoneEqualToTEC = TextEditingController();
+  bool _attendanceEqualTo = false;
+  final _attendanceEqualToTEC = TextEditingController();
+  bool _dtStartBool = false;
+  bool _eventStatusEqualTo = false;
+  final _eventStatusEqualToTEC = TextEditingController();
+  bool _roomEqualTo = false;
+  final _roomEqualToTEC = TextEditingController();
 
   @override
   void initState() {
-    // _nameContainsTEC.text = '';
-    // _cpfEqualToTEC.text = '';
-    // _phoneEqualToTEC.text = '';
+    _attendanceEqualToTEC.text = '';
+    _eventStatusEqualToTEC.text = '';
+    _roomEqualToTEC.text = '';
     super.initState();
   }
 
@@ -42,110 +45,128 @@ class _SearchPageState extends State<EventSearchPage> {
             child: Form(
               key: _formKey,
               child: Column(
-                children: const [
-                  // Card(
-                  //   child: Column(
-                  //     children: [
-                  //       const Text('por Nome'),
-                  //       Row(
-                  //         children: [
-                  //           Checkbox(
-                  //             value: _nameContains,
-                  //             onChanged: (value) {
-                  //               setState(() {
-                  //                 _nameContains = value!;
-                  //               });
-                  //             },
-                  //           ),
-                  //           Expanded(
-                  //             child: AppTextFormField(
-                  //               label: 'Nome que contém',
-                  //               controller: _nameContainsTEC,
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // Card(
-                  //   child: Column(
-                  //     children: [
-                  //       const Text('por CPF'),
-                  //       Row(
-                  //         children: [
-                  //           Checkbox(
-                  //             value: _cpfEqualTo,
-                  //             onChanged: (value) {
-                  //               setState(() {
-                  //                 _cpfEqualTo = value!;
-                  //               });
-                  //             },
-                  //           ),
-                  //           Expanded(
-                  //             child: AppTextFormField(
-                  //               label: 'CPF igual a',
-                  //               controller: _cpfEqualToTEC,
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // Card(
-                  //   child: Column(
-                  //     children: [
-                  //       const Text('por Telefone'),
-                  //       Row(
-                  //         children: [
-                  //           Checkbox(
-                  //             value: _phoneEqualTo,
-                  //             onChanged: (value) {
-                  //               setState(() {
-                  //                 _phoneEqualTo = value!;
-                  //               });
-                  //             },
-                  //           ),
-                  //           Expanded(
-                  //             child: AppTextFormField(
-                  //               label: 'Telefone igual a',
-                  //               controller: _phoneEqualToTEC,
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // Card(
-                  //   child: Column(
-                  //     children: [
-                  //       const Text('por Data de nascimento'),
-                  //       const SizedBox(height: 5),
-                  //       Row(
-                  //         children: [
-                  //           Checkbox(
-                  //             value: _birthday,
-                  //             onChanged: (value) {
-                  //               setState(() {
-                  //                 _birthday = value!;
-                  //               });
-                  //             },
-                  //           ),
-                  //           AppCalendarButton(
-                  //             title: "Data de nascimento.",
-                  //             getDate: () =>
-                  //                 widget._eventController.selectedDate,
-                  //             setDate: (value) =>
-                  //                 widget._eventController.selectedDate = value,
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  SizedBox(height: 100)
+                children: [
+                  Card(
+                    child: Column(
+                      children: [
+                        const Text('por Guia'),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _attendanceEqualTo,
+                              onChanged: (value) {
+                                setState(() {
+                                  _attendanceEqualTo = value!;
+                                });
+                              },
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Get.toNamed(Routes.attendanceSearch);
+                              },
+                              icon: const Icon(Icons.search),
+                            ),
+                            Expanded(
+                              child: AppTextFormField(
+                                label: 'Id da Guia',
+                                controller: _attendanceEqualToTEC,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Card(
+                    child: Column(
+                      children: [
+                        const Text('por Status do evento'),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _eventStatusEqualTo,
+                              onChanged: (value) {
+                                setState(() {
+                                  _eventStatusEqualTo = value!;
+                                });
+                              },
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Get.toNamed(Routes.eventStatusList);
+                              },
+                              icon: const Icon(Icons.search),
+                            ),
+                            Expanded(
+                              child: AppTextFormField(
+                                label: 'Status do evento com Id',
+                                controller: _eventStatusEqualToTEC,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Card(
+                    child: Column(
+                      children: [
+                        const Text('por Ambiente'),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _roomEqualTo,
+                              onChanged: (value) {
+                                setState(() {
+                                  _roomEqualTo = value!;
+                                });
+                              },
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Get.toNamed(Routes.roomList);
+                              },
+                              icon: const Icon(Icons.search),
+                            ),
+                            Expanded(
+                              child: AppTextFormField(
+                                label: 'Id do ambiente',
+                                controller: _roomEqualToTEC,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Card(
+                    child: Column(
+                      children: [
+                        const Text('por Data de atendimento'),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _dtStartBool,
+                              onChanged: (value) {
+                                setState(() {
+                                  _dtStartBool = value!;
+                                });
+                              },
+                            ),
+                            AppCalendarButton(
+                              title: "Data da atendimento.",
+                              getDate: () =>
+                                  widget._eventSearchController.dtStart,
+                              setDate: (value) =>
+                                  widget._eventSearchController.dtStart = value,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 100)
                 ],
               ),
             ),
@@ -158,14 +179,14 @@ class _SearchPageState extends State<EventSearchPage> {
         onPressed: () async {
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
-            await widget._eventController.search(
-              nameContainsBool: true,
-              // nameContainsString: _nameContainsTEC.text,
-              // cpfEqualToBool: _cpfEqualTo,
-              // cpfEqualToString: _cpfEqualToTEC.text,
-              // phoneEqualToBool: _phoneEqualTo,
-              // phoneEqualToString: _phoneEqualToTEC.text,
-              // birthdayBool: _birthday,
+            await widget._eventSearchController.search(
+              attendanceEqualToBool: _attendanceEqualTo,
+              attendanceEqualToString: _attendanceEqualToTEC.text,
+              dtStartBool: _dtStartBool,
+              eventStatusEqualToBool: _eventStatusEqualTo,
+              eventStatusEqualToString: _eventStatusEqualToTEC.text,
+              roomEqualToBool: _roomEqualTo,
+              roomEqualToString: _roomEqualToTEC.text,
             );
             // Get.back();
           }

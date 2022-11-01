@@ -25,7 +25,7 @@ class EventCard extends StatelessWidget {
                 children: [
                   Text(
                     '${event.id}',
-                    style: const TextStyle(fontSize: 8),
+                    // style: const TextStyle(fontSize: 8),
                   ),
                   Wrap(
                     children: [

@@ -1,6 +1,9 @@
 import 'package:fluxus/app/core/models/event_model.dart';
+import 'package:fluxus/app/data/b4a/entity/attendance_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/event_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/event_status_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/room_entity.dart';
 import 'package:fluxus/app/data/repositories/event_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
@@ -24,11 +27,17 @@ class EventSearchController extends GetxController
   final _lastPage = false.obs;
   get lastPage => _lastPage.value;
 
-  // final Rxn<DateTime> _selectedDate = Rxn<DateTime>();
-  // DateTime? get selectedDate => _selectedDate.value;
-  // set selectedDate(DateTime? selectedDate1) {
-  //   _selectedDate.value = selectedDate1;
-  // }
+  final Rxn<DateTime> _dtStart = Rxn<DateTime>();
+  DateTime? get dtStart => _dtStart.value;
+  set dtStart(DateTime? dtStart1) {
+    _dtStart.value = dtStart1;
+  }
+
+  final Rxn<DateTime> _dtEnd = Rxn<DateTime>();
+  DateTime? get dtEnd => _dtEnd.value;
+  set dtEnd(DateTime? dtEnd1) {
+    _dtEnd.value = dtEnd1;
+  }
 
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
@@ -54,17 +63,47 @@ class EventSearchController extends GetxController
   }
 
   Future<void> search({
-    required bool nameContainsBool,
-    // required String nameContainsString,
-    // required bool cpfEqualToBool,
-    // required String cpfEqualToString,
-    // required bool phoneEqualToBool,
-    // required String phoneEqualToString,
-    // required bool birthdayBool,
+    required bool attendanceEqualToBool,
+    required String attendanceEqualToString,
+    required bool dtStartBool,
+    required bool eventStatusEqualToBool,
+    required String eventStatusEqualToString,
+    required bool roomEqualToBool,
+    required String roomEqualToString,
   }) async {
     _loading(true);
     query = QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    if (attendanceEqualToBool) {
+      query.whereEqualTo(
+          'attendance',
+          (ParseObject(AttendanceEntity.className)
+                ..objectId = attendanceEqualToString)
+              .toPointer());
+    }
+    if (dtStartBool && dtStart != null) {
+      // query.whereEqualTo('start', dtStart);
+      query.whereGreaterThanOrEqualsTo(
+          'start', DateTime(dtStart!.year, dtStart!.month, dtStart!.day));
+      query.whereLessThanOrEqualTo('start',
+          DateTime(dtStart!.year, dtStart!.month, dtStart!.day, 23, 59));
+    }
 
+    if (eventStatusEqualToBool) {
+      query.whereEqualTo(
+        'status',
+        (ParseObject(EventStatusEntity.className)
+              ..objectId = eventStatusEqualToString)
+            .toPointer(),
+      );
+    }
+    if (roomEqualToBool) {
+      query.whereEqualTo(
+        'room',
+        (ParseObject(RoomEntity.className)..objectId = roomEqualToString)
+            .toPointer(),
+      );
+    }
+    //
     eventList.clear();
     if (lastPage) {
       _lastPage(false);

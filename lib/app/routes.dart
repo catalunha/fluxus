@@ -14,6 +14,7 @@ import 'package:fluxus/app/view/controllers/evolution/addedit/evolution_addedit_
 import 'package:fluxus/app/view/controllers/evolution/search/evolution_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/health_plan/search/health_plan_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/profile/team/search/team_search_dependencies.dart';
+import 'package:fluxus/app/view/controllers/room/search/room_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/register/email/user_register_email_dependencies.dart';
 import 'package:fluxus/app/view/controllers/user/login/login_dependencies.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_dependencies.dart';
@@ -42,6 +43,7 @@ import 'package:fluxus/app/view/pages/health_plan/search/health_plan_search_list
 import 'package:fluxus/app/view/pages/health_plan/search/health_plan_search_page.dart';
 import 'package:fluxus/app/view/pages/profile/team/search/team_search_list_page.dart';
 import 'package:fluxus/app/view/pages/profile/team/search/team_search_page.dart';
+import 'package:fluxus/app/view/pages/room/search/room_search_list_page.dart';
 import 'package:fluxus/app/view/pages/user/login/auth_login_page.dart';
 import 'package:fluxus/app/view/pages/user/register/email/user_register_email.page.dart';
 import 'package:fluxus/app/view/pages/splash/splash_page.dart';
@@ -90,6 +92,8 @@ class Routes {
   static const procedureList = '/procedure/list';
 
   static const eventStatusList = '/eventStatus/list';
+
+  static const roomList = '/room/list';
 
   static final pageList = [
     GetPage(
@@ -219,6 +223,11 @@ class Routes {
       name: Routes.procedureList,
       binding: ProcedureSearchDependencies(),
       page: () => ProcedureSearchListPage(),
+    ),
+    GetPage(
+      name: Routes.roomList,
+      binding: RoomSearchDependencies(),
+      page: () => RoomSearchListPage(),
     ),
     GetPage(
       name: Routes.eventStatusList,
