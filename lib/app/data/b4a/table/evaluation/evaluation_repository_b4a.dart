@@ -67,7 +67,7 @@ class EvaluationRepositoryB4a implements EvaluationRepository {
         QueryBuilder<ParseObject>(ParseObject(EvaluationEntity.className));
     query.whereEqualTo('objectId', id);
 
-    query.first();
+    // query.first();
     ParseResponse? response;
     try {
       response = await query.query();

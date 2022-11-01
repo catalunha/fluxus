@@ -86,7 +86,7 @@ class EventRepositoryB4a implements EventRepository {
     query.whereEqualTo('objectId', id);
     query.includeObject(['room', 'status']);
 
-    query.first();
+    // query.first();
     ParseResponse? response;
     try {
       response = await query.query();

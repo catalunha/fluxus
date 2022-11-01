@@ -99,7 +99,7 @@ class AttendanceRepositoryB4a implements AttendanceRepository {
       'healthPlan.healthPlanType',
       'status'
     ]);
-    query.first();
+    // query.first();
     ParseResponse? response;
     try {
       response = await query.query();

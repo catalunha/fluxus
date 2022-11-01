@@ -86,7 +86,7 @@ class EvolutionRepositoryB4a implements EvolutionRepository {
     query.whereEqualTo('objectId', id);
     query.includeObject(['room', 'status']);
 
-    query.first();
+    // query.first();
     ParseResponse? response;
     try {
       response = await query.query();

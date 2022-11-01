@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/b4a/table/profile/profile_repository_exception.dart';
@@ -56,14 +58,17 @@ class ProfileRepositoryB4a implements ProfileRepository {
     String id, {
     List<String>? includeColumns,
   }) async {
+    log('+++', name: 'ProfileRepositoryB4a.readById');
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
     query.whereEqualTo('objectId', id);
     if (includeColumns != null) {
       query.keysToReturn(includeColumns);
     }
+    //excludes nao exclui
     // query.excludeKeys(
     //     ['family', 'expertise', 'procedure', 'office', 'healthPlan']);
+    //colocando first duplica a request
     // query.first();
     ParseResponse? response;
     try {
