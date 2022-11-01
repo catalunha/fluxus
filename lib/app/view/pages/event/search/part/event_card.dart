@@ -41,24 +41,24 @@ class EventCard extends StatelessWidget {
                           Icons.edit,
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {
-                          // Get.toNamed(Routes.clientProfileView,
-                          //     arguments: event.id);
-                        },
-                        icon: const Icon(
-                          Icons.assignment_ind_outlined,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          Get.toNamed(Routes.evolutionList,
-                              arguments: event.id);
-                        },
-                        icon: const Icon(
-                          Icons.people,
-                        ),
-                      ),
+                      // IconButton(
+                      //   onPressed: () {
+                      //     // Get.toNamed(Routes.clientProfileView,
+                      //     //     arguments: event.id);
+                      //   },
+                      //   icon: const Icon(
+                      //     Icons.assignment_ind_outlined,
+                      //   ),
+                      // ),
+                      // IconButton(
+                      //   onPressed: () {
+                      //     Get.toNamed(Routes.evolutionList,
+                      //         arguments: event.id);
+                      //   },
+                      //   icon: const Icon(
+                      //     Icons.people,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],
