@@ -17,6 +17,7 @@ class EvolutionModel {
   final List<String>? cid;
   final String? description;
   final String? file;
+  final bool? isArchived;
   final bool? isDeleted;
 
   EvolutionModel({
@@ -30,6 +31,7 @@ class EvolutionModel {
     this.cid,
     this.description,
     this.file,
+    this.isArchived,
     this.isDeleted,
   });
 
@@ -44,6 +46,7 @@ class EvolutionModel {
     List<String>? cid,
     String? description,
     String? file,
+    bool? isArchived,
     bool? isDeleted,
   }) {
     return EvolutionModel(
@@ -57,6 +60,7 @@ class EvolutionModel {
       cid: cid ?? this.cid,
       description: description ?? this.description,
       file: file ?? this.file,
+      isArchived: isArchived ?? this.isArchived,
       isDeleted: isDeleted ?? this.isDeleted,
     );
   }
@@ -94,6 +98,9 @@ class EvolutionModel {
     if (file != null) {
       result.addAll({'file': file});
     }
+    if (isArchived != null) {
+      result.addAll({'isArchived': isArchived});
+    }
     if (isDeleted != null) {
       result.addAll({'isDeleted': isDeleted});
     }
@@ -120,6 +127,7 @@ class EvolutionModel {
       cid: List<String>.from(map['cid']),
       description: map['description'],
       file: map['file'],
+      isArchived: map['isArchived'],
       isDeleted: map['isDeleted'],
     );
   }
@@ -131,7 +139,7 @@ class EvolutionModel {
 
   @override
   String toString() {
-    return 'EvolutionModel(id: $id, dtAttendance: $dtAttendance, event: $event, professional: $professional, procedure: $procedure, expertise: $expertise, patient: $patient, cid: $cid, description: $description, file: $file, isDeleted: $isDeleted)';
+    return 'EvolutionModel(id: $id, dtAttendance: $dtAttendance, event: $event, professional: $professional, procedure: $procedure, expertise: $expertise, patient: $patient, cid: $cid, description: $description, file: $file, isArchived: $isArchived, isDeleted: $isDeleted)';
   }
 
   @override
@@ -149,6 +157,7 @@ class EvolutionModel {
         listEquals(other.cid, cid) &&
         other.description == description &&
         other.file == file &&
+        other.isArchived == isArchived &&
         other.isDeleted == isDeleted;
   }
 
@@ -164,6 +173,7 @@ class EvolutionModel {
         cid.hashCode ^
         description.hashCode ^
         file.hashCode ^
+        isArchived.hashCode ^
         isDeleted.hashCode;
   }
 }

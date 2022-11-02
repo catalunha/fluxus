@@ -1,6 +1,5 @@
 import 'package:fluxus/app/core/models/evaluation_model.dart';
 import 'package:fluxus/app/data/b4a/entity/evaluation_entity.dart';
-import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/repositories/evaluation_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
@@ -31,7 +30,7 @@ class EvaluationSearchController extends GetxController
   // }
 
   QueryBuilder<ParseObject> query =
-      QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+      QueryBuilder<ParseObject>(ParseObject(EvaluationEntity.className));
   @override
   void onInit() {
     evaluationList.clear();

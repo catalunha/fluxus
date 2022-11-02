@@ -23,6 +23,7 @@ import 'package:fluxus/app/view/pages/attendance/addedit/attendance_addedit_page
 import 'package:fluxus/app/view/pages/attendance/search/attendance_search_list_page.dart';
 import 'package:fluxus/app/view/pages/attendance/search/attendance_search_page.dart';
 import 'package:fluxus/app/view/pages/event_status/search/event_status_search_list_page.dart';
+import 'package:fluxus/app/view/pages/evolution/search/evolution_search_page.dart';
 import 'package:fluxus/app/view/pages/procedure/search/procedure_search_list_page.dart';
 import 'package:fluxus/app/view/pages/profile/client/addedit/client_addedit_page.dart';
 import 'package:fluxus/app/view/pages/profile/client/addedit/client_health_plan_addedit_page.dart';
@@ -87,7 +88,7 @@ class Routes {
   static const evaluationList = '/evaluation/list';
 
   static const evolutionAddEdit = '/evolution/addedit';
-  // static const evolutionSearch = '/evolution/search';
+  static const evolutionSearch = '/evolution/search';
   static const evolutionList = '/evolution/list';
 
   static const procedureList = '/procedure/list';
@@ -183,11 +184,6 @@ class Routes {
       page: () => EventSearchListPage(),
     ),
     GetPage(
-      name: Routes.evaluationAddEdit,
-      binding: EvaluationAddEditDependencies(),
-      page: () => EvaluationAddEditPage(),
-    ),
-    GetPage(
       name: Routes.evaluationSearch,
       binding: EvaluationSearchDependencies(),
       page: () => EvaluationSearchPage(),
@@ -197,8 +193,17 @@ class Routes {
       page: () => EvaluationSearchListPage(),
     ),
     GetPage(
-      name: Routes.evolutionList,
+      name: Routes.evaluationAddEdit,
+      binding: EvaluationAddEditDependencies(),
+      page: () => EvaluationAddEditPage(),
+    ),
+    GetPage(
+      name: Routes.evolutionSearch,
       binding: EvolutionSearchDependencies(),
+      page: () => EvolutionSearchPage(),
+    ),
+    GetPage(
+      name: Routes.evolutionList,
       page: () => EvolutionSearchListPage(),
     ),
     GetPage(

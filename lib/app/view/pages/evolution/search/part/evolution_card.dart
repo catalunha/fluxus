@@ -52,7 +52,7 @@ class EvolutionCard extends StatelessWidget {
                     value: '${evolution.patient?.name}',
                   ),
                   AppTextTitleValue(
-                    title: 'Aendido em: ',
+                    title: 'Atendido em: ',
                     value: '${evolution.dtAttendance}',
                   ),
                   Wrap(

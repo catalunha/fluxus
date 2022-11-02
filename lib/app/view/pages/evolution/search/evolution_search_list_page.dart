@@ -24,7 +24,24 @@ class EvolutionSearchListPage extends StatelessWidget {
           //           ? Colors.red
           //           : Colors.green,
           //     )),
-
+          InkWell(
+            onTap: _evolutionSearchController.lastPage
+                ? null
+                : () {
+                    _evolutionSearchController.nextPage();
+                  },
+            child: Obx(() => Container(
+                  color: _evolutionSearchController.lastPage
+                      ? Colors.black
+                      : Colors.green,
+                  height: 24,
+                  child: Center(
+                    child: _evolutionSearchController.lastPage
+                        ? const Text('Última página')
+                        : const Text('Próxima página'),
+                  ),
+                )),
+          ),
           Expanded(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 600),

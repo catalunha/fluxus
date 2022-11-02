@@ -127,7 +127,7 @@ class HomePage extends StatelessWidget {
                 title: const Text('Buscar Evolução'),
                 subtitle: const Text('Por ...'),
                 onTap: () {
-                  Get.toNamed(Routes.evolutionList);
+                  Get.toNamed(Routes.evolutionSearch);
                 },
               ),
             ),

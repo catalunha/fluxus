@@ -1,6 +1,5 @@
 import 'package:fluxus/app/core/models/evolution_model.dart';
 import 'package:fluxus/app/data/b4a/entity/evolution_entity.dart';
-import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/b4a/table/evolution/evolution_repository_exception.dart';
 import 'package:fluxus/app/data/b4a/utils/parse_error_code.dart';
 import 'package:fluxus/app/data/repositories/evolution_repository.dart';
@@ -12,7 +11,7 @@ class EvolutionRepositoryB4a implements EvolutionRepository {
       QueryBuilder<ParseObject> query, Pagination pagination) async {
     // QueryBuilder<ParseObject> query =
     //     QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
-    query.includeObject(['professional', 'patient']);
+    query.includeObject(['professional', 'patient', 'procedure']);
     query.whereEqualTo('isDeleted', false);
     query.orderByDescending('updatedAt');
 
@@ -23,30 +22,31 @@ class EvolutionRepositoryB4a implements EvolutionRepository {
   }
 
   @override
-  Future<List<EvolutionModel>> list(String professionalId) async {
-    QueryBuilder<ParseObject> query =
-        QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
-    // query.whereEqualTo('event', eventId);
-    query.whereEqualTo(
-        'professional',
-        (ParseObject(ProfileEntity.className)..objectId = professionalId)
-            .toPointer());
-    query.whereEqualTo('isDeleted', false);
-    query.includeObject(['professional', 'patient']);
-    query.orderByDescending('updatedAt');
+  Future<List<EvolutionModel>> list(
+      QueryBuilder<ParseObject> query, Pagination pagination) async {
+    // QueryBuilder<ParseObject> query =
+    //     QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
+    // // query.whereEqualTo('event', eventId);
+    // query.whereEqualTo(
+    //     'professional',
+    //     (ParseObject(ProfileEntity.className)..objectId = professionalId)
+    //         .toPointer());
+    // query.whereEqualTo('isDeleted', false);
+    // query.includeObject(['professional', 'patient']);
+    // query.orderByDescending('updatedAt');
+    QueryBuilder<ParseObject> query2;
+    query2 = await getQueryAll(query, pagination);
 
     ParseResponse? response;
     try {
-      response = await query.query();
+      response = await query2.query();
       List<EvolutionModel> listTemp = <EvolutionModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
           listTemp.add(await EvolutionEntity().fromParse(element));
         }
-        return listTemp;
-      } else {
-        return [];
       }
+      return listTemp;
     } on Exception {
       var errorCodes = ParseErrorCode(response!.error!);
       throw EvolutionRepositoryException(
@@ -83,8 +83,7 @@ class EvolutionRepositoryB4a implements EvolutionRepository {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
     query.whereEqualTo('objectId', id);
-    query.includeObject(['room', 'status']);
-
+    query.includeObject(['professional', 'patient', 'procedure']);
     // query.first();
     ParseResponse? response;
     try {

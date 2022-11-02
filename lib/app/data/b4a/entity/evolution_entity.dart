@@ -46,6 +46,7 @@ class EvolutionEntity {
           : [],
       description: parseObject.get('description'),
       file: parseObject.get('file')?.get('url'),
+      isArchived: parseObject.get('isArchived') ?? false,
       isDeleted: parseObject.get('isDeleted') ?? false,
     );
     return model;
@@ -93,6 +94,9 @@ class EvolutionEntity {
     }
     if (model.isDeleted != null) {
       parseObject.set('isDeleted', model.isDeleted);
+    }
+    if (model.isArchived != null) {
+      parseObject.set('isArchived', model.isArchived);
     }
     return parseObject;
   }
