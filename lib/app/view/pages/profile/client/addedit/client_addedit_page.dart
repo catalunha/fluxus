@@ -88,31 +88,38 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           widget._clientAddEditController.dateBirthday,
                       setDate: (value) =>
                           widget._clientAddEditController.dateBirthday = value,
+                      isBirthDay: true,
                     ),
                     const SizedBox(height: 5),
                     const Divider(color: Colors.green, height: 5),
                     const SizedBox(height: 5),
-                    AppTextFormField(
-                      label: 'Seu telefone mais acessível',
-                      controller: widget._clientAddEditController.phoneTec,
-                      // mask: widget._clientAddEditController.maskPhone,
-                    ),
                     AppTextFormField(
                       label: 'Seu email mais acessível',
                       controller: widget._clientAddEditController.emailTec,
                       validator: Validatorless.email('Não é email válido.'),
                     ),
                     AppTextFormField(
-                      label: 'Seu CPF',
-                      controller: widget._clientAddEditController.cpfTec,
-                      // mask: widget._clientAddEditController.maskCPF,
-                      validator:
-                          Validatorless.cpf('Este número não é CPF válido'),
+                      label: 'Seu telefone mais acessível. DDDNÚMERO',
+                      controller: widget._clientAddEditController.phoneTec,
+                      // mask: widget._clientAddEditController.maskPhone,
+                      validator: Validatorless.number(
+                          'Apenas números. Formato DDDNÚMERO'),
                     ),
+
+                    AppTextFormField(
+                        label: 'Seu CPF',
+                        controller: widget._clientAddEditController.cpfTec,
+                        // mask: widget._clientAddEditController.maskCPF,
+                        validator: Validatorless.multiple([
+                          Validatorless.cpf('Este número não é CPF válido'),
+                          Validatorless.number('Apenas números. Não use . - /'),
+                        ])),
                     AppTextFormField(
                       label: 'O CEP do seu endereço.',
                       controller: widget._clientAddEditController.cepTec,
                       // mask: widget._clientAddEditController.maskCEP,
+                      validator:
+                          Validatorless.number('Apenas números. Não use . - /'),
                     ),
                     AppTextFormField(
                       label: 'O PLUSCODE do seu endereço.',

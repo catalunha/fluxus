@@ -69,7 +69,7 @@ class ProfileRepositoryB4a implements ProfileRepository {
     // query.excludeKeys(
     //     ['family', 'expertise', 'procedure', 'office', 'healthPlan']);
     //colocando first duplica a request
-    // query.first();
+    query.first();
     ParseResponse? response;
     try {
       response = await query.query();

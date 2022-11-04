@@ -127,6 +127,9 @@ class _ClientHealthPlanAddEditPageState
                   },
                   child: const Text('Salvar convênio.'),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 ElevatedButton(
                   onPressed: () async {
                     Navigator.pop(context);

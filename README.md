@@ -1,8 +1,20 @@
+# issues
+colocar a busca de profissional e procedimentos
+
+
 # fluxus
 
+meu pc
 cd /home/catalunha/myapp/cemec.net.br/fluxus && flutter build web && cd /home/catalunha/myapp/cemec.net.br/fluxus/back4app/fluxus && b4a deploy
 
+uft
+cd /home/catalunha/apps/fluxus && flutter build web && cd /home/catalunha/apps/fluxus/back4app/fluxus && b4a deploy
+
+/home/catalunha/apps/fluxus/lib
+
 # Diary
+
+
 
 isseus
 todo paciente tem convenio particular

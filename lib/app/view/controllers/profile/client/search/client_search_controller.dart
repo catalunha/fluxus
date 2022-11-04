@@ -116,8 +116,9 @@ class ClientSearchController extends GetxController
   Future<void> listAll() async {
     if (!lastPage) {
       _loading(true);
-      List<ProfileModel> temp = await _profileRepository
-          .list(query, _pagination.value, includeColumns: ['name', 'photo']);
+      List<ProfileModel> temp = await _profileRepository.list(
+          query, _pagination.value,
+          includeColumns: ['name', 'photo', 'birthday']);
       if (temp.isEmpty) {
         _lastPage.value = true;
       }

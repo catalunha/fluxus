@@ -81,7 +81,7 @@ class ProfileEntity {
     List<HealthPlanModel> healthPlanList = [];
     if (includeColumns.contains('healthPlan')) {
       //+++ get healthPlanList
-
+      log('healthPlan...', name: 'contains("healthPlan")');
       QueryBuilder<ParseObject> queryHealthPlan =
           QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
       queryHealthPlan.whereRelatedTo(

@@ -142,6 +142,7 @@ class _SearchPageState extends State<ClientSearchPage> {
                               setDate: (value) => widget
                                   ._clientProfileController
                                   .selectedDate = value,
+                              isBirthDay: true,
                             ),
                           ],
                         ),
