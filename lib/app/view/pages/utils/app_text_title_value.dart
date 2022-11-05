@@ -32,6 +32,8 @@ class AppTextTitleValue extends StatelessWidget {
       );
     } else {
       // return Row(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   mainAxisAlignment: MainAxisAlignment.start,
       //   children: [
       //     Text(
       //       title,
@@ -42,7 +44,6 @@ class AppTextTitleValue extends StatelessWidget {
       //       value != null && value!.isNotEmpty ? value! : '...',
       //       style: const TextStyle(color: Colors.white),
       //       textAlign: TextAlign.center,
-      //       overflow: TextOverflow.ellipsis,
       //       softWrap: true,
       //     ),
       //   ],

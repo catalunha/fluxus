@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:fluxus/app/core/models/evolution_model.dart';
 import 'package:fluxus/app/data/b4a/entity/evolution_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/repositories/evolution_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
@@ -22,6 +23,7 @@ class EvolutionSearchController extends GetxController
   final _message = Rxn<MessageModel>();
 
   var evolutionList = <EvolutionModel>[].obs;
+  var evolutionHistory = <EvolutionModel>[].obs;
 
   final _pagination = Pagination().obs;
   final _lastPage = false.obs;
@@ -64,10 +66,10 @@ class EvolutionSearchController extends GetxController
     query = QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
     var splashController = Get.find<SplashController>();
     String professionalId = splashController.userModel!.profile!.id!;
-    // query.whereEqualTo(
-    //     'professional',
-    //     (ParseObject(ProfileEntity.className)..objectId = professionalId)
-    //         .toPointer());
+    query.whereEqualTo(
+        'professional',
+        (ParseObject(ProfileEntity.className)..objectId = professionalId)
+            .toPointer());
     if (isArchived) {
       query.whereEqualTo('isArchived', isArchived);
     } else {
@@ -92,11 +94,36 @@ class EvolutionSearchController extends GetxController
     _loading(true);
     log('+++', name: 'EvolutionSearchController.listAll');
     List<EvolutionModel> temp =
-        await _evolutionRepository.list(query, _pagination.value);
+        await _evolutionRepository.list(query, pagination: _pagination.value);
     if (temp.isEmpty) {
       _lastPage.value = true;
     }
     evolutionList.addAll(temp);
+    _loading(false);
+  }
+
+  Future<void> listHistoryThisPatient(String patientId) async {
+    query = QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
+    query.whereEqualTo(
+        'patient',
+        (ParseObject(ProfileEntity.className)..objectId = patientId)
+            .toPointer());
+    await listHistory();
+    Get.toNamed(Routes.evolutionHistory);
+  }
+
+  Future<void> listHistory() async {
+    log('+++', name: 'EvolutionSearchController.listHistory');
+    _loading(true);
+    log('+++1', name: 'EvolutionSearchController.listHistory');
+    evolutionHistory.clear();
+    log('+++2', name: 'EvolutionSearchController.listHistory');
+
+    List<EvolutionModel> temp = await _evolutionRepository.list(query);
+    log('+++3', name: 'EvolutionSearchController.listHistory');
+    log('${temp.length}', name: 'EvolutionSearchController.listHistory');
+
+    evolutionHistory.addAll(temp);
     _loading(false);
   }
 }

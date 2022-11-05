@@ -109,17 +109,26 @@ class AttendanceAddEditController extends GetxController
   }) async {
     try {
       _loading(true);
-      ProfileModel? profileModelTemp = await _profileRepository
-          .readById(id, includeColumns: ['name', 'procedure']);
-      if (profileModelTemp != null) {
-        _professional(profileModelTemp);
-        procedureList.clear();
-        procedureList.addAll([...profileModelTemp.procedure!]);
+      List<String> idsSplit = id.split(' ');
+      if (idsSplit.length == 1) {
+        ProfileModel? profileModelTemp = await _profileRepository
+            .readById(id, includeColumns: ['name', 'procedure']);
+        if (profileModelTemp != null) {
+          _professional(profileModelTemp);
+          procedureList.clear();
+          procedureList.addAll([...profileModelTemp.procedure!]);
+        }
+      } else {
+        _message.value = MessageModel(
+          title: 'Erro em setProfissional',
+          message: 'É necessário buscar apenas o profissional',
+          isError: true,
+        );
       }
     } on ProfileRepositoryException {
       _message.value = MessageModel(
         title: 'Erro em AttendanceController',
-        message: 'Não foi possivel buscar professional',
+        message: 'Não foi possivel buscar profissional',
         isError: true,
       );
     } finally {
@@ -181,16 +190,25 @@ class AttendanceAddEditController extends GetxController
   }) async {
     try {
       _loading(true);
-      List<String> idsSplit = ids.split(' ');
-      String idPatient = idsSplit[0];
-      healthPlan = idsSplit[1];
 
-      ProfileModel? profileModelTemp = await _profileRepository
-          .readById(idPatient, includeColumns: ['name', 'healthPlan']);
-      _patient(profileModelTemp);
+      List<String> idsSplit = ids.split(' ');
+      if (idsSplit.length == 2) {
+        String idPatient = idsSplit[0];
+        healthPlan = idsSplit[1];
+
+        ProfileModel? profileModelTemp = await _profileRepository
+            .readById(idPatient, includeColumns: ['name', 'healthPlan']);
+        _patient(profileModelTemp);
+      } else {
+        _message.value = MessageModel(
+          title: 'Erro em setPatientHealthPlan',
+          message: 'É necessário buscar o paciente e seu convênio',
+          isError: true,
+        );
+      }
     } on ProfileRepositoryException {
       _message.value = MessageModel(
-        title: 'Erro em AttendanceController',
+        title: 'Erro em AttendanceAddEditController',
         message: 'Não foi possivel buscar paciente',
         isError: true,
       );

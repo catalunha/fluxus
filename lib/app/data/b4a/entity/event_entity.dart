@@ -160,14 +160,14 @@ class EventEntity {
       room: parseObject.get('room') != null
           ? RoomEntity().fromParse(parseObject.get('room') as ParseObject)
           : null,
-      eventStatus: parseObject.get('status') != null
+      eventStatus: parseObject.get('eventStatus') != null
           ? EventStatusEntity()
-              .fromParse(parseObject.get('status') as ParseObject)
+              .fromParse(parseObject.get('eventStatus') as ParseObject)
           : null,
       // parseObject.set('start', model.start!.subtract(const Duration(hours: 3)));
 
-      dtStart: parseObject.get<DateTime>('start')?.toLocal(),
-      dtEnd: parseObject.get<DateTime>('end')?.toLocal(),
+      dtStart: parseObject.get<DateTime>('dtStart')?.toLocal(),
+      dtEnd: parseObject.get<DateTime>('dtEnd')?.toLocal(),
       // start: parseObject
       //     .get<DateTime>('start')!
       //     .subtract(const Duration(hours: 3)),
@@ -214,16 +214,16 @@ class EventEntity {
     }
     if (model.dtStart != null) {
       log('${model.dtStart}', name: 'EventEntity.toParse');
-      parseObject.set('start', model.dtStart);
+      parseObject.set('dtStart', model.dtStart);
       // parseObject.set('start', model.start!.subtract(const Duration(hours: 3)));
     }
     if (model.dtEnd != null) {
-      parseObject.set('end', model.dtEnd);
+      parseObject.set('dtEnd', model.dtEnd);
       // parseObject.set('end', model.end!.subtract(const Duration(hours: 3)));
     }
     if (model.eventStatus != null) {
       parseObject.set(
-          'status',
+          'eventStatus',
           (ParseObject(EventStatusEntity.className)
                 ..objectId = model.eventStatus!.id)
               .toPointer());

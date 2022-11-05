@@ -16,7 +16,7 @@ class EventRepositoryB4a implements EventRepository {
     // QueryBuilder<ParseObject> query =
     //     QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
     log('query...', name: 'EventRepositoryB4a.getQueryAll');
-    query.includeObject(['room', 'status']);
+    query.includeObject(['room', 'eventStatus']);
     query.whereEqualTo('isDeleted', false);
     query.orderByDescending('updatedAt');
 
@@ -84,7 +84,7 @@ class EventRepositoryB4a implements EventRepository {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
     query.whereEqualTo('objectId', id);
-    query.includeObject(['room', 'status']);
+    query.includeObject(['room', 'eventStatus']);
 
     // query.first();
     ParseResponse? response;

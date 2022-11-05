@@ -33,6 +33,9 @@ class EvolutionAddEditController extends GetxController
   String? evolutionId;
 //+++ forms
   final descriptionTec = TextEditingController();
+  final _isArchived = false.obs;
+  bool? get isArchived => _isArchived.value;
+  set isArchived(bool? value) => _isArchived(value);
 //--- forms
 
   List<EvaluationModel> evaluationList = <EvaluationModel>[].obs;
@@ -65,20 +68,24 @@ class EvolutionAddEditController extends GetxController
 
   setFormFieldControllers() {
     descriptionTec.text = evolution?.description ?? "";
+    isArchived = evolution?.isArchived;
   }
 
   Future<void> append({
     String? description,
+    bool? isArchived,
   }) async {
     try {
       _loading(true);
       if (evolutionId == null) {
         evolution = EvolutionModel(
           description: description,
+          isArchived: isArchived,
         );
       } else {
         evolution = evolution!.copyWith(
           description: description,
+          isArchived: isArchived,
         );
       }
       evolutionId = await _evolutionRepository.update(evolution!);

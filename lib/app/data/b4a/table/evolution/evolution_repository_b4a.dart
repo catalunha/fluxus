@@ -7,23 +7,26 @@ import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class EvolutionRepositoryB4a implements EvolutionRepository {
-  Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
+  Future<QueryBuilder<ParseObject>> getQueryAll(QueryBuilder<ParseObject> query,
+      {Pagination? pagination}) async {
     // QueryBuilder<ParseObject> query =
     //     QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
     query.includeObject(['professional', 'patient', 'procedure']);
     query.whereEqualTo('isDeleted', false);
-    query.orderByDescending('updatedAt');
-
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
+    // query.whereEqualTo('isArchived', false);// resolvido no controller
+    query.whereNotEqualTo('event', null);
+    query.orderByDescending('createAt');
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
 
     return query;
   }
 
   @override
-  Future<List<EvolutionModel>> list(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
+  Future<List<EvolutionModel>> list(QueryBuilder<ParseObject> query,
+      {Pagination? pagination}) async {
     // QueryBuilder<ParseObject> query =
     //     QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
     // // query.whereEqualTo('event', eventId);
@@ -35,7 +38,7 @@ class EvolutionRepositoryB4a implements EvolutionRepository {
     // query.includeObject(['professional', 'patient']);
     // query.orderByDescending('updatedAt');
     QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+    query2 = await getQueryAll(query, pagination: pagination);
 
     ParseResponse? response;
     try {

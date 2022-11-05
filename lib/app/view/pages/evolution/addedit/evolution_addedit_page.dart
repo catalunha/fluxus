@@ -75,6 +75,16 @@ class _EvolutionAddEditPageState extends State<EvolutionAddEditPage> {
                           Validatorless.required('Descrição é obrigatório'),
                       maxLines: 10,
                     ),
+                    Obx(
+                      () => CheckboxListTile(
+                        title: const Text("Arquivar esta evolução ?"),
+                        onChanged: (value) {
+                          widget._evolutionAddEditController.isArchived =
+                              value ?? false;
+                        },
+                        value: widget._evolutionAddEditController.isArchived,
+                      ),
+                    ),
                     const SizedBox(height: 70),
                   ],
                 ),
@@ -91,6 +101,7 @@ class _EvolutionAddEditPageState extends State<EvolutionAddEditPage> {
     if (formValid) {
       await widget._evolutionAddEditController.append(
         description: widget._evolutionAddEditController.descriptionTec.text,
+        isArchived: widget._evolutionAddEditController.isArchived,
       );
       return true;
     }

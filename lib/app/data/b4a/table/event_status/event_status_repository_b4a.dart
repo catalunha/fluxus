@@ -12,7 +12,7 @@ class EventStatusRepositoryB4a extends GetxService
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventStatusEntity.className));
     query.whereEqualTo('isDeleted', false);
-    query.orderByAscending('name');
+    query.orderByAscending('order');
 
     return query;
   }

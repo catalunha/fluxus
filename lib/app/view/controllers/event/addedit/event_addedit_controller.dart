@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
@@ -157,6 +159,7 @@ class EventAddEditController extends GetxController
   getEventStatusList() async {
     List<EventStatusModel> all = await _eventStatusRepository.list();
     eventStatusList(all);
+    eventStatusSelected = eventStatusList[0];
   }
 
   // getProcedureList() async {
@@ -246,6 +249,7 @@ class EventAddEditController extends GetxController
   }
 
   void onSetStatus() {
+    log('${event?.eventStatus}', name: 'onSetStatus');
     _eventStatusSelected(event?.eventStatus);
   }
 
