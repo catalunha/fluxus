@@ -98,6 +98,17 @@ class ClientProfileCard extends StatelessWidget {
                             Icons.copy,
                           ),
                         ),
+                        IconButton(
+                          onPressed: () {
+                            Get.toNamed(Routes.evolutionHistory,
+                                arguments: profile.id);
+                            // _evolutionSearchController
+                            //     .listHistoryThisPatient(evolution.patient!.id!);
+                          },
+                          icon: const Icon(
+                            Icons.history,
+                          ),
+                        ),
                       ],
                     ),
                   ],

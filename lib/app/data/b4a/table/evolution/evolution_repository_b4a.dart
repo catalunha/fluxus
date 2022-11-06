@@ -9,13 +9,10 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class EvolutionRepositoryB4a implements EvolutionRepository {
   Future<QueryBuilder<ParseObject>> getQueryAll(QueryBuilder<ParseObject> query,
       {Pagination? pagination}) async {
-    // QueryBuilder<ParseObject> query =
-    //     QueryBuilder<ParseObject>(ParseObject(EvolutionEntity.className));
     query.includeObject(['professional', 'patient', 'procedure']);
     query.whereEqualTo('isDeleted', false);
-    // query.whereEqualTo('isArchived', false);// resolvido no controller
     query.whereNotEqualTo('event', null);
-    query.orderByDescending('createAt');
+    query.orderByDescending('dtAttendance');
     if (pagination != null) {
       query.setAmountToSkip((pagination.page - 1) * pagination.limit);
       query.setLimit(pagination.limit);

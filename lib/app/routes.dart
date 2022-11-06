@@ -1,6 +1,7 @@
 import 'package:fluxus/app/view/controllers/attendance/addedit/attendance_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/attendance/search/attendance_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/event_status/search/event_status_search_dependencies.dart';
+import 'package:fluxus/app/view/controllers/evolution/history/evolution_history_dependencies.dart';
 import 'package:fluxus/app/view/controllers/procedure/search/procedure_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/profile/client/addedit/client_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/profile/client/search/client_search_dependencies.dart';
@@ -215,6 +216,7 @@ class Routes {
     ),
     GetPage(
       name: Routes.evolutionHistory,
+      binding: EvolutionHistoryDependencies(),
       page: () => EvolutionHistoryPage(),
     ),
     GetPage(

@@ -43,3 +43,9 @@ qsRservationEspacos = Reserva.objects.filter(
 
 Cargos tá ok
 Áreas: psicologia, nutrição, fisioterapia, fonoaudiologia, terapia ocupacional, psicopedagogia, musicalização
+
+# estudar mediuns
+https://medium.com/@omershafique/flutter-design-patterns-4-builder-fd13683a5f33
+
+https://medium.com/@paresh.kanani.sa/flutter-circular-imageview-with-image-picker-from-camera-and-gallery-9aae10b4f30a
+

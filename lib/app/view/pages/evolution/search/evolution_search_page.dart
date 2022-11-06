@@ -32,7 +32,7 @@ class _SearchPageState extends State<EvolutionSearchPage> {
                   Card(
                     child: Column(
                       children: [
-                        const Text('Arquivadas'),
+                        const Text('por Arquivadas'),
                         Row(
                           children: [
                             Checkbox(

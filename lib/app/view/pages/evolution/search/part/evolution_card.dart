@@ -71,10 +71,10 @@ class EvolutionCard extends StatelessWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            // Get.toNamed(Routes.evolutionAddEdit,
-                            //     arguments: evolution.id);
-                            _evolutionSearchController
-                                .listHistoryThisPatient(evolution.patient!.id!);
+                            Get.toNamed(Routes.evolutionHistory,
+                                arguments: evolution.patient!.id);
+                            // _evolutionSearchController
+                            //     .listHistoryThisPatient(evolution.patient!.id!);
                           },
                           icon: const Icon(
                             Icons.history,
