@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluxus/app/core/models/evaluation_model.dart';
 import 'package:fluxus/app/routes.dart';
+import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -23,17 +24,17 @@ class EvaluationCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${evaluation.id}',
-                    style: const TextStyle(fontSize: 8),
+                  AppTextTitleValue(
+                    title: 'Id: ',
+                    value: evaluation.id,
                   ),
-                  Text(
-                    '${evaluation.name}',
-                    style: const TextStyle(fontSize: 8),
+                  AppTextTitleValue(
+                    title: 'Nome: ',
+                    value: evaluation.name,
                   ),
-                  Text(
-                    'Publica: ${evaluation.isPublic}',
-                    style: const TextStyle(fontSize: 8),
+                  AppTextTitleValue(
+                    title: 'Publica ? ',
+                    value: evaluation.isPublic! ? "Sim" : "Não",
                   ),
                   Wrap(
                     children: [
@@ -51,13 +52,8 @@ class EvaluationCard extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {
-                          // Get.toNamed(Routes.clientProfileView,
-                          //     arguments: evaluation.id);
-                        },
-                        icon: const Icon(
-                          Icons.assignment_ind_outlined,
-                        ),
+                        onPressed: () => copy(evaluation.description!),
+                        icon: const Icon(Icons.copy),
                       ),
                     ],
                   ),
@@ -72,10 +68,11 @@ class EvaluationCard extends StatelessWidget {
 
   copy(String text) async {
     Get.snackbar(
-      text,
-      'Id copiado.',
+      'Ficha copiada',
+      'colar na evolução',
       // backgroundColor: Colors.yellow,
       margin: const EdgeInsets.all(10),
+      duration: const Duration(seconds: 1),
     );
     await Clipboard.setData(ClipboardData(text: text));
   }

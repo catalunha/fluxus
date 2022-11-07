@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/evolution/addedit/evolution_addedit_controller.dart';
 import 'package:get/get.dart';
 
@@ -51,6 +52,15 @@ class _EvolutionAddEditPageState extends State<EvolutionAddEditPage> {
                           style: const TextStyle(fontSize: 8),
                         )),
                     const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () => Get.toNamed(Routes.evaluationSearch),
+                          icon: const Icon(Icons.search),
+                        ),
+                        const Text('Buscar ficha. Colar na evolução.')
+                      ],
+                    ),
                     // const Text('Especialidade'),
                     // Obx(
                     //   () => AppDropDownGeneric<EvaluationModel>(

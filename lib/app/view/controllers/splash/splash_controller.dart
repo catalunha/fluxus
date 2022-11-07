@@ -26,6 +26,7 @@ class SplashController extends GetxController with MessageMixin {
     _userModel(userModelNew);
   }
 
+  final officeIdList = <String>[];
   final _message = Rxn<MessageModel>();
 
   @override
@@ -88,7 +89,10 @@ class SplashController extends GetxController with MessageMixin {
 
       var profileModel =
           await profileRepositoryB4a.readById(profileField.objectId);
-
+      officeIdList.clear();
+      if (profileModel!.office != null && profileModel.office!.isNotEmpty) {
+        officeIdList.addAll(profileModel.office!.map((e) => e.id!).toList());
+      }
       userModel = UserModel(
         id: parseUser!.objectId!,
         email: parseUser!.emailAddress!,

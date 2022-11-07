@@ -56,6 +56,9 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 5),
+                    Text(
+                      'Id: ${widget._eventAddEditController.event?.id}',
+                    ),
                     // Obx(() => Text(widget._eventAddEditController.dateStart
                     //         ?.toIso8601String() ??
                     //     '...')),
@@ -238,10 +241,16 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                       label: 'Descrição',
                       controller: widget._eventAddEditController.descriptionTec,
                     ),
+                    const Text('Descrições anteriores:'),
+                    SizedBox(
+                      height: 100,
+                      child: SingleChildScrollView(
+                        child: Obx(() => Text(
+                              widget._eventAddEditController.event?.log ?? '',
+                            )),
+                      ),
+                    ),
 
-                    Obx(() => Text(
-                          'Id: ${widget._eventAddEditController.event?.id}',
-                        )),
                     const SizedBox(height: 70),
                   ],
                 ),

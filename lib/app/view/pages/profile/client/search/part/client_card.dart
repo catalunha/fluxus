@@ -123,10 +123,10 @@ class ClientProfileCard extends StatelessWidget {
 
   copy(String text) async {
     Get.snackbar(
-      text,
-      'Id copiado.',
+      text, 'Id copiado.',
       // backgroundColor: Colors.yellow,
       margin: const EdgeInsets.all(10),
+      duration: const Duration(seconds: 1),
     );
     await Clipboard.setData(ClipboardData(text: text));
   }

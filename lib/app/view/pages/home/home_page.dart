@@ -22,16 +22,7 @@ class HomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Buscar Equipe'),
-                subtitle: const Text('Por área'),
-                onTap: () {
-                  Get.toNamed(Routes.teamProfileSearch);
-                },
-              ),
-            ),
+            const HomeSearchTeam(),
             Card(
               child: ListTile(
                 leading: const Icon(Icons.person_add),
@@ -45,8 +36,7 @@ class HomePage extends StatelessWidget {
               child: ListTile(
                 leading: const Icon(Icons.search),
                 title: const Text('Buscar paciente'),
-                subtitle:
-                    const Text('Por Nome, CPF, Telefone, Data de Nascimento'),
+                subtitle: const Text('Por ...'),
                 onTap: () {
                   Get.toNamed(
                     Routes.clientProfileSearch,
@@ -135,5 +125,31 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class HomeSearchTeam extends StatelessWidget {
+  const HomeSearchTeam({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final splashController = Get.find<SplashController>();
+
+    if (splashController.officeIdList.contains('GExnWAZ5fG')) {
+      return Card(
+        child: ListTile(
+          leading: const Icon(Icons.search),
+          title: const Text('Buscar Equipe'),
+          subtitle: const Text('Por área'),
+          onTap: () {
+            Get.toNamed(Routes.teamProfileSearch);
+          },
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }

@@ -13,6 +13,7 @@ class EvaluationSearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<EvaluationSearchPage> {
   final _formKey = GlobalKey<FormState>();
+  bool _myEvaluations = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,32 +28,26 @@ class _SearchPageState extends State<EvaluationSearchPage> {
             child: Form(
               key: _formKey,
               child: Column(
-                children: const [
-                  // Card(
-                  //   child: Column(
-                  //     children: [
-                  //       const Text('por Nome'),
-                  //       Row(
-                  //         children: [
-                  //           Checkbox(
-                  //             value: _nameContains,
-                  //             onChanged: (value) {
-                  //               setState(() {
-                  //                 _nameContains = value!;
-                  //               });
-                  //             },
-                  //           ),
-                  //           Expanded(
-                  //             child: AppTextFormField(
-                  //               label: 'Nome que contém',
-                  //               controller: _nameContainsTEC,
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+                children: [
+                  Card(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _myEvaluations,
+                              onChanged: (value) {
+                                setState(() {
+                                  _myEvaluations = value!;
+                                });
+                              },
+                            ),
+                            const Text('Minhas fichas'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                   // Card(
                   //   child: Column(
                   //     children: [
@@ -130,7 +125,7 @@ class _SearchPageState extends State<EvaluationSearchPage> {
                   //     ],
                   //   ),
                   // ),
-                  SizedBox(height: 100)
+                  const SizedBox(height: 100)
                 ],
               ),
             ),
@@ -144,7 +139,7 @@ class _SearchPageState extends State<EvaluationSearchPage> {
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
             await widget._evaluationController.search(
-              nameContainsBool: true,
+              myEvaluations: _myEvaluations,
               // nameContainsString: _nameContainsTEC.text,
               // cpfEqualToBool: _cpfEqualTo,
               // cpfEqualToString: _cpfEqualToTEC.text,

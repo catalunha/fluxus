@@ -37,6 +37,7 @@ class AttendanceEntity {
           : null,
       event: parseObject.get('event'),
       evolution: parseObject.get('evolution'),
+      description: parseObject.get('description'),
       isDeleted: parseObject.get('isDeleted') ?? false,
     );
     return model;
@@ -101,6 +102,9 @@ class AttendanceEntity {
     }
     if (model.evolution != null) {
       parseObject.set('evolution', model.evolution);
+    }
+    if (model.description != null) {
+      parseObject.set('description', model.description);
     }
     if (model.isDeleted != null) {
       parseObject.set('isDeleted', model.isDeleted);

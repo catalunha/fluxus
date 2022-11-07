@@ -256,7 +256,8 @@ class EventAddEditController extends GetxController
   setFormFieldControllers() {
     // autorizationTec.text = event?.autorization ?? "";
     // faturaTec.text = event?.fatura ?? "";
-    descriptionTec.text = event?.description ?? "";
+    descriptionTec.text = "";
+    // descriptionTec.text = event?.description ?? "";
   }
 
   DateTime? onMountDateStart() {
@@ -283,10 +284,10 @@ class EventAddEditController extends GetxController
       logData = '$logData\n+++${DateTime.now()}';
       var splashController = Get.find<SplashController>();
       logData = '$logData\nuser:${splashController.userModel!.email}';
-      logData = '$logData\nstart:${dateStart ?? '-'}';
-      logData = '$logData\nend:${dateEnd ?? '-'}';
-      logData = '$logData\ndesc:${description ?? '-'}';
       logData = '$logData\nroom:${room?.name ?? '-'}';
+      logData = '$logData\nstart:${dateStart ?? '-'}';
+      // logData = '$logData\nend:${dateEnd ?? '-'}';
+      logData = '$logData\ndesc:${description ?? '-'}';
       logData = '$logData\nstatus:${status?.name ?? '-'}';
       // String? eventStatusIdPast = event?.status?.id;
       if (eventId == null) {

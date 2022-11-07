@@ -61,8 +61,13 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                       controller:
                           widget._attendanceAddEditController.autorizationTec,
                     ),
+                    AppTextFormField(
+                      label: 'Observações',
+                      controller:
+                          widget._attendanceAddEditController.descriptionTec,
+                    ),
                     AppCalendarButton(
-                      title: "Data da autorização.",
+                      title: "Data limite da autorização.",
                       getDate: () =>
                           widget._attendanceAddEditController.dAutorization,
                       setDate: (value) => widget
@@ -78,7 +83,7 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                                   arguments: ['name', 'healthPlan']);
                             },
                             icon: const Icon(Icons.search)),
-                        const Text('Paciente e Convênio'),
+                        const Text('Paciente'),
                         IconButton(
                           onPressed: () async {
                             // var result = await saveAttendance();
@@ -88,15 +93,14 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return const AttendanceAddIds(
-                                  title:
-                                      'Informe o Id do paciente e do convênio',
-                                  formFieldLabel: 'Separador por espaço',
+                                  title: 'Informe o Id do paciente',
+                                  formFieldLabel: 'Id do paciente',
                                 );
                               },
                             );
                             if (res != null) {
                               widget._attendanceAddEditController
-                                  .setPatientHealthPlan(ids: res);
+                                  .setPatient(id: res);
                             }
                             log(res ?? '...', name: 'res');
                             setState(() {});
@@ -113,6 +117,7 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                       ],
                     ),
                     Obx(() => patient()),
+                    Obx(() => healthPlanList()),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -216,8 +221,15 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
       if (widget._attendanceAddEditController.dAutorization == null) {
         return false;
       }
+      if (widget._attendanceAddEditController.healthPlanList.length > 1) {
+        return false;
+      }
+      if (widget._attendanceAddEditController.procedureList.isEmpty) {
+        return false;
+      }
       await widget._attendanceAddEditController.append(
         autorization: widget._attendanceAddEditController.autorizationTec.text,
+        description: widget._attendanceAddEditController.descriptionTec.text,
       );
       return true;
     }
@@ -243,23 +255,80 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                 title: 'Id: ',
                 value: '${patient.id}',
               ),
-              AppTextTitleValue(
-                title: 'Convênio tipo: ',
-                value:
-                    widget._attendanceAddEditController.getHealthPlan('name'),
-              ),
-              AppTextTitleValue(
-                title: 'Convênio código: ',
-                value:
-                    widget._attendanceAddEditController.getHealthPlan('code'),
-              ),
-              AppTextTitleValue(
-                title: 'Convênio Id: ',
-                value: widget._attendanceAddEditController.getHealthPlan('id'),
-              ),
+              // AppTextTitleValue(
+              //   title: 'Convênio tipo: ',
+              //   value:
+              //       widget._attendanceAddEditController.getHealthPlan('name'),
+              // ),
+              // AppTextTitleValue(
+              //   title: 'Convênio código: ',
+              //   value:
+              //       widget._attendanceAddEditController.getHealthPlan('code'),
+              // ),
+              // AppTextTitleValue(
+              //   title: 'Convênio Id: ',
+              //   value: widget._attendanceAddEditController.getHealthPlan('id'),
+              // ),
             ],
           ),
         ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget healthPlanList() {
+    if (widget._attendanceAddEditController.healthPlanList.isNotEmpty) {
+      return Column(
+        children: [
+          const Text('Deixe apenas 1 Plano de saúde:'),
+          ...widget._attendanceAddEditController.healthPlanList
+              .map((e) => Card(
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              IconButton(
+                                onPressed: () async {
+                                  widget._attendanceAddEditController
+                                      .removeHealthPlan(e.id!);
+                                  setState(() {});
+                                },
+                                icon: const Icon(Icons.delete_forever),
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppTextTitleValue(
+                                  title: 'Gestor: ',
+                                  value: e.healthPlanType!.name,
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Código: ',
+                                  value: e.code,
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Descrição: ',
+                                  value: e.description,
+                                ),
+                                AppTextTitleValue(
+                                  title: 'Id: ',
+                                  value: e.id,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ]),
+                  ))
+              .toList()
+        ],
       );
     } else {
       return Container();
@@ -317,7 +386,7 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
     if (widget._attendanceAddEditController.procedureList.isNotEmpty) {
       return Column(
         children: [
-          const Text('Procedimentos:'),
+          const Text('Deixe pelo menos 1 Procedimento:'),
           ...widget._attendanceAddEditController.procedureList
               .map((e) => Card(
                     child: Column(children: [

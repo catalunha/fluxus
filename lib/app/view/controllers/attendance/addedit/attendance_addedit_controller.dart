@@ -48,12 +48,15 @@ class AttendanceAddEditController extends GetxController
   ProfileModel? get patient => _patient.value;
   set patient(ProfileModel? patientNew) => _patient(patientNew);
 
+  var healthPlanList = <HealthPlanModel>[].obs;
+
   final _healthPlan = ''.obs;
   String? get healthPlan => _healthPlan.value;
   set healthPlan(String? value) => _healthPlan(value);
 
 //+++ forms
   final autorizationTec = TextEditingController();
+  final descriptionTec = TextEditingController();
 //--- forms
 
   @override
@@ -66,10 +69,12 @@ class AttendanceAddEditController extends GetxController
 
   setFormFieldControllers() {
     autorizationTec.text = "";
+    descriptionTec.text = "";
   }
 
   Future<void> append({
     String? autorization,
+    String? description,
   }) async {
     try {
       _loading(true);
@@ -81,12 +86,14 @@ class AttendanceAddEditController extends GetxController
           patient: patient,
         );
         String evolutionId = await _evolutionRepository.update(evolutionModel);
+
         var attendance = AttendanceModel(
           professional: professional,
           procedure: procedure,
           patient: patient,
-          healthPlan: HealthPlanModel(id: healthPlan),
+          healthPlan: HealthPlanModel(id: healthPlanList[0].id),
           autorization: autorization!.isEmpty ? null : autorization,
+          description: description!.isEmpty ? null : description,
           dAutorization: dAutorization,
           eventStatus: EventStatusModel(id: 'zoFBVNZ16I'),
           evolution: evolutionId,
@@ -185,6 +192,45 @@ class AttendanceAddEditController extends GetxController
   //   }
   // }
 
+  Future<void> setPatient({
+    required String id,
+  }) async {
+    try {
+      _loading(true);
+      List<String> idsSplit = id.split(' ');
+      if (idsSplit.length == 1) {
+        ProfileModel? profileModelTemp = await _profileRepository
+            .readById(id, includeColumns: ['name', 'healthPlan']);
+        if (profileModelTemp != null) {
+          _patient(profileModelTemp);
+          healthPlanList.clear();
+          healthPlanList.addAll([...profileModelTemp.healthPlan!]);
+        }
+      } else {
+        _message.value = MessageModel(
+          title: 'Erro em setProfissional',
+          message: 'É necessário buscar apenas o profissional',
+          isError: true,
+        );
+      }
+    } on ProfileRepositoryException {
+      _message.value = MessageModel(
+        title: 'Erro em AttendanceController',
+        message: 'Não foi possivel buscar profissional',
+        isError: true,
+      );
+    } finally {
+      _loading(false);
+    }
+  }
+
+  removeHealthPlan(String id) {
+    healthPlanList.removeWhere((element) => element.id == id);
+  }
+
+//
+//
+//
   Future<void> setPatientHealthPlan({
     required String ids,
   }) async {

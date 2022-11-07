@@ -23,7 +23,7 @@ class EventEntity {
       'patient',
       'healthPlan',
       'healthPlan.healthPlanType',
-      'status',
+      'eventStatus',
     ]);
     final ParseResponse responseAttendance = await queryAttendance.query();
     if (responseAttendance.success && responseAttendance.results != null) {

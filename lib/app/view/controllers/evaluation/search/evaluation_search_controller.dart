@@ -1,8 +1,10 @@
 import 'package:fluxus/app/core/models/evaluation_model.dart';
+import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/entity/evaluation_entity.dart';
 import 'package:fluxus/app/data/repositories/evaluation_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
@@ -53,7 +55,7 @@ class EvaluationSearchController extends GetxController
   }
 
   Future<void> search({
-    required bool nameContainsBool,
+    required bool myEvaluations,
     // required String nameContainsString,
     // required bool cpfEqualToBool,
     // required String cpfEqualToString,
@@ -63,7 +65,17 @@ class EvaluationSearchController extends GetxController
   }) async {
     _loading(true);
     query = QueryBuilder<ParseObject>(ParseObject(EvaluationEntity.className));
-
+    var splashController = Get.find<SplashController>();
+    ProfileModel professional = splashController.userModel!.profile!;
+    if (myEvaluations) {
+      query.whereEqualTo('professionalId', professional.id);
+    } else {
+      query.whereEqualTo('isPublic', true);
+      query.whereContainedIn(
+          'expertiseId', professional.expertise!.map((e) => e.id).toList()); //
+    }
+    //
+    //
     evaluationList.clear();
     if (lastPage) {
       _lastPage(false);

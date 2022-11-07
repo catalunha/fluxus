@@ -17,7 +17,7 @@ class AttendanceRepositoryB4a implements AttendanceRepository {
       'patient',
       'healthPlan',
       'healthPlan.healthPlanType',
-      'status'
+      'eventStatus'
     ]);
 
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);

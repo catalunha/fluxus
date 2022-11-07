@@ -11,6 +11,7 @@ import 'package:fluxus/app/data/repositories/event_status_repository.dart';
 import 'package:fluxus/app/data/repositories/room_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
@@ -99,6 +100,7 @@ class EventSearchController extends GetxController
   }
 
   Future<void> search({
+    required bool myAttendance,
     required bool attendanceEqualToBool,
     required String attendanceEqualToString,
     required bool dtStartBool,
@@ -109,6 +111,18 @@ class EventSearchController extends GetxController
   }) async {
     _loading(true);
     query = QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    if (myAttendance) {
+      QueryBuilder<ParseObject> queryAttendance =
+          QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+      var splashController = Get.find<SplashController>();
+      String professionalId = splashController.userModel!.profile!.id!;
+      queryAttendance.whereEqualTo(
+          'professional',
+          (ParseObject(ProfileEntity.className)..objectId = professionalId)
+              .toPointer());
+
+      query.whereMatchesQuery('attendance', queryAttendance);
+    }
     if (attendanceEqualToBool) {
       query.whereEqualTo(
           'attendance',

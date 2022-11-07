@@ -26,6 +26,7 @@ class _SearchPageState extends State<EventSearchPage> {
   final _eventStatusEqualToTEC = TextEditingController();
   bool _roomEqualTo = false;
   final _roomEqualToTEC = TextEditingController();
+  bool _myAttendance = false;
 
   @override
   void initState() {
@@ -49,6 +50,25 @@ class _SearchPageState extends State<EventSearchPage> {
               key: _formKey,
               child: Column(
                 children: [
+                  Card(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _myAttendance,
+                              onChanged: (value) {
+                                setState(() {
+                                  _myAttendance = value!;
+                                });
+                              },
+                            ),
+                            const Text('Eventos em que estou envolvido.')
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                   Card(
                     child: Column(
                       children: [
@@ -212,6 +232,7 @@ class _SearchPageState extends State<EventSearchPage> {
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
             await widget._eventSearchController.search(
+              myAttendance: _myAttendance,
               attendanceEqualToBool: _attendanceEqualTo,
               attendanceEqualToString: _attendanceEqualToTEC.text,
               dtStartBool: _dtStartBool,

@@ -17,6 +17,7 @@ class AttendanceModel {
   final EventStatusModel? eventStatus;
   final String? event;
   final String? evolution;
+  final String? description;
   final bool? isDeleted;
 
   AttendanceModel({
@@ -31,6 +32,7 @@ class AttendanceModel {
     this.eventStatus,
     this.event,
     this.evolution,
+    this.description,
     this.isDeleted,
   });
 
@@ -42,10 +44,11 @@ class AttendanceModel {
     HealthPlanModel? healthPlan,
     String? autorization,
     DateTime? dAutorization,
-    DateTime? dAttendance,
+    DateTime? dtAttendance,
     EventStatusModel? eventStatus,
     String? event,
     String? evolution,
+    String? description,
     bool? isDeleted,
   }) {
     return AttendanceModel(
@@ -56,10 +59,11 @@ class AttendanceModel {
       healthPlan: healthPlan ?? this.healthPlan,
       autorization: autorization ?? this.autorization,
       dAutorization: dAutorization ?? this.dAutorization,
-      dtAttendance: dAttendance ?? dtAttendance,
+      dtAttendance: dtAttendance ?? this.dtAttendance,
       eventStatus: eventStatus ?? this.eventStatus,
       event: event ?? this.event,
       evolution: evolution ?? this.evolution,
+      description: description ?? this.description,
       isDeleted: isDeleted ?? this.isDeleted,
     );
   }
@@ -89,7 +93,7 @@ class AttendanceModel {
       result.addAll({'dAutorization': dAutorization!.millisecondsSinceEpoch});
     }
     if (dtAttendance != null) {
-      result.addAll({'dAttendance': dtAttendance!.millisecondsSinceEpoch});
+      result.addAll({'dtAttendance': dtAttendance!.millisecondsSinceEpoch});
     }
     if (eventStatus != null) {
       result.addAll({'eventStatus': eventStatus!.toMap()});
@@ -99,6 +103,9 @@ class AttendanceModel {
     }
     if (evolution != null) {
       result.addAll({'evolution': evolution});
+    }
+    if (description != null) {
+      result.addAll({'description': description});
     }
     if (isDeleted != null) {
       result.addAll({'isDeleted': isDeleted});
@@ -125,14 +132,15 @@ class AttendanceModel {
       dAutorization: map['dAutorization'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['dAutorization'])
           : null,
-      dtAttendance: map['dAttendance'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['dAttendance'])
+      dtAttendance: map['dtAttendance'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['dtAttendance'])
           : null,
       eventStatus: map['eventStatus'] != null
           ? EventStatusModel.fromMap(map['eventStatus'])
           : null,
       event: map['event'],
       evolution: map['evolution'],
+      description: map['description'],
       isDeleted: map['isDeleted'],
     );
   }
@@ -144,7 +152,7 @@ class AttendanceModel {
 
   @override
   String toString() {
-    return 'AttendanceModel(id: $id, professional: $professional, procedure: $procedure, patient: $patient, healthPlan: $healthPlan, autorization: $autorization, dAutorization: $dAutorization, dAttendance: $dtAttendance, eventStatus: $eventStatus, event: $event, evolution: $evolution, isDeleted: $isDeleted)';
+    return 'AttendanceModel(id: $id, professional: $professional, procedure: $procedure, patient: $patient, healthPlan: $healthPlan, autorization: $autorization, dAutorization: $dAutorization, dtAttendance: $dtAttendance, eventStatus: $eventStatus, event: $event, evolution: $evolution, description: $description, isDeleted: $isDeleted)';
   }
 
   @override
@@ -163,6 +171,7 @@ class AttendanceModel {
         other.eventStatus == eventStatus &&
         other.event == event &&
         other.evolution == evolution &&
+        other.description == description &&
         other.isDeleted == isDeleted;
   }
 
@@ -179,6 +188,7 @@ class AttendanceModel {
         eventStatus.hashCode ^
         event.hashCode ^
         evolution.hashCode ^
+        description.hashCode ^
         isDeleted.hashCode;
   }
 }
