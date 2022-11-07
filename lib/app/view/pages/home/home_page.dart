@@ -54,16 +54,16 @@ class HomePage extends StatelessWidget {
                 },
               ),
             ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Buscar paciente'),
-                subtitle: const Text('Por Número do convênio'),
-                onTap: () {
-                  Get.toNamed(Routes.healthPlanSearch);
-                },
-              ),
-            ),
+            // Card(
+            //   child: ListTile(
+            //     leading: const Icon(Icons.search),
+            //     title: const Text('Buscar paciente'),
+            //     subtitle: const Text('Por Número do convênio'),
+            //     onTap: () {
+            //       Get.toNamed(Routes.healthPlanSearch);
+            //     },
+            //   ),
+            // ),
             Card(
               child: ListTile(
                 leading: const Icon(Icons.view_compact_outlined),

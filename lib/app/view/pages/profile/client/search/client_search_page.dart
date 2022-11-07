@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/profile/client/search/client_search_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_icon.dart';
@@ -147,6 +148,16 @@ class _SearchPageState extends State<ClientSearchPage> {
                           ],
                         ),
                       ],
+                    ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.search),
+                      title: const Text('Buscar paciente'),
+                      subtitle: const Text('Por Número do convênio'),
+                      onTap: () {
+                        Get.toNamed(Routes.healthPlanSearch);
+                      },
                     ),
                   ),
                   const SizedBox(height: 100)

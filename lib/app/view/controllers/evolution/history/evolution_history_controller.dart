@@ -5,6 +5,7 @@ import 'package:fluxus/app/data/b4a/entity/evolution_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/repositories/evolution_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
@@ -67,16 +68,15 @@ class EvolutionHistoryController extends GetxController
         'patient',
         (ParseObject(ProfileEntity.className)..objectId = patientId)
             .toPointer());
+    var splashController = Get.find<SplashController>();
+    query.whereContainedIn(
+        'expertise',
+        splashController.userModel!.profile!.expertise!
+            .map((e) => e.id)
+            .toList());
+    //+++
     evolutionHistory.clear();
-    // if (lastPage) {
-    //   _lastPage(false);
-    //   _pagination.update((val) {
-    //     val!.page = 1;
-    //     val.limit = 12;
-    //   });
-    // } else {
     await listAll();
-    // }
     log('$evolutionHistory', name: 'searchHistoryThisPatient');
   }
 
