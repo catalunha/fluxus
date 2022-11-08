@@ -219,7 +219,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                     //   ],
                     // ),
                     // Obx(() => patientList()),
-                    const Text('* Status'),
+                    const Text('* Status do evento'),
                     Obx(
                       () => AppDropDownGeneric<EventStatusModel>(
                         options: widget._eventAddEditController.eventStatusList

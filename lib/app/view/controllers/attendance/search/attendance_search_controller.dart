@@ -1,11 +1,13 @@
 import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
+import 'package:fluxus/app/core/models/evolution_model.dart';
 import 'package:fluxus/app/data/b4a/entity/attendance_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/event_status_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/procedure_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/repositories/attendance_repository.dart';
 import 'package:fluxus/app/data/repositories/event_status_repository.dart';
+import 'package:fluxus/app/data/repositories/evolution_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
@@ -17,12 +19,15 @@ class AttendanceSearchController extends GetxController
     with LoaderMixin, MessageMixin {
   final AttendanceRepository _attendanceRepository;
   final EventStatusRepository _eventStatusRepository;
+  final EvolutionRepository _evolutionRepository;
 
   AttendanceSearchController({
     required AttendanceRepository attendanceRepository,
     required EventStatusRepository eventStatusRepository,
+    required EvolutionRepository evolutionRepository,
   })  : _attendanceRepository = attendanceRepository,
-        _eventStatusRepository = eventStatusRepository;
+        _eventStatusRepository = eventStatusRepository,
+        _evolutionRepository = evolutionRepository;
 
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
@@ -184,6 +189,20 @@ class AttendanceSearchController extends GetxController
       }
       attendanceList.addAll(temp);
       _loading(false);
+    }
+  }
+
+  removeAttendance(AttendanceModel attendanceModel) {
+    if (attendanceModel.event == null) {
+      _evolutionRepository.update(
+          EvolutionModel(id: attendanceModel.evolution, isDeleted: true));
+      _attendanceRepository.update(attendanceModel.copyWith(isDeleted: true));
+    } else {
+      _message.value = MessageModel(
+        title: 'Erro em removeAttendance',
+        message: 'Guia associada a um evento',
+        isError: true,
+      );
     }
   }
 }

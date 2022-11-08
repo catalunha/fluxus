@@ -44,7 +44,7 @@ class _SearchPageState extends State<EventSearchPage> {
       ),
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 400),
+          constraints: const BoxConstraints(maxWidth: 600),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -126,7 +126,8 @@ class _SearchPageState extends State<EventSearchPage> {
                                       .eventStatusSelected = value;
                                   setState(() {});
                                 },
-                                width: 300,
+                                width: 340,
+                                // width: double.maxFinite,
                               ),
                             ),
                             // IconButton(

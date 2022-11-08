@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
+import 'package:fluxus/app/view/controllers/attendance/search/attendance_search_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AttendanceCard extends StatelessWidget {
-  // final _clientProfileController = Get.find<ClientProfileController>();
+  final _attendanceSearchController = Get.find<AttendanceSearchController>();
 
   final AttendanceModel attendance;
-  const AttendanceCard({Key? key, required this.attendance}) : super(key: key);
+  AttendanceCard({Key? key, required this.attendance}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class AttendanceCard extends StatelessWidget {
                         value: attendance.procedure!.code,
                       ),
                       AppTextTitleValue(
-                        title: 'Proc.: ',
+                        title: 'Proc. Desc.: ',
                         value: attendance.procedure!.name,
                       ),
                       AppTextTitleValue(
@@ -60,7 +61,11 @@ class AttendanceCard extends StatelessWidget {
                         value: attendance.autorization,
                       ),
                       AppTextTitleValue(
-                        title: 'Data Autorização: ',
+                        title: 'Observação: ',
+                        value: attendance.description,
+                      ),
+                      AppTextTitleValue(
+                        title: 'Data limite da autorização: ',
                         value: formatter.format(attendance.dAutorization!),
                       ),
                       AppTextTitleValue(
@@ -79,10 +84,19 @@ class AttendanceCard extends StatelessWidget {
                           title: 'Status: ',
                           value: attendance.eventStatus?.name),
                       Wrap(
+                        spacing: 100,
                         children: [
                           IconButton(
                             onPressed: () => copy(attendance.id!),
                             icon: const Icon(Icons.copy),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              _attendanceSearchController
+                                  .removeAttendance(attendance);
+                              Get.back();
+                            },
+                            icon: const Icon(Icons.delete_forever),
                           ),
                         ],
                       ),

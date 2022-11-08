@@ -150,7 +150,7 @@ class _SearchPageState extends State<AttendanceSearchPage> {
                                       .eventStatusSelected);
                                   setState(() {});
                                 },
-                                width: 300,
+                                width: 340,
                               ),
                             ),
                             // IconButton(

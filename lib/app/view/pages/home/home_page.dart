@@ -137,19 +137,19 @@ class HomeSearchTeam extends StatelessWidget {
   Widget build(BuildContext context) {
     final splashController = Get.find<SplashController>();
 
-    if (splashController.officeIdList.contains('GExnWAZ5fG')) {
-      return Card(
-        child: ListTile(
-          leading: const Icon(Icons.search),
-          title: const Text('Buscar Equipe'),
-          subtitle: const Text('Por área'),
-          onTap: () {
-            Get.toNamed(Routes.teamProfileSearch);
-          },
-        ),
-      );
-    } else {
-      return const SizedBox.shrink();
-    }
+    // if (splashController.officeIdList.contains('GExnWAZ5fG')) {
+    return Card(
+      child: ListTile(
+        leading: const Icon(Icons.search),
+        title: const Text('Buscar Equipe'),
+        subtitle: const Text('Por área'),
+        onTap: () {
+          Get.toNamed(Routes.teamProfileSearch);
+        },
+      ),
+    );
+    // } else {
+    //   return const SizedBox.shrink();
+    // }
   }
 }
