@@ -23,15 +23,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             const HomeSearchTeam(),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.person_add),
-                title: const Text('Cadastrar paciente'),
-                onTap: () {
-                  Get.toNamed(Routes.clientProfileAddEdit);
-                },
-              ),
-            ),
+            const HomeClientAdd(),
             Card(
               child: ListTile(
                 leading: const Icon(Icons.search),
@@ -54,34 +46,9 @@ class HomePage extends StatelessWidget {
             //     },
             //   ),
             // ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.view_compact_outlined),
-                title: const Text('Gerar guia'),
-                onTap: () {
-                  Get.toNamed(Routes.attendanceAddEdit);
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Buscar guia'),
-                subtitle: const Text('Por ...'),
-                onTap: () {
-                  Get.toNamed(Routes.attendanceSearch);
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.event),
-                title: const Text('Cadastrar evento'),
-                onTap: () {
-                  Get.toNamed(Routes.eventAddEdit, arguments: null);
-                },
-              ),
-            ),
+            const HomeAddAttendance(),
+            const HomeSearchAttendance(),
+            const HomeAddEvent(),
             Card(
               child: ListTile(
                 leading: const Icon(Icons.search),
@@ -128,6 +95,128 @@ class HomePage extends StatelessWidget {
   }
 }
 
+class HomeAddEvent extends StatelessWidget {
+  const HomeAddEvent({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (allowedAccess('GExnWAZ5fG')) {
+      return Card(
+        child: ListTile(
+          leading: const Icon(Icons.event),
+          title: const Text('Cadastrar evento'),
+          onTap: () {
+            Get.toNamed(Routes.eventAddEdit, arguments: null);
+          },
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
+
+// class HomeSearchEvent extends StatelessWidget {
+//   const HomeSearchEvent({
+//     Key? key,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     if (allowedAccess('GExnWAZ5fG')) {
+//       return Card(
+//         child: ListTile(
+//           leading: const Icon(Icons.search),
+//           title: const Text('Buscar Evento'),
+//           subtitle: const Text('Por ...'),
+//           onTap: () {
+//             Get.toNamed(Routes.eventSearch);
+//           },
+//         ),
+//       );
+//     } else {
+//       return const SizedBox.shrink();
+//     }
+//   }
+// }
+
+bool allowedAccess(String officeId) {
+  final splashController = Get.find<SplashController>();
+  return splashController.officeIdList.contains(officeId);
+}
+
+class HomeSearchAttendance extends StatelessWidget {
+  const HomeSearchAttendance({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (allowedAccess('GExnWAZ5fG')) {
+      return Card(
+        child: ListTile(
+          leading: const Icon(Icons.search),
+          title: const Text('Buscar guia'),
+          subtitle: const Text('Por ...'),
+          onTap: () {
+            Get.toNamed(Routes.attendanceSearch);
+          },
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
+
+class HomeAddAttendance extends StatelessWidget {
+  const HomeAddAttendance({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (allowedAccess('GExnWAZ5fG')) {
+      return Card(
+        child: ListTile(
+          leading: const Icon(Icons.view_compact_outlined),
+          title: const Text('Gerar guia'),
+          onTap: () {
+            Get.toNamed(Routes.attendanceAddEdit);
+          },
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
+
+class HomeClientAdd extends StatelessWidget {
+  const HomeClientAdd({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (allowedAccess('GExnWAZ5fG')) {
+      return Card(
+        child: ListTile(
+          leading: const Icon(Icons.person_add),
+          title: const Text('Cadastrar paciente'),
+          onTap: () {
+            Get.toNamed(Routes.clientProfileAddEdit);
+          },
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
+
 class HomeSearchTeam extends StatelessWidget {
   const HomeSearchTeam({
     Key? key,
@@ -135,21 +224,19 @@ class HomeSearchTeam extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final splashController = Get.find<SplashController>();
-
-    // if (splashController.officeIdList.contains('GExnWAZ5fG')) {
-    return Card(
-      child: ListTile(
-        leading: const Icon(Icons.search),
-        title: const Text('Buscar Equipe'),
-        subtitle: const Text('Por área'),
-        onTap: () {
-          Get.toNamed(Routes.teamProfileSearch);
-        },
-      ),
-    );
-    // } else {
-    //   return const SizedBox.shrink();
-    // }
+    if (allowedAccess('GExnWAZ5fG')) {
+      return Card(
+        child: ListTile(
+          leading: const Icon(Icons.search),
+          title: const Text('Buscar Equipe'),
+          subtitle: const Text('Por área'),
+          onTap: () {
+            Get.toNamed(Routes.teamProfileSearch);
+          },
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }

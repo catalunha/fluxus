@@ -146,6 +146,10 @@ class EventCard extends StatelessWidget {
                                     title: 'Procedimento: ',
                                     value: '${e.procedure!.name}',
                                   ),
+                                  AppTextTitleValue(
+                                    title: 'Observações: ',
+                                    value: '${e.description}',
+                                  ),
                                 ],
                               ),
                             )

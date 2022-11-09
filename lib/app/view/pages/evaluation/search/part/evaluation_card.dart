@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluxus/app/core/models/evaluation_model.dart';
 import 'package:fluxus/app/routes.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +16,8 @@ class EvaluationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
-
+    final splashController = Get.find<SplashController>();
+    String profileId = splashController.userModel!.profile!.id!;
     return Card(
       child: Column(
         children: [
@@ -42,15 +44,17 @@ class EvaluationCard extends StatelessWidget {
                       //   onPressed: () => copy(evaluation.id!),
                       //   icon: const Icon(Icons.copy),
                       // ),
-                      IconButton(
-                        onPressed: () {
-                          Get.toNamed(Routes.evaluationAddEdit,
-                              arguments: evaluation.id);
-                        },
-                        icon: const Icon(
-                          Icons.edit,
-                        ),
-                      ),
+                      evaluation.professionalId == profileId
+                          ? IconButton(
+                              onPressed: () {
+                                Get.toNamed(Routes.evaluationAddEdit,
+                                    arguments: evaluation.id);
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                       IconButton(
                         onPressed: () => copy(evaluation.description!),
                         icon: const Icon(Icons.copy),

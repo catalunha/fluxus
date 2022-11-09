@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
@@ -158,10 +156,30 @@ class EventAddEditController extends GetxController
 
   getEventStatusList() async {
     List<EventStatusModel> all = await _eventStatusRepository.list();
-    eventStatusList(all);
-    eventStatusSelected = eventStatusList[0];
+    if (allowedAccess('GExnWAZ5fG')) {
+      eventStatusList(all);
+      eventStatusSelected = eventStatusList[0];
+    } else {
+      var eventStatusAutorized = [
+        'ul5FxaUpOX',
+        '0kCQxw8GBb',
+        'TBlbt1gbW3',
+        '7SWj262UYm',
+        'hHJV8j1NR4',
+      ];
+      for (var eventStatus in all) {
+        if (eventStatusAutorized.contains(eventStatus.id)) {
+          eventStatusList.add(eventStatus);
+        }
+      }
+      eventStatusSelected = eventStatusList[0];
+    }
   }
 
+  bool allowedAccess(String officeId) {
+    final splashController = Get.find<SplashController>();
+    return splashController.officeIdList.contains(officeId);
+  }
   // getProcedureList() async {
   //   List<ProcedureModel> all = await _procedureRepository.list();
   //   procedureList(all);
@@ -249,8 +267,9 @@ class EventAddEditController extends GetxController
   }
 
   void onSetStatus() {
-    log('${event?.eventStatus}', name: 'onSetStatus');
-    _eventStatusSelected(event?.eventStatus);
+    if (allowedAccess('GExnWAZ5fG')) {
+      _eventStatusSelected(event?.eventStatus);
+    }
   }
 
   setFormFieldControllers() {
@@ -280,8 +299,8 @@ class EventAddEditController extends GetxController
       _loading(true);
       // dateStart = onMountDateStart();
       // dateEnd = onMountDateEnd();
-      String logData = event?.log ?? '...';
-      logData = '$logData\n+++${DateTime.now()}';
+      String logData = '---------------------';
+      logData = '$logData\n${DateTime.now()}';
       var splashController = Get.find<SplashController>();
       logData = '$logData\nuser:${splashController.userModel!.email}';
       logData = '$logData\nroom:${room?.name ?? '-'}';
@@ -289,6 +308,7 @@ class EventAddEditController extends GetxController
       // logData = '$logData\nend:${dateEnd ?? '-'}';
       logData = '$logData\ndesc:${description ?? '-'}';
       logData = '$logData\nstatus:${status?.name ?? '-'}';
+      logData = '$logData\n${event?.log}';
       // String? eventStatusIdPast = event?.status?.id;
       if (eventId == null) {
         event = EventModel(

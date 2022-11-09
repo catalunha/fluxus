@@ -4,6 +4,7 @@ import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_controller.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_dialog_add_ids.dart';
 import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
@@ -56,127 +57,139 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 5),
-                    Text(
-                      'Id: ${widget._eventAddEditController.event?.id}',
-                    ),
+                    Obx(() => Text(
+                          'Id: ${widget._eventAddEditController.event?.id}',
+                        )),
                     // Obx(() => Text(widget._eventAddEditController.dateStart
                     //         ?.toIso8601String() ??
                     //     '...')),
                     // Obx(() => Text(widget._eventAddEditController.dateEnd
                     //         ?.toIso8601String() ??
                     //     '...')),
-                    AppCalendarButton(
-                      title: "Data do atendimento.",
-                      getDate: () => widget._eventAddEditController.dateStart,
-                      setDate: (value) =>
-                          widget._eventAddEditController.dateStart = value,
-                      isBirthDay: false,
-                    ),
+                    if (allowedAccess('GExnWAZ5fG'))
+                      AppCalendarButton(
+                        title: "Data do atendimento.",
+                        getDate: () => widget._eventAddEditController.dateStart,
+                        setDate: (value) =>
+                            widget._eventAddEditController.dateStart = value,
+                        isBirthDay: false,
+                      ),
                     // const Text('Horário do atendimento'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            const Text('Início'),
-                            Obx(() => AppDropDownGeneric<StartDateDropDrow>(
+                    if (allowedAccess('GExnWAZ5fG'))
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              const Text('Início'),
+                              Obx(() => AppDropDownGeneric<StartDateDropDrow>(
+                                    options: widget
+                                        ._eventAddEditController.startDateList
+                                        .toList(),
+                                    selected: widget._eventAddEditController
+                                        .startDateDropDrowSelected,
+                                    execute: (value) {
+                                      widget._eventAddEditController
+                                          .startDateDropDrowSelected = value;
+                                      widget._eventAddEditController
+                                          .onUpdateStartChangeEnd(value!);
+                                      setState(() {});
+                                    },
+                                    width: 150,
+                                  )),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              const Text('Fim'),
+                              Obx(
+                                () => AppDropDownGeneric<StartDateDropDrow>(
                                   options: widget
                                       ._eventAddEditController.startDateList
                                       .toList(),
                                   selected: widget._eventAddEditController
-                                      .startDateDropDrowSelected,
+                                      .endDateDropDrowSelected,
                                   execute: (value) {
                                     widget._eventAddEditController
-                                        .startDateDropDrowSelected = value;
+                                        .endDateDropDrowSelected = value;
                                     widget._eventAddEditController
-                                        .onUpdateStartChangeEnd(value!);
+                                        .onUpdateEnd(value!);
                                     setState(() {});
                                   },
                                   width: 150,
-                                )),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            const Text('Fim'),
-                            Obx(
-                              () => AppDropDownGeneric<StartDateDropDrow>(
-                                options: widget
-                                    ._eventAddEditController.startDateList
-                                    .toList(),
-                                selected: widget._eventAddEditController
-                                    .endDateDropDrowSelected,
-                                execute: (value) {
-                                  widget._eventAddEditController
-                                      .endDateDropDrowSelected = value;
-                                  widget._eventAddEditController
-                                      .onUpdateEnd(value!);
-                                  setState(() {});
-                                },
-                                width: 150,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const Text('Ambiente'),
-                    Obx(
-                      () => AppDropDownGeneric<RoomModel>(
-                        options:
-                            widget._eventAddEditController.roomList.toList(),
-                        selected:
-                            widget._eventAddEditController.roomModelSelected,
-                        execute: (value) {
-                          widget._eventAddEditController.roomModelSelected =
-                              value;
-                          setState(() {});
-                        },
-                        width: double.maxFinite,
+                            ],
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 10),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Get.toNamed(Routes.attendanceSearch);
-                            },
-                            icon: const Icon(Icons.search)),
-                        const Text('* Atendimentos'),
-                        IconButton(
-                          onPressed: () async {
-                            // var result = await saveEvent();
-                            // if (result) {
-                            String? res = await showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const AppDialogAddIds(
-                                  title: 'Informe o Id do atendimento',
-                                );
+                    if (allowedAccess('GExnWAZ5fG'))
+                      Column(
+                        children: [
+                          const Text('Ambiente'),
+                          Obx(
+                            () => AppDropDownGeneric<RoomModel>(
+                              options: widget._eventAddEditController.roomList
+                                  .toList(),
+                              selected: widget
+                                  ._eventAddEditController.roomModelSelected,
+                              execute: (value) {
+                                widget._eventAddEditController
+                                    .roomModelSelected = value;
+                                setState(() {});
                               },
-                            );
-                            if (res != null) {
-                              await widget._eventAddEditController
-                                  .addAttendance(res);
-                            }
-                            setState(() {});
-                            // } else {
-                            //   Get.snackbar(
-                            //     'Atenção',
-                            //     'Campos obrigatórios não foram preenchidos.',
-                            //     backgroundColor: Colors.red,
-                            //   );
-                            // }
-                          },
-                          icon: const Icon(Icons.add),
-                        )
-                      ],
-                    ),
-                    Obx(() => attendanceList()),
+                              width: double.maxFinite,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                    const SizedBox(height: 10),
+                    if (allowedAccess('GExnWAZ5fG'))
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    Get.toNamed(Routes.attendanceSearch);
+                                  },
+                                  icon: const Icon(Icons.search)),
+                              const Text('* Atendimentos'),
+                              IconButton(
+                                onPressed: () async {
+                                  // var result = await saveEvent();
+                                  // if (result) {
+                                  String? res = await showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return const AppDialogAddIds(
+                                        title: 'Informe o Id do atendimento',
+                                      );
+                                    },
+                                  );
+                                  if (res != null) {
+                                    await widget._eventAddEditController
+                                        .addAttendance(res);
+                                  }
+                                  setState(() {});
+                                  // } else {
+                                  //   Get.snackbar(
+                                  //     'Atenção',
+                                  //     'Campos obrigatórios não foram preenchidos.',
+                                  //     backgroundColor: Colors.red,
+                                  //   );
+                                  // }
+                                },
+                                icon: const Icon(Icons.add),
+                              )
+                            ],
+                          ),
+                          Obx(() => attendanceList()),
+                        ],
+                      ),
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.center,
                     //   children: [
@@ -243,7 +256,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                     ),
                     const Text('Descrições anteriores:'),
                     SizedBox(
-                      height: 100,
+                      height: 200,
                       child: SingleChildScrollView(
                         child: Obx(() => Text(
                               widget._eventAddEditController.event?.log ?? '',
@@ -260,6 +273,11 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
         ),
       ),
     );
+  }
+
+  bool allowedAccess(String officeId) {
+    final splashController = Get.find<SplashController>();
+    return splashController.officeIdList.contains(officeId);
   }
 
   Future<bool> saveEvent() async {

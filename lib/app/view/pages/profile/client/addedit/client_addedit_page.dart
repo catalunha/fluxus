@@ -59,10 +59,10 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Text(
-                      'Id: ${widget._clientAddEditController.profile?.id}',
-                      style: const TextStyle(fontSize: 8),
-                    ),
+                    Obx(() => Text(
+                          'Id: ${widget._clientAddEditController.profile?.id}',
+                          style: const TextStyle(fontSize: 8),
+                        )),
                     const SizedBox(height: 5),
                     AppTextFormField(
                       label: '* Seu nome completo.',

@@ -4,6 +4,7 @@ import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
@@ -68,10 +69,7 @@ class ClientSearchController extends GetxController
   }) async {
     _loading(true);
     query = QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
-    query.whereEqualTo(
-        'office',
-        (ParseObject(OfficeEntity.className)..objectId = 'RrrMr52QBM')
-            .toPointer());
+    //Buscar apenas pacientes não equipe de profissionais
 
     if (nameContainsBool) {
       query.whereContains('name', nameContainsString);
@@ -98,6 +96,20 @@ class ClientSearchController extends GetxController
       // selectedDate = selectedDate!.add(const Duration(hours: 3));
       print(selectedDate);
     }
+
+    if (query.queries.isEmpty) {
+      if (allowedAccess('GExnWAZ5fG')) {
+        //secretariado
+
+      } else {
+        query.whereEqualTo('objectId', '0');
+      }
+    }
+    query.whereEqualTo(
+        'office',
+        (ParseObject(OfficeEntity.className)..objectId = 'RrrMr52QBM')
+            .toPointer());
+
     clientProfileList.clear();
     if (lastPage) {
       _lastPage(false);
@@ -111,6 +123,11 @@ class ClientSearchController extends GetxController
     // _changePagination(_pagination.value.page, _pagination.value.limit);
     _loading(false);
     Get.toNamed(Routes.clientProfileList);
+  }
+
+  bool allowedAccess(String officeId) {
+    final splashController = Get.find<SplashController>();
+    return splashController.officeIdList.contains(officeId);
   }
 
   Future<void> listAll() async {

@@ -101,6 +101,9 @@ class EventSearchController extends GetxController
 
   Future<void> search({
     required bool myAttendance,
+    // required bool myAttendanceEmEspera,
+    // required bool myAttendanceAvaliacaoAgendada,
+    // required bool myAttendanceProfissionalAgendado,
     required bool attendanceEqualToBool,
     required String attendanceEqualToString,
     required bool dtStartBool,
@@ -112,6 +115,9 @@ class EventSearchController extends GetxController
     _loading(true);
     query = QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
     if (myAttendance) {
+      // if (myAttendanceEmEspera ||
+      //     myAttendanceAvaliacaoAgendada ||
+      //     myAttendanceProfissionalAgendado) {
       QueryBuilder<ParseObject> queryAttendance =
           QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
       var splashController = Get.find<SplashController>();
@@ -122,7 +128,49 @@ class EventSearchController extends GetxController
               .toPointer());
 
       query.whereMatchesQuery('attendance', queryAttendance);
+      //
+      QueryBuilder<ParseObject> queryEmEspera =
+          QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+
+      // if (myAttendanceEmEspera) {
+      queryEmEspera.whereEqualTo(
+        'eventStatus',
+        (ParseObject(EventStatusEntity.className)..objectId = 'zoFBVNZ16I')
+            .toPointer(),
+      );
+      // }
+      QueryBuilder<ParseObject> queryAvaliacaoAgendada =
+          QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+
+      // if (myAttendanceAvaliacaoAgendada) {
+      queryAvaliacaoAgendada.whereEqualTo(
+        'eventStatus',
+        (ParseObject(EventStatusEntity.className)..objectId = '7IZX1oPG7E')
+            .toPointer(),
+      );
+      // }
+      QueryBuilder<ParseObject> queryProfissionalAgendado =
+          QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+
+      // if (myAttendanceProfissionalAgendado) {
+      queryProfissionalAgendado.whereEqualTo(
+        'eventStatus',
+        (ParseObject(EventStatusEntity.className)..objectId = 'hpBM6CPlIV')
+            .toPointer(),
+      );
+      // }
+
+      QueryBuilder<ParseObject> queryOr =
+          QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+
+      queryOr = QueryBuilder.or(
+        ParseObject(EventEntity.className),
+        [queryEmEspera, queryAvaliacaoAgendada, queryProfissionalAgendado],
+      );
+
+      query.whereMatchesKeyInQuery('eventStatus', 'eventStatus', queryOr);
     }
+
     if (attendanceEqualToBool) {
       query.whereEqualTo(
           'attendance',
@@ -168,6 +216,14 @@ class EventSearchController extends GetxController
     //   );
     // }
     //
+    if (query.queries.isEmpty) {
+      if (allowedAccess('GExnWAZ5fG')) {
+        //secretariado
+
+      } else {
+        query.whereEqualTo('objectId', '0');
+      }
+    }
     eventList.clear();
     if (lastPage) {
       _lastPage(false);
@@ -181,6 +237,11 @@ class EventSearchController extends GetxController
     }
     _loading(false);
     Get.toNamed(Routes.eventList);
+  }
+
+  bool allowedAccess(String officeId) {
+    final splashController = Get.find<SplashController>();
+    return splashController.officeIdList.contains(officeId);
   }
 
   Future<void> listAll() async {

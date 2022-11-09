@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/profile/client/search/client_search_controller.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_icon.dart';
 import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
@@ -46,31 +47,32 @@ class _SearchPageState extends State<ClientSearchPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  Card(
-                    child: Column(
-                      children: [
-                        const Text('por Nome'),
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: _nameContains,
-                              onChanged: (value) {
-                                setState(() {
-                                  _nameContains = value!;
-                                });
-                              },
-                            ),
-                            Expanded(
-                              child: AppTextFormField(
-                                label: 'Nome que contém',
-                                controller: _nameContainsTEC,
+                  if (allowedAccess('GExnWAZ5fG'))
+                    Card(
+                      child: Column(
+                        children: [
+                          const Text('por Nome'),
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _nameContains,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _nameContains = value!;
+                                  });
+                                },
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              Expanded(
+                                child: AppTextFormField(
+                                  label: 'Nome que contém',
+                                  controller: _nameContainsTEC,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   Card(
                     child: Column(
                       children: [
@@ -96,70 +98,73 @@ class _SearchPageState extends State<ClientSearchPage> {
                       ],
                     ),
                   ),
-                  Card(
-                    child: Column(
-                      children: [
-                        const Text('por Telefone'),
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: _phoneEqualTo,
-                              onChanged: (value) {
-                                setState(() {
-                                  _phoneEqualTo = value!;
-                                });
-                              },
-                            ),
-                            Expanded(
-                              child: AppTextFormField(
-                                label: 'Telefone igual a',
-                                controller: _phoneEqualToTEC,
+                  if (allowedAccess('GExnWAZ5fG'))
+                    Card(
+                      child: Column(
+                        children: [
+                          const Text('por Telefone'),
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _phoneEqualTo,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _phoneEqualTo = value!;
+                                  });
+                                },
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              Expanded(
+                                child: AppTextFormField(
+                                  label: 'Telefone igual a',
+                                  controller: _phoneEqualToTEC,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Card(
-                    child: Column(
-                      children: [
-                        const Text('por Data de nascimento'),
-                        const SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: _birthday,
-                              onChanged: (value) {
-                                setState(() {
-                                  _birthday = value!;
-                                });
-                              },
-                            ),
-                            AppCalendarButton(
-                              title: "Data de nascimento.",
-                              getDate: () =>
-                                  widget._clientProfileController.selectedDate,
-                              setDate: (value) => widget
-                                  ._clientProfileController
-                                  .selectedDate = value,
-                              isBirthDay: true,
-                            ),
-                          ],
-                        ),
-                      ],
+                  if (allowedAccess('GExnWAZ5fG'))
+                    Card(
+                      child: Column(
+                        children: [
+                          const Text('por Data de nascimento'),
+                          const SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _birthday,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _birthday = value!;
+                                  });
+                                },
+                              ),
+                              AppCalendarButton(
+                                title: "Data de nascimento.",
+                                getDate: () => widget
+                                    ._clientProfileController.selectedDate,
+                                setDate: (value) => widget
+                                    ._clientProfileController
+                                    .selectedDate = value,
+                                isBirthDay: true,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Card(
-                    child: ListTile(
-                      leading: const Icon(Icons.search),
-                      title: const Text('Buscar paciente'),
-                      subtitle: const Text('Por Número do convênio'),
-                      onTap: () {
-                        Get.toNamed(Routes.healthPlanSearch);
-                      },
+                  if (allowedAccess('GExnWAZ5fG'))
+                    Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.search),
+                        title: const Text('Buscar paciente'),
+                        subtitle: const Text('Por Número do convênio'),
+                        onTap: () {
+                          Get.toNamed(Routes.healthPlanSearch);
+                        },
+                      ),
                     ),
-                  ),
                   const SizedBox(height: 100)
                 ],
               ),
@@ -188,4 +193,33 @@ class _SearchPageState extends State<ClientSearchPage> {
       ),
     );
   }
+}
+
+// class ClientSearchByCPFEvent extends StatelessWidget {
+//   const ClientSearchByCPFEvent({
+//     Key? key,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     if (allowedAccess('GExnWAZ5fG')) {
+//       return Card(
+//         child: ListTile(
+//           leading: const Icon(Icons.search),
+//           title: const Text('Buscar Evento'),
+//           subtitle: const Text('Por ...'),
+//           onTap: () {
+//             Get.toNamed(Routes.eventSearch);
+//           },
+//         ),
+//       );
+//     } else {
+//       return const SizedBox.shrink();
+//     }
+//   }
+// }
+
+bool allowedAccess(String officeId) {
+  final splashController = Get.find<SplashController>();
+  return splashController.officeIdList.contains(officeId);
 }

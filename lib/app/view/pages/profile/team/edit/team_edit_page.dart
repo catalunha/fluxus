@@ -40,32 +40,32 @@ class _TeamEditPageState extends State<TeamEditPage> {
     print('+++ initState +++');
     super.initState();
     _nameTec.text = widget._profileController.profile?.name ?? "";
-    // _phoneTec.text = widget._profileController.profile?.phone ?? "";
-    // _cpfTec.text = widget._profileController.profile?.cpf ?? "";
-    // _cepTec.text = widget._profileController.profile?.cep ?? "";
+    _phoneTec.text = widget._profileController.profile?.phone ?? "";
+    _cpfTec.text = widget._profileController.profile?.cpf ?? "";
+    _cepTec.text = widget._profileController.profile?.cep ?? "";
     _addressTec.text = widget._profileController.profile?.address ?? "";
     _pluscodeTec.text = widget._profileController.profile?.pluscode ?? "";
     _registerTec.text = widget._profileController.profile?.register ?? "";
     _descriptionTec.text = widget._profileController.profile?.description ?? "";
     _isFemale = widget._profileController.profile?.isFemale ?? false;
-    maskPhone = MaskTextInputFormatter(
-        initialText: widget._profileController.profile?.phone ?? "",
-        mask: '(##) # ####-####',
-        filter: {"#": RegExp(r'[0-9]')},
-        type: MaskAutoCompletionType.lazy);
-    _phoneTec.text = maskPhone.getMaskedText();
-    maskCPF = MaskTextInputFormatter(
-        initialText: widget._profileController.profile?.cpf ?? "",
-        mask: '###.###.###-##',
-        filter: {"#": RegExp(r'[0-9]')},
-        type: MaskAutoCompletionType.lazy);
-    _cpfTec.text = maskCPF.getMaskedText();
-    maskCEP = MaskTextInputFormatter(
-        initialText: widget._profileController.profile?.cep ?? "",
-        mask: '#####-###',
-        filter: {"#": RegExp(r'[0-9]')},
-        type: MaskAutoCompletionType.lazy);
-    _cepTec.text = maskCEP.getMaskedText();
+    // maskPhone = MaskTextInputFormatter(
+    //     initialText: widget._profileController.profile?.phone ?? "",
+    //     mask: '(##) # ####-####',
+    //     filter: {"#": RegExp(r'[0-9]')},
+    //     type: MaskAutoCompletionType.lazy);
+    // _phoneTec.text = maskPhone.getMaskedText();
+    // maskCPF = MaskTextInputFormatter(
+    //     initialText: widget._profileController.profile?.cpf ?? "",
+    //     mask: '###.###.###-##',
+    //     filter: {"#": RegExp(r'[0-9]')},
+    //     type: MaskAutoCompletionType.lazy);
+    // _cpfTec.text = maskCPF.getMaskedText();
+    // maskCEP = MaskTextInputFormatter(
+    //     initialText: widget._profileController.profile?.cep ?? "",
+    //     mask: '#####-###',
+    //     filter: {"#": RegExp(r'[0-9]')},
+    //     type: MaskAutoCompletionType.lazy);
+    // _cepTec.text = maskCEP.getMaskedText();
   }
 
   @override
@@ -122,6 +122,7 @@ class _TeamEditPageState extends State<TeamEditPage> {
                       getDate: () => widget._profileController.dateBirthday,
                       setDate: (value) =>
                           widget._profileController.dateBirthday = value,
+                      isBirthDay: true,
                     ),
                     const SizedBox(height: 5),
                     const Divider(color: Colors.green, height: 5),
@@ -130,26 +131,30 @@ class _TeamEditPageState extends State<TeamEditPage> {
                       label: 'Seu telefone. Formato DDDNÚMERO.',
                       controller: _phoneTec,
                       // validator: Validatorless.number('Informe apenas numeros'),
-                      mask: maskPhone,
+                      // mask: maskPhone,
                       // mask: MaskTextInputFormatter(
                       //   mask: '+55 (##) # ####-####',
                       //   filter: {"#": RegExp(r'[0-9]')},
                       //   type: MaskAutoCompletionType.lazy,
                       // ),
+                      validator: Validatorless.number(
+                          'Apenas números. Formato DDDNÚMERO'),
                     ),
                     AppTextFormField(
-                      label: 'Seu CPF. Apenas números.',
-                      controller: _cpfTec,
-                      validator:
+                        label: 'Seu CPF. Apenas números.',
+                        controller: _cpfTec,
+                        // mask: maskCPF,
+                        validator: Validatorless.multiple([
                           Validatorless.cpf('Este número não é CPF válido'),
-                      mask: maskCPF,
-                    ),
+                          Validatorless.number('Apenas números. Não use . - /'),
+                        ])),
 
                     AppTextFormField(
                       label: 'O CEP do seu endereço.',
                       controller: _cepTec,
-                      // validator: Validatorless.number('Informe apenas numeros'),
-                      mask: maskCEP,
+                      // mask: maskCEP,
+                      validator:
+                          Validatorless.number('Apenas números. Não use . - /'),
                     ),
                     AppTextFormField(
                       label: 'O PLUSCODE do seu endereço.',
@@ -279,10 +284,12 @@ class _TeamEditPageState extends State<TeamEditPage> {
       await widget._profileController.append(
         name: _nameTec.text,
         description: _descriptionTec.text,
-        // phone: _phoneTec.text,
-        phone: maskPhone.getUnmaskedText(),
-        cpf: maskCPF.getUnmaskedText(),
-        cep: maskCEP.getUnmaskedText(),
+        phone: _phoneTec.text,
+        cpf: _cpfTec.text,
+        cep: _cepTec.text,
+        // phone: maskPhone.getUnmaskedText(),
+        // cpf: maskCPF.getUnmaskedText(),
+        // cep: maskCEP.getUnmaskedText(),
         address: _addressTec.text,
         pluscode: _pluscodeTec.text,
         register: _registerTec.text,
