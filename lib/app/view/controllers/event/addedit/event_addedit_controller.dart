@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/event_model.dart';
@@ -156,7 +157,7 @@ class EventAddEditController extends GetxController
 
   getEventStatusList() async {
     List<EventStatusModel> all = await _eventStatusRepository.list();
-    if (allowedAccess('GExnWAZ5fG')) {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
       eventStatusList(all);
       eventStatusSelected = eventStatusList[0];
     } else {
@@ -267,7 +268,7 @@ class EventAddEditController extends GetxController
   }
 
   void onSetStatus() {
-    if (allowedAccess('GExnWAZ5fG')) {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
       _eventStatusSelected(event?.eventStatus);
     }
   }

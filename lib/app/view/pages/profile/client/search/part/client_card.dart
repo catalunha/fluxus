@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/profile/client/search/client_search_controller.dart';
@@ -65,7 +66,7 @@ class ClientProfileCard extends StatelessWidget {
                         //   onPressed: () => copy(profile.id!),
                         //   icon: const Icon(Icons.copy),
                         // ),
-                        if (allowedAccess('GExnWAZ5fG'))
+                        if (allowedAccess(OfficeEnum.secretaria.id))
                           IconButton(
                             onPressed: () {
                               Get.toNamed(Routes.clientProfileAddEdit,
@@ -75,7 +76,7 @@ class ClientProfileCard extends StatelessWidget {
                               Icons.edit,
                             ),
                           ),
-                        if (allowedAccess('GExnWAZ5fG'))
+                        if (allowedAccess(OfficeEnum.secretaria.id))
                           IconButton(
                             onPressed: () {
                               Get.toNamed(Routes.clientProfileView, arguments: {
@@ -88,7 +89,7 @@ class ClientProfileCard extends StatelessWidget {
                               Icons.assignment_ind_outlined,
                             ),
                           ),
-                        if (allowedAccess('GExnWAZ5fG'))
+                        if (allowedAccess(OfficeEnum.secretaria.id))
                           IconButton(
                             onPressed: () => copy(profile.id!),
                             icon: const Icon(

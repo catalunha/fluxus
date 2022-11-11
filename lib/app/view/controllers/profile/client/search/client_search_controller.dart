@@ -1,3 +1,4 @@
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/entity/office_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
@@ -98,7 +99,7 @@ class ClientSearchController extends GetxController
     }
 
     if (query.queries.isEmpty) {
-      if (allowedAccess('GExnWAZ5fG')) {
+      if (allowedAccess(OfficeEnum.secretaria.id)) {
         //secretariado
 
       } else {

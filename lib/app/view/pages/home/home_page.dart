@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/pages/home/parts/popmenu_user.dart';
@@ -102,7 +103,7 @@ class HomeAddEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (allowedAccess('GExnWAZ5fG')) {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
       return Card(
         child: ListTile(
           leading: const Icon(Icons.event),
@@ -125,7 +126,7 @@ class HomeAddEvent extends StatelessWidget {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     if (allowedAccess('GExnWAZ5fG')) {
+//     if (allowedAccess(OfficeEnum.secretaria.id)) {
 //       return Card(
 //         child: ListTile(
 //           leading: const Icon(Icons.search),
@@ -154,7 +155,7 @@ class HomeSearchAttendance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (allowedAccess('GExnWAZ5fG')) {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
       return Card(
         child: ListTile(
           leading: const Icon(Icons.search),
@@ -178,7 +179,7 @@ class HomeAddAttendance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (allowedAccess('GExnWAZ5fG')) {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
       return Card(
         child: ListTile(
           leading: const Icon(Icons.view_compact_outlined),
@@ -201,7 +202,7 @@ class HomeClientAdd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (allowedAccess('GExnWAZ5fG')) {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
       return Card(
         child: ListTile(
           leading: const Icon(Icons.person_add),
@@ -224,7 +225,7 @@ class HomeSearchTeam extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (allowedAccess('GExnWAZ5fG')) {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
       return Card(
         child: ListTile(
           leading: const Icon(Icons.search),

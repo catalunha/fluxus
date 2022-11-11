@@ -1,3 +1,4 @@
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/event_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
@@ -217,7 +218,7 @@ class EventSearchController extends GetxController
     // }
     //
     if (query.queries.isEmpty) {
-      if (allowedAccess('GExnWAZ5fG')) {
+      if (allowedAccess(OfficeEnum.secretaria.id)) {
         //secretariado
 
       } else {

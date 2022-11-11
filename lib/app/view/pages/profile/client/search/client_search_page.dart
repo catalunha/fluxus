@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/profile/client/search/client_search_controller.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
@@ -47,7 +48,7 @@ class _SearchPageState extends State<ClientSearchPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  if (allowedAccess('GExnWAZ5fG'))
+                  if (allowedAccess(OfficeEnum.secretaria.id))
                     Card(
                       child: Column(
                         children: [
@@ -98,7 +99,7 @@ class _SearchPageState extends State<ClientSearchPage> {
                       ],
                     ),
                   ),
-                  if (allowedAccess('GExnWAZ5fG'))
+                  if (allowedAccess(OfficeEnum.secretaria.id))
                     Card(
                       child: Column(
                         children: [
@@ -124,7 +125,7 @@ class _SearchPageState extends State<ClientSearchPage> {
                         ],
                       ),
                     ),
-                  if (allowedAccess('GExnWAZ5fG'))
+                  if (allowedAccess(OfficeEnum.secretaria.id))
                     Card(
                       child: Column(
                         children: [
@@ -154,7 +155,7 @@ class _SearchPageState extends State<ClientSearchPage> {
                         ],
                       ),
                     ),
-                  if (allowedAccess('GExnWAZ5fG'))
+                  if (allowedAccess(OfficeEnum.secretaria.id))
                     Card(
                       child: ListTile(
                         leading: const Icon(Icons.search),
@@ -202,7 +203,7 @@ class _SearchPageState extends State<ClientSearchPage> {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     if (allowedAccess('GExnWAZ5fG')) {
+//     if (allowedAccess(OfficeEnum.secretaria.id)) {
 //       return Card(
 //         child: ListTile(
 //           leading: const Icon(Icons.search),

@@ -128,29 +128,31 @@ class _SearchPageState extends State<AttendanceSearchPage> {
                         Row(
                           children: [
                             Checkbox(
-                              value: _eventStatusEqualTo,
-                              onChanged: (value) {
-                                setState(() {
-                                  _eventStatusEqualTo = value!;
-                                });
-                              },
-                            ),
-                            Obx(
-                              () => AppDropDownGeneric<EventStatusModel>(
-                                options: widget
-                                    ._attendanceController.eventStatusList
-                                    .toList(),
-                                selected: widget
-                                    ._attendanceController.eventStatusSelected,
-                                execute: (value) {
-                                  widget._attendanceController
-                                      .eventStatusSelected = value;
-                                  print(value);
-                                  print(widget._attendanceController
-                                      .eventStatusSelected);
-                                  setState(() {});
-                                },
-                                width: 340,
+                                value: _eventStatusEqualTo,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _eventStatusEqualTo = value!;
+                                  });
+                                }),
+                            Expanded(
+                              child: Obx(
+                                () => AppDropDownGeneric<EventStatusModel>(
+                                  options: widget
+                                      ._attendanceController.eventStatusList
+                                      .toList(),
+                                  selected: widget._attendanceController
+                                      .eventStatusSelected,
+                                  execute: (value) {
+                                    widget._attendanceController
+                                        .eventStatusSelected = value;
+                                    print(value);
+                                    print(widget._attendanceController
+                                        .eventStatusSelected);
+                                    setState(() {});
+                                  },
+                                  // width: 340,
+                                  width: double.maxFinite,
+                                ),
                               ),
                             ),
                             // IconButton(

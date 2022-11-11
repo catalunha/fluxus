@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/routes.dart';
@@ -130,7 +131,7 @@ class _SearchPageState extends State<EventSearchPage> {
                   //     ],
                   //   ),
                   // ),
-                  if (allowedAccess('GExnWAZ5fG'))
+                  if (allowedAccess(OfficeEnum.secretaria.id))
                     Card(
                       child: Column(
                         children: [
@@ -162,7 +163,7 @@ class _SearchPageState extends State<EventSearchPage> {
                         ],
                       ),
                     ),
-                  if (allowedAccess('GExnWAZ5fG'))
+                  if (allowedAccess(OfficeEnum.secretaria.id))
                     Card(
                       child: Column(
                         children: [
@@ -177,20 +178,22 @@ class _SearchPageState extends State<EventSearchPage> {
                                   });
                                 },
                               ),
-                              Obx(
-                                () => AppDropDownGeneric<EventStatusModel>(
-                                  options: widget
-                                      ._eventSearchController.eventStatusList
-                                      .toList(),
-                                  selected: widget._eventSearchController
-                                      .eventStatusSelected,
-                                  execute: (value) {
-                                    widget._eventSearchController
-                                        .eventStatusSelected = value;
-                                    setState(() {});
-                                  },
-                                  width: 340,
-                                  // width: double.maxFinite,
+                              Expanded(
+                                child: Obx(
+                                  () => AppDropDownGeneric<EventStatusModel>(
+                                    options: widget
+                                        ._eventSearchController.eventStatusList
+                                        .toList(),
+                                    selected: widget._eventSearchController
+                                        .eventStatusSelected,
+                                    execute: (value) {
+                                      widget._eventSearchController
+                                          .eventStatusSelected = value;
+                                      setState(() {});
+                                    },
+                                    // width: 330,
+                                    width: double.maxFinite,
+                                  ),
                                 ),
                               ),
                               // IconButton(
@@ -210,7 +213,7 @@ class _SearchPageState extends State<EventSearchPage> {
                         ],
                       ),
                     ),
-                  if (allowedAccess('GExnWAZ5fG'))
+                  if (allowedAccess(OfficeEnum.secretaria.id))
                     Card(
                       child: Column(
                         children: [
@@ -257,7 +260,7 @@ class _SearchPageState extends State<EventSearchPage> {
                         ],
                       ),
                     ),
-                  if (allowedAccess('GExnWAZ5fG'))
+                  if (allowedAccess(OfficeEnum.secretaria.id))
                     Card(
                       child: Column(
                         children: [

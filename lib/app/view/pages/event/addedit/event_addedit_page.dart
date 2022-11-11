@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
@@ -66,7 +67,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                     // Obx(() => Text(widget._eventAddEditController.dateEnd
                     //         ?.toIso8601String() ??
                     //     '...')),
-                    if (allowedAccess('GExnWAZ5fG'))
+                    if (allowedAccess(OfficeEnum.secretaria.id))
                       AppCalendarButton(
                         title: "Data do atendimento.",
                         getDate: () => widget._eventAddEditController.dateStart,
@@ -75,7 +76,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                         isBirthDay: false,
                       ),
                     // const Text('Horário do atendimento'),
-                    if (allowedAccess('GExnWAZ5fG'))
+                    if (allowedAccess(OfficeEnum.secretaria.id))
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -123,7 +124,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                           ),
                         ],
                       ),
-                    if (allowedAccess('GExnWAZ5fG'))
+                    if (allowedAccess(OfficeEnum.secretaria.id))
                       Column(
                         children: [
                           const Text('Ambiente'),
@@ -145,7 +146,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                       ),
 
                     const SizedBox(height: 10),
-                    if (allowedAccess('GExnWAZ5fG'))
+                    if (allowedAccess(OfficeEnum.secretaria.id))
                       Column(
                         children: [
                           Row(
@@ -232,24 +233,30 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                     //   ],
                     // ),
                     // Obx(() => patientList()),
-                    const Text('* Status do evento'),
-                    Obx(
-                      () => AppDropDownGeneric<EventStatusModel>(
-                        options: widget._eventAddEditController.eventStatusList
-                            .toList(),
-                        selected:
-                            widget._eventAddEditController.eventStatusSelected,
-                        execute: (value) {
-                          widget._eventAddEditController.eventStatusSelected =
-                              value;
-                          print(value);
-                          print(widget
-                              ._eventAddEditController.eventStatusSelected);
-                          setState(() {});
-                        },
-                        width: double.maxFinite,
-                      ),
+                    Column(
+                      children: [
+                        const Text('* Status do evento'),
+                        Obx(
+                          () => AppDropDownGeneric<EventStatusModel>(
+                            options: widget
+                                ._eventAddEditController.eventStatusList
+                                .toList(),
+                            selected: widget
+                                ._eventAddEditController.eventStatusSelected,
+                            execute: (value) {
+                              widget._eventAddEditController
+                                  .eventStatusSelected = value;
+                              print(value);
+                              print(widget
+                                  ._eventAddEditController.eventStatusSelected);
+                              setState(() {});
+                            },
+                            width: double.maxFinite,
+                          ),
+                        ),
+                      ],
                     ),
+
                     AppTextFormField(
                       label: 'Descrição',
                       controller: widget._eventAddEditController.descriptionTec,
