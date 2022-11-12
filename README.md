@@ -18,10 +18,8 @@ cd /home/catalunha/apps/fluxus && flutter build web && cd /home/catalunha/apps/f
 # Diary
 
 
-
-isseus
-todo paciente tem convenio particular
-
+https://pmatatias.medium.com/map-sorting-dart-extension-1-e98747ad9635
+https://theutsavg1.medium.com/flutter-intercept-your-requests-8113ef39b4d9
 
 marciocatalunha@gmail.com
 123456
