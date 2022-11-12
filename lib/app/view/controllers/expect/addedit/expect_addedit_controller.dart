@@ -44,9 +44,9 @@ class ExpectAddEditController extends GetxController
 
   var healthPlanList = <HealthPlanModel>[].obs;
 
-  final _healthPlan = ''.obs;
-  String? get healthPlan => _healthPlan.value;
-  set healthPlan(String? value) => _healthPlan(value);
+  // final _healthPlan = ''.obs;
+  // String? get healthPlan => _healthPlan.value;
+  // set healthPlan(String? value) => _healthPlan(value);
 
   var eventStatusList = <EventStatusModel>[].obs;
   final _eventStatusSelected = Rxn<EventStatusModel>();
@@ -69,8 +69,11 @@ class ExpectAddEditController extends GetxController
   set isArchived(bool? value) => _isArchived(value);
   //--- forms
   @override
-  void onReady() {
-    getExpect();
+  void onReady() async {
+    expectId = Get.arguments;
+    await getExpect();
+    getEventStatusList();
+    getExpertiseList();
     super.onReady();
   }
 
@@ -78,9 +81,6 @@ class ExpectAddEditController extends GetxController
   void onInit() async {
     loaderListener(_loading);
     messageListener(_message);
-    expectId = Get.arguments;
-    getEventStatusList();
-    getExpertiseList();
     super.onInit();
   }
 
@@ -121,6 +121,8 @@ class ExpectAddEditController extends GetxController
       ExpectModel? expectModelTemp =
           await _expectRepository.readById(expectId!);
       expect = expectModelTemp;
+      patient = expect!.patient;
+      healthPlanList.add(expect!.healthPlan!);
     }
     setFormFieldControllers();
     _loading(false);

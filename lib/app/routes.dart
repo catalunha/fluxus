@@ -3,6 +3,7 @@ import 'package:fluxus/app/view/controllers/attendance/search/attendance_search_
 import 'package:fluxus/app/view/controllers/event_status/search/event_status_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/evolution/history/evolution_history_dependencies.dart';
 import 'package:fluxus/app/view/controllers/expect/addedit/expect_addedit_dependencies.dart';
+import 'package:fluxus/app/view/controllers/expect/search/expect_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/procedure/search/procedure_search_dependencies.dart';
 import 'package:fluxus/app/view/controllers/profile/client/addedit/client_addedit_dependencies.dart';
 import 'package:fluxus/app/view/controllers/profile/client/search/client_search_dependencies.dart';
@@ -28,6 +29,8 @@ import 'package:fluxus/app/view/pages/event_status/search/event_status_search_li
 import 'package:fluxus/app/view/pages/evolution/history/evolution_history_page.dart';
 import 'package:fluxus/app/view/pages/evolution/search/evolution_search_page.dart';
 import 'package:fluxus/app/view/pages/expect/addedit/expect_addedit_page.dart';
+import 'package:fluxus/app/view/pages/expect/search/expect_search_list_page.dart';
+import 'package:fluxus/app/view/pages/expect/search/expect_search_page.dart';
 import 'package:fluxus/app/view/pages/procedure/search/procedure_search_list_page.dart';
 import 'package:fluxus/app/view/pages/profile/client/addedit/client_addedit_page.dart';
 import 'package:fluxus/app/view/pages/profile/client/addedit/client_health_plan_addedit_page.dart';
@@ -258,6 +261,15 @@ class Routes {
       name: Routes.expectAddEdit,
       binding: ExpectAddEditDependencies(),
       page: () => ExpectAddEditPage(),
+    ),
+    GetPage(
+      name: Routes.expectSearch,
+      binding: ExpectSearchDependencies(),
+      page: () => ExpectSearchPage(),
+    ),
+    GetPage(
+      name: Routes.expectList,
+      page: () => ExpectSearchListPage(),
     ),
   ];
 }
