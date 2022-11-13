@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/enums/office_enum.dart';
+import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
@@ -58,139 +59,16 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 5),
-                    Obx(() => Text(
-                          'Id: ${widget._eventAddEditController.event?.id}',
-                        )),
-                    // Obx(() => Text(widget._eventAddEditController.dateStart
-                    //         ?.toIso8601String() ??
-                    //     '...')),
-                    // Obx(() => Text(widget._eventAddEditController.dateEnd
-                    //         ?.toIso8601String() ??
-                    //     '...')),
-                    if (allowedAccess(OfficeEnum.secretaria.id))
-                      AppCalendarButton(
-                        title: "Data do atendimento.",
-                        getDate: () => widget._eventAddEditController.dateStart,
-                        setDate: (value) =>
-                            widget._eventAddEditController.dateStart = value,
-                        isBirthDay: false,
-                      ),
-                    // const Text('Horário do atendimento'),
-                    if (allowedAccess(OfficeEnum.secretaria.id))
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              const Text('Início'),
-                              Obx(() => AppDropDownGeneric<StartDateDropDrow>(
-                                    options: widget
-                                        ._eventAddEditController.startDateList
-                                        .toList(),
-                                    selected: widget._eventAddEditController
-                                        .startDateDropDrowSelected,
-                                    execute: (value) {
-                                      widget._eventAddEditController
-                                          .startDateDropDrowSelected = value;
-                                      widget._eventAddEditController
-                                          .onUpdateStartChangeEnd(value!);
-                                      setState(() {});
-                                    },
-                                    width: 150,
-                                  )),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              const Text('Fim'),
-                              Obx(
-                                () => AppDropDownGeneric<StartDateDropDrow>(
-                                  options: widget
-                                      ._eventAddEditController.startDateList
-                                      .toList(),
-                                  selected: widget._eventAddEditController
-                                      .endDateDropDrowSelected,
-                                  execute: (value) {
-                                    widget._eventAddEditController
-                                        .endDateDropDrowSelected = value;
-                                    widget._eventAddEditController
-                                        .onUpdateEnd(value!);
-                                    setState(() {});
-                                  },
-                                  width: 150,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    if (allowedAccess(OfficeEnum.secretaria.id))
-                      Column(
-                        children: [
-                          const Text('Ambiente'),
-                          Obx(
-                            () => AppDropDownGeneric<RoomModel>(
-                              options: widget._eventAddEditController.roomList
-                                  .toList(),
-                              selected: widget
-                                  ._eventAddEditController.roomModelSelected,
-                              execute: (value) {
-                                widget._eventAddEditController
-                                    .roomModelSelected = value;
-                                setState(() {});
-                              },
-                              width: double.maxFinite,
-                            ),
-                          ),
-                        ],
-                      ),
 
+                    Obx(() => AppTextTitleValue(
+                          title: 'Id: ',
+                          value: widget._eventAddEditController.event?.id,
+                        )),
+                    dateStart(),
+                    timeStart(),
+                    room(),
                     const SizedBox(height: 10),
-                    if (allowedAccess(OfficeEnum.secretaria.id))
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    Get.toNamed(Routes.attendanceSearch);
-                                  },
-                                  icon: const Icon(Icons.search)),
-                              const Text('* Atendimentos'),
-                              IconButton(
-                                onPressed: () async {
-                                  // var result = await saveEvent();
-                                  // if (result) {
-                                  String? res = await showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const AppDialogAddIds(
-                                        title: 'Informe o Id do atendimento',
-                                      );
-                                    },
-                                  );
-                                  if (res != null) {
-                                    await widget._eventAddEditController
-                                        .addAttendance(res);
-                                  }
-                                  setState(() {});
-                                  // } else {
-                                  //   Get.snackbar(
-                                  //     'Atenção',
-                                  //     'Campos obrigatórios não foram preenchidos.',
-                                  //     backgroundColor: Colors.red,
-                                  //   );
-                                  // }
-                                },
-                                icon: const Icon(Icons.add),
-                              )
-                            ],
-                          ),
-                          Obx(() => attendanceList()),
-                        ],
-                      ),
+                    attendance(context),
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.center,
                     //   children: [
@@ -260,6 +138,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                     AppTextFormField(
                       label: 'Descrição',
                       controller: widget._eventAddEditController.descriptionTec,
+                      maxLines: 3,
                     ),
                     const Text('Descrições anteriores:'),
                     SizedBox(
@@ -282,6 +161,162 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
     );
   }
 
+  Widget attendance(BuildContext context) {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
+      return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Get.toNamed(Routes.attendanceSearch);
+                  },
+                  icon: const Icon(Icons.search)),
+              const Text('* Atendimentos'),
+              IconButton(
+                onPressed: () async {
+                  // var result = await saveEvent();
+                  // if (result) {
+                  String? res = await showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const AppDialogAddIds(
+                        title: 'Informe o Id do atendimento',
+                      );
+                    },
+                  );
+                  if (res != null) {
+                    await widget._eventAddEditController.addAttendance(res);
+                  }
+                  setState(() {});
+                  // } else {
+                  //   Get.snackbar(
+                  //     'Atenção',
+                  //     'Campos obrigatórios não foram preenchidos.',
+                  //     backgroundColor: Colors.red,
+                  //   );
+                  // }
+                },
+                icon: const Icon(Icons.add),
+              )
+            ],
+          ),
+          Obx(() => attendanceList()),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          const AppTextTitleValue(
+            title: 'Atendimentos: ',
+            value: '',
+          ),
+          Obx(() => attendanceList2()),
+        ],
+      );
+    }
+  }
+
+  Widget room() {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
+      return Column(
+        children: [
+          const Text('Ambiente'),
+          Obx(
+            () => AppDropDownGeneric<RoomModel>(
+              options: widget._eventAddEditController.roomList.toList(),
+              selected: widget._eventAddEditController.roomModelSelected,
+              execute: (value) {
+                widget._eventAddEditController.roomModelSelected = value;
+                setState(() {});
+              },
+              width: double.maxFinite,
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Obx(() => AppTextTitleValue(
+            title: 'Sala: ',
+            value: widget._eventAddEditController.roomModelSelected?.name,
+          ));
+    }
+  }
+
+  Widget timeStart() {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            children: [
+              const Text('Início'),
+              Obx(() => AppDropDownGeneric<StartDateDropDrow>(
+                    options:
+                        widget._eventAddEditController.startDateList.toList(),
+                    selected: widget
+                        ._eventAddEditController.startDateDropDrowSelected,
+                    execute: (value) {
+                      widget._eventAddEditController.startDateDropDrowSelected =
+                          value;
+                      widget._eventAddEditController
+                          .onUpdateStartChangeEnd(value!);
+                      setState(() {});
+                    },
+                    width: 150,
+                  )),
+            ],
+          ),
+          Column(
+            children: [
+              const Text('Fim'),
+              Obx(
+                () => AppDropDownGeneric<StartDateDropDrow>(
+                  options:
+                      widget._eventAddEditController.startDateList.toList(),
+                  selected:
+                      widget._eventAddEditController.endDateDropDrowSelected,
+                  execute: (value) {
+                    widget._eventAddEditController.endDateDropDrowSelected =
+                        value;
+                    widget._eventAddEditController.onUpdateEnd(value!);
+                    setState(() {});
+                  },
+                  width: 150,
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    } else {
+      return Obx(() => AppTextTitleValue(
+            title: 'Horário: ',
+            value:
+                '${widget._eventAddEditController.startDateDropDrowSelected?.name} as ${widget._eventAddEditController.endDateDropDrowSelected?.name}',
+          ));
+    }
+  }
+
+  Widget dateStart() {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
+      return AppCalendarButton(
+        title: "Data do atendimento.",
+        getDate: () => widget._eventAddEditController.dateStart,
+        setDate: (value) => widget._eventAddEditController.dateStart = value,
+        isBirthDay: false,
+      );
+    } else {
+      return Obx(() => AppTextTitleValue(
+          title: 'Data do atendimento: ',
+          value: widget._eventAddEditController.dateStart != null
+              ? dateFormat.format(widget._eventAddEditController.dateStart!)
+              : ''));
+    }
+  }
+
   bool allowedAccess(String officeId) {
     final splashController = Get.find<SplashController>();
     return splashController.officeIdList.contains(officeId);
@@ -290,17 +325,19 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
   Future<bool> saveEvent() async {
     final formValid = _formKey.currentState?.validate() ?? false;
     if (formValid) {
-      print('oops1');
       if (widget._eventAddEditController.dateStart == null) {
-        print('oops2');
         return false;
       }
       if (widget._eventAddEditController.eventStatusSelected == null) {
-        print('oops3');
+        return false;
+      }
+      if (widget._eventAddEditController.startDateDropDrowSelected == null) {
+        return false;
+      }
+      if (widget._eventAddEditController.endDateDropDrowSelected == null) {
         return false;
       }
       if (widget._eventAddEditController.attendanceList.isEmpty) {
-        print('oops4');
         return false;
       }
       await widget._eventAddEditController.append(
@@ -331,37 +368,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                             },
                             icon: const Icon(Icons.delete_forever),
                           ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AppTextTitleValue(
-                                  title: 'Atendimento Id: ',
-                                  value: '${e.id}',
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Pac. Nome: ',
-                                  value: '${e.patient!.name}',
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Id: ',
-                                  value: '${e.patient!.id}',
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Prof. Nome: ',
-                                  value: '${e.professional!.name}',
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Id: ',
-                                  value: '${e.professional!.id}',
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Id: ',
-                                  value: '${e.procedure!.name}',
-                                ),
-                              ],
-                            ),
-                          )
+                          attendanceData(e)
                         ],
                       ),
                     ]),
@@ -372,6 +379,70 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
     } else {
       return Container();
     }
+  }
+
+  Widget attendanceList2() {
+    if (widget._eventAddEditController.attendanceList.isNotEmpty) {
+      return Column(
+        children: [
+          ...widget._eventAddEditController.attendanceList
+              .map((e) => Card(
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          // IconButton(
+                          //   onPressed: () async {
+                          //     // await widget._eventAddEditController
+                          //     //     .removeAttendance(e.id!);
+                          //     // setState(() {});
+                          //   },
+                          //   icon: const Icon(Icons.person_off),
+                          // ),
+                          attendanceData(e)
+                        ],
+                      ),
+                    ]),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Expanded attendanceData(AttendanceModel e) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppTextTitleValue(
+            title: 'Atendimento Id: ',
+            value: '${e.id}',
+          ),
+          AppTextTitleValue(
+            title: 'Pac. Nome: ',
+            value: '${e.patient!.name}',
+          ),
+          AppTextTitleValue(
+            title: 'Id: ',
+            value: '${e.patient!.id}',
+          ),
+          AppTextTitleValue(
+            title: 'Prof. Nome: ',
+            value: '${e.professional!.name}',
+          ),
+          AppTextTitleValue(
+            title: 'Id: ',
+            value: '${e.professional!.id}',
+          ),
+          AppTextTitleValue(
+            title: 'Id: ',
+            value: '${e.procedure!.name}',
+          ),
+        ],
+      ),
+    );
   }
 
   // Widget profissionalList() {

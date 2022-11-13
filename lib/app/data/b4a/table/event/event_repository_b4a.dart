@@ -92,7 +92,7 @@ class EventRepositoryB4a implements EventRepository {
       response = await query.query();
 
       if (response.success && response.results != null) {
-        return EventEntity().fromParse(response.results!.first);
+        return await EventEntity().fromParse(response.results!.first);
       } else {
         throw Exception();
       }

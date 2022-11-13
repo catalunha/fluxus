@@ -141,7 +141,11 @@ class EventSearchController extends GetxController
   }) async {
     _loading(true);
     query = QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
-    if (myAttendance) {
+    // if (myAttendance) {
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
+      //secretariado
+
+    } else {
       // if (myAttendanceEmEspera ||
       //     myAttendanceAvaliacaoAgendada ||
       //     myAttendanceProfissionalAgendado) {

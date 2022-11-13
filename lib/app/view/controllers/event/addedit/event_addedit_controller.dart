@@ -18,6 +18,7 @@ import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class EventAddEditController extends GetxController
     with LoaderMixin, MessageMixin {
@@ -129,23 +130,19 @@ class EventAddEditController extends GetxController
   final descriptionTec = TextEditingController();
 //--- forms
   @override
-  void onReady() {
+  void onReady() async {
     eventId = Get.arguments;
-    getEvent();
+    await getEvent();
+    getRoomList();
+    getEventStatusList();
     super.onReady();
   }
 
   @override
   void onInit() async {
-    //log('+++> EventAddEditController onInit');
     loaderListener(_loading);
     messageListener(_message);
-    getRoomList();
-    getEventStatusList();
-    // getProcedureList();
     getStartDateList();
-    //log(eventId ?? 'null', name: 'EventAddEditController');
-    // getEvent();
     super.onInit();
   }
 
@@ -187,7 +184,8 @@ class EventAddEditController extends GetxController
     if (eventId == null) {
       eventStatusSelected = eventStatusList[0];
     } else {
-      eventStatusSelected = event!.eventStatus;
+      eventStatusSelected = eventStatusList[0];
+      // eventStatusSelected = event!.eventStatus;
     }
   }
 
@@ -264,11 +262,11 @@ class EventAddEditController extends GetxController
 
   void onSetDates() {
     _dateStart(event?.dtStart);
-    //log('$dateStart', name: 'onSetDates1');
     if (dateStart != null) {
-      startDateDropDrowSelected = startDateList.firstWhereOrNull((element) =>
-          element.hour == dateStart!.hour &&
-          element.minute == dateStart!.minute);
+      startDateDropDrowSelected = startDateList.firstWhereOrNull((element) {
+        return element.hour == dateStart!.hour &&
+            element.minute == dateStart!.minute;
+      });
     }
     _dateEnd(event?.dtEnd);
     if (dateEnd != null) {
@@ -282,9 +280,9 @@ class EventAddEditController extends GetxController
   }
 
   void onSetStatus() {
-    if (allowedAccess(OfficeEnum.secretaria.id)) {
-      _eventStatusSelected(event?.eventStatus);
-    }
+    // if (allowedAccess(OfficeEnum.secretaria.id)) {
+    _eventStatusSelected(event?.eventStatus);
+    // }
   }
 
   setFormFieldControllers() {
@@ -315,15 +313,16 @@ class EventAddEditController extends GetxController
       // dateStart = onMountDateStart();
       // dateEnd = onMountDateEnd();
       String logData = '---------------------';
-      logData = '$logData\n${DateTime.now()}';
+      final dateFormat = DateFormat('dd/MM/y hh:mm');
+      logData = '$logData\n${dateFormat.format(DateTime.now())}';
       var splashController = Get.find<SplashController>();
-      logData = '$logData\nuser:${splashController.userModel!.email}';
-      logData = '$logData\nroom:${room?.name ?? '-'}';
-      logData = '$logData\nstart:${dateStart ?? '-'}';
+      logData = '$logData\nUser: ${splashController.userModel!.email}';
+      logData = '$logData\nSala: ${room?.name ?? '-'}';
+      logData = '$logData\nInício: ${dateStart ?? '-'}';
       // logData = '$logData\nend:${dateEnd ?? '-'}';
-      logData = '$logData\ndesc:${description ?? '-'}';
-      logData = '$logData\nstatus:${status?.name ?? '-'}';
-      logData = '$logData\n${event?.log}';
+      logData = '$logData\nDesc.:${description ?? '-'}';
+      logData = '$logData\nStatus:${status?.name ?? '-'}';
+      logData = '$logData\n${event?.log ?? "\n-------------------\nInicio."}';
       // String? eventStatusIdPast = event?.status?.id;
       if (eventId == null) {
         event = EventModel(

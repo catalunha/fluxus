@@ -1,3 +1,4 @@
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/office_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
 import 'package:fluxus/app/data/b4a/entity/office_entity.dart';
@@ -67,8 +68,9 @@ class TeamSearchController extends GetxController
     query = QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
     query.whereNotEqualTo(
         'office',
-        (ParseObject(OfficeEntity.className)..objectId = 'RrrMr52QBM')
+        (ParseObject(OfficeEntity.className)..objectId = OfficeEnum.paciente.id)
             .toPointer());
+
     for (var element in officeNew.entries) {
       if (element.value.status) {
         query.whereEqualTo(
@@ -114,7 +116,7 @@ class TeamSearchController extends GetxController
     // 'office',
     // (ParseObject(OfficeEntity.className)..objectId = 'RrrMr52QBM')
     //     .toPointer());
-    temp.removeWhere((element) => element.id == 'RrrMr52QBM');
+    temp.removeWhere((element) => element.id == OfficeEnum.paciente.id);
     officeList.addAll(temp);
     for (var office in officeList) {
       officeOptions[office.id!] = Office(name: office.name!, status: false);

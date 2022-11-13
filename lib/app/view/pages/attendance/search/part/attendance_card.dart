@@ -65,6 +65,14 @@ class AttendanceCard extends StatelessWidget {
                         value: attendance.description,
                       ),
                       AppTextTitleValue(
+                        title: 'Evento: ',
+                        value: attendance.event,
+                      ),
+                      AppTextTitleValue(
+                        title: 'Evolução: ',
+                        value: attendance.evolution,
+                      ),
+                      AppTextTitleValue(
                         title: 'Data limite da autorização: ',
                         value: formatter.format(attendance.dAutorization!),
                       ),

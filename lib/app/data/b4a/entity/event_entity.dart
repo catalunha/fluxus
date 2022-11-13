@@ -95,6 +95,7 @@ class EventEntity {
       description: parseObject.get('description'),
       isDeleted: parseObject.get('isDeleted') ?? false,
     );
+    // log('$model', name: 'EventEntity.fromParse');
     return model;
   }
 

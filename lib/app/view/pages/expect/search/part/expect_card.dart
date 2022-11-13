@@ -65,9 +65,10 @@ class ExpectCard extends StatelessWidget {
                         // spacing: 100,
                         children: [
                           IconButton(
-                            onPressed: () {
-                              Get.toNamed(Routes.expectAddEdit,
+                            onPressed: () async {
+                              await Get.toNamed(Routes.expectAddEdit,
                                   arguments: expect.id);
+                              Get.back();
                             },
                             icon: const Icon(
                               Icons.edit,

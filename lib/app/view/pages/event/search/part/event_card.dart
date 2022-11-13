@@ -60,8 +60,10 @@ class EventCard extends StatelessWidget {
                       //   icon: const Icon(Icons.copy),
                       // ),
                       IconButton(
-                        onPressed: () {
-                          Get.toNamed(Routes.eventAddEdit, arguments: event.id);
+                        onPressed: () async {
+                          await Get.toNamed(Routes.eventAddEdit,
+                              arguments: event.id);
+                          Get.back();
                         },
                         icon: const Icon(
                           Icons.edit,

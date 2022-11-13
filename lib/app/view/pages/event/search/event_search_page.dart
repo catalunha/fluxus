@@ -28,7 +28,7 @@ class _SearchPageState extends State<EventSearchPage> {
   final _eventStatusEqualToTEC = TextEditingController();
   bool _roomEqualTo = false;
   final _roomEqualToTEC = TextEditingController();
-  bool _myAttendance = false;
+  final bool _myAttendance = false;
   // bool _myAttendanceEmEspera = false;
   // bool _myAttendanceAvaliacaoAgendada = false;
   // bool _myAttendanceProfissionalAgendado = false;
@@ -55,26 +55,26 @@ class _SearchPageState extends State<EventSearchPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  if (!allowedAccess(OfficeEnum.secretaria.id))
-                    Card(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: _myAttendance,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _myAttendance = value!;
-                                  });
-                                },
-                              ),
-                              const Text('Meus eventos.')
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                  // if (!allowedAccess(OfficeEnum.secretaria.id))
+                  //   Card(
+                  //     child: Column(
+                  //       children: [
+                  //         Row(
+                  //           children: [
+                  //             Checkbox(
+                  //               value: _myAttendance,
+                  //               onChanged: (value) {
+                  //                 setState(() {
+                  //                   _myAttendance = value!;
+                  //                 });
+                  //               },
+                  //             ),
+                  //             const Text('Meus eventos.')
+                  //           ],
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
                   // Card(
                   //   child: Column(
                   //     children: [
@@ -164,56 +164,56 @@ class _SearchPageState extends State<EventSearchPage> {
                         ],
                       ),
                     ),
-                  if (allowedAccess(OfficeEnum.secretaria.id))
-                    Card(
-                      child: Column(
-                        children: [
-                          const Text('por Status do evento'),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: _eventStatusEqualTo,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _eventStatusEqualTo = value!;
-                                  });
-                                },
-                              ),
-                              Expanded(
-                                child: Obx(
-                                  () => AppDropDownGeneric<EventStatusModel>(
-                                    options: widget
-                                        ._eventSearchController.eventStatusList
-                                        .toList(),
-                                    selected: widget._eventSearchController
-                                        .eventStatusSelected,
-                                    execute: (value) {
-                                      widget._eventSearchController
-                                          .eventStatusSelected = value;
-                                      setState(() {});
-                                    },
-                                    // width: 330,
-                                    width: double.maxFinite,
-                                  ),
+                  // if (allowedAccess(OfficeEnum.secretaria.id))
+                  Card(
+                    child: Column(
+                      children: [
+                        const Text('por Status do evento'),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _eventStatusEqualTo,
+                              onChanged: (value) {
+                                setState(() {
+                                  _eventStatusEqualTo = value!;
+                                });
+                              },
+                            ),
+                            Expanded(
+                              child: Obx(
+                                () => AppDropDownGeneric<EventStatusModel>(
+                                  options: widget
+                                      ._eventSearchController.eventStatusList
+                                      .toList(),
+                                  selected: widget._eventSearchController
+                                      .eventStatusSelected,
+                                  execute: (value) {
+                                    widget._eventSearchController
+                                        .eventStatusSelected = value;
+                                    setState(() {});
+                                  },
+                                  // width: 330,
+                                  width: double.maxFinite,
                                 ),
                               ),
-                              // IconButton(
-                              //   onPressed: () {
-                              //     Get.toNamed(Routes.eventStatusList);
-                              //   },
-                              //   icon: const Icon(Icons.search),
-                              // ),
-                              // Expanded(
-                              //   child: AppTextFormField(
-                              //     label: 'Status do evento com Id',
-                              //     controller: _eventStatusEqualToTEC,
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            // IconButton(
+                            //   onPressed: () {
+                            //     Get.toNamed(Routes.eventStatusList);
+                            //   },
+                            //   icon: const Icon(Icons.search),
+                            // ),
+                            // Expanded(
+                            //   child: AppTextFormField(
+                            //     label: 'Status do evento com Id',
+                            //     controller: _eventStatusEqualToTEC,
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                      ],
                     ),
+                  ),
                   if (allowedAccess(OfficeEnum.secretaria.id))
                     Card(
                       child: Column(
