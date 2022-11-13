@@ -37,27 +37,29 @@ class HomePage extends StatelessWidget {
                 },
               ),
             ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.punch_clock),
-                title: const Text('Cadastrar lista de espera'),
-                onTap: () {
-                  Get.toNamed(Routes.expectAddEdit);
-                },
+            if (allowedAccess(OfficeEnum.secretaria.id))
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.punch_clock),
+                  title: const Text('Cadastrar lista de espera'),
+                  onTap: () {
+                    Get.toNamed(Routes.expectAddEdit);
+                  },
+                ),
               ),
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Buscar lista de espera'),
-                subtitle: const Text('Por ...'),
-                onTap: () {
-                  Get.toNamed(
-                    Routes.expectSearch,
-                  );
-                },
+            if (allowedAccess(OfficeEnum.secretaria.id))
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.search),
+                  title: const Text('Buscar lista de espera'),
+                  subtitle: const Text('Por ...'),
+                  onTap: () {
+                    Get.toNamed(
+                      Routes.expectSearch,
+                    );
+                  },
+                ),
               ),
-            ),
             const HomeAddAttendance(),
             const HomeSearchAttendance(),
             const HomeAddEvent(),

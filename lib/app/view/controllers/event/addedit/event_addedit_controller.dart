@@ -157,23 +157,37 @@ class EventAddEditController extends GetxController
 
   getEventStatusList() async {
     List<EventStatusModel> all = await _eventStatusRepository.list();
+    List<String> eventStatusAutorized = [];
     if (allowedAccess(OfficeEnum.secretaria.id)) {
-      eventStatusList(all);
+      eventStatusAutorized = [
+        'ul5FxaUpOX',
+        'hpBM6CPlIV',
+        // 'hHJV8j1NR4',
+        'yDvPaz7SzG',
+        'c0bYveZS7q',
+        'fCoyr6KnCn',
+        'OBRkRNvoUz',
+      ];
+    } else {
+      eventStatusAutorized = [
+        // 'ul5FxaUpOX',
+        // 'hpBM6CPlIV',
+        'hHJV8j1NR4',
+        // 'yDvPaz7SzG',
+        // 'c0bYveZS7q',
+        // 'fCoyr6KnCn',
+        // 'OBRkRNvoUz',
+      ];
+    }
+    for (var eventStatus in all) {
+      if (eventStatusAutorized.contains(eventStatus.id)) {
+        eventStatusList.add(eventStatus);
+      }
+    }
+    if (eventId == null) {
       eventStatusSelected = eventStatusList[0];
     } else {
-      var eventStatusAutorized = [
-        'ul5FxaUpOX',
-        '0kCQxw8GBb',
-        'TBlbt1gbW3',
-        '7SWj262UYm',
-        'hHJV8j1NR4',
-      ];
-      for (var eventStatus in all) {
-        if (eventStatusAutorized.contains(eventStatus.id)) {
-          eventStatusList.add(eventStatus);
-        }
-      }
-      eventStatusSelected = eventStatusList[0];
+      eventStatusSelected = event!.eventStatus;
     }
   }
 

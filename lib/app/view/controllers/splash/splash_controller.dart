@@ -84,15 +84,16 @@ class SplashController extends GetxController with MessageMixin {
       await parseUser!.logout();
       return false;
     } else {
-      var profileField = parseUser!.get('profile');
-      var profileRepositoryB4a = ProfileRepositoryB4a();
+      var profileModel = await updateUserProfile();
+      // var profileField = parseUser!.get('profile');
+      // var profileRepositoryB4a = ProfileRepositoryB4a();
 
-      var profileModel =
-          await profileRepositoryB4a.readById(profileField.objectId);
-      officeIdList.clear();
-      if (profileModel!.office != null && profileModel.office!.isNotEmpty) {
-        officeIdList.addAll(profileModel.office!.map((e) => e.id!).toList());
-      }
+      // var profileModel =
+      //     await profileRepositoryB4a.readById(profileField.objectId);
+      // officeIdList.clear();
+      // if (profileModel!.office != null && profileModel.office!.isNotEmpty) {
+      //   officeIdList.addAll(profileModel.office!.map((e) => e.id!).toList());
+      // }
       userModel = UserModel(
         id: parseUser!.objectId!,
         email: parseUser!.emailAddress!,
@@ -107,6 +108,10 @@ class SplashController extends GetxController with MessageMixin {
     var profileRepositoryB4a = ProfileRepositoryB4a();
     var profileModel =
         await profileRepositoryB4a.readById(profileField.objectId);
+    officeIdList.clear();
+    if (profileModel!.office != null && profileModel.office!.isNotEmpty) {
+      officeIdList.addAll(profileModel.office!.map((e) => e.id!).toList());
+    }
     _userModel.update((val) {
       val?.profile = profileModel;
     });

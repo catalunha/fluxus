@@ -79,7 +79,33 @@ class EventSearchController extends GetxController
 
   getEventStatusList() async {
     List<EventStatusModel> all = await _eventStatusRepository.list();
-    eventStatusList(all);
+    List<String> eventStatusAutorized = [];
+    if (allowedAccess(OfficeEnum.secretaria.id)) {
+      eventStatusAutorized = [
+        'ul5FxaUpOX',
+        'hpBM6CPlIV',
+        'hHJV8j1NR4',
+        'yDvPaz7SzG',
+        'c0bYveZS7q',
+        'fCoyr6KnCn',
+        'OBRkRNvoUz',
+      ];
+    } else {
+      eventStatusAutorized = [
+        // 'ul5FxaUpOX',
+        'hpBM6CPlIV',
+        'hHJV8j1NR4',
+        // 'yDvPaz7SzG',
+        // 'c0bYveZS7q',
+        // 'fCoyr6KnCn',
+        // 'OBRkRNvoUz',
+      ];
+    }
+    for (var eventStatus in all) {
+      if (eventStatusAutorized.contains(eventStatus.id)) {
+        eventStatusList.add(eventStatus);
+      }
+    }
     eventStatusSelected = eventStatusList[0];
   }
 

@@ -95,7 +95,7 @@ class AttendanceAddEditController extends GetxController
           autorization: autorization!.isEmpty ? null : autorization,
           description: description!.isEmpty ? null : description,
           dAutorization: dAutorization,
-          eventStatus: EventStatusModel(id: 'zoFBVNZ16I'),
+          eventStatus: EventStatusModel(id: 'ul5FxaUpOX'),
           evolution: evolutionId,
         );
         await _attendanceRepository.update(attendance);

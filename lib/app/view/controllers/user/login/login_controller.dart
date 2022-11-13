@@ -32,6 +32,7 @@ class LoginController extends GetxController with LoaderMixin, MessageMixin {
         splashController.userModel = user;
         final parseUser = await ParseUser.currentUser() as ParseUser;
         splashController.parseUser = parseUser;
+        await splashController.updateUserProfile();
         if (user.profile!.isActive == true) {
           Get.offAllNamed(Routes.home);
         } else {

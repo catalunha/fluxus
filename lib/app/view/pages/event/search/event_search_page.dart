@@ -55,25 +55,26 @@ class _SearchPageState extends State<EventSearchPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  Card(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: _myAttendance,
-                              onChanged: (value) {
-                                setState(() {
-                                  _myAttendance = value!;
-                                });
-                              },
-                            ),
-                            const Text('Meus eventos.')
-                          ],
-                        ),
-                      ],
+                  if (!allowedAccess(OfficeEnum.secretaria.id))
+                    Card(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _myAttendance,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _myAttendance = value!;
+                                  });
+                                },
+                              ),
+                              const Text('Meus eventos.')
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   // Card(
                   //   child: Column(
                   //     children: [
