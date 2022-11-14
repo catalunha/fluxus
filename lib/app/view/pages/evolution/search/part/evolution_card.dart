@@ -61,13 +61,12 @@ class EvolutionCard extends StatelessWidget {
                     Wrap(
                       children: [
                         IconButton(
-                          onPressed: () {
-                            Get.toNamed(Routes.evolutionAddEdit,
+                          onPressed: () async {
+                            await Get.toNamed(Routes.evolutionAddEdit,
                                 arguments: evolution.id);
+                            Get.back();
                           },
-                          icon: const Icon(
-                            Icons.edit,
-                          ),
+                          icon: const Icon(Icons.edit),
                         ),
                         IconButton(
                           onPressed: () {
@@ -76,9 +75,7 @@ class EvolutionCard extends StatelessWidget {
                             // _evolutionSearchController
                             //     .listHistoryThisPatient(evolution.patient!.id!);
                           },
-                          icon: const Icon(
-                            Icons.history,
-                          ),
+                          icon: const Icon(Icons.history),
                         ),
                       ],
                     ),
