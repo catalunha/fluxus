@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/enums/office_enum.dart';
+import 'package:fluxus/app/core/utils/allowed_access.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/pages/home/parts/popmenu_user.dart';
@@ -37,7 +38,7 @@ class HomePage extends StatelessWidget {
                 },
               ),
             ),
-            if (allowedAccess(OfficeEnum.secretaria.id))
+            if (AllowedAccess.consultFor([OfficeEnum.secretaria.id]))
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.punch_clock),
@@ -47,7 +48,10 @@ class HomePage extends StatelessWidget {
                   },
                 ),
               ),
-            if (allowedAccess(OfficeEnum.secretaria.id))
+            if (AllowedAccess.consultFor([
+              OfficeEnum.secretaria.id,
+              OfficeEnum.avaliadora.id,
+            ]))
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.search),
@@ -116,7 +120,7 @@ class HomeAddEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (allowedAccess(OfficeEnum.secretaria.id)) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return Card(
         child: ListTile(
           leading: const Icon(Icons.event),
@@ -139,7 +143,7 @@ class HomeAddEvent extends StatelessWidget {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     if (allowedAccess(OfficeEnum.secretaria.id)) {
+//     if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
 //       return Card(
 //         child: ListTile(
 //           leading: const Icon(Icons.search),
@@ -156,10 +160,11 @@ class HomeAddEvent extends StatelessWidget {
 //   }
 // }
 
-bool allowedAccess(String officeId) {
-  final splashController = Get.find<SplashController>();
-  return splashController.officeIdList.contains(officeId);
-}
+// bool AllowedAccess.consultFor(List<String> officeIdListAutorized) {
+//   final splashController = Get.find<SplashController>();
+//   return splashController.officeIdList
+//       .any((element) => officeIdListAutorized.contains(element));
+// }
 
 class HomeSearchAttendance extends StatelessWidget {
   const HomeSearchAttendance({
@@ -168,7 +173,7 @@ class HomeSearchAttendance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (allowedAccess(OfficeEnum.secretaria.id)) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return Card(
         child: ListTile(
           leading: const Icon(Icons.search),
@@ -192,7 +197,7 @@ class HomeAddAttendance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (allowedAccess(OfficeEnum.secretaria.id)) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return Card(
         child: ListTile(
           leading: const Icon(Icons.view_compact_outlined),
@@ -215,7 +220,7 @@ class HomeClientAdd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (allowedAccess(OfficeEnum.secretaria.id)) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return Card(
         child: ListTile(
           leading: const Icon(Icons.person_add),
@@ -238,7 +243,7 @@ class HomeSearchTeam extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (allowedAccess(OfficeEnum.secretaria.id)) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return Card(
         child: ListTile(
           leading: const Icon(Icons.search),

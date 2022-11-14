@@ -1,6 +1,8 @@
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/expect_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/utils/allowed_access.dart';
 import 'package:fluxus/app/data/b4a/entity/expect_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/event_status_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/expertise_entity.dart';
@@ -10,6 +12,7 @@ import 'package:fluxus/app/data/repositories/event_status_repository.dart';
 import 'package:fluxus/app/data/repositories/expertise_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
+import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
 import 'package:get/get.dart';
@@ -131,6 +134,28 @@ class ExpectSearchController extends GetxController
           (ParseObject(EventStatusEntity.className)
                 ..objectId = eventStatusSelected!.id)
               .toPointer());
+    }
+    if (AllowedAccess.consultFor([OfficeEnum.avaliadora.id])) {
+      final splashController = Get.find<SplashController>();
+      List<QueryBuilder<ParseObject>> queryBuilderList = [];
+      for (var expertise in splashController.userModel!.profile!.expertise!) {
+        var query1 =
+            QueryBuilder<ParseObject>(ParseObject(ExpectEntity.className));
+        query1.whereEqualTo(
+            'expertise',
+            (ParseObject(ExpertiseEntity.className)..objectId = expertise.id)
+                .toPointer());
+        queryBuilderList.add(query1);
+      }
+      QueryBuilder<ParseObject> queryOr =
+          QueryBuilder<ParseObject>(ParseObject(ExpectEntity.className));
+
+      queryOr = QueryBuilder.or(
+        ParseObject(ExpectEntity.className),
+        queryBuilderList,
+      );
+
+      query.whereMatchesKeyInQuery('expertise', 'expertise', queryOr);
     }
     if (expertiseEqualToBool) {
       query.whereEqualTo(

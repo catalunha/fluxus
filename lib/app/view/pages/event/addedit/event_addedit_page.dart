@@ -3,10 +3,10 @@ import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
+import 'package:fluxus/app/core/utils/allowed_access.dart';
 import 'package:fluxus/app/core/utils/start_date_drop_down.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/event/addedit/event_addedit_controller.dart';
-import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_dialog_add_ids.dart';
 import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
@@ -162,7 +162,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
   }
 
   Widget attendance(BuildContext context) {
-    if (allowedAccess(OfficeEnum.secretaria.id)) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return Column(
         children: [
           Row(
@@ -220,7 +220,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
   }
 
   Widget room() {
-    if (allowedAccess(OfficeEnum.secretaria.id)) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return Column(
         children: [
           const Text('Ambiente'),
@@ -246,7 +246,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
   }
 
   Widget timeStart() {
-    if (allowedAccess(OfficeEnum.secretaria.id)) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -301,7 +301,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
   }
 
   Widget dateStart() {
-    if (allowedAccess(OfficeEnum.secretaria.id)) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return AppCalendarButton(
         title: "Data do atendimento.",
         getDate: () => widget._eventAddEditController.dateStart,
@@ -315,11 +315,6 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
               ? dateFormat.format(widget._eventAddEditController.dateStart!)
               : ''));
     }
-  }
-
-  bool allowedAccess(String officeId) {
-    final splashController = Get.find<SplashController>();
-    return splashController.officeIdList.contains(officeId);
   }
 
   Future<bool> saveEvent() async {

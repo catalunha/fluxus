@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/utils/allowed_access.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/expect/search/expect_search_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
@@ -104,43 +106,44 @@ class _SearchPageState extends State<ExpectSearchPage> {
                       ],
                     ),
                   ),
-                  Card(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text('por Especialidade'),
-                        Row(
-                          children: [
-                            Checkbox(
-                                value: _expertiseEqualTo,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _expertiseEqualTo = value!;
-                                  });
-                                }),
-                            Expanded(
-                              child: Obx(
-                                () => AppDropDownGeneric<ExpertiseModel>(
-                                  options: widget
-                                      ._expectController.expertiseList
-                                      .toList(),
-                                  selected: widget
-                                      ._expectController.expertiseSelected,
-                                  execute: (value) {
-                                    widget._expectController.expertiseSelected =
-                                        value;
-                                    setState(() {});
-                                  },
-                                  // width: 340,
-                                  width: double.maxFinite,
+                  if (AllowedAccess.consultFor([OfficeEnum.secretaria.id]))
+                    Card(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text('por Especialidade'),
+                          Row(
+                            children: [
+                              Checkbox(
+                                  value: _expertiseEqualTo,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _expertiseEqualTo = value!;
+                                    });
+                                  }),
+                              Expanded(
+                                child: Obx(
+                                  () => AppDropDownGeneric<ExpertiseModel>(
+                                    options: widget
+                                        ._expectController.expertiseList
+                                        .toList(),
+                                    selected: widget
+                                        ._expectController.expertiseSelected,
+                                    execute: (value) {
+                                      widget._expectController
+                                          .expertiseSelected = value;
+                                      setState(() {});
+                                    },
+                                    // width: 340,
+                                    width: double.maxFinite,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   Card(
                     child: Column(
                       children: [

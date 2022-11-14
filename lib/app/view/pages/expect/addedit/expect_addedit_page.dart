@@ -2,9 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/expertise_model.dart';
+import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/profile_model.dart';
+import 'package:fluxus/app/core/utils/allowed_access.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/expect/addedit/expect_addedit_controller.dart';
 import 'package:fluxus/app/view/pages/expect/addedit/part/expect_add_ids.dart';
@@ -56,49 +59,8 @@ class _ExpectAddEditPageState extends State<ExpectAddEditPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 5),
-                    AppTextFormField(
-                      label: 'Descrição',
-                      controller:
-                          widget._expectAddEditController.descriptionTec,
-                      maxLines: 3,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Get.toNamed(Routes.clientProfileSearch,
-                                  arguments: ['name', 'healthPlan']);
-                            },
-                            icon: const Icon(Icons.search)),
-                        const Text('Paciente'),
-                        IconButton(
-                          onPressed: () async {
-                            // var result = await saveExpect();
-                            // if (result) {
-                            String? res = await showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const ExpectAddIds(
-                                  title: 'Informe o Id do paciente',
-                                  formFieldLabel: 'Id do paciente',
-                                );
-                              },
-                            );
-                            if (res != null) {
-                              widget._expectAddEditController
-                                  .setPatient(id: res);
-                            }
-                            log(res ?? '...', name: 'res');
-                            setState(() {});
-                          },
-                          icon: const Icon(Icons.add),
-                        )
-                      ],
-                    ),
-                    Obx(() => patient()),
-                    Obx(() => healthPlanList()),
+                    description(),
+                    patientField(context),
                     Column(
                       children: [
                         const Text('* Status do evento'),
@@ -119,36 +81,38 @@ class _ExpectAddEditPageState extends State<ExpectAddEditPage> {
                         ),
                       ],
                     ),
-                    Column(
-                      children: [
-                        const Text('* Especialidade'),
-                        Obx(
-                          () => AppDropDownGeneric<ExpertiseModel>(
-                            options: widget
-                                ._expectAddEditController.expertiseList
-                                .toList(),
-                            selected: widget
-                                ._expectAddEditController.expertiseSelected,
-                            execute: (value) {
-                              widget._expectAddEditController
-                                  .expertiseSelected = value;
-                              setState(() {});
-                            },
-                            width: double.maxFinite,
+                    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id]))
+                      Column(
+                        children: [
+                          const Text('* Especialidade'),
+                          Obx(
+                            () => AppDropDownGeneric<ExpertiseModel>(
+                              options: widget
+                                  ._expectAddEditController.expertiseList
+                                  .toList(),
+                              selected: widget
+                                  ._expectAddEditController.expertiseSelected,
+                              execute: (value) {
+                                widget._expectAddEditController
+                                    .expertiseSelected = value;
+                                setState(() {});
+                              },
+                              width: double.maxFinite,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Obx(
-                      () => CheckboxListTile(
-                        title: const Text("Arquivar esta espera ?"),
-                        onChanged: (value) {
-                          widget._expectAddEditController.isArchived =
-                              value ?? false;
-                        },
-                        value: widget._expectAddEditController.isArchived,
+                        ],
                       ),
-                    ),
+                    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id]))
+                      Obx(
+                        () => CheckboxListTile(
+                          title: const Text("Arquivar esta espera ?"),
+                          onChanged: (value) {
+                            widget._expectAddEditController.isArchived =
+                                value ?? false;
+                          },
+                          value: widget._expectAddEditController.isArchived,
+                        ),
+                      ),
                     const SizedBox(height: 70),
                   ],
                 ),
@@ -158,6 +122,85 @@ class _ExpectAddEditPageState extends State<ExpectAddEditPage> {
         ),
       ),
     );
+  }
+
+  Widget patientField(BuildContext context) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
+      return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Get.toNamed(Routes.clientProfileSearch,
+                        arguments: ['name', 'healthPlan']);
+                  },
+                  icon: const Icon(Icons.search)),
+              const Text('Paciente'),
+              IconButton(
+                onPressed: () async {
+                  // var result = await saveExpect();
+                  // if (result) {
+                  String? res = await showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const ExpectAddIds(
+                        title: 'Informe o Id do paciente',
+                        formFieldLabel: 'Id do paciente',
+                      );
+                    },
+                  );
+                  if (res != null) {
+                    widget._expectAddEditController.setPatient(id: res);
+                  }
+                  log(res ?? '...', name: 'res');
+                  setState(() {});
+                },
+                icon: const Icon(Icons.add),
+              )
+            ],
+          ),
+          Obx(() => patient()),
+          Obx(() => healthPlanList()),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: const [
+          //     Text('Paciente'),
+          //   ],
+          // ),
+          const AppTextTitleValue(
+            title: 'Paciente: ',
+            value: ' ',
+            inColumn: true,
+          ),
+          Obx(() => patient()),
+          Obx(() => healthPlanList2()),
+        ],
+      );
+    }
+  }
+
+  Widget description() {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
+      return AppTextFormField(
+        label: 'Descrição',
+        controller: widget._expectAddEditController.descriptionTec,
+        maxLines: 3,
+      );
+    } else {
+      return Obx(() => AppTextTitleValue(
+            title: 'Descrição: ',
+            value: widget._expectAddEditController.expect?.description,
+            inColumn: true,
+          ));
+    }
   }
 
   Future<bool> saveExpect() async {
@@ -237,29 +280,7 @@ class _ExpectAddEditPageState extends State<ExpectAddEditPage> {
                               ),
                             ],
                           ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AppTextTitleValue(
-                                  title: 'Gestor: ',
-                                  value: e.healthPlanType!.name,
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Código: ',
-                                  value: e.code,
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Descrição: ',
-                                  value: e.description,
-                                ),
-                                AppTextTitleValue(
-                                  title: 'Id: ',
-                                  value: e.id,
-                                ),
-                              ],
-                            ),
-                          )
+                          healthPlanData(e)
                         ],
                       ),
                     ]),
@@ -268,8 +289,69 @@ class _ExpectAddEditPageState extends State<ExpectAddEditPage> {
         ],
       );
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
+  }
+
+  Widget healthPlanList2() {
+    if (widget._expectAddEditController.healthPlanList.isNotEmpty) {
+      return Column(
+        children: [
+          // const Text('Deixe apenas 1 Plano de saúde:'),
+          ...widget._expectAddEditController.healthPlanList
+              .map((e) => Card(
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          // Column(
+                          //   children: [
+                          //     IconButton(
+                          //       onPressed: () async {
+                          //         widget._expectAddEditController
+                          //             .removeHealthPlan(e.id!);
+                          //         setState(() {});
+                          //       },
+                          //       icon: const Icon(Icons.delete_forever),
+                          //     ),
+                          //   ],
+                          // ),
+                          healthPlanData(e)
+                        ],
+                      ),
+                    ]),
+                  ))
+              .toList()
+        ],
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  Expanded healthPlanData(HealthPlanModel e) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppTextTitleValue(
+            title: 'Gestor: ',
+            value: e.healthPlanType!.name,
+          ),
+          AppTextTitleValue(
+            title: 'Código: ',
+            value: e.code,
+          ),
+          AppTextTitleValue(
+            title: 'Descrição: ',
+            value: e.description,
+          ),
+          AppTextTitleValue(
+            title: 'Id: ',
+            value: e.id,
+          ),
+        ],
+      ),
+    );
   }
 
   copy(String text) async {
