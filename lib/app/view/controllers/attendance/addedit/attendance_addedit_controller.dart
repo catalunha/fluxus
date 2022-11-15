@@ -31,6 +31,12 @@ class AttendanceAddEditController extends GetxController
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
 
+  String? attendanceId;
+  final _attendance = Rxn<AttendanceModel>();
+  AttendanceModel? get attendance => _attendance.value;
+  set attendance(AttendanceModel? attendanceModelNew) =>
+      _attendance(attendanceModelNew);
+
   final Rxn<DateTime> _dAutorization = Rxn<DateTime>();
   DateTime? get dAutorization => _dAutorization.value;
   set dAutorization(DateTime? newDate) {
@@ -44,11 +50,20 @@ class AttendanceAddEditController extends GetxController
 
   var procedureList = <ProcedureModel>[].obs;
 
+  final _procedure = Rxn<ProcedureModel>();
+  ProcedureModel? get procedure => _procedure.value;
+  set procedure(ProcedureModel? procedureNew) => _procedure(procedureNew);
+
   final _patient = Rxn<ProfileModel>();
   ProfileModel? get patient => _patient.value;
   set patient(ProfileModel? patientNew) => _patient(patientNew);
 
   var healthPlanList = <HealthPlanModel>[].obs;
+
+  final _healthPlanModel = Rxn<HealthPlanModel>();
+  HealthPlanModel? get healthPlanModel => _healthPlanModel.value;
+  set healthPlanModel(HealthPlanModel? healthPlanNew) =>
+      _healthPlanModel(healthPlanNew);
 
   final _healthPlan = ''.obs;
   String? get healthPlan => _healthPlan.value;
@@ -60,16 +75,50 @@ class AttendanceAddEditController extends GetxController
 //--- forms
 
   @override
+  void onReady() async {
+    attendanceId = Get.arguments;
+    await getAttendance();
+    super.onReady();
+  }
+
+  @override
   void onInit() async {
+    attendanceId = Get.arguments;
+
     loaderListener(_loading);
     messageListener(_message);
-    _dAutorization(DateTime.now());
     super.onInit();
   }
 
+  Future<void> getAttendance() async {
+    // _loading(true);
+    if (attendanceId != null) {
+      AttendanceModel? attendanceModelTemp =
+          await _attendanceRepository.readById(attendanceId!);
+      attendance = attendanceModelTemp;
+      patient = attendance!.patient;
+      healthPlanModel = attendance!.healthPlan;
+      healthPlanList.add(healthPlanModel!);
+      professional = attendance!.professional;
+      procedure = attendance!.procedure;
+      procedureList.add(procedure!);
+    }
+    setFormFieldControllers();
+    setdAutorization();
+    // _loading(false);
+  }
+
+  setdAutorization() {
+    if (attendanceId != null) {
+      dAutorization = attendance?.dAutorization;
+    } else {
+      dAutorization = DateTime.now();
+    }
+  }
+
   setFormFieldControllers() {
-    autorizationTec.text = "";
-    descriptionTec.text = "";
+    autorizationTec.text = attendance?.autorization ?? "";
+    descriptionTec.text = attendance?.description ?? "";
   }
 
   Future<void> append({
@@ -78,25 +127,36 @@ class AttendanceAddEditController extends GetxController
   }) async {
     try {
       _loading(true);
-      for (var procedure in procedureList) {
-        var evolutionModel = EvolutionModel(
-          professional: professional,
-          procedure: procedure,
-          expertise: procedure.expertise!.id,
-          patient: patient,
-        );
-        String evolutionId = await _evolutionRepository.update(evolutionModel);
+      if (attendanceId == null) {
+        for (var procedure in procedureList) {
+          var evolutionModel = EvolutionModel(
+            professional: professional,
+            procedure: procedure,
+            expertise: procedure.expertise!.id,
+            patient: patient,
+          );
+          String evolutionId =
+              await _evolutionRepository.update(evolutionModel);
 
+          var attendance = AttendanceModel(
+            professional: professional,
+            procedure: procedure,
+            patient: patient,
+            healthPlan: HealthPlanModel(id: healthPlanList[0].id),
+            autorization: autorization!.isEmpty ? null : autorization,
+            description: description!.isEmpty ? null : description,
+            dAutorization: dAutorization,
+            eventStatus: EventStatusModel(id: 'ul5FxaUpOX'),
+            evolution: evolutionId,
+          );
+          await _attendanceRepository.update(attendance);
+        }
+      } else {
         var attendance = AttendanceModel(
-          professional: professional,
-          procedure: procedure,
-          patient: patient,
-          healthPlan: HealthPlanModel(id: healthPlanList[0].id),
+          id: attendanceId,
           autorization: autorization!.isEmpty ? null : autorization,
           description: description!.isEmpty ? null : description,
           dAutorization: dAutorization,
-          eventStatus: EventStatusModel(id: 'ul5FxaUpOX'),
-          evolution: evolutionId,
         );
         await _attendanceRepository.update(attendance);
       }

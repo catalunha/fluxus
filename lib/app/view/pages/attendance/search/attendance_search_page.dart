@@ -48,7 +48,7 @@ class _SearchPageState extends State<AttendanceSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Buscando guia'),
+        title: const Text('Buscando atendimentos'),
       ),
       body: Center(
         child: ConstrainedBox(

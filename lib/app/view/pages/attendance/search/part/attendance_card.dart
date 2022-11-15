@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
+import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/attendance/search/attendance_search_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
@@ -92,8 +93,17 @@ class AttendanceCard extends StatelessWidget {
                           title: 'Status: ',
                           value: attendance.eventStatus?.name),
                       Wrap(
-                        spacing: 100,
+                        spacing: 50,
                         children: [
+                          IconButton(
+                            onPressed: () async {
+                              await Get.toNamed(Routes.attendanceAddEdit,
+                                  arguments: attendance.id!);
+
+                              Get.back();
+                            },
+                            icon: const Icon(Icons.edit),
+                          ),
                           IconButton(
                             onPressed: () => copy(attendance.id!),
                             icon: const Icon(Icons.copy),

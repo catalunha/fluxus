@@ -14,7 +14,7 @@ class AttendanceSearchListPage extends StatelessWidget {
       appBar: AppBar(
         title: Obx(
           () => Text(
-              '${_attendanceSearchController.attendanceList.length} guias encontrados.'),
+              '${_attendanceSearchController.attendanceList.length} atendimentos encontrados.'),
         ),
       ),
       body: Column(
