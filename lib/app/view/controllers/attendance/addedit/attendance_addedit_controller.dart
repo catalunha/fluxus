@@ -112,7 +112,7 @@ class AttendanceAddEditController extends GetxController
     if (attendanceId != null) {
       dAutorization = attendance?.dAutorization;
     } else {
-      dAutorization = DateTime.now();
+      dAutorization = DateTime.now().add(const Duration(days: 30));
     }
   }
 
