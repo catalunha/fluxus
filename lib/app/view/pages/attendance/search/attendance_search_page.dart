@@ -21,7 +21,7 @@ class _SearchPageState extends State<AttendanceSearchPage> {
   bool _professionalEqualTo = false;
   bool _patientEqualTo = false;
   bool _procedureEqualTo = false;
-  bool _eventStatusEqualTo = false;
+  bool _eventStatusEqualTo = true;
   bool _autorizationEqualTo = false;
   bool _eventEqualTo = false;
   bool _dAutorization = false;

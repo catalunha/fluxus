@@ -22,7 +22,7 @@ class _SearchPageState extends State<ExpectSearchPage> {
   final _formKey = GlobalKey<FormState>();
   final bool _isArchived = false;
   bool _patientEqualTo = false;
-  bool _eventStatusEqualTo = false;
+  bool _eventStatusEqualTo = true;
   bool _expertiseEqualTo = false;
   final _patientEqualToTEC = TextEditingController();
 

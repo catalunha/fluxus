@@ -412,7 +412,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppTextTitleValue(
-            title: 'Atendimento Id: ',
+            title: 'attendanceId: ',
             value: '${e.id}',
           ),
           AppTextTitleValue(
@@ -420,7 +420,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
             value: '${e.patient!.name}',
           ),
           AppTextTitleValue(
-            title: 'Id: ',
+            title: 'patientId: ',
             value: '${e.patient!.id}',
           ),
           AppTextTitleValue(
@@ -428,12 +428,20 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
             value: '${e.professional!.name}',
           ),
           AppTextTitleValue(
-            title: 'Id: ',
+            title: 'professionalId: ',
             value: '${e.professional!.id}',
           ),
           AppTextTitleValue(
-            title: 'Id: ',
+            title: 'Procedimento. Cod.: ',
+            value: '${e.procedure!.code}',
+          ),
+          AppTextTitleValue(
+            title: 'Procedimento. Nome: ',
             value: '${e.procedure!.name}',
+          ),
+          AppTextTitleValue(
+            title: 'Descrição: ',
+            value: '${e.description}',
           ),
         ],
       ),

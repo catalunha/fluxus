@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/models/health_plan_model.dart';
+import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/profile/client/addedit/client_addedit_controller.dart';
 import 'package:fluxus/app/view/pages/profile/client/addedit/client_health_plan_addedit_page.dart';
 import 'package:fluxus/app/view/pages/profile/team/edit/part/user_profile_photo.dart';
@@ -199,6 +200,13 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        IconButton(
+                          onPressed: () {
+                            Get.toNamed(Routes.clientProfileSearch,
+                                arguments: ['name']);
+                          },
+                          icon: const Icon(Icons.search),
+                        ),
                         const Text('Seu grupo familiar'),
                         IconButton(
                           onPressed: () async {

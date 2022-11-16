@@ -118,6 +118,15 @@ class ClientAddEditController extends GetxController
         healthPlanListOriginal.addAll([...profileModelTemp.healthPlan!]);
       }
       onSetDateBirthday();
+    } else {
+      healthPlanList.add(
+        HealthPlanModel(
+          healthPlanType:
+              HealthPlanTypeModel(id: 'fp5YkDWvxq', name: 'Particular'),
+          code: '0',
+          description: 'Plano particular padrão fluxus',
+        ),
+      );
     }
     setFormFieldControllers();
     _loading(false);
@@ -357,7 +366,7 @@ class ClientAddEditController extends GetxController
     profileList.removeWhere((element) => element.id == profileId);
   }
 
-  Future<void> updateFamilyInProfile(String eventId) async {
+  Future<void> updateFamilyInProfile(String profileIdActual) async {
     List<ProfileModel> profileListResult = <ProfileModel>[];
     profileListResult.addAll([...profileList]);
     for (var profileOriginal in profileListOriginal) {
@@ -365,7 +374,9 @@ class ClientAddEditController extends GetxController
           .firstWhereOrNull((element) => element.id == profileOriginal.id);
       if (profileFound == null) {
         await _profileRepository.updateRelationFamily(
-            eventId, [profileOriginal.id!], false);
+            profileIdActual, [profileOriginal.id!], false);
+        await _profileRepository.updateRelationFamily(
+            profileOriginal.id!, [profileIdActual], false);
       } else {
         profileListResult
             .removeWhere((element) => element.id == profileFound.id);
@@ -373,7 +384,9 @@ class ClientAddEditController extends GetxController
     }
     for (var profileResult in profileListResult) {
       await _profileRepository.updateRelationFamily(
-          eventId, [profileResult.id!], true);
+          profileIdActual, [profileResult.id!], true);
+      await _profileRepository.updateRelationFamily(
+          profileResult.id!, [profileIdActual], true);
     }
   }
 }

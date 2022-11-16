@@ -209,11 +209,12 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                  onPressed: () {
-                    Get.toNamed(Routes.clientProfileSearch,
-                        arguments: ['name', 'healthPlan']);
-                  },
-                  icon: const Icon(Icons.search)),
+                onPressed: () {
+                  Get.toNamed(Routes.clientProfileSearch,
+                      arguments: ['name', 'healthPlan']);
+                },
+                icon: const Icon(Icons.search),
+              ),
               const Text('Paciente'),
               IconButton(
                 onPressed: () async {
@@ -506,7 +507,7 @@ class _AttendanceAddEditPageState extends State<AttendanceAddEditPage> {
                               IconButton(
                                 onPressed: () async {
                                   widget._attendanceAddEditController
-                                      .removeProcedure(e.id!);
+                                      .removeProcedure(e);
                                   setState(() {});
                                 },
                                 icon: const Icon(Icons.delete_forever),

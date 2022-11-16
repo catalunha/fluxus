@@ -24,7 +24,7 @@ class _SearchPageState extends State<EventSearchPage> {
   bool _attendanceEqualTo = false;
   final _attendanceEqualToTEC = TextEditingController();
   bool _dtStartBool = false;
-  bool _eventStatusEqualTo = false;
+  bool _eventStatusEqualTo = true;
   final _eventStatusEqualToTEC = TextEditingController();
   bool _roomEqualTo = false;
   final _roomEqualToTEC = TextEditingController();

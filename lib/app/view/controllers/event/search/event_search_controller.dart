@@ -102,7 +102,8 @@ class EventSearchController extends GetxController
         eventStatusList.add(eventStatus);
       }
     }
-    eventStatusSelected = eventStatusList[0];
+    eventStatusSelected = eventStatusList.firstWhere(
+        (element) => element.id == EventStatusEnum.eventoAtendido.id);
   }
 
   getRoomList() async {

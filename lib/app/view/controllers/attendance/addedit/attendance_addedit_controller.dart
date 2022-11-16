@@ -203,13 +203,15 @@ class AttendanceAddEditController extends GetxController
     }
   }
 
-  removeProcedure(String id) {
-    procedureList.removeWhere((element) => element.id == id);
+  addProcedure(ProcedureModel procedureModel) {
+    var index = procedureList.indexOf(procedureModel);
+    procedureList.insert(index, procedureModel);
   }
 
-  addProcedure(ProcedureModel procedureModel) {
-    procedureList.add(procedureModel);
+  removeProcedure(ProcedureModel procedureModel) {
+    procedureList.remove(procedureModel);
   }
+
   // setProcedure({
   //   required String ids,
   //   required bool add,

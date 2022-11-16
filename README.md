@@ -2,16 +2,8 @@ pva a base dagua
 
 
 # issues
-Em Cadastrar paciente
-buscar pessoa para grupo familiar
-Vincular cruzado.
 End. detalhado.
-tirar obrigatoriedade de num de plano
-colocar conv particular como padrao
-editar evoltar a busca em lista de espera
-auto marcar em espera na lista de espera
-apagou uma copia e apagou tudo na lista de espera
-colocar obs no atendimento do evento.
+Tirar obrigatoriedade de numero de convenio
 
 
 
