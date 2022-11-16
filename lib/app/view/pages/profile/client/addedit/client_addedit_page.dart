@@ -33,7 +33,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar seu perfil'),
+        title: const Text('Dados do paciente'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),

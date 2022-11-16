@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:fluxus/app/core/enums/event_status_enum.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/expect_model.dart';
 import 'package:fluxus/app/core/models/expertise_model.dart';
@@ -88,9 +89,9 @@ class ExpectAddEditController extends GetxController
     List<EventStatusModel> all = await _eventStatusRepository.list();
 
     var eventStatusAutorized = [
-      'zoFBVNZ16I',
-      '0kCQxw8GBb',
-      'TBlbt1gbW3',
+      EventStatusEnum.emEspera.id,
+      EventStatusEnum.emEsperaNormal.id,
+      EventStatusEnum.emEsperaPrioridade.id,
     ];
     for (var eventStatus in all) {
       if (eventStatusAutorized.contains(eventStatus.id)) {

@@ -23,89 +23,14 @@ class HomePage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
-            const HomeSearchTeam(),
-            const HomeClientAdd(),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Buscar paciente'),
-                subtitle: const Text('Por ...'),
-                onTap: () {
-                  Get.toNamed(
-                    Routes.clientProfileSearch,
-                  );
-                },
-              ),
-            ),
-            if (AllowedAccess.consultFor([OfficeEnum.secretaria.id]))
-              Card(
-                child: ListTile(
-                  leading: const Icon(Icons.punch_clock),
-                  title: const Text('Cadastrar lista de espera'),
-                  onTap: () {
-                    Get.toNamed(Routes.expectAddEdit);
-                  },
-                ),
-              ),
-            if (AllowedAccess.consultFor([
-              OfficeEnum.secretaria.id,
-              OfficeEnum.avaliadora.id,
-            ]))
-              Card(
-                child: ListTile(
-                  leading: const Icon(Icons.search),
-                  title: const Text('Buscar lista de espera'),
-                  subtitle: const Text('Por ...'),
-                  onTap: () {
-                    Get.toNamed(
-                      Routes.expectSearch,
-                    );
-                  },
-                ),
-              ),
-            const HomeAddAttendance(),
-            const HomeSearchAttendance(),
-            const HomeAddEvent(),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Buscar Evento'),
-                subtitle: const Text('Por ...'),
-                onTap: () {
-                  Get.toNamed(Routes.eventSearch);
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.add_comment_outlined),
-                title: const Text('Cadastrar Ficha de avaliação'),
-                onTap: () {
-                  Get.toNamed(Routes.evaluationAddEdit, arguments: null);
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Buscar Ficha de avaliação'),
-                subtitle: const Text('Por ...'),
-                onTap: () {
-                  Get.toNamed(Routes.evaluationSearch);
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Buscar Evolução'),
-                subtitle: const Text('Por ...'),
-                onTap: () {
-                  Get.toNamed(Routes.evolutionSearch);
-                },
-              ),
-            ),
+          children: const [
+            HomeTeam(),
+            HomeClient(),
+            HomeExpect(),
+            HomeAttendance(),
+            HomeEvent(),
+            HomeEvaluation(),
+            HomeEvolution(),
           ],
         ),
       ),
@@ -213,8 +138,8 @@ class HomeAddAttendance extends StatelessWidget {
   }
 }
 
-class HomeClientAdd extends StatelessWidget {
-  const HomeClientAdd({
+class HomeTeam extends StatelessWidget {
+  const HomeTeam({
     Key? key,
   }) : super(key: key);
 
@@ -222,12 +147,30 @@ class HomeClientAdd extends StatelessWidget {
   Widget build(BuildContext context) {
     if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return Card(
-        child: ListTile(
-          leading: const Icon(Icons.person_add),
-          title: const Text('Cadastrar paciente'),
-          onTap: () {
-            Get.toNamed(Routes.clientProfileAddEdit);
-          },
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Icon(
+                Icons.people_alt,
+              ),
+            ),
+            Column(
+              children: [
+                const Text('Equipe'),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.teamProfileSearch);
+                      },
+                      icon: const Icon(Icons.search),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          ],
         ),
       );
     } else {
@@ -236,8 +179,8 @@ class HomeClientAdd extends StatelessWidget {
   }
 }
 
-class HomeSearchTeam extends StatelessWidget {
-  const HomeSearchTeam({
+class HomeClient extends StatelessWidget {
+  const HomeClient({
     Key? key,
   }) : super(key: key);
 
@@ -245,13 +188,269 @@ class HomeSearchTeam extends StatelessWidget {
   Widget build(BuildContext context) {
     if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return Card(
-        child: ListTile(
-          leading: const Icon(Icons.search),
-          title: const Text('Buscar Equipe'),
-          subtitle: const Text('Por área'),
-          onTap: () {
-            Get.toNamed(Routes.teamProfileSearch);
-          },
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Icon(
+                Icons.personal_injury,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Paciente'),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.clientProfileAddEdit);
+                      },
+                      icon: const Icon(Icons.add),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.clientProfileSearch);
+                      },
+                      icon: const Icon(Icons.search),
+                    ),
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
+
+class HomeExpect extends StatelessWidget {
+  const HomeExpect({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Row(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Icon(
+              Icons.punch_clock,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Lista de espera'),
+              Row(
+                children: [
+                  if (AllowedAccess.consultFor([OfficeEnum.secretaria.id]))
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.expectAddEdit);
+                      },
+                      icon: const Icon(Icons.add),
+                    ),
+                  if (AllowedAccess.consultFor([
+                    OfficeEnum.secretaria.id,
+                    OfficeEnum.avaliadora.id,
+                  ]))
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.expectSearch);
+                      },
+                      icon: const Icon(Icons.search),
+                    ),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class HomeAttendance extends StatelessWidget {
+  const HomeAttendance({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
+      return Card(
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Icon(
+                Icons.view_compact_outlined,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Atendimentos'),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.attendanceAddEdit);
+                      },
+                      icon: const Icon(Icons.add),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.attendanceSearch);
+                      },
+                      icon: const Icon(Icons.search),
+                    ),
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
+
+class HomeEvent extends StatelessWidget {
+  const HomeEvent({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Row(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Icon(
+              Icons.event,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Eventos'),
+              Row(
+                children: [
+                  if (AllowedAccess.consultFor([OfficeEnum.secretaria.id]))
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.eventAddEdit, arguments: null);
+                      },
+                      icon: const Icon(Icons.add),
+                    ),
+                  IconButton(
+                    onPressed: () {
+                      Get.toNamed(Routes.eventSearch);
+                    },
+                    icon: const Icon(Icons.search),
+                  ),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class HomeEvaluation extends StatelessWidget {
+  const HomeEvaluation({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (!AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
+      return Card(
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Icon(
+                Icons.add_comment_outlined,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Ficha de avaliação'),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.evaluationAddEdit, arguments: null);
+                      },
+                      icon: const Icon(Icons.add),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.evaluationSearch);
+                      },
+                      icon: const Icon(Icons.search),
+                    ),
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
+
+class HomeEvolution extends StatelessWidget {
+  const HomeEvolution({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (!AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
+      return Card(
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Icon(
+                Icons.health_and_safety,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Evolução'),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.evolutionSearch);
+                      },
+                      icon: const Icon(Icons.search),
+                    ),
+                  ],
+                )
+              ],
+            )
+          ],
         ),
       );
     } else {

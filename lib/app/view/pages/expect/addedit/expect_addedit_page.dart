@@ -59,60 +59,14 @@ class _ExpectAddEditPageState extends State<ExpectAddEditPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 5),
-                    description(),
-                    patientField(context),
-                    Column(
-                      children: [
-                        const Text('* Status do evento'),
-                        Obx(
-                          () => AppDropDownGeneric<EventStatusModel>(
-                            options: widget
-                                ._expectAddEditController.eventStatusList
-                                .toList(),
-                            selected: widget
-                                ._expectAddEditController.eventStatusSelected,
-                            execute: (value) {
-                              widget._expectAddEditController
-                                  .eventStatusSelected = value;
-                              setState(() {});
-                            },
-                            width: double.maxFinite,
-                          ),
-                        ),
-                      ],
+                    AppTextTitleValue(
+                      title: 'Id: ',
+                      value: widget._expectAddEditController.expectId,
                     ),
-                    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id]))
-                      Column(
-                        children: [
-                          const Text('* Especialidade'),
-                          Obx(
-                            () => AppDropDownGeneric<ExpertiseModel>(
-                              options: widget
-                                  ._expectAddEditController.expertiseList
-                                  .toList(),
-                              selected: widget
-                                  ._expectAddEditController.expertiseSelected,
-                              execute: (value) {
-                                widget._expectAddEditController
-                                    .expertiseSelected = value;
-                                setState(() {});
-                              },
-                              width: double.maxFinite,
-                            ),
-                          ),
-                        ],
-                      ),
-                    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id]))
-                      Obx(
-                        () => CheckboxListTile(
-                          title: const Text("Arquivar esta espera ?"),
-                          onChanged: (value) {
-                            widget._expectAddEditController.isArchived =
-                                value ?? false;
-                          },
-                          value: widget._expectAddEditController.isArchived,
-                        ),
-                      ),
+                    patientField(context),
+                    descriptionField(),
+                    eventStatusField(),
+                    expertiseField(),
                     const SizedBox(height: 70),
                   ],
                 ),
@@ -121,6 +75,48 @@ class _ExpectAddEditPageState extends State<ExpectAddEditPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget expertiseField() {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
+      return Column(
+        children: [
+          const Text('* Especialidade'),
+          Obx(
+            () => AppDropDownGeneric<ExpertiseModel>(
+              options: widget._expectAddEditController.expertiseList.toList(),
+              selected: widget._expectAddEditController.expertiseSelected,
+              execute: (value) {
+                widget._expectAddEditController.expertiseSelected = value;
+                setState(() {});
+              },
+              width: double.maxFinite,
+            ),
+          ),
+        ],
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  Widget eventStatusField() {
+    return Column(
+      children: [
+        const Text('* Status do evento'),
+        Obx(
+          () => AppDropDownGeneric<EventStatusModel>(
+            options: widget._expectAddEditController.eventStatusList.toList(),
+            selected: widget._expectAddEditController.eventStatusSelected,
+            execute: (value) {
+              widget._expectAddEditController.eventStatusSelected = value;
+              setState(() {});
+            },
+            width: double.maxFinite,
+          ),
+        ),
+      ],
     );
   }
 
@@ -187,7 +183,7 @@ class _ExpectAddEditPageState extends State<ExpectAddEditPage> {
     }
   }
 
-  Widget description() {
+  Widget descriptionField() {
     if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
       return AppTextFormField(
         label: 'Descrição',

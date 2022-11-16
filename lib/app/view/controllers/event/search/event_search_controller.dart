@@ -1,3 +1,4 @@
+import 'package:fluxus/app/core/enums/event_status_enum.dart';
 import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/event_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
@@ -82,23 +83,18 @@ class EventSearchController extends GetxController
     List<String> eventStatusAutorized = [];
     if (allowedAccess(OfficeEnum.secretaria.id)) {
       eventStatusAutorized = [
-        'ul5FxaUpOX',
-        'hpBM6CPlIV',
-        'hHJV8j1NR4',
-        'yDvPaz7SzG',
-        'c0bYveZS7q',
-        'fCoyr6KnCn',
-        'OBRkRNvoUz',
+        EventStatusEnum.indefinido.id,
+        EventStatusEnum.eventoAgendado.id,
+        EventStatusEnum.eventoAtendido.id,
+        EventStatusEnum.eventoFinalizado.id,
+        // EventStatusEnum.pacienteNaoCompareceu.id,
+        EventStatusEnum.pacienteCancelou.id,
+        EventStatusEnum.profissionalCancelou.id,
       ];
     } else {
       eventStatusAutorized = [
-        // 'ul5FxaUpOX',
-        'hpBM6CPlIV',
-        'hHJV8j1NR4',
-        // 'yDvPaz7SzG',
-        // 'c0bYveZS7q',
-        // 'fCoyr6KnCn',
-        // 'OBRkRNvoUz',
+        EventStatusEnum.eventoAgendado.id,
+        EventStatusEnum.eventoAtendido.id,
       ];
     }
     for (var eventStatus in all) {

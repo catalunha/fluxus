@@ -20,7 +20,7 @@ class ExpectSearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<ExpectSearchPage> {
   final _formKey = GlobalKey<FormState>();
-  bool _isArchived = false;
+  final bool _isArchived = false;
   bool _patientEqualTo = false;
   bool _eventStatusEqualTo = false;
   bool _expertiseEqualTo = false;
@@ -46,26 +46,26 @@ class _SearchPageState extends State<ExpectSearchPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  Card(
-                    child: Column(
-                      children: [
-                        const Text('por Arquivadas'),
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: _isArchived,
-                              onChanged: (value) {
-                                setState(() {
-                                  _isArchived = value!;
-                                });
-                              },
-                            ),
-                            const Text('Esperas arquivadas')
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Card(
+                  //   child: Column(
+                  //     children: [
+                  //       const Text('por Arquivadas'),
+                  //       Row(
+                  //         children: [
+                  //           Checkbox(
+                  //             value: _isArchived,
+                  //             onChanged: (value) {
+                  //               setState(() {
+                  //                 _isArchived = value!;
+                  //               });
+                  //             },
+                  //           ),
+                  //           const Text('Esperas arquivadas')
+                  //         ],
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   Card(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,

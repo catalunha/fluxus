@@ -1,3 +1,4 @@
+import 'package:fluxus/app/core/enums/event_status_enum.dart';
 import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/expect_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
@@ -76,9 +77,10 @@ class ExpectSearchController extends GetxController
     List<EventStatusModel> all = await _eventStatusRepository.list();
 
     var eventStatusAutorized = [
-      'zoFBVNZ16I',
-      '0kCQxw8GBb',
-      'TBlbt1gbW3',
+      EventStatusEnum.emEspera.id,
+      EventStatusEnum.emEsperaPrioridade.id,
+      EventStatusEnum.emEsperaNormal.id,
+      EventStatusEnum.emEsperaAtendido.id,
     ];
     for (var eventStatus in all) {
       if (eventStatusAutorized.contains(eventStatus.id)) {
@@ -115,11 +117,11 @@ class ExpectSearchController extends GetxController
   }) async {
     _loading(true);
     query = QueryBuilder<ParseObject>(ParseObject(ExpectEntity.className));
-    if (isArchived) {
-      query.whereEqualTo('isArchived', isArchived);
-    } else {
-      query.whereEqualTo('isArchived', isArchived);
-    }
+    // if (isArchived) {
+    //   query.whereEqualTo('isArchived', isArchived);
+    // } else {
+    //   query.whereEqualTo('isArchived', isArchived);
+    // }
     if (patientEqualToBool) {
       query.whereEqualTo(
           'patient',
