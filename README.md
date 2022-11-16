@@ -34,6 +34,8 @@ marciocatalunha@gmail.com
 # Cadastrar evento google calendar
 https://calendar.google.com/calendar/u/0/r/eventedit?text=Prele%C3%A7%C3%B5es+Sola+Fide&dates=20221015T120000000Z/20221016T140000000Z&details=Confira+seus+ingresos+na+Sympla.%0A%0A-+Acesse+o+menu+%22Ingressos%22+no+site+ou+aplicativo+da+Sympla+e+crie+uma+conta+ou+fa%C3%A7a+login+utilizando+o+seu+email.%0Ahttps://www.sympla.com.br/meus-ingressos%0A%0A-+Para+mais+informa%C3%A7%C3%B5es+sobre+o+evento+acesse:%0Ahttps://www.sympla.com.br/evento/prelecoes-sola-fide/1730373%0A&location=Quadra+208+Sul+Alameda+15,+1,+Palmas+TO,+BRASIL&ctz=America/Sao_Paulo
 
+https://calendar.google.com/calendar/u/0/r/eventedit?text=Birthday&dates=20201231T193000Z/20201231T223000Z&details=With+clowns+and+stuff&location=North+Pole&add=elf1@example.com,elf2@example.com&src=marciocatalunha@gmail.com
+
 https://github.com/InteractionDesignFoundation/add-event-to-calendar-docs/blob/main/services/google.md
 
 https://calendar.google.com/calendar/r/eventedit?text=Hello+World+Meet&dates=20201017T1700/20201018T1100&details=The+meet+is+going+to+be+about+programming.&location=Hierarch+Square,+Novigrad
