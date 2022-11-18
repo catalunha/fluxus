@@ -1,101 +1,104 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluxus/app/core/models/event_model.dart';
+import 'package:fluxus/app/core/enums/expertise_enum.dart';
 import 'package:fluxus/app/routes.dart';
-import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import 'package:fluxus/app/core/enums/event_status_enum.dart';
+import 'package:fluxus/app/core/models/event_model.dart';
+import 'package:fluxus/app/core/models/event_status_model.dart';
+import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
 
 class EventCard extends StatelessWidget {
   // final _clientProfileController = Get.find<ClientProfileController>();
 
   final EventModel event;
-  const EventCard({Key? key, required this.event}) : super(key: key);
+  final bool withDateStart;
+  const EventCard({
+    Key? key,
+    required this.event,
+    required this.withDateStart,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd/MM/y hh:mm');
+    final dateFormat = DateFormat('dd/MM');
+    final timeFormat = DateFormat('hh:mm');
 
-    return Card(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Text(
-                  //   '${event.id}',
-                  // ),
-                  AppTextTitleValue(
-                    title: 'Id: ',
-                    value: event.id,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Card(
+        child: Row(
+          children: [
+            withDateStart
+                ? SizedBox(
+                    width: 40, child: Text(dateFormat.format(event.dtStart!)))
+                : const SizedBox(
+                    width: 40,
                   ),
-                  AppTextTitleValue(
-                    title: 'Sala: ',
-                    value: event.room!.name,
-                  ),
-                  AppTextTitleValue(
-                    title: 'Atendimento. Inicio em: ',
-                    value: dateFormat.format(event.dtStart!),
-                  ),
-                  AppTextTitleValue(
-                    title: 'Atendimento. Fim    em: ',
-                    value: dateFormat.format(event.dtEnd!),
-                  ),
-                  AppTextTitleValue(
-                    title: 'Status: ',
-                    value: event.eventStatus!.name,
-                  ),
-
-                  const Text(
-                    'Atendidos:',
-                    style: TextStyle(color: Colors.blueGrey),
-                  ),
-                  attendanceList(),
-                  Wrap(
-                    children: [
-                      // IconButton(
-                      //   onPressed: () => copy(event.id!),
-                      //   icon: const Icon(Icons.copy),
-                      // ),
-                      IconButton(
-                        onPressed: () async {
-                          await Get.toNamed(Routes.eventAddEdit,
-                              arguments: event.id);
-                          Get.back();
-                        },
-                        icon: const Icon(
-                          Icons.edit,
-                        ),
-                      ),
-                      // IconButton(
-                      //   onPressed: () {
-                      //     // Get.toNamed(Routes.clientProfileView,
-                      //     //     arguments: event.id);
-                      //   },
-                      //   icon: const Icon(
-                      //     Icons.assignment_ind_outlined,
-                      //   ),
-                      // ),
-                      // IconButton(
-                      //   onPressed: () {
-                      //     Get.toNamed(Routes.evolutionList,
-                      //         arguments: event.id);
-                      //   },
-                      //   icon: const Icon(
-                      //     Icons.people,
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+            const SizedBox(width: 5),
+            Text(
+                '${timeFormat.format(event.dtStart!)} - ${timeFormat.format(event.dtEnd!)}'),
+            const SizedBox(width: 5),
+            eventStatus(event.eventStatus),
+            const SizedBox(width: 5),
+            Text('${event.room?.code}'),
+            const SizedBox(width: 5),
+            attendanceList(),
+            const SizedBox(width: 5),
+            Tooltip(
+              message: '${event.id}',
+              child: InkWell(
+                  onTap: () async {
+                    await Get.toNamed(Routes.eventAddEdit, arguments: event.id);
+                    Get.back();
+                  },
+                  child: const Icon(Icons.edit, size: 16)),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Widget eventStatus(EventStatusModel? eventStatusModel) {
+    if (eventStatusModel != null) {
+      if (eventStatusModel.id == EventStatusEnum.indefinido.id) {
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.lime);
+      } else if (eventStatusModel.id == EventStatusEnum.eventoAgendado.id) {
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.red);
+      } else if (eventStatusModel.id == EventStatusEnum.eventoConfirmado.id) {
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.yellow);
+      } else if (eventStatusModel.id == EventStatusEnum.eventoAtendido.id) {
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.green);
+      } else if (eventStatusModel.id == EventStatusEnum.eventoFinalizado.id) {
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.deepOrange);
+      } else {
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.black26);
+      }
+    } else {
+      return eventStatusIcon('Sem evento', 10, Colors.red);
+    }
+  }
+
+  eventStatusIcon(String? text, double size, Color cor) {
+    return Tooltip(
+        message: '$text',
+        child: Container(width: size, height: size, color: cor));
+  }
+
+  confirmedPresenceIcon(String? text, double size, Color cor) {
+    return Tooltip(
+        message: '$text',
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            color: cor,
+            shape: BoxShape.circle,
+          ),
+        ));
   }
 
   copy(String text) async {
@@ -110,11 +113,77 @@ class EventCard extends StatelessWidget {
 
   Widget attendanceList() {
     if (event.attendance != null && event.attendance!.isNotEmpty) {
+      List<Widget> itens = [];
+      for (var attendance in event.attendance!) {
+        itens.add(Row(
+          children: [
+            confirmedPresenceIcon(
+                attendance.confirmedPresence == null
+                    ? 'Presença  não consultada ao paciente'
+                    : attendance.confirmedPresence!
+                        ? 'Presença CONFIRMADA'
+                        : 'Paciente ausente',
+                10,
+                attendance.confirmedPresence == null
+                    ? Colors.black
+                    : attendance.confirmedPresence!
+                        ? Colors.green
+                        : Colors.red),
+            const SizedBox(width: 5),
+            Tooltip(
+              message: '${attendance.patient!.name}',
+              child: SizedBox(
+                width: 110,
+                child: Text(
+                  attendance.patient!.name!.substring(0, 15),
+                ),
+              ),
+            ),
+            const Text(' - '),
+            Tooltip(
+                message: '${attendance.professional!.name}',
+                child: Text(attendance.professional!.name!.substring(0, 5))),
+            const Text(' - '),
+            Container(
+              // width: 40,
+              color: expertiseColor(attendance.procedure!.expertise!.id!),
+              child: Tooltip(
+                  message: attendance.procedure!.name!,
+                  child: Text(attendance.procedure!.code!)),
+            ),
+          ],
+        ));
+      }
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: itens,
+      );
+    } else {
+      return Container(
+        color: Colors.blue,
+      );
+    }
+  }
+
+  Color expertiseColor(String expertiseId) {
+    if (ExpertiseEnum.psicologia.id == expertiseId) {
+      return Colors.green;
+    } else if (ExpertiseEnum.enfermeira.id == expertiseId) {
+      return Colors.blue;
+    } else if (ExpertiseEnum.fonoaudiologia.id == expertiseId) {
+      return Colors.orange;
+    }
+    return Colors.black;
+  }
+
+  Widget attendanceList1() {
+    if (event.attendance != null && event.attendance!.isNotEmpty) {
       return Column(
         children: [
           ...event.attendance!
               .map((e) => SizedBox(
-                    width: 400,
+                    width: 300,
                     child: Card(
                       color: Colors.black12,
                       child: Column(children: [

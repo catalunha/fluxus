@@ -41,10 +41,16 @@ class EventSearchController extends GetxController
   final _lastPage = false.obs;
   get lastPage => _lastPage.value;
 
-  final Rxn<DateTime> _dtStart = Rxn<DateTime>();
-  DateTime? get dtStart => _dtStart.value;
-  set dtStart(DateTime? dtStart1) {
-    _dtStart.value = dtStart1;
+  final Rxn<DateTime> _dtStartStart = Rxn<DateTime>();
+  DateTime? get dtStartStart => _dtStartStart.value;
+  set dtStartStart(DateTime? dtStartStart1) {
+    _dtStartStart.value = dtStartStart1;
+  }
+
+  final Rxn<DateTime> _dtStartEnd = Rxn<DateTime>();
+  DateTime? get dtStartEnd => _dtStartEnd.value;
+  set dtStartEnd(DateTime? dtStartEnd1) {
+    _dtStartEnd.value = dtStartEnd1;
   }
 
   // final Rxn<DateTime> _dtEnd = Rxn<DateTime>();
@@ -74,8 +80,13 @@ class EventSearchController extends GetxController
     messageListener(_message);
     getEventStatusList();
     getRoomList();
-
+    setDates();
     super.onInit();
+  }
+
+  setDates() {
+    dtStartStart = DateTime.now().subtract(const Duration(days: 1));
+    dtStartEnd = DateTime.now().add(const Duration(days: 15));
   }
 
   getEventStatusList() async {
@@ -130,7 +141,8 @@ class EventSearchController extends GetxController
     // required bool myAttendanceProfissionalAgendado,
     required bool attendanceEqualToBool,
     required String attendanceEqualToString,
-    required bool dtStartBool,
+    required bool dtStartStartBool,
+    required bool dtStartEndBool,
     required bool eventStatusEqualToBool,
     required String eventStatusEqualToString,
     required bool roomEqualToBool,
@@ -206,12 +218,16 @@ class EventSearchController extends GetxController
                 ..objectId = attendanceEqualToString)
               .toPointer());
     }
-    if (dtStartBool && dtStart != null) {
+    if (dtStartStartBool && dtStartStart != null) {
       // query.whereEqualTo('start', dtStart);
-      query.whereGreaterThanOrEqualsTo(
-          'dtStart', DateTime(dtStart!.year, dtStart!.month, dtStart!.day));
-      query.whereLessThanOrEqualTo('dtStart',
-          DateTime(dtStart!.year, dtStart!.month, dtStart!.day, 23, 59));
+      query.whereGreaterThanOrEqualsTo('dtStart',
+          DateTime(dtStartStart!.year, dtStartStart!.month, dtStartStart!.day));
+    }
+    if (dtStartEndBool && dtStartEnd != null) {
+      query.whereLessThanOrEqualTo(
+          'dtStart',
+          DateTime(
+              dtStartEnd!.year, dtStartEnd!.month, dtStartEnd!.day, 23, 59));
     }
     if (eventStatusEqualToBool) {
       query.whereEqualTo(

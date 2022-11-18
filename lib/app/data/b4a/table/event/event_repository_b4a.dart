@@ -18,7 +18,7 @@ class EventRepositoryB4a implements EventRepository {
     log('query...', name: 'EventRepositoryB4a.getQueryAll');
     query.includeObject(['room', 'eventStatus']);
     query.whereEqualTo('isDeleted', false);
-    query.orderByDescending('updatedAt');
+    query.orderByAscending('dtStart');
 
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);

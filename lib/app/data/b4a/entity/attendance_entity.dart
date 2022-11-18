@@ -39,6 +39,7 @@ class AttendanceEntity {
       evolution: parseObject.get('evolution'),
       description: parseObject.get('description'),
       isDeleted: parseObject.get('isDeleted') ?? false,
+      confirmedPresence: parseObject.get('confirmedPresence'),
     );
     return model;
   }
@@ -108,6 +109,9 @@ class AttendanceEntity {
     }
     if (model.isDeleted != null) {
       parseObject.set('isDeleted', model.isDeleted);
+    }
+    if (model.confirmedPresence != null) {
+      parseObject.set('confirmedPresence', model.confirmedPresence);
     }
     return parseObject;
   }

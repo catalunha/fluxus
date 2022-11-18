@@ -12,14 +12,13 @@ Tirar obrigatoriedade de numero de convenio
 meu pc
 cd /home/catalunha/myapp/cemec.net.br/fluxus && flutter build web && cd /home/catalunha/myapp/cemec.net.br/fluxus/back4app/fluxus && b4a deploy
 
-
 ln -s /home/catalunha/myapp/cemec.net.br/fluxus/build/web public
 
 
 uft
 cd /home/catalunha/apps/fluxus && flutter build web && cd /home/catalunha/apps/fluxus/back4app/fluxus && b4a deploy
+ln -s /home/catalunha/apps/fluxus/build/web public
 
-/home/catalunha/apps/fluxus/lib
 
 # Diary
 

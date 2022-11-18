@@ -12,14 +12,24 @@ class EventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<DateTime> dates = [];
     return Obx(
       () => ListView.builder(
         itemCount: eventList.length,
         itemBuilder: (context, index) {
-          final person = eventList[index];
-          return EventCard(
-            event: person,
-          );
+          final event = eventList[index];
+          if (dates.contains(event.dtStart)) {
+            return EventCard(
+              event: event,
+              withDateStart: false,
+            );
+          } else {
+            dates.add(event.dtStart!);
+            return EventCard(
+              event: event,
+              withDateStart: true,
+            );
+          }
         },
       ),
     );

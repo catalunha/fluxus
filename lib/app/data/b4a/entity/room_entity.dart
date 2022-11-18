@@ -8,6 +8,7 @@ class RoomEntity {
     RoomModel expertiseModel = RoomModel(
       id: parseObject.objectId!,
       name: parseObject.get('name'),
+      code: parseObject.get('code'),
       description: parseObject.get('description'),
       isActive: parseObject.get('isActive'),
       isDeleted: parseObject.get('isDeleted'),

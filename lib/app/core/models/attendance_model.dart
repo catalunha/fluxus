@@ -19,6 +19,7 @@ class AttendanceModel {
   final String? evolution;
   final String? description;
   final bool? isDeleted;
+  final bool? confirmedPresence;
 
   AttendanceModel({
     this.id,
@@ -34,6 +35,7 @@ class AttendanceModel {
     this.evolution,
     this.description,
     this.isDeleted,
+    this.confirmedPresence,
   });
 
   AttendanceModel copyWith({
@@ -50,6 +52,7 @@ class AttendanceModel {
     String? evolution,
     String? description,
     bool? isDeleted,
+    bool? confirmedPresence,
   }) {
     return AttendanceModel(
       id: id ?? this.id,
@@ -65,6 +68,7 @@ class AttendanceModel {
       evolution: evolution ?? this.evolution,
       description: description ?? this.description,
       isDeleted: isDeleted ?? this.isDeleted,
+      confirmedPresence: confirmedPresence ?? this.confirmedPresence,
     );
   }
 
@@ -110,6 +114,9 @@ class AttendanceModel {
     if (isDeleted != null) {
       result.addAll({'isDeleted': isDeleted});
     }
+    if (confirmedPresence != null) {
+      result.addAll({'confirmedPresence': confirmedPresence});
+    }
 
     return result;
   }
@@ -142,6 +149,7 @@ class AttendanceModel {
       evolution: map['evolution'],
       description: map['description'],
       isDeleted: map['isDeleted'],
+      confirmedPresence: map['confirmedPresence'],
     );
   }
 
@@ -152,7 +160,7 @@ class AttendanceModel {
 
   @override
   String toString() {
-    return 'AttendanceModel(id: $id, professional: $professional, procedure: $procedure, patient: $patient, healthPlan: $healthPlan, autorization: $autorization, dAutorization: $dAutorization, dtAttendance: $dtAttendance, eventStatus: $eventStatus, event: $event, evolution: $evolution, description: $description, isDeleted: $isDeleted)';
+    return 'AttendanceModel(id: $id, professional: $professional, procedure: $procedure, patient: $patient, healthPlan: $healthPlan, autorization: $autorization, dAutorization: $dAutorization, dtAttendance: $dtAttendance, eventStatus: $eventStatus, event: $event, evolution: $evolution, description: $description, isDeleted: $isDeleted, confirmedPresence: $confirmedPresence)';
   }
 
   @override
@@ -172,7 +180,8 @@ class AttendanceModel {
         other.event == event &&
         other.evolution == evolution &&
         other.description == description &&
-        other.isDeleted == isDeleted;
+        other.isDeleted == isDeleted &&
+        other.confirmedPresence == confirmedPresence;
   }
 
   @override
@@ -189,6 +198,7 @@ class AttendanceModel {
         event.hashCode ^
         evolution.hashCode ^
         description.hashCode ^
-        isDeleted.hashCode;
+        isDeleted.hashCode ^
+        confirmedPresence.hashCode;
   }
 }

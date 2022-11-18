@@ -6,12 +6,14 @@ import 'package:fluxus/app/core/utils/drop_down_abstract.dart';
 class RoomModel extends DropDrowAbstract {
   final String? id;
   // final String? name;
+  final String? code;
   final String? description;
   final bool? isActive;
   final bool? isDeleted;
   RoomModel({
     this.id,
     super.name,
+    this.code,
     this.description,
     this.isActive,
     this.isDeleted,
@@ -19,14 +21,14 @@ class RoomModel extends DropDrowAbstract {
 
   RoomModel copyWith({
     String? id,
-    String? name,
+    String? code,
     String? description,
     bool? isActive,
     bool? isDeleted,
   }) {
     return RoomModel(
       id: id ?? this.id,
-      name: name ?? this.name,
+      code: code ?? this.code,
       description: description ?? this.description,
       isActive: isActive ?? this.isActive,
       isDeleted: isDeleted ?? this.isDeleted,
@@ -39,8 +41,8 @@ class RoomModel extends DropDrowAbstract {
     if (id != null) {
       result.addAll({'id': id});
     }
-    if (name != null) {
-      result.addAll({'name': name});
+    if (code != null) {
+      result.addAll({'code': code});
     }
     if (description != null) {
       result.addAll({'description': description});
@@ -58,7 +60,7 @@ class RoomModel extends DropDrowAbstract {
   factory RoomModel.fromMap(Map<String, dynamic> map) {
     return RoomModel(
       id: map['id'],
-      name: map['name'],
+      code: map['code'],
       description: map['description'],
       isActive: map['isActive'],
       isDeleted: map['isDeleted'],
@@ -72,7 +74,7 @@ class RoomModel extends DropDrowAbstract {
 
   @override
   String toString() {
-    return 'RoomModel(id: $id, name: $name, description: $description, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'RoomModel(id: $id, code: $code, description: $description, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -81,7 +83,7 @@ class RoomModel extends DropDrowAbstract {
 
     return other is RoomModel &&
         other.id == id &&
-        other.name == name &&
+        other.code == code &&
         other.description == description &&
         other.isActive == isActive &&
         other.isDeleted == isDeleted;
@@ -90,7 +92,7 @@ class RoomModel extends DropDrowAbstract {
   @override
   int get hashCode {
     return id.hashCode ^
-        name.hashCode ^
+        code.hashCode ^
         description.hashCode ^
         isActive.hashCode ^
         isDeleted.hashCode;
