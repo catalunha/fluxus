@@ -5,6 +5,7 @@ import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/profile/client/addedit/client_addedit_controller.dart';
 import 'package:fluxus/app/view/pages/profile/client/addedit/client_health_plan_addedit_page.dart';
+import 'package:fluxus/app/view/pages/profile/client/addedit/part/dropdown_withsearch.dart';
 import 'package:fluxus/app/view/pages/profile/team/edit/part/user_profile_photo.dart';
 import 'package:fluxus/app/view/pages/utils/app_dialog_add_ids.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
@@ -158,41 +159,42 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                       children: [
                         const Text('Seus convênios'),
                         IconButton(
-                            onPressed: () async {
-                              HealthPlanModel? res = await showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  widget._clientAddEditController
-                                      .dateDueHealthPlan = null;
-                                  return ClientHealthPlanAddEditPage(
-                                      healthPlanModel: HealthPlanModel());
-                                },
-                              );
-                              if (res != null) {
-                                // await widget._eventAddEditController
-                                //     .addAttendance(res);
-                                await widget._clientAddEditController
-                                    .addHealthPlan(healthPlanTemp: res);
-                              }
-                              // await saveProfile();
-                              // await widget._clientAddEditController
-                              //     .healthPlanAdd();
-                              // await Get.toNamed(Routes.profileHealthPlan);
-                              // var result = await saveProfile();
-                              // if (result) {
-                              // await widget._clientAddEditController
-                              //     .healthPlanPageAdd();
-                              setState(() {});
-                              // } else {
-                              //   Get.snackbar(
-                              //     'Atenção',
-                              //     'Campos obrigatórios não foram preenchidos.',
-                              //     backgroundColor: Colors.red,
-                              //   );
-                              // }
-                            },
-                            icon: const Icon(Icons.add))
+                          onPressed: () async {
+                            HealthPlanModel? res = await showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                widget._clientAddEditController
+                                    .dateDueHealthPlan = null;
+                                return ClientHealthPlanAddEditPage(
+                                    healthPlanModel: HealthPlanModel());
+                              },
+                            );
+                            if (res != null) {
+                              // await widget._eventAddEditController
+                              //     .addAttendance(res);
+                              await widget._clientAddEditController
+                                  .addHealthPlan(healthPlanTemp: res);
+                            }
+                            // await saveProfile();
+                            // await widget._clientAddEditController
+                            //     .healthPlanAdd();
+                            // await Get.toNamed(Routes.profileHealthPlan);
+                            // var result = await saveProfile();
+                            // if (result) {
+                            // await widget._clientAddEditController
+                            //     .healthPlanPageAdd();
+                            setState(() {});
+                            // } else {
+                            //   Get.snackbar(
+                            //     'Atenção',
+                            //     'Campos obrigatórios não foram preenchidos.',
+                            //     backgroundColor: Colors.red,
+                            //   );
+                            // }
+                          },
+                          icon: const Icon(Icons.add),
+                        )
                       ],
                     ),
                     Obx(() => healthPlanList()),
@@ -200,6 +202,35 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        IconButton(
+                          onPressed: () async {
+                            String? res = await showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                String select = "Select";
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: DropDownWithSearch(
+                                    hint: select,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        select = value!;
+                                      });
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                            // if (res != null) {
+                            //   await widget._clientAddEditController.addFamily(
+                            //     res,
+                            //   );
+                            // }
+                            // setState(() {});
+                          },
+                          icon: const Icon(Icons.abc),
+                        ),
                         IconButton(
                           onPressed: () {
                             Get.toNamed(Routes.clientProfileSearch,
