@@ -103,6 +103,8 @@ class EventAddEditController extends GetxController
 
 //--- Datas
 
+  var attendanceConfirmedPresence = <String, bool?>{}.obs;
+
   var roomList = <RoomModel>[].obs;
   final _roomModelSelected = Rxn<RoomModel>();
   RoomModel? get roomModelSelected => _roomModelSelected.value;
@@ -202,6 +204,10 @@ class EventAddEditController extends GetxController
       if (eventModelTemp?.attendance != null) {
         attendanceList.addAll([...eventModelTemp!.attendance!]);
         attendanceListOriginal.addAll([...eventModelTemp.attendance!]);
+        for (var attendance in attendanceList) {
+          attendanceConfirmedPresence[attendance.id!] =
+              attendance.confirmedPresence;
+        }
       }
       //log('${event?.start}', name: 'getEvent3');
       onSetDates();
@@ -429,5 +435,25 @@ class EventAddEditController extends GetxController
       await _evolutionRepository
           .updateUnset(attendanceModel.id!, ['event', 'dtAttendance']);
     }
+  }
+
+  Future<void> updateAttendanceConfirmedPresence(String attendanceId) async {
+    _loading(true);
+    if (attendanceConfirmedPresence[attendanceId] == null) {
+      await _attendanceRepository.update(
+        AttendanceModel(id: attendanceId, confirmedPresence: true),
+      );
+      attendanceConfirmedPresence[attendanceId] = true;
+    } else if (attendanceConfirmedPresence[attendanceId] == true) {
+      await _attendanceRepository.update(
+        AttendanceModel(id: attendanceId, confirmedPresence: false),
+      );
+      attendanceConfirmedPresence[attendanceId] = false;
+    } else {
+      await _attendanceRepository
+          .updateUnset(attendanceId, ['confirmedPresence']);
+      attendanceConfirmedPresence[attendanceId] = null;
+    }
+    _loading(false);
   }
 }

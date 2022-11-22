@@ -24,6 +24,7 @@ ln -s /home/catalunha/apps/fluxus/build/web public
 
 
 https://pmatatias.medium.com/map-sorting-dart-extension-1-e98747ad9635
+
 https://theutsavg1.medium.com/flutter-intercept-your-requests-8113ef39b4d9
 
 marciocatalunha@gmail.com
@@ -61,4 +62,6 @@ Cargos tá ok
 https://medium.com/@omershafique/flutter-design-patterns-4-builder-fd13683a5f33
 
 https://medium.com/@paresh.kanani.sa/flutter-circular-imageview-with-image-picker-from-camera-and-gallery-9aae10b4f30a
+
+https://lakshydeep-14.medium.com/30-flutter-tips-ft25-searchable-dropdown-in-flutter-30164bbaa4ea
 

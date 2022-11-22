@@ -64,18 +64,14 @@ class EventCard extends StatelessWidget {
 
   Widget eventStatus(EventStatusModel? eventStatusModel) {
     if (eventStatusModel != null) {
-      if (eventStatusModel.id == EventStatusEnum.indefinido.id) {
-        return eventStatusIcon(eventStatusModel.name, 10, Colors.lime);
-      } else if (eventStatusModel.id == EventStatusEnum.eventoAgendado.id) {
+      if (eventStatusModel.id == EventStatusEnum.eventoAgendado.id) {
         return eventStatusIcon(eventStatusModel.name, 10, Colors.red);
-      } else if (eventStatusModel.id == EventStatusEnum.eventoConfirmado.id) {
-        return eventStatusIcon(eventStatusModel.name, 10, Colors.yellow);
       } else if (eventStatusModel.id == EventStatusEnum.eventoAtendido.id) {
-        return eventStatusIcon(eventStatusModel.name, 10, Colors.green);
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.yellow);
       } else if (eventStatusModel.id == EventStatusEnum.eventoFinalizado.id) {
-        return eventStatusIcon(eventStatusModel.name, 10, Colors.deepOrange);
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.green);
       } else {
-        return eventStatusIcon(eventStatusModel.name, 10, Colors.black26);
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.black);
       }
     } else {
       return eventStatusIcon('Sem evento', 10, Colors.red);
@@ -119,7 +115,7 @@ class EventCard extends StatelessWidget {
           children: [
             confirmedPresenceIcon(
                 attendance.confirmedPresence == null
-                    ? 'Presença  não consultada ao paciente'
+                    ? 'Presença não consultada ao paciente'
                     : attendance.confirmedPresence!
                         ? 'Presença CONFIRMADA'
                         : 'Paciente ausente',

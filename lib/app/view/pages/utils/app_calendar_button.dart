@@ -63,6 +63,27 @@ class AppCalendarButton extends StatelessWidget {
             ),
             Obx(
               () {
+                if (getDate() != null) {
+                  DateDuration duration;
+                  duration =
+                      AgeCalculator.age(getDate()!, today: DateTime.now());
+                  if (duration.years == 0 &&
+                      duration.months == 0 &&
+                      duration.days == 0) {
+                    return const Text('Hoje');
+                  } else if (duration.years < 0) {
+                    duration =
+                        AgeCalculator.age(DateTime.now(), today: getDate()!);
+                    return Text(
+                        'Futuro: ${duration.years} a, ${duration.months} m, ${duration.days} d');
+                  } else {
+                    return Text(
+                        'Passado: ${duration.years} a, ${duration.months} m, ${duration.days} d');
+                  }
+                } else {
+                  return const Text('...');
+                }
+                /*
                 if (getDate() != null && isBirthDay != null) {
                   DateDuration duration;
                   if (isBirthDay!) {
@@ -84,6 +105,7 @@ class AppCalendarButton extends StatelessWidget {
                 } else {
                   return const Text('...');
                 }
+                */
               },
             ),
           ],

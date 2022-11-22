@@ -354,14 +354,20 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                     child: Column(children: [
                       Row(
                         children: [
-                          IconButton(
-                            onPressed: () async {
-                              // await saveEvent();
-                              await widget._eventAddEditController
-                                  .removeAttendance(e.id!);
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.delete_forever),
+                          Column(
+                            children: [
+                              confirmedPresence(e.id!),
+                              const SizedBox(height: 50),
+                              InkWell(
+                                onLongPress: () async {
+                                  // await saveEvent();
+                                  await widget._eventAddEditController
+                                      .removeAttendance(e.id!);
+                                  setState(() {});
+                                },
+                                child: const Icon(Icons.delete_forever),
+                              ),
+                            ],
                           ),
                           attendanceData(e)
                         ],
@@ -374,6 +380,59 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
     } else {
       return Container();
     }
+  }
+
+  Widget confirmedPresence(String attendanceId) {
+    Widget icon;
+    if (widget._eventAddEditController
+            .attendanceConfirmedPresence[attendanceId] ==
+        true) {
+      icon = Tooltip(
+        message: 'Presença CONFIRMADA',
+        child: Container(
+          width: 10,
+          height: 10,
+          decoration: const BoxDecoration(
+            color: Colors.green,
+            shape: BoxShape.circle,
+          ),
+        ),
+      );
+    } else if (widget._eventAddEditController
+            .attendanceConfirmedPresence[attendanceId] ==
+        false) {
+      icon = Tooltip(
+        message: 'Paciente ausente',
+        child: Container(
+          width: 10,
+          height: 10,
+          decoration: const BoxDecoration(
+            color: Colors.red,
+            shape: BoxShape.circle,
+          ),
+        ),
+      );
+    } else {
+      icon = Tooltip(
+        message: 'Sem contato com paciente',
+        child: Container(
+          width: 10,
+          height: 10,
+          decoration: const BoxDecoration(
+            color: Colors.black,
+            shape: BoxShape.circle,
+          ),
+        ),
+      );
+    }
+    return InkWell(
+      child: icon,
+      onTap: () => widget._eventAddEditController
+          .updateAttendanceConfirmedPresence(attendanceId),
+    );
+
+    return Text(
+        '${widget._eventAddEditController.attendanceConfirmedPresence[attendanceId]}');
   }
 
   Widget attendanceList2() {
