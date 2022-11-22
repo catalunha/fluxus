@@ -31,6 +31,7 @@ class HomePage extends StatelessWidget {
             HomeEvent(),
             HomeEvaluation(),
             HomeEvolution(),
+            HomeInvoice(),
           ],
         ),
       ),
@@ -443,6 +444,54 @@ class HomeEvolution extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         Get.toNamed(Routes.evolutionSearch);
+                      },
+                      icon: const Icon(Icons.search),
+                    ),
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
+
+class HomeInvoice extends StatelessWidget {
+  const HomeInvoice({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (AllowedAccess.consultFor([OfficeEnum.secretaria.id])) {
+      return Card(
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Icon(
+                Icons.inventory_outlined,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Fatura'),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        // Get.toNamed(Routes.evolutionSearch);
+                      },
+                      icon: const Icon(Icons.add),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        // Get.toNamed(Routes.evolutionSearch);
                       },
                       icon: const Icon(Icons.search),
                     ),
