@@ -2,13 +2,17 @@ import 'package:fluxus/app/core/enums/event_status_enum.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/evolution_model.dart';
+import 'package:fluxus/app/core/models/health_plan_type_model.dart';
 import 'package:fluxus/app/data/b4a/entity/attendance_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/event_status_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/health_plan_entity.dart';
+import 'package:fluxus/app/data/b4a/entity/health_plan_type_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/procedure_entity.dart';
 import 'package:fluxus/app/data/b4a/entity/profile_entity.dart';
 import 'package:fluxus/app/data/repositories/attendance_repository.dart';
 import 'package:fluxus/app/data/repositories/event_status_repository.dart';
 import 'package:fluxus/app/data/repositories/evolution_repository.dart';
+import 'package:fluxus/app/data/repositories/health_plan_type_repository.dart';
 import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
@@ -21,13 +25,16 @@ class AttendanceSearchController extends GetxController
   final AttendanceRepository _attendanceRepository;
   final EventStatusRepository _eventStatusRepository;
   final EvolutionRepository _evolutionRepository;
+  final HealthPlanTypeRepository _healthPlanTypeRepository;
 
   AttendanceSearchController({
     required AttendanceRepository attendanceRepository,
     required EventStatusRepository eventStatusRepository,
     required EvolutionRepository evolutionRepository,
+    required HealthPlanTypeRepository healthPlanTypeRepository,
   })  : _attendanceRepository = attendanceRepository,
         _eventStatusRepository = eventStatusRepository,
+        _healthPlanTypeRepository = healthPlanTypeRepository,
         _evolutionRepository = evolutionRepository;
 
   final _loading = false.obs;
@@ -44,10 +51,16 @@ class AttendanceSearchController extends GetxController
     _dAutorization.value = dAutorization1;
   }
 
-  final Rxn<DateTime> _dAttendance = Rxn<DateTime>();
-  DateTime? get dAttendance => _dAttendance.value;
-  set dAttendance(DateTime? dAttendance1) {
-    _dAttendance.value = dAttendance1;
+  final Rxn<DateTime> _dAttendanceStart = Rxn<DateTime>();
+  DateTime? get dAttendanceStart => _dAttendanceStart.value;
+  set dAttendanceStart(DateTime? dAttendance1) {
+    _dAttendanceStart.value = dAttendance1;
+  }
+
+  final Rxn<DateTime> _dAttendanceEnd = Rxn<DateTime>();
+  DateTime? get dAttendanceEnd => _dAttendanceEnd.value;
+  set dAttendanceEnd(DateTime? dAttendance1) {
+    _dAttendanceEnd.value = dAttendance1;
   }
 
   var eventStatusList = <EventStatusModel>[].obs;
@@ -55,6 +68,13 @@ class AttendanceSearchController extends GetxController
   EventStatusModel? get eventStatusSelected => _eventStatusSelected.value;
   set eventStatusSelected(EventStatusModel? newModel) =>
       _eventStatusSelected(newModel);
+
+  var healthPlanTypeList = <HealthPlanTypeModel>[].obs;
+  final _healthPlanTypeSelected = Rxn<HealthPlanTypeModel>();
+  HealthPlanTypeModel? get healthPlanTypeSelected =>
+      _healthPlanTypeSelected.value;
+  set healthPlanTypeSelected(HealthPlanTypeModel? newModel) =>
+      _healthPlanTypeSelected(newModel);
 
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
@@ -66,6 +86,7 @@ class AttendanceSearchController extends GetxController
     loaderListener(_loading);
     messageListener(_message);
     getEventStatusList();
+    getHealthPlanTypeList();
 
     super.onInit();
   }
@@ -88,6 +109,12 @@ class AttendanceSearchController extends GetxController
       }
     }
     eventStatusSelected = eventStatusList[0];
+  }
+
+  getHealthPlanTypeList() async {
+    List<HealthPlanTypeModel> all = await _healthPlanTypeRepository.list();
+    healthPlanTypeList.addAll(all);
+    healthPlanTypeSelected = healthPlanTypeList[0];
   }
 
   void _changePagination(int page, int limit) {
@@ -116,9 +143,20 @@ class AttendanceSearchController extends GetxController
     required String eventEqualToString,
     required bool dAutorizationBool,
     required bool dAttendanceBool,
+    required bool healthPlanTypeBool,
   }) async {
     _loading(true);
     query = QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+    if (healthPlanTypeBool) {
+      var queryHealthPlan =
+          QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
+      queryHealthPlan.whereEqualTo(
+          'healthPlanType',
+          (ParseObject(HealthPlanTypeEntity.className)
+                ..objectId = healthPlanTypeSelected!.id)
+              .toPointer());
+      query.whereMatchesQuery('healthPlan', queryHealthPlan);
+    }
     if (professionalEqualToBool) {
       query.whereEqualTo(
           'professional',
@@ -155,7 +193,10 @@ class AttendanceSearchController extends GetxController
     //           .toPointer());
     // }
     if (dAutorizationBool && dAutorization != null) {
-      query.whereEqualTo('dAutorization', dAutorization);
+      query.whereLessThanOrEqualTo(
+          'dAutorization',
+          DateTime(dAutorization!.year, dAutorization!.month,
+              dAutorization!.day, 23, 59));
       // query.whereGreaterThanOrEqualsTo(
       //     'dAutorization',
       //     DateTime(
@@ -165,13 +206,15 @@ class AttendanceSearchController extends GetxController
       //     DateTime(dAutorization!.year, dAutorization!.month,
       //         dAutorization!.day, 23, 59));
     }
-    if (dAttendanceBool && dAttendance != null) {
-      query.whereGreaterThanOrEqualsTo('dAttendance',
-          DateTime(dAttendance!.year, dAttendance!.month, dAttendance!.day));
+    if (dAttendanceBool && dAttendanceStart != null && dAttendanceEnd != null) {
+      query.whereGreaterThanOrEqualsTo(
+          'dAttendance',
+          DateTime(dAttendanceStart!.year, dAttendanceStart!.month,
+              dAttendanceStart!.day));
       query.whereLessThanOrEqualTo(
           'dAttendance',
-          DateTime(
-              dAttendance!.year, dAttendance!.month, dAttendance!.day, 23, 59));
+          DateTime(dAttendanceEnd!.year, dAttendanceEnd!.month,
+              dAttendanceEnd!.day, 23, 59));
     }
     if (autorizationEqualToBool) {
       query.whereEqualTo('autorization', autorizationEqualToString);

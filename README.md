@@ -65,3 +65,10 @@ https://medium.com/@paresh.kanani.sa/flutter-circular-imageview-with-image-picke
 
 https://lakshydeep-14.medium.com/30-flutter-tips-ft25-searchable-dropdown-in-flutter-30164bbaa4ea
 
+# Fatura
+Numero da fatura
+start
+end
+
+
+busca de atendimento tipo de convenio

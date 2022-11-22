@@ -141,8 +141,7 @@ class EventSearchController extends GetxController
     // required bool myAttendanceProfissionalAgendado,
     required bool attendanceEqualToBool,
     required String attendanceEqualToString,
-    required bool dtStartStartBool,
-    required bool dtStartEndBool,
+    required bool dtStartBool,
     required bool eventStatusEqualToBool,
     required String eventStatusEqualToString,
     required bool roomEqualToBool,
@@ -218,12 +217,10 @@ class EventSearchController extends GetxController
                 ..objectId = attendanceEqualToString)
               .toPointer());
     }
-    if (dtStartStartBool && dtStartStart != null) {
+    if (dtStartBool && dtStartStart != null && dtStartEnd != null) {
       // query.whereEqualTo('start', dtStart);
       query.whereGreaterThanOrEqualsTo('dtStart',
           DateTime(dtStartStart!.year, dtStartStart!.month, dtStartStart!.day));
-    }
-    if (dtStartEndBool && dtStartEnd != null) {
       query.whereLessThanOrEqualTo(
           'dtStart',
           DateTime(

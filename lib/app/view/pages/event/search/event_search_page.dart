@@ -23,8 +23,7 @@ class _SearchPageState extends State<EventSearchPage> {
   final _formKey = GlobalKey<FormState>();
   bool _attendanceEqualTo = false;
   final _attendanceEqualToTEC = TextEditingController();
-  bool _dtStartStartBool = true;
-  bool _dtStartEndBool = true;
+  bool _dtStartBool = true;
   bool _eventStatusEqualTo = true;
   final _eventStatusEqualToTEC = TextEditingController();
   bool _roomEqualTo = false;
@@ -266,59 +265,45 @@ class _SearchPageState extends State<EventSearchPage> {
                     Card(
                       child: Column(
                         children: [
-                          const Text('por Data iniciando em'),
+                          const Text('por Data'),
                           const SizedBox(height: 5),
                           Row(
                             children: [
                               Checkbox(
-                                value: _dtStartStartBool,
+                                value: _dtStartBool,
                                 onChanged: (value) {
                                   setState(() {
-                                    _dtStartStartBool = value!;
+                                    _dtStartBool = value!;
                                   });
                                 },
                               ),
-                              AppCalendarButton(
-                                title: "Data da atendimento.",
-                                getDate: () =>
-                                    widget._eventSearchController.dtStartStart,
-                                setDate: (value) => widget
-                                    ._eventSearchController
-                                    .dtStartStart = value,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppCalendarButton(
+                                    title: "Iniciado em:",
+                                    getDate: () => widget
+                                        ._eventSearchController.dtStartStart,
+                                    setDate: (value) => widget
+                                        ._eventSearchController
+                                        .dtStartStart = value,
+                                  ),
+                                  AppCalendarButton(
+                                    title: "Finalizado em:",
+                                    getDate: () => widget
+                                        ._eventSearchController.dtStartEnd,
+                                    setDate: (value) => widget
+                                        ._eventSearchController
+                                        .dtStartEnd = value,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                  if (allowedAccess(OfficeEnum.secretaria.id))
-                    Card(
-                      child: Column(
-                        children: [
-                          const Text('por Data finalizando em'),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: _dtStartEndBool,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _dtStartEndBool = value!;
-                                  });
-                                },
-                              ),
-                              AppCalendarButton(
-                                title: "Data da atendimento.",
-                                getDate: () =>
-                                    widget._eventSearchController.dtStartEnd,
-                                setDate: (value) => widget
-                                    ._eventSearchController.dtStartEnd = value,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+
                   const SizedBox(height: 100)
                 ],
               ),
@@ -340,8 +325,7 @@ class _SearchPageState extends State<EventSearchPage> {
               //     _myAttendanceProfissionalAgendado,
               attendanceEqualToBool: _attendanceEqualTo,
               attendanceEqualToString: _attendanceEqualToTEC.text,
-              dtStartStartBool: _dtStartStartBool,
-              dtStartEndBool: _dtStartEndBool,
+              dtStartBool: _dtStartBool,
               eventStatusEqualToBool: _eventStatusEqualTo,
               eventStatusEqualToString: _eventStatusEqualToTEC.text,
               roomEqualToBool: _roomEqualTo,

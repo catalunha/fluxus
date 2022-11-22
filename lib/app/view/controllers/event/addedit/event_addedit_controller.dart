@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:fluxus/app/core/enums/event_status_enum.dart';
 import 'package:fluxus/app/core/enums/office_enum.dart';
@@ -136,8 +138,8 @@ class EventAddEditController extends GetxController
   void onReady() async {
     eventId = Get.arguments;
     await getEvent();
-    getRoomList();
     getEventStatusList();
+    getRoomList();
     super.onReady();
   }
 
@@ -180,8 +182,8 @@ class EventAddEditController extends GetxController
     if (eventId == null) {
       eventStatusSelected = eventStatusList[0];
     } else {
-      eventStatusSelected = eventStatusList[0];
-      // eventStatusSelected = event!.eventStatus;
+      // eventStatusSelected = eventStatusList[0];
+      eventStatusSelected = event!.eventStatus;
     }
   }
 
@@ -210,9 +212,9 @@ class EventAddEditController extends GetxController
         }
       }
       //log('${event?.start}', name: 'getEvent3');
+      onSetStatus();
       onSetDates();
       onSetRoom();
-      onSetStatus();
     }
     setFormFieldControllers();
     _loading(false);
@@ -261,6 +263,8 @@ class EventAddEditController extends GetxController
   }
 
   void onSetDates() {
+    log('event?.dtStart: ${event?.dtStart}', name: 'onSetDates');
+    log('event?.dtEnd: ${event?.dtEnd}', name: 'onSetDates');
     _dateStart(event?.dtStart);
     if (dateStart != null) {
       startDateDropDrowSelected = startDateList.firstWhereOrNull((element) {
@@ -281,8 +285,9 @@ class EventAddEditController extends GetxController
 
   void onSetStatus() {
     // if (allowedAccess(OfficeEnum.secretaria.id)) {
-    _eventStatusSelected(event?.eventStatus);
+    eventStatusSelected = event?.eventStatus;
     // }
+    print('eventStatusSelected?.name: ${eventStatusSelected?.name}');
   }
 
   setFormFieldControllers() {
@@ -309,6 +314,8 @@ class EventAddEditController extends GetxController
     bool? isDeleted,
   }) async {
     try {
+      dateStart = onMountDateStart();
+      dateEnd = onMountDateEnd();
       _loading(true);
       // dateStart = onMountDateStart();
       // dateEnd = onMountDateEnd();

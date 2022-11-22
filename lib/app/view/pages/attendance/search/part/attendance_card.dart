@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluxus/app/core/enums/event_status_enum.dart';
 import 'package:fluxus/app/core/models/attendance_model.dart';
+import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/attendance/search/attendance_search_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_text_title_value.dart';
@@ -89,9 +91,29 @@ class AttendanceCard extends StatelessWidget {
                       //       ? formatter.format(attendance.dtEndAttendance!)
                       //       : null,
                       // ),
-                      AppTextTitleValue(
-                          title: 'Status: ',
-                          value: attendance.eventStatus?.name),
+                      Row(
+                        children: [
+                          AppTextTitleValue(
+                              title: 'Status: ',
+                              value: attendance.eventStatus?.name),
+                          const SizedBox(width: 5),
+                          eventStatus(attendance.eventStatus),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          AppTextTitleValue(
+                              title: 'Presença confirmada: ',
+                              value: attendance.confirmedPresence == null
+                                  ? 'Não contactado.'
+                                  : attendance.confirmedPresence!
+                                      ? 'SIM.'
+                                      : 'Não.'),
+                          const SizedBox(width: 5),
+                          attendanceConfirmedPresenceIcon(
+                              attendance.confirmedPresence),
+                        ],
+                      ),
                       Wrap(
                         spacing: 50,
                         children: [
@@ -127,6 +149,54 @@ class AttendanceCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget eventStatus(EventStatusModel? eventStatusModel) {
+    if (eventStatusModel != null) {
+      if (eventStatusModel.id == EventStatusEnum.eventoAgendado.id) {
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.red);
+      } else if (eventStatusModel.id == EventStatusEnum.eventoAtendido.id) {
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.yellow);
+      } else if (eventStatusModel.id == EventStatusEnum.eventoFinalizado.id) {
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.green);
+      } else {
+        return eventStatusIcon(eventStatusModel.name, 10, Colors.black);
+      }
+    } else {
+      return eventStatusIcon('Sem evento', 10, Colors.red);
+    }
+  }
+
+  eventStatusIcon(String? text, double size, Color cor) {
+    return Tooltip(
+        message: '$text',
+        child: Container(width: size, height: size, color: cor));
+  }
+
+  Widget attendanceConfirmedPresenceIcon(bool? value) {
+    String text = value == null
+        ? 'Presença não consultada ao paciente'
+        : value
+            ? 'Presença CONFIRMADA'
+            : 'Paciente ausente';
+
+    double size = 10;
+    Color cor = value == null
+        ? Colors.black
+        : value
+            ? Colors.green
+            : Colors.red;
+
+    return Tooltip(
+        message: text,
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            color: cor,
+            shape: BoxShape.circle,
+          ),
+        ));
   }
 
   copy(String text) async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
+import 'package:fluxus/app/core/models/health_plan_type_model.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/attendance/search/attendance_search_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
@@ -26,6 +27,7 @@ class _SearchPageState extends State<AttendanceSearchPage> {
   bool _eventEqualTo = false;
   bool _dAutorization = false;
   bool _dAttendance = false;
+  bool _healthPlanTypeBool = false;
   final _professionalEqualToTEC = TextEditingController();
   final _patientEqualToTEC = TextEditingController();
   final _procedureEqualToTEC = TextEditingController();
@@ -58,6 +60,43 @@ class _SearchPageState extends State<AttendanceSearchPage> {
               key: _formKey,
               child: Column(
                 children: [
+                  Card(
+                    child: Column(
+                      children: [
+                        const Text('por Convenio'),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _healthPlanTypeBool,
+                              onChanged: (value) {
+                                setState(() {
+                                  _healthPlanTypeBool = value!;
+                                });
+                              },
+                            ),
+                            Expanded(
+                              child: Obx(
+                                () => AppDropDownGeneric<HealthPlanTypeModel>(
+                                  options: widget
+                                      ._attendanceController.healthPlanTypeList
+                                      .toList(),
+                                  selected: widget._attendanceController
+                                      .healthPlanTypeSelected,
+                                  execute: (value) {
+                                    widget._attendanceController
+                                        .healthPlanTypeSelected = value;
+                                    setState(() {});
+                                  },
+                                  // width: 340,
+                                  width: double.maxFinite,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                   Card(
                     child: Column(
                       children: [
@@ -313,7 +352,7 @@ class _SearchPageState extends State<AttendanceSearchPage> {
                   Card(
                     child: Column(
                       children: [
-                        const Text('por Data de atendimento'),
+                        const Text('por Atendimento'),
                         const SizedBox(height: 5),
                         Row(
                           children: [
@@ -325,12 +364,26 @@ class _SearchPageState extends State<AttendanceSearchPage> {
                                 });
                               },
                             ),
-                            AppCalendarButton(
-                              title: "Data da atendimento.",
-                              getDate: () =>
-                                  widget._attendanceController.dAttendance,
-                              setDate: (value) => widget
-                                  ._attendanceController.dAttendance = value,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppCalendarButton(
+                                  title: "Iniciado em.",
+                                  getDate: () => widget
+                                      ._attendanceController.dAttendanceStart,
+                                  setDate: (value) => widget
+                                      ._attendanceController
+                                      .dAttendanceStart = value,
+                                ),
+                                AppCalendarButton(
+                                  title: "Finalizado em.",
+                                  getDate: () => widget
+                                      ._attendanceController.dAttendanceEnd,
+                                  setDate: (value) => widget
+                                      ._attendanceController
+                                      .dAttendanceEnd = value,
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -365,6 +418,7 @@ class _SearchPageState extends State<AttendanceSearchPage> {
               eventEqualToString: _eventEqualToTEC.text,
               dAutorizationBool: _dAutorization,
               dAttendanceBool: _dAttendance,
+              healthPlanTypeBool: _healthPlanTypeBool,
             );
             // Get.back();
           }

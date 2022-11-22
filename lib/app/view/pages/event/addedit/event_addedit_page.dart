@@ -431,8 +431,8 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
           .updateAttendanceConfirmedPresence(attendanceId),
     );
 
-    return Text(
-        '${widget._eventAddEditController.attendanceConfirmedPresence[attendanceId]}');
+    // return Text(
+    //     '${widget._eventAddEditController.attendanceConfirmedPresence[attendanceId]}');
   }
 
   Widget attendanceList2() {

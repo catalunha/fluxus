@@ -33,9 +33,9 @@ class EventCard extends StatelessWidget {
           children: [
             withDateStart
                 ? SizedBox(
-                    width: 40, child: Text(dateFormat.format(event.dtStart!)))
+                    width: 50, child: Text(dateFormat.format(event.dtStart!)))
                 : const SizedBox(
-                    width: 40,
+                    width: 50,
                   ),
             const SizedBox(width: 5),
             Text(
@@ -129,7 +129,7 @@ class EventCard extends StatelessWidget {
             Tooltip(
               message: '${attendance.patient!.name}',
               child: SizedBox(
-                width: 110,
+                width: 125,
                 child: Text(
                   attendance.patient!.name!.substring(0, 15),
                 ),
@@ -138,7 +138,10 @@ class EventCard extends StatelessWidget {
             const Text(' - '),
             Tooltip(
                 message: '${attendance.professional!.name}',
-                child: Text(attendance.professional!.name!.substring(0, 5))),
+                child: SizedBox(
+                    width: 50,
+                    child:
+                        Text(attendance.professional!.name!.substring(0, 5)))),
             const Text(' - '),
             Container(
               // width: 40,
@@ -164,11 +167,11 @@ class EventCard extends StatelessWidget {
 
   Color expertiseColor(String expertiseId) {
     if (ExpertiseEnum.psicologia.id == expertiseId) {
-      return Colors.green;
+      return ExpertiseEnum.psicologia.cor;
     } else if (ExpertiseEnum.enfermeira.id == expertiseId) {
-      return Colors.blue;
+      return ExpertiseEnum.enfermeira.cor;
     } else if (ExpertiseEnum.fonoaudiologia.id == expertiseId) {
-      return Colors.orange;
+      return ExpertiseEnum.fonoaudiologia.cor;
     }
     return Colors.black;
   }
