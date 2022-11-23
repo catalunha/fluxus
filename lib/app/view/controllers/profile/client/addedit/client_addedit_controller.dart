@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'package:fluxus/app/core/models/health_plan_model.dart';
 import 'package:fluxus/app/core/models/health_plan_type_model.dart';
@@ -15,7 +14,6 @@ import 'package:fluxus/app/data/b4a/utils/xfile_to_parsefile.dart';
 import 'package:fluxus/app/data/repositories/health_plan_repository.dart';
 import 'package:fluxus/app/data/repositories/health_plan_type_repository.dart';
 import 'package:fluxus/app/data/repositories/profile_repository.dart';
-import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
 import 'package:fluxus/app/view/controllers/utils/message_mixin.dart';
@@ -98,7 +96,7 @@ class ClientAddEditController extends GetxController
   void onReady() {
     clientId = Get.arguments;
     getProfile();
-    getOthersProfiles();
+    // getOthersProfiles();
     super.onReady();
   }
 
@@ -139,21 +137,21 @@ class ClientAddEditController extends GetxController
     _loading(false);
   }
 
-  getOthersProfiles() async {
-    QueryBuilder<ParseObject> query =
-        QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
-    Pagination pagination = Pagination()..limit = 10;
-    var all = await _profileRepository
-        .list(query, pagination, includeColumns: ['name']);
-    var temp = <SearchProfile>[];
-    var temp2 = <String>[];
-    for (var element in all) {
-      temp.add(SearchProfile(id: element.id!, name: element.name!));
-      temp2.add(element.id!);
-    }
-    searchProfile.addAll(temp);
-    searchProfile2.addAll(temp2);
-  }
+  // getOthersProfiles() async {
+  //   QueryBuilder<ParseObject> query =
+  //       QueryBuilder<ParseObject>(ParseObject(ProfileEntity.className));
+  //   Pagination pagination = Pagination()..limit = 10;
+  //   var all = await _profileRepository
+  //       .list(query, pagination, includeColumns: ['name']);
+  //   var temp = <SearchProfile>[];
+  //   var temp2 = <String>[];
+  //   for (var element in all) {
+  //     temp.add(SearchProfile(id: element.id!, name: element.name!));
+  //     temp2.add(element.id!);
+  //   }
+  //   searchProfile.addAll(temp);
+  //   searchProfile2.addAll(temp2);
+  // }
 
   setFormFieldControllers() {
     nameTec.text = profile?.name ?? "";
