@@ -127,21 +127,24 @@ class EventCard extends StatelessWidget {
                         : Colors.red),
             const SizedBox(width: 5),
             Tooltip(
-              message: '${attendance.patient!.name}',
+              message: '${attendance.patient?.name}',
               child: SizedBox(
                 width: 125,
                 child: Text(
-                  attendance.patient!.name!.substring(0, 15),
+                  attendance.patient?.name != null
+                      ? attendance.patient!.name!.substring(0, 15)
+                      : "",
                 ),
               ),
             ),
             const Text(' - '),
             Tooltip(
-                message: '${attendance.professional!.name}',
+                message: '${attendance.professional?.name}',
                 child: SizedBox(
                     width: 50,
-                    child:
-                        Text(attendance.professional!.name!.substring(0, 5)))),
+                    child: Text(attendance.professional?.name != null
+                        ? attendance.professional!.name!.substring(0, 5)
+                        : ""))),
             const Text(' - '),
             Container(
               // width: 40,

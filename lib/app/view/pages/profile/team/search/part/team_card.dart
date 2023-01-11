@@ -52,6 +52,10 @@ class TeamProfileCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppTextTitleValue(
+                      title: 'e-mail: ',
+                      value: '${profile.email}',
+                    ),
+                    AppTextTitleValue(
                       title: 'Nome: ',
                       value: '${profile.name}',
                     ),

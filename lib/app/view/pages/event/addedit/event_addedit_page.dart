@@ -27,7 +27,7 @@ class EventAddEditPage extends StatefulWidget {
 class _EventAddEditPageState extends State<EventAddEditPage> {
   final dateFormat = DateFormat('dd/MM/y');
   final _formKey = GlobalKey<FormState>();
-
+  bool isDeleted = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +59,16 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 5),
+                    CheckboxListTile(
+                      tileColor: isDeleted ? Colors.red : null,
+                      title: const Text("Apagar esta ficha ?"),
+                      onChanged: (value) {
+                        setState(() {
+                          isDeleted = value ?? false;
+                        });
+                      },
+                      value: isDeleted,
+                    ),
 
                     Obx(() => AppTextTitleValue(
                           title: 'Id: ',
@@ -149,6 +159,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                             )),
                       ),
                     ),
+//Delete aqui.Obx(
 
                     const SizedBox(height: 70),
                   ],
@@ -332,13 +343,14 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
       if (widget._eventAddEditController.endDateDropDrowSelected == null) {
         return false;
       }
-      if (widget._eventAddEditController.attendanceList.isEmpty) {
-        return false;
-      }
+      // if (widget._eventAddEditController.attendanceList.isEmpty) {
+      //   return false;
+      // }
       await widget._eventAddEditController.append(
         room: widget._eventAddEditController.roomModelSelected,
         status: widget._eventAddEditController.eventStatusSelected,
         description: widget._eventAddEditController.descriptionTec.text,
+        isDeleted: isDeleted,
       );
       return true;
     }
@@ -361,6 +373,7 @@ class _EventAddEditPageState extends State<EventAddEditPage> {
                               InkWell(
                                 onLongPress: () async {
                                   // await saveEvent();
+                                  print('removeAttendance');
                                   await widget._eventAddEditController
                                       .removeAttendance(e.id!);
                                   setState(() {});

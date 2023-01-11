@@ -250,17 +250,24 @@ class AttendanceSearchController extends GetxController
     }
   }
 
-  removeAttendance(AttendanceModel attendanceModel) {
+  Future<bool> removeAttendance(AttendanceModel attendanceModel) async {
+    print('removeAttendance2');
+
     if (attendanceModel.event == null) {
-      _evolutionRepository.update(
+      print('removeAttendance3');
+
+      await _evolutionRepository.update(
           EvolutionModel(id: attendanceModel.evolution, isDeleted: true));
       _attendanceRepository.update(attendanceModel.copyWith(isDeleted: true));
+      return true;
     } else {
-      _message.value = MessageModel(
+      print('removeAttendance4');
+      _message(MessageModel(
         title: 'Erro em removeAttendance',
         message: 'Guia associada a um evento',
         isError: true,
-      );
+      ));
+      return false;
     }
   }
 }

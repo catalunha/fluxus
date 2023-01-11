@@ -49,7 +49,7 @@ class AttendanceCard extends StatelessWidget {
                       ),
                       AppTextTitleValue(
                         title: 'Paciente: ',
-                        value: attendance.patient!.name,
+                        value: attendance.patient?.name,
                       ),
                       AppTextTitleValue(
                         title: 'Conv. code: ',
@@ -121,7 +121,6 @@ class AttendanceCard extends StatelessWidget {
                             onPressed: () async {
                               await Get.toNamed(Routes.attendanceAddEdit,
                                   arguments: attendance.id!);
-
                               Get.back();
                             },
                             icon: const Icon(Icons.edit),
@@ -131,10 +130,13 @@ class AttendanceCard extends StatelessWidget {
                             icon: const Icon(Icons.copy),
                           ),
                           IconButton(
-                            onPressed: () {
-                              _attendanceSearchController
+                            onPressed: () async {
+                              print('removeAttendance');
+                              var isRemoved = await _attendanceSearchController
                                   .removeAttendance(attendance);
-                              Get.back();
+                              if (isRemoved) {
+                                Get.back();
+                              }
                             },
                             icon: const Icon(Icons.delete_forever),
                           ),

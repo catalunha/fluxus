@@ -64,6 +64,12 @@ class ProfileViewPage extends StatelessWidget {
                           value: profileModel.id,
                           inColumn: true,
                         ),
+                        if (profileModel.email != null)
+                          AppTextTitleValue(
+                            title: 'E-mail: ',
+                            value: profileModel.email,
+                            inColumn: true,
+                          ),
                         if (profileModel.name != null)
                           AppTextTitleValue(
                             title: 'Nome: ',

@@ -223,16 +223,78 @@ class EventAddEditController extends GetxController
   getStartDateList() {
     List<StartDateDropDrow> all = [
       StartDateDropDrow(name: '08:00', hour: 8, minute: 0),
-      StartDateDropDrow(name: '08:15', hour: 8, minute: 15),
+      StartDateDropDrow(name: '08:10', hour: 8, minute: 10),
+      StartDateDropDrow(name: '08:20', hour: 8, minute: 20),
       StartDateDropDrow(name: '08:30', hour: 8, minute: 30),
+      StartDateDropDrow(name: '08:40', hour: 8, minute: 40),
+      StartDateDropDrow(name: '08:50', hour: 8, minute: 50),
       StartDateDropDrow(name: '09:00', hour: 9, minute: 0),
+      StartDateDropDrow(name: '09:10', hour: 9, minute: 10),
+      StartDateDropDrow(name: '09:20', hour: 9, minute: 20),
+      StartDateDropDrow(name: '09:30', hour: 9, minute: 30),
+      StartDateDropDrow(name: '09:40', hour: 9, minute: 40),
+      StartDateDropDrow(name: '09:50', hour: 9, minute: 50),
+      StartDateDropDrow(name: '10:00', hour: 10, minute: 0),
+      StartDateDropDrow(name: '10:10', hour: 10, minute: 10),
+      StartDateDropDrow(name: '10:20', hour: 10, minute: 20),
+      StartDateDropDrow(name: '10:30', hour: 10, minute: 30),
+      StartDateDropDrow(name: '10:40', hour: 10, minute: 40),
+      StartDateDropDrow(name: '10:50', hour: 10, minute: 50),
+      StartDateDropDrow(name: '11:00', hour: 11, minute: 0),
+      StartDateDropDrow(name: '11:10', hour: 11, minute: 10),
+      StartDateDropDrow(name: '11:20', hour: 11, minute: 20),
+      StartDateDropDrow(name: '11:30', hour: 11, minute: 30),
+      StartDateDropDrow(name: '11:40', hour: 11, minute: 40),
+      StartDateDropDrow(name: '11:50', hour: 11, minute: 50),
+      StartDateDropDrow(name: '12:00', hour: 12, minute: 0),
+      StartDateDropDrow(name: '12:10', hour: 12, minute: 10),
+      StartDateDropDrow(name: '12:20', hour: 12, minute: 20),
+      StartDateDropDrow(name: '12:30', hour: 12, minute: 30),
+      StartDateDropDrow(name: '12:40', hour: 12, minute: 40),
+      StartDateDropDrow(name: '12:50', hour: 12, minute: 50),
+      StartDateDropDrow(name: '13:00', hour: 13, minute: 0),
+      StartDateDropDrow(name: '13:10', hour: 13, minute: 10),
+      StartDateDropDrow(name: '13:20', hour: 13, minute: 20),
+      StartDateDropDrow(name: '13:30', hour: 13, minute: 30),
+      StartDateDropDrow(name: '13:40', hour: 13, minute: 40),
+      StartDateDropDrow(name: '13:50', hour: 13, minute: 50),
+      StartDateDropDrow(name: '14:00', hour: 14, minute: 0),
+      StartDateDropDrow(name: '14:10', hour: 14, minute: 10),
+      StartDateDropDrow(name: '14:20', hour: 14, minute: 20),
+      StartDateDropDrow(name: '14:30', hour: 14, minute: 30),
+      StartDateDropDrow(name: '14:40', hour: 14, minute: 40),
+      StartDateDropDrow(name: '14:50', hour: 14, minute: 50),
+      StartDateDropDrow(name: '15:00', hour: 15, minute: 0),
+      StartDateDropDrow(name: '15:10', hour: 15, minute: 10),
+      StartDateDropDrow(name: '15:20', hour: 15, minute: 20),
+      StartDateDropDrow(name: '15:30', hour: 15, minute: 30),
+      StartDateDropDrow(name: '15:40', hour: 15, minute: 40),
+      StartDateDropDrow(name: '15:50', hour: 15, minute: 50),
+      StartDateDropDrow(name: '16:00', hour: 16, minute: 0),
+      StartDateDropDrow(name: '16:10', hour: 16, minute: 10),
+      StartDateDropDrow(name: '16:20', hour: 16, minute: 20),
+      StartDateDropDrow(name: '16:30', hour: 16, minute: 30),
+      StartDateDropDrow(name: '16:40', hour: 16, minute: 40),
+      StartDateDropDrow(name: '16:50', hour: 16, minute: 50),
+      StartDateDropDrow(name: '17:00', hour: 17, minute: 0),
+      StartDateDropDrow(name: '17:10', hour: 17, minute: 10),
+      StartDateDropDrow(name: '17:20', hour: 17, minute: 20),
+      StartDateDropDrow(name: '17:30', hour: 17, minute: 30),
+      StartDateDropDrow(name: '17:40', hour: 17, minute: 40),
+      StartDateDropDrow(name: '17:50', hour: 17, minute: 50),
+      StartDateDropDrow(name: '18:00', hour: 18, minute: 0),
+      StartDateDropDrow(name: '18:10', hour: 18, minute: 10),
+      StartDateDropDrow(name: '18:20', hour: 18, minute: 20),
+      StartDateDropDrow(name: '18:30', hour: 18, minute: 30),
+      StartDateDropDrow(name: '18:40', hour: 18, minute: 40),
+      StartDateDropDrow(name: '18:50', hour: 18, minute: 50),
     ];
     startDateList(all);
   }
 
   onUpdateStartChangeEnd(StartDateDropDrow startDateDropDrow) {
     int indexOfStart = startDateList.indexOf(startDateDropDrow);
-    int salto = 2;
+    int salto = 4;
     if (indexOfStart < startDateList.length - salto) {
       _endDateDropDrowSelected(startDateList[indexOfStart + salto]);
     }
@@ -387,6 +449,7 @@ class EventAddEditController extends GetxController
   }
 
   removeAttendance(String attendanceId) {
+    print(attendanceId);
     attendanceList.removeWhere((element) => element.id == attendanceId);
   }
 

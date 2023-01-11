@@ -199,9 +199,9 @@ class ProfileEntity {
     if (profileModel.phone != null) {
       profileParseObject.set('phone', profileModel.phone);
     }
-    if (profileModel.email != null) {
-      profileParseObject.set('email', profileModel.email);
-    }
+    // if (profileModel.email != null) {
+    //   profileParseObject.set('email', profileModel.email);
+    // }
     if (profileModel.address != null) {
       profileParseObject.set('address', profileModel.address);
     }

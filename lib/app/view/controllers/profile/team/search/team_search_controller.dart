@@ -98,8 +98,9 @@ class TeamSearchController extends GetxController
     if (!lastPage) {
       _loading(true);
 
-      List<ProfileModel> temp = await _profileRepository
-          .list(query, _pagination.value, includeColumns: ['name', 'photo']);
+      List<ProfileModel> temp = await _profileRepository.list(
+          query, _pagination.value,
+          includeColumns: ['name', 'email', 'photo']);
       if (temp.isEmpty) {
         _lastPage(true);
       }
