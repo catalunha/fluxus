@@ -10,7 +10,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class EventRepositoryB4a implements EventRepository {
   Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
+      QueryBuilder<ParseObject> query, Pagination? pagination) async {
     log('1', name: 'EventRepositoryB4a.getQueryAll');
 
     // QueryBuilder<ParseObject> query =
@@ -19,16 +19,17 @@ class EventRepositoryB4a implements EventRepository {
     query.includeObject(['room', 'eventStatus']);
     query.whereEqualTo('isDeleted', false);
     query.orderByAscending('dtStart');
-
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
 
     return query;
   }
 
   @override
   Future<List<EventModel>> list(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
+      QueryBuilder<ParseObject> query, Pagination? pagination) async {
     log('1', name: 'EventRepositoryB4a.list');
     QueryBuilder<ParseObject> query2;
     query2 = await getQueryAll(query, pagination);

@@ -24,22 +24,22 @@ class EventSearchListPage extends StatelessWidget {
           //           ? Colors.red
           //           : Colors.green,
           //     )),
-          InkWell(
-            onTap: () {
-              _clientProfileController.nextPage();
-            },
-            child: Obx(() => Container(
-                  color: _clientProfileController.lastPage
-                      ? Colors.black
-                      : Colors.green,
-                  height: 24,
-                  child: Center(
-                    child: _clientProfileController.lastPage
-                        ? const Text('Última página')
-                        : const Text('Próxima página'),
-                  ),
-                )),
-          ),
+          // InkWell(
+          //   onTap: () {
+          //     _clientProfileController.nextPage();
+          //   },
+          //   child: Obx(() => Container(
+          //         color: _clientProfileController.lastPage
+          //             ? Colors.black
+          //             : Colors.green,
+          //         height: 24,
+          //         child: Center(
+          //           child: _clientProfileController.lastPage
+          //               ? const Text('Última página')
+          //               : const Text('Próxima página'),
+          //         ),
+          //       )),
+          // ),
           Expanded(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 600),

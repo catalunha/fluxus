@@ -11,7 +11,6 @@ import 'package:fluxus/app/data/b4a/entity/room_entity.dart';
 import 'package:fluxus/app/data/repositories/event_repository.dart';
 import 'package:fluxus/app/data/repositories/event_status_repository.dart';
 import 'package:fluxus/app/data/repositories/room_repository.dart';
-import 'package:fluxus/app/data/utils/pagination.dart';
 import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/controllers/utils/loader_mixin.dart';
@@ -37,9 +36,9 @@ class EventSearchController extends GetxController
   final _message = Rxn<MessageModel>();
 
   List<EventModel> eventList = <EventModel>[].obs;
-  final _pagination = Pagination().obs;
-  final _lastPage = false.obs;
-  get lastPage => _lastPage.value;
+  // final _pagination = Pagination().obs;
+  // final _lastPage = false.obs;
+  // get lastPage => _lastPage.value;
 
   final Rxn<DateTime> _dtStartStart = Rxn<DateTime>();
   DateTime? get dtStartStart => _dtStartStart.value;
@@ -74,8 +73,8 @@ class EventSearchController extends GetxController
   @override
   void onInit() {
     eventList.clear();
-    _changePagination(1, 12);
-    ever(_pagination, (_) async => await listAll());
+    // _changePagination(1, 12);
+    // ever(_pagination, (_) async => await listAll());
     loaderListener(_loading);
     messageListener(_message);
     getEventStatusList();
@@ -123,16 +122,16 @@ class EventSearchController extends GetxController
     roomSelected = roomList[0];
   }
 
-  void _changePagination(int page, int limit) {
-    _pagination.update((val) {
-      val!.page = page;
-      val.limit = limit;
-    });
-  }
+  // void _changePagination(int page, int limit) {
+  //   _pagination.update((val) {
+  //     val!.page = page;
+  //     val.limit = limit;
+  //   });
+  // }
 
-  void nextPage() {
-    _changePagination(_pagination.value.page + 1, _pagination.value.limit);
-  }
+  // void nextPage() {
+  //   _changePagination(_pagination.value.page + 1, _pagination.value.limit);
+  // }
 
   Future<void> search({
     required bool myAttendance,
@@ -266,16 +265,17 @@ class EventSearchController extends GetxController
       }
     }
     eventList.clear();
-    if (lastPage) {
-      _lastPage(false);
-      _pagination.update((val) {
-        val!.page = 1;
-        val.limit = 12;
-      });
-      // _changePagination(_pagination.value.page, _pagination.value.limit);
-    } else {
-      await listAll();
-    }
+    // if (lastPage) {
+    //   _lastPage(false);
+    //   _pagination.update((val) {
+    //     val!.page = 1;
+    //     val.limit = 12;
+    //   });
+    //   // _changePagination(_pagination.value.page, _pagination.value.limit);
+    // } else {
+    //   await listAll();
+    // }
+    await listAll();
     _loading(false);
     Get.toNamed(Routes.eventList);
   }
@@ -286,15 +286,20 @@ class EventSearchController extends GetxController
   }
 
   Future<void> listAll() async {
-    if (!lastPage) {
-      _loading(true);
-      List<EventModel> temp =
-          await _eventRepository.list(query, _pagination.value);
-      if (temp.isEmpty) {
-        _lastPage.value = true;
-      }
-      eventList.addAll(temp);
-      _loading(false);
-    }
+    _loading(true);
+    List<EventModel> temp = await _eventRepository.list(query, null);
+    eventList.addAll(temp);
+    _loading(false);
+
+    // if (!lastPage) {
+    //   _loading(true);
+    //   List<EventModel> temp =
+    //       await _eventRepository.list(query, _pagination.value);
+    //   if (temp.isEmpty) {
+    //     _lastPage.value = true;
+    //   }
+    //   eventList.addAll(temp);
+    //   _loading(false);
+    // }
   }
 }

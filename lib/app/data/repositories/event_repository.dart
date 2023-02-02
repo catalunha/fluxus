@@ -4,7 +4,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 abstract class EventRepository {
   Future<List<EventModel>> list(
-      QueryBuilder<ParseObject> query, Pagination pagination);
+      QueryBuilder<ParseObject> query, Pagination? pagination);
   Future<String> update(EventModel model);
   Future<EventModel?> readById(String id);
   Future<void> updateRelationAttendance(

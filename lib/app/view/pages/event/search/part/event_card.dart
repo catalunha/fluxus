@@ -24,7 +24,7 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('dd/MM');
-    final timeFormat = DateFormat('hh:mm');
+    final timeFormat = DateFormat('HH:mm');
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

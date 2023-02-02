@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fluxus/app/core/enums/office_enum.dart';
 import 'package:fluxus/app/core/models/event_status_model.dart';
 import 'package:fluxus/app/core/models/room_model.dart';
-import 'package:fluxus/app/routes.dart';
 import 'package:fluxus/app/view/controllers/event/search/event_search_controller.dart';
 import 'package:fluxus/app/view/controllers/splash/splash_controller.dart';
 import 'package:fluxus/app/view/pages/utils/app_calendar_button.dart';
 import 'package:fluxus/app/view/pages/utils/app_dropdown_generic.dart';
 import 'package:fluxus/app/view/pages/utils/app_icon.dart';
-import 'package:fluxus/app/view/pages/utils/app_textformfield.dart';
 import 'package:get/get.dart';
 
 class EventSearchPage extends StatefulWidget {
@@ -21,10 +19,10 @@ class EventSearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<EventSearchPage> {
   final _formKey = GlobalKey<FormState>();
-  bool _attendanceEqualTo = false;
+  final bool _attendanceEqualTo = false;
   final _attendanceEqualToTEC = TextEditingController();
-  bool _dtStartBool = true;
-  bool _eventStatusEqualTo = true;
+  bool _datetimeBool = true;
+  bool _eventStatusEqualTo = false;
   final _eventStatusEqualToTEC = TextEditingController();
   bool _roomEqualTo = false;
   final _roomEqualToTEC = TextEditingController();
@@ -132,39 +130,128 @@ class _SearchPageState extends State<EventSearchPage> {
                   //     ],
                   //   ),
                   // ),
+                  // if (allowedAccess(OfficeEnum.secretaria.id))
+                  //   Card(
+                  //     child: Column(
+                  //       children: [
+                  //         const Text('por Guia'),
+                  //         Row(
+                  //           children: [
+                  //             Checkbox(
+                  //               value: _attendanceEqualTo,
+                  //               onChanged: (value) {
+                  //                 setState(() {
+                  //                   _attendanceEqualTo = value!;
+                  //                 });
+                  //               },
+                  //             ),
+                  //             IconButton(
+                  //               onPressed: () {
+                  //                 Get.toNamed(Routes.attendanceSearch);
+                  //               },
+                  //               icon: const Icon(Icons.search),
+                  //             ),
+                  //             Expanded(
+                  //               child: AppTextFormField(
+                  //                 label: 'Id da Guia',
+                  //                 controller: _attendanceEqualToTEC,
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
                   if (allowedAccess(OfficeEnum.secretaria.id))
                     Card(
                       child: Column(
                         children: [
-                          const Text('por Guia'),
+                          const Text('por Data'),
+                          const SizedBox(height: 5),
                           Row(
                             children: [
                               Checkbox(
-                                value: _attendanceEqualTo,
+                                value: _datetimeBool,
                                 onChanged: (value) {
                                   setState(() {
-                                    _attendanceEqualTo = value!;
+                                    _datetimeBool = value!;
                                   });
                                 },
                               ),
-                              IconButton(
-                                onPressed: () {
-                                  Get.toNamed(Routes.attendanceSearch);
-                                },
-                                icon: const Icon(Icons.search),
-                              ),
-                              Expanded(
-                                child: AppTextFormField(
-                                  label: 'Id da Guia',
-                                  controller: _attendanceEqualToTEC,
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppCalendarButton(
+                                    title: "Iniciado em:",
+                                    getDate: () => widget
+                                        ._eventSearchController.dtStartStart,
+                                    setDate: (value) => widget
+                                        ._eventSearchController
+                                        .dtStartStart = value,
+                                  ),
+                                  AppCalendarButton(
+                                    title: "Finalizado em:",
+                                    getDate: () => widget
+                                        ._eventSearchController.dtStartEnd,
+                                    setDate: (value) => widget
+                                        ._eventSearchController
+                                        .dtStartEnd = value,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                  // if (allowedAccess(OfficeEnum.secretaria.id))
+
+                  if (allowedAccess(OfficeEnum.secretaria.id))
+                    Card(
+                      child: Column(
+                        children: [
+                          const Text('por Ambiente'),
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _roomEqualTo,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _roomEqualTo = value!;
+                                  });
+                                },
+                              ),
+                              Obx(
+                                () => AppDropDownGeneric<RoomModel>(
+                                  options: widget
+                                      ._eventSearchController.roomList
+                                      .toList(),
+                                  selected: widget
+                                      ._eventSearchController.roomSelected,
+                                  execute: (value) {
+                                    widget._eventSearchController.roomSelected =
+                                        value;
+                                    setState(() {});
+                                  },
+                                  width: 300,
+                                ),
+                              ),
+                              // IconButton(
+                              //   onPressed: () {
+                              //     Get.toNamed(Routes.roomList);
+                              //   },
+                              //   icon: const Icon(Icons.search),
+                              // ),
+                              // Expanded(
+                              //   child: AppTextFormField(
+                              //     label: 'Id do ambiente',
+                              //     controller: _roomEqualToTEC,
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   Card(
                     child: Column(
                       children: [
@@ -214,96 +301,6 @@ class _SearchPageState extends State<EventSearchPage> {
                       ],
                     ),
                   ),
-                  if (allowedAccess(OfficeEnum.secretaria.id))
-                    Card(
-                      child: Column(
-                        children: [
-                          const Text('por Ambiente'),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: _roomEqualTo,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _roomEqualTo = value!;
-                                  });
-                                },
-                              ),
-                              Obx(
-                                () => AppDropDownGeneric<RoomModel>(
-                                  options: widget
-                                      ._eventSearchController.roomList
-                                      .toList(),
-                                  selected: widget
-                                      ._eventSearchController.roomSelected,
-                                  execute: (value) {
-                                    widget._eventSearchController.roomSelected =
-                                        value;
-                                    setState(() {});
-                                  },
-                                  width: 300,
-                                ),
-                              ),
-                              // IconButton(
-                              //   onPressed: () {
-                              //     Get.toNamed(Routes.roomList);
-                              //   },
-                              //   icon: const Icon(Icons.search),
-                              // ),
-                              // Expanded(
-                              //   child: AppTextFormField(
-                              //     label: 'Id do ambiente',
-                              //     controller: _roomEqualToTEC,
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  if (allowedAccess(OfficeEnum.secretaria.id))
-                    Card(
-                      child: Column(
-                        children: [
-                          const Text('por Data'),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: _dtStartBool,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _dtStartBool = value!;
-                                  });
-                                },
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  AppCalendarButton(
-                                    title: "Iniciado em:",
-                                    getDate: () => widget
-                                        ._eventSearchController.dtStartStart,
-                                    setDate: (value) => widget
-                                        ._eventSearchController
-                                        .dtStartStart = value,
-                                  ),
-                                  AppCalendarButton(
-                                    title: "Finalizado em:",
-                                    getDate: () => widget
-                                        ._eventSearchController.dtStartEnd,
-                                    setDate: (value) => widget
-                                        ._eventSearchController
-                                        .dtStartEnd = value,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-
                   const SizedBox(height: 100)
                 ],
               ),
@@ -325,7 +322,7 @@ class _SearchPageState extends State<EventSearchPage> {
               //     _myAttendanceProfissionalAgendado,
               attendanceEqualToBool: _attendanceEqualTo,
               attendanceEqualToString: _attendanceEqualToTEC.text,
-              dtStartBool: _dtStartBool,
+              dtStartBool: _datetimeBool,
               eventStatusEqualToBool: _eventStatusEqualTo,
               eventStatusEqualToString: _eventStatusEqualToTEC.text,
               roomEqualToBool: _roomEqualTo,
